@@ -1,0 +1,15 @@
+mutation createCustomer($customer: CustomerInput!, $agreements: [CustomerAgreementInput!], $addresses: [AddressInput!]) {
+    createCustomer(customer: $customer, agreements: $agreements, addresses: $addresses) {
+        __typename
+        errors {
+            __typename
+            argument
+            code
+        }
+        customer {
+            __typename
+            timeZone
+            internetAccess
+        }
+    }
+}

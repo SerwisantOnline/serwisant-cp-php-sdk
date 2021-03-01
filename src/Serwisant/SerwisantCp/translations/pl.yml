@@ -1,0 +1,23 @@
+pl_PL:
+  layout:
+    me_edit: Edytuj dane
+    me_logout: Wyloguj
+  errors:
+    blank: Nie podano wymaganej wartości
+    too_short: Wartość podana w polu jest zbyt krótka
+    invalid: Wartość podana w polu jest niepoprawna
+    taken: Taka wartość istnieje już w bazie, wybierz inną
+    required: Uzupełnienie lub zaznaczenie tego pola jest wymagane
+  login:
+    title: Zaloguj się!
+    login_description: |
+      Zanim rozpoczniesz korzystanie z aplikacji powinieneś się zalogować.
+    signup_description: |
+      Jeśli nie masz danych do logowania możesz je utworzyć poprzez rejestrację swojego konta.
+    signup: Zarejestruj własne konto
+    login: Nazwa użytkownika
+    password: Hasło
+    submit: Rozpocznij
+    errors:
+      invalid_client: Administratory tego panel nie skonfigurował poprawnych danych dostępowych OAUTH_KEY i OAUTH_SECRET.
+      invalid_grant: Login lub hasło są niepoprawne

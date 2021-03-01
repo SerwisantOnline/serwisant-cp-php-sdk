@@ -1,0 +1,572 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+    query: PublicQuery
+    mutation: PublicMutation
+}
+
+type AcceptOrRejectRepairResult {
+    errors: [Error!]
+    success: Boolean!
+}
+
+type Address {
+    ID: HashID!
+    building: String!
+    city: String!
+    countryIso: String!
+    postalCode: String!
+    street: String!
+    type: AddressType!
+}
+
+type CustomField {
+    ID: HashID!
+    concern: Dictionary
+    description: String
+    name: String!
+    required: Boolean!
+    selectOptions: [String!]
+    type: CustomFieldType!
+}
+
+type CustomFieldValue {
+    field: CustomField!
+    value: String
+}
+
+type Customer {
+    internetAccess: Boolean!
+    "Time zone of customer, all times wisible for customer should be represented in this time zone"
+    timeZone: String!
+}
+
+type CustomerAgreement {
+    ID: HashID!
+    content: String
+    description: String!
+    "Agreement is required to create Customer, but only if corresponding do CustomerType visibility flag is enabled"
+    required: Boolean!
+    title: String!
+    type: CustomerAgreementType!
+    visibleBusiness: Boolean!
+    visiblePersonal: Boolean!
+}
+
+type CustomerCreationResult {
+    customer: Customer
+    errors: [Error!]
+}
+
+type CustomerPanelConfig {
+    caPanelCommunication: Boolean!
+    caPanelRepairs: Boolean!
+    caPanelTickets: Boolean!
+    caPanelToken: String
+    "Service currency, all API prices and other money values are in this currency"
+    currency: Currency!
+    showOrderProgressInfo: Boolean!
+}
+
+type Dictionary {
+    ID: HashID!
+    name: String!
+    type: DictionaryType!
+}
+
+"Error from mutation"
+type Error {
+    argument: String!
+    code: String!
+    message: String!
+}
+
+type File {
+    contentType: String!
+    image: Boolean!
+    url(size: ImageSize = ORIGINAL): String
+}
+
+type OnlinePayment {
+    ID: HashID!
+    "Full transacion amount, sum of items"
+    amount: Money!
+    "Amount to pay, amount reduced by already paid amounts"
+    amountToPay: Money!
+    currency: Currency!
+    description: String
+    items: [OnlinePaymentItem!]!
+    number: String!
+    "Branding name for service handling a payment, it's name communicated to customers on printouts, emails, etc"
+    serviceSupplier: ServiceSupplier!
+    status: OnlinePaymentStatus!
+}
+
+type OnlinePaymentChannel {
+    ID: String!
+    logo: File
+    name: String!
+}
+
+type OnlinePaymentItem {
+    amount: Money!
+    description: String!
+    secretToken: SecretToken
+}
+
+type OnlinePaymentMethod {
+    channels: [OnlinePaymentChannel!]
+    currency: Currency!
+    type: OnlinePaymentMethodType!
+}
+
+type OnlinePaymentResult {
+    errors: [Error!]
+    onlineTransaction: OnlineTransaction
+}
+
+type OnlineTransaction {
+    ID: HashID!
+    processorUrl: String
+    status: OnlineTransactionStatus!
+}
+
+type Phone {
+    "Country prefix, eg. +48"
+    countryPrefix: String
+    formatted: String
+    isGsm: Boolean!
+    "Number without country prefix - domestic number"
+    number: String
+}
+
+type PublicMutation {
+    "Send there a customer decision regarding estimated repair costs"
+    acceptOrRejectRepair(
+        "Decision about a repair proposition. If any offers present, REJECT decision will reject all offers"
+        decision: AcceptOrRejectRepairDecision!,
+        "If offer ID passed (see RepairOffer entity), decision is made against particular offer"
+        offer: HashID,
+        "Repair token, the same was used to find repair."
+        token: String!
+    ): AcceptOrRejectRepairResult
+    createCustomer(addresses: [AddressInput!], agreements: [CustomerAgreementInput!], customer: CustomerInput!): CustomerCreationResult
+    """
+
+    Pay for `OnlinePayment` using any available `type` of payment. Depending on result status, payment may be
+    queued: in that case pool for result, may be asked to redirect user to other site to complete a payment.
+    """
+    pay(errorUrl: String!, onlineTransaction: OnlineTransactionInput!, successUrl: String!, token: String!): OnlinePaymentResult
+}
+
+type PublicQuery {
+    configuration: CustomerPanelConfig!
+    customerAgreements(filter: CustomerAgreementsFilter): [CustomerAgreement!]!
+    "Will return a list of custom fields for customer signup form - for generic list see customFields"
+    customerCustomFields: [CustomField!]!
+    "If token belongs to online payment, use this query to get details"
+    paymentByToken(token: String!): OnlinePayment!
+    """
+
+    Return available payment methods for service related to access token. List can be empty, what mean service
+    doesn't support online payments
+    """
+    paymentMethods: [OnlinePaymentMethod!]!
+    paymentTransaction(ID: HashID!): OnlineTransaction!
+    "Return detailed information about particular repair"
+    repairByToken(token: String!): Repair!
+    "Using this query you can lookup a token, to determine where it belongs, eg. order, or payment"
+    secretToken(token: String!): SecretToken!
+    viewer: Viewer!
+}
+
+type Repair {
+    advanceAmount: Float!
+    collectionType: RepairTransportType!
+    costs: RepairCosts!
+    "Will return a list of values for custom fields"
+    customFields: [CustomFieldValue!]!
+    customer: Customer!
+    deliveryType: RepairTransportType!
+    diagnosis: RepairDiagnosis
+    displayName: String!
+    "Files attached to repair. For :service schema it includes private and public files, for otcher schemas only public files are included"
+    files: [File!]!
+    issue: String
+    model: String
+    offers: [RepairOffer!]
+    priceEstimated: Float
+    priceEstimatedTaxRate: Float
+    rma: String!
+    secretToken: SecretToken!
+    serial: String
+    "Service supplier who is currently processing this repair"
+    serviceSupplier: ServiceSupplier!
+    status: RepairStatus!
+    summary: RepairSummary
+    type: Dictionary!
+    vendor: String
+    warranty: Boolean!
+    warrantyPurchaseDate: Date
+    warrantyPurchaseDocument: String
+}
+
+type RepairCosts {
+    estimatedGross: Money
+    """
+
+    Net price given in repair diagnosis, this is a price customer must confirm. If null, diagnosis wan't performed,
+    no price given durring diagnosis or sepatate offers for this repair exists - see offer field
+    """
+    estimatedNet: Money
+    finalGross: Money
+    "Net price to be paid for repair"
+    finalNet: Money
+    "Full price (incl. tax) to be paid for whole service, decucted by advance, incremented by other possibe costs like shipping, etc."
+    payment: Money
+    proposedGross: Money
+    "Net price proposed durring repair aquisition, nil if nothing was proposed, it's not a real price, rather a guess"
+    proposedNet: Money
+}
+
+type RepairDiagnosis {
+    publicRemarks: String
+}
+
+type RepairOffer {
+    ID: HashID!
+    "This field can be null - that means no desision was made - true or false means yes or no"
+    accepted: Boolean
+    description: String
+    items: [RepairOfferItem!]!
+    number: String!
+    priceGross: Float!
+    "Summary net price for this offer. If offered repair was diagnosed, diagnosis price is included here."
+    priceNet: Float!
+    title: String!
+}
+
+type RepairOfferItem {
+    description: String!
+    priceGross: Float!
+    priceNet: Float!
+    type: RepairOfferItemType!
+    vat: Float!
+}
+
+type RepairStatus {
+    canceledOrRejected: Boolean!
+    confirmed: Boolean!
+    createdAt: DateTime!
+    "Business days passed from startedAt date"
+    daysFromStart: Int!
+    "Business days to end of repair"
+    daysToEnd: Int!
+    diagnosed: Boolean!
+    displayName: String!
+    finishDateEstimated: Date
+    finished: Boolean!
+    progress: Float!
+    requireCustomerAccept: Boolean!
+    "Date when repair was started, for repair delivered by parcel this will differ from createdAt"
+    startedAt: Date
+    status: RepairState!
+    summedUp: Boolean!
+    timeProgress: Float!
+    timeStatus: OrderTimeStatus!
+}
+
+type RepairSummary {
+    publicRemarks: String
+}
+
+type SecretToken {
+    subjectType: SecretTokenSubject!
+    token: String!
+}
+
+type ServiceSupplier {
+    address: Address
+    addresses: [Address!]!
+    avatar: File
+    displayName: String!
+    email: String
+    phone: Phone
+}
+
+type Subscriber {
+    address: Address
+    businessActivity: SubscriberBusinessActivity
+    companyName: String
+    displayName: String!
+    email: String!
+    serviceSupplier: ServiceSupplier!
+    taxId: String
+    taxPrefix: TaxPrefix
+}
+
+type Viewer {
+    subscriber: Subscriber!
+}
+
+enum AcceptOrRejectRepairDecision {
+    ACCEPT
+    REJECT
+}
+
+enum AddressType {
+    BILLING
+    BUSINESS
+    HOME
+    OTHER
+}
+
+enum CountryCode {
+    PL
+}
+
+enum Currency {
+    PLN
+}
+
+enum CustomFieldType {
+    "Option"
+    CHECKBOX
+    "Date picker"
+    DATE
+    "Password (will be encrypted)"
+    PASSWORD
+    "Single choice list"
+    SELECT
+    "Single line text"
+    TEXT
+    "Multi line text"
+    TEXTAREA
+}
+
+enum CustomerAgreementType {
+    CUSTOM_1
+    CUSTOM_2
+    CUSTOM_3
+    CUSTOM_4
+    DATA_PROCESSING
+    MARKETING_DATA_PROCESSING
+    REFUND_POLICY
+    RULES
+}
+
+enum CustomerType {
+    "Company"
+    BUSINESS
+    "Person"
+    PERSONAL
+}
+
+enum DictionaryType {
+    "Type of component from inventory"
+    COMPONENT_TYPE
+    "Group od customers"
+    CUSTOMER_GROUP
+    "Repaired equipment types"
+    REPAIR_SUBJECT_TYPE
+    "Category of ticket"
+    TICKET_CATEGORY
+}
+
+enum ImageSize {
+    ORIGINAL
+    THUMBNAIL
+}
+
+enum OnlinePaymentMethodType {
+    BLIK
+    TRANSFER
+}
+
+enum OnlinePaymentStatus {
+    PAID
+    UNPAID
+    WAITING_FOR_PAYMENT
+}
+
+enum OnlineTransactionStatus {
+    "Brand new transaction, not submitted to payment processor yet, pool for result using query `paymentTransaction`"
+    CREATED
+    FAILED
+    "Transaction was submitted and will be processed asynchronously, pool for result using query `paymentTransaction`"
+    POOL
+    """
+
+    Transaction was submitted but require redirection first, eg. for bank login, or 3DS authorisation, next must
+    be pooled. Please note, when customer come back from redirect, transaction status probably won't change - it's
+    processed asynchronously - it's on your side to care about to pool not to redirect again. Hint: use `successUrl`
+    and `errorUrl` at `pay` mutation to pass data.
+    """
+    REDIRECT_POOL
+    REFUNDED
+    SUCCESSFUL
+}
+
+enum OrderTimeStatus {
+    "Out of time"
+    DELAYED
+    "Inside agreed timespan"
+    OK
+    "Approaching to timespan border"
+    WARNING
+}
+
+enum RepairOfferItemType {
+    "Diagnosis part, inserted in automated way if present"
+    DIAGNOSIS
+    "This is a part od offer"
+    OFFER
+}
+
+enum RepairState {
+    CANCELED
+    CLOSED
+    CONFIRMED
+    DIAGNOSIS
+    IN_PROGRESS
+    NOT_ACCEPTED
+    NOT_PROCESSABLE
+    PASSED_FOR_RETURN
+    REQ_CUSTOMER_ACCEPT
+    REQ_SUMMARY
+    SCRAPPED
+    UNDER_TESTING
+    UNSAVED
+    WAITING_FOR_COLLECTION
+    WAITING_FOR_DELIVERY
+    WAITING_FOR_DIAGNOSIS
+    WAITING_FOR_PARTS
+}
+
+enum RepairTransportType {
+    "Repair will be delivered or returned-back by service employee"
+    INTERNAL
+    "Repair will be delivered or returned-back via parcel"
+    PARCEL
+    "Customer will deliver or pick-up repair by himself"
+    PERSONAL
+}
+
+enum SecretTokenSubject {
+    LICENCE
+    ONLINEPAYMENT
+    PARCEL
+    REPAIR
+}
+
+enum SubscriberBusinessActivity {
+    BIKES
+    CELL_PHONE
+    ELECTRONIC
+    HOUSEHOLD_EQUIPMENT
+    OTHER
+    PC
+}
+
+enum TaxPrefix {
+    AT
+    BE
+    BG
+    CY
+    CZ
+    DE
+    DK
+    EE
+    EL
+    ES
+    FI
+    FR
+    GB
+    HR
+    HU
+    IE
+    IT
+    LT
+    LU
+    LV
+    MT
+    NL
+    PL
+    PT
+    RO
+    SE
+    SI
+    SK
+}
+
+input AddressInput {
+    building: String!
+    city: String!
+    countryIso: CountryCode!
+    postalCode: String!
+    street: String!
+    type: AddressType!
+}
+
+input CustomFieldValueInput {
+    ID: HashID!
+    value: String!
+}
+
+input CustomerAgreementInput {
+    ID: HashID!
+    accepted: Boolean!
+}
+
+input CustomerAgreementsFilter {
+    ID: HashID
+    types: [CustomerAgreementType!]
+}
+
+input CustomerInput {
+    companyName: String
+    customFields: [CustomFieldValueInput!]
+    email: String
+    login: String
+    password: String
+    person: String
+    phone: PhoneInput
+    taxId: String
+    taxPrefix: TaxPrefix
+    type: CustomerType!
+}
+
+input OnlineTransactionAgreementsInput {
+    dataProcessing: Boolean!
+    payment: Boolean!
+}
+
+input OnlineTransactionInput {
+    agreements: OnlineTransactionAgreementsInput!
+    channel: String
+    code: String
+    payer: OnlineTransactionPayerInput
+    type: OnlinePaymentMethodType!
+}
+
+input OnlineTransactionPayerInput {
+    email: String!
+    name: String!
+}
+
+input PhoneInput {
+    countryPrefix: String!
+    number: String!
+}
+
+
+"An ISO 8601-encoded date"
+scalar Date
+
+"An ISO 8601-encoded datetime"
+scalar DateTime
+
+scalar HashID
+
+"A decimal number represents amount of money."
+scalar Money

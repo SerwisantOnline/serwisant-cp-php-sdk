@@ -1,0 +1,27 @@
+<div class="bg-light p-5 rounded mt-3">
+    <h1>{{ t(_self, 'title') }}</h1>
+    <p class="lead">{{ t(_self, 'login_description') }}</p>
+
+    {% if createSessionError is defined %}
+        <h1>{{ t(_self, 'errors', createSessionError) }}</h1>
+    {% endif %}
+
+    <form method="post" action="{{ path('create_session') }}">
+        <div class="row">
+            <div class="col-4">
+                <input class="form-control form-control-lg" type="text" placeholder="{{ t(_self, 'login') }}"
+                       aria-label=".form-control-lg example" name="session_credentials[login]">
+                <br>
+                <input class="form-control form-control-lg" type="password" placeholder="{{ t(_self, 'password') }}"
+                       aria-label=".form-control-lg example" name="session_credentials[password]">
+                <br>
+                <button type="submit" class="btn btn-primary mb-3">{{ t(_self, 'submit') }}</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="bg-light p-5 rounded mt-3">
+    <p class="lead">{{ t(_self, 'signup_description') }}</p>
+    <a href="{{ path('new_signup') }}" class="btn btn-primary mb-3">{{ t(_self, 'signup') }}</a>
+</div>

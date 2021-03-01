@@ -1,0 +1,31 @@
+{
+  "name": "serwisant/serwisant-cp",
+  "description": "Customer Panel SDK for https://serwisant.online service",
+  "version": "1.0.0",
+  "type": "library",
+  "homepage": "https://github.com/SerwisantOnline/serwisant-cp-php-sdk",
+  "license": "Apache-2.0",
+  "require": {
+    "php": ">=7.2",
+    "ext-json": "*",
+    "composer/package-versions-deprecated": "*",
+    "serwisant/serwisant-api": "3.1.*",
+    "silex/silex": "^2.3",
+    "symfony/twig-bridge": "^3.4",
+    "symfony/yaml": "^3.4",
+    "twig/twig": "^2.12",
+    "noodlehaus/config": "^2.0",
+    "adbario/php-dot-notation": "^2.2"
+  },
+  "authors": [
+    {
+      "name": "Arkadiusz Kuryłowicz",
+      "email": "sms@kurylowicz.info"
+    }
+  ],
+  "autoload": {
+    "psr-0": {
+      "Serwisant\\SerwisantCp": "src"
+    }
+  }
+}

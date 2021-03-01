@@ -1,0 +1,19 @@
+query {
+    customerCustomFields: customerCustomFields {
+        __typename
+        ID
+        name
+        description
+        selectOptions
+        required
+    }
+    customerAgreements: customerAgreements(filter: {types: [RULES, REFUND_POLICY, DATA_PROCESSING]}) {
+        __typename
+        ID
+        title
+        content
+        visiblePersonal
+        visibleBusiness
+
+    }
+}

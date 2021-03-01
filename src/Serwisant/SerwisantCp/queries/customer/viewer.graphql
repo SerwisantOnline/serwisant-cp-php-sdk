@@ -1,0 +1,9 @@
+query {
+    viewer {
+        __typename
+        customer {
+            __typename
+            displayName
+        }
+    }
+}
