@@ -56,17 +56,42 @@ class Action
   {
     $inner_vars = [
       'pageTitle' => '',
+      'locale' => $this->app['locale'],
+      'locale_ISO' => explode('_', $this->app['locale'])[0]
     ];
+
     if ($require_user) {
-      $inner_vars['me'] = $this->api()->customerQuery()->viewer();
+      $inner_vars['me'] = $this->apiCustomer()->customerQuery()->viewer();
     }
+
     $inner_vars['innerHTML'] = $this->twig->render($template, $vars);
+
     return $this->twig->render('layout.html.twig', array_merge($inner_vars, $vars));
   }
 
-  protected function urlTo($binding)
+  protected function redirectTo($binding, $flash_tr = null)
   {
-    return $this->app['url_generator']->generate($binding);
+    if ($flash_tr) {
+      $this->flashMessage($this->t($flash_tr));
+    }
+    $url = $this->app['url_generator']->generate($binding);
+    return $this->app->redirect($url);
+  }
+
+  protected function flashMessage($txt)
+  {
+    $this->app['flash']->addMessage($txt);
+  }
+
+  protected function flashError($txt)
+  {
+    $this->app['flash']->addError($txt);
+  }
+
+  protected function t(...$keys)
+  {
+    $args = array_merge([$this->app['locale']], $keys);
+    return call_user_func_array([$this->translator, 't'], $args);
   }
 
   protected function apiCustomer()

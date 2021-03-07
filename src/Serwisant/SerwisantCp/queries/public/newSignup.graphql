@@ -4,6 +4,7 @@ query {
         ID
         name
         description
+        type
         selectOptions
         required
     }

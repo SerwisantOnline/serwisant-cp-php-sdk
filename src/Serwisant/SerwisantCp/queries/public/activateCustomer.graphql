@@ -1,0 +1,11 @@
+mutation ActivateCustomer($activationToken: String!) {
+    activateCustomer(activationToken: $activationToken) {
+        __typename
+        errors {
+            __typename
+            argument
+            code
+            message
+        }
+    }
+}

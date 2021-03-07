@@ -11,6 +11,11 @@ class Translator
   private $translations = [];
   private $default_locale;
 
+  /**
+   * Translator constructor.
+   * @param array $translations_yaml_files
+   * @param string $default_locale
+   */
   public function __construct(array $translations_yaml_files, $default_locale = 'en_US')
   {
     foreach ($translations_yaml_files as $file) {
@@ -19,6 +24,11 @@ class Translator
     $this->default_locale = $default_locale;
   }
 
+  /**
+   * @param $code
+   * @return string
+   * @throws TranslatorException
+   */
   public function codeToCurrencySymbol($code)
   {
     foreach (self::CURRENCIES as $currency) {
@@ -26,9 +36,14 @@ class Translator
         return $currency['symbol'];
       }
     }
-    throw new Exception("Currency code {$code} not supported");
+    throw new TranslatorException("Currency code {$code} not supported");
   }
 
+  /**
+   * @param null $locale
+   * @return string
+   * @throws TranslatorException
+   */
   public function localeToCurrencySymbol($locale = null)
   {
     if (!$locale) {
@@ -39,10 +54,30 @@ class Translator
         return $currency['symbol'];
       }
     }
-    throw new Exception("Locale {$locale} not supported");
+    throw new TranslatorException("Locale {$locale} not supported");
   }
 
+  /**
+   * @param null $locale
+   * @param mixed ...$args
+   * @return string|string[]
+   */
   public function t($locale = null, ...$args)
+  {
+    try {
+      return $this->translate($locale, ...$args);
+    } catch (TranslatorException $ex) {
+      return $ex->getMessage();
+    }
+  }
+
+  /**
+   * @param null $locale
+   * @param mixed ...$args
+   * @return string|string[]
+   * @throws TranslatorException
+   */
+  public function translate($locale = null, ...$args)
   {
     if (!$locale) {
       $locale = $this->default_locale;
@@ -72,7 +107,7 @@ class Translator
     }
 
     if (trim($tr) === '') {
-      $tr = $key;
+      throw new TranslatorException("Missing translation {$key}");
     } elseif (count($replacements) > 0) {
       foreach ($replacements as $token => $value) {
         $token = '%{' . $token . '}';

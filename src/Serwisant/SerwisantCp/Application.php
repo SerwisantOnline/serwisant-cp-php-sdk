@@ -73,10 +73,9 @@ class Application
     $app = new Silex\Application(['env' => $this->env, 'debug' => ($this->env === 'development')]);
 
     $app['env'] = $this->env;
-    $app['locale'] = 'pl_PL';
-    $app['timezone'] = 'Europe/Warsaw';
     $app['gql_query_paths'] = $this->query_paths;
     $app['tr'] = new Translator($this->tr_files);
+    $app['flash'] = new Flash();
 
     $app->register(new Silex\Provider\TwigServiceProvider(), ['twig.path' => $this->view_paths]);
     $app->register(new Silex\Provider\RoutingServiceProvider());
@@ -84,19 +83,23 @@ class Application
     $app->extend(
       'twig',
       function ($twig) use ($app) {
-        return (new TwigExtensions($twig, $app))->call();
+        return (new TwigGenericExtensions($twig, $app))->call();
+      }
+    );
+    $app->extend(
+      'twig',
+      function ($twig) use ($app) {
+        return (new TwigFormExtensions($twig, $app))->call();
+      }
+    );
+    $app->extend(
+      'twig',
+      function ($twig) use ($app) {
+        return (new TwigSerwisantExtensions($twig, $app))->call();
       }
     );
 
-    $app->error(function (\Exception $e) use ($app) {
-      if ($this->is404exception($e)) {
-        return new HttpFoundation\Response($app['twig']->render('404.html.twig', []), 404);
-      } elseif ($this->is401exception($e)) {
-        return new HttpFoundation\RedirectResponse($app['url_generator']->generate('new_session'));
-      } else {
-        throw $e;
-      }
-    });
+    $app->error((new ApplicationExceptionHandlers())->call($app));
 
     $app->before(function (HttpFoundation\Request $request, Silex\Application $app) {
       if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
@@ -109,6 +112,9 @@ class Application
       $app['access_token_customer'] = $this->getCustomerAccessToken();
       $app['access_token_public'] = $this->getPublicAccessToken();
 
+      $app['locale'] = 'pl_PL';
+      $app['timezone'] = 'Europe/Warsaw';
+
       setlocale(LC_ALL, $app['locale']);
       date_default_timezone_set($app['timezone']);
     });
@@ -116,26 +122,5 @@ class Application
     $this->getRouter()->createRoutes($app);
 
     $app->run();
-  }
-
-  /**
-   * @param $e
-   * @return bool
-   */
-  private function is401exception($e)
-  {
-    return ($e instanceof SerwisantApi\ExceptionUserCredentialsRequired);
-  }
-
-  /**
-   * @param $e
-   * @return bool
-   */
-  private function is404exception($e)
-  {
-    return
-      ($e instanceof ExceptionNotFound) ||
-      ($e instanceof SerwisantApi\ExceptionNotFound) ||
-      ($e instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException);
   }
 }

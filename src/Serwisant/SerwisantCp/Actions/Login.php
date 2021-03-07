@@ -9,23 +9,30 @@ class Login extends Action
 {
   public function newSession()
   {
-    return $this->renderPage('login.html.twig', [], false);
+    $vars = [
+      'formParams' => $this->request->request,
+    ];
+    return $this->renderPage('login.html.twig', $vars, false);
   }
 
   public function createSession()
   {
     $session_credentials = $this->request->get('session_credentials');
     try {
-      $this->access_token->login($session_credentials['login'], $session_credentials['password']);
-      return $this->app->redirect($this->urlTo('dashboard'));
+      $this->access_token_customer->login($session_credentials['login'], $session_credentials['password']);
+      return $this->redirectTo('dashboard', 'flashes.login_successful');
     } catch (SerwisantApi\ExceptionUnauthorized $ex) {
-      return $this->renderPage('login.html.twig', ['createSessionError' => $ex->getHandle()], false);
+      $vars = [
+        'formParams' => $this->request->request,
+      ];
+      $this->flashError($this->t("flashes.login_error.{$ex->getHandle()}"));
+      return $this->renderPage('login.html.twig', $vars, false);
     }
   }
 
   public function destroySession()
   {
-    $this->access_token->logout();
-    return $this->app->redirect($this->urlTo('dashboard'));
+    $this->access_token_customer->logout();
+    return $this->redirectTo('dashboard', 'flashes.logout_successful');
   }
 }

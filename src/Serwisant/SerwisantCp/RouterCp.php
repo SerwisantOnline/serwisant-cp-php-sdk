@@ -14,23 +14,43 @@ class RouterCp implements Router
     })->bind('dashboard');
 
     $app->get('/login', function (Request $request) use ($app) {
-      return  (new Actions\Login($app, $request))->newSession();
+      return (new Actions\Login($app, $request))->newSession();
     })->bind('new_session');
 
     $app->post('/login', function (Request $request) use ($app) {
-      return  (new Actions\Login($app, $request))->createSession();
-    })->bind('create_session');
+      return (new Actions\Login($app, $request))->createSession();
+    });
 
     $app->get('/logout', function (Request $request) use ($app) {
-      return  (new Actions\Login($app, $request))->destroySession();
+      return (new Actions\Login($app, $request))->destroySession();
     })->bind('destroy_session');
 
     $app->get('/signup', function (Request $request) use ($app) {
-      return  (new Actions\Signup($app, $request))->newSignup();
+      return (new Actions\Signup($app, $request))->newSignup();
     })->bind('new_signup');
 
     $app->post('/signup', function (Request $request) use ($app) {
-      return  (new Actions\Signup($app, $request))->createSignup();
-    })->bind('create_signup');
+      return (new Actions\Signup($app, $request))->createSignup();
+    });
+
+    $app->get('/signup/{token}', function (Request $request, $token) use ($app) {
+      return (new Actions\Signup($app, $request))->signupConfirmation($token);
+    });
+
+    $app->get('/reset_password', function (Request $request) use ($app) {
+      return (new Actions\PasswordReset($app, $request))->newReset();
+    })->bind('new_password_reset');
+
+    $app->post('/reset_password', function (Request $request) use ($app) {
+      return (new Actions\PasswordReset($app, $request))->createReset();
+    });
+
+    $app->get('/set_password/{token}', function (Request $request, $token) use ($app) {
+      return (new Actions\PasswordReset($app, $request))->newPassword($token);
+    });
+
+    $app->post('/set_password', function (Request $request) use ($app) {
+      return (new Actions\PasswordReset($app, $request))->createPassword();
+    })->bind('set_password');
   }
 }

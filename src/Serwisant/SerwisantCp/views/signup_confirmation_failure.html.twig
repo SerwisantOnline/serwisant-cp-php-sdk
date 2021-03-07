@@ -1,0 +1,10 @@
+<div class="bg-light p-5 rounded mt-3">
+    <h1>{{ t(_self, 'title') }}</h1>
+    <p class="lead">{{ t(_self, 'description') }}</p>
+    <ul>
+        {% for error in errors %}
+            <li>{{ t(_self, 'errors', error.code) }}</li>
+        {% endfor %}
+    </ul>
+    <a href="{{ path('new_session') }}" class="btn btn-primary mb-3">{{ t(_self, 'button_caption') }}</a>
+</div>

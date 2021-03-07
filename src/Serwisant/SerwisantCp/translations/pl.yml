@@ -1,13 +1,31 @@
 pl_PL:
-  layout:
-    me_edit: Edytuj dane
-    me_logout: Wyloguj
   errors:
     blank: Nie podano wymaganej wartości
     too_short: Wartość podana w polu jest zbyt krótka
     invalid: Wartość podana w polu jest niepoprawna
     taken: Taka wartość istnieje już w bazie, wybierz inną
     required: Uzupełnienie lub zaznaczenie tego pola jest wymagane
+
+  flashes:
+    login_first: Zanim rozpoczniesz korzystanie z aplikacji powinieneś się zalogować.
+    signup_successful: |
+      Konto zostało zarejestrowane. Musisz je teraz potwierdzić za pomocą linka, który wysłaliśmy na adres email,
+      który podałeś/podałaś podczas rejestracji. Odczekaj minutę, a następnie sprawdź skrzynkę.
+      Jeśli nie nie widzisz w skrzynce maila z linkiem aktywacyjnym sprawdź w pierwszej kolejności skrzynki 'Spam', 'Niechciana poczta', etc.
+    signup_activated: Zarejestrowane konto zostało poprawnie aktywowane. Możesz się teraz zalogować.
+    login_error:
+      invalid_client: Administrator tego panel nie skonfigurował poprawnych danych dostępowych OAUTH_KEY i OAUTH_SECRET.
+      invalid_grant: Nie udało się zalogować. Sprawdź czy podałeś poprawny login i hasło. Jeśli nie pamiętasz hasła, skożystaj z opcji resetowania.
+    login_successful: Pomyślnie zalogowano
+    logout_successful: Pomyślnie wylogowano z panelu klienta
+    password_reset_sent: |
+      Wysłaliśmy na Twoją skrzynkę pocztową wiadomość z linkiem do resetowania hasła. Odczekaj minutę i sprawdź pocztę.
+      Jeśli nie nie widzisz w skrzynce maila z linkiem aktywacyjnym sprawdź w pierwszej kolejności skrzynki 'Spam', 'Niechciana poczta', etc.
+    password_set: Hasło zostało zmienione. Zaloguj się używając nowego hasła.
+
+  layout:
+    me_edit: Edytuj dane
+    me_logout: Wyloguj
   login:
     title: Zaloguj się!
     login_description: |
@@ -18,6 +36,49 @@ pl_PL:
     login: Nazwa użytkownika
     password: Hasło
     submit: Rozpocznij
+  signup:
+    title: Rejestracja nowego konta
+    description: Zacznij od rejestracji własnego kotnta. Wypełnij formularz.
+    type: Typ konta
+    customer_type:
+      personal: Osoba prywatna, konsument
+      business: Firma
+    person: Imię i nazwisko
+    company_name: Nazwa firmy
+    email: Adres email
+    login: Login do konta
+    password: Hasło
+    submit: Zarejestruj własne konto
+    cancel: Anuluj
+  signup_confirmation_failure:
+    title: Aktywacja konta nie powiodła się
+    description: 'Aktywacja wcześniej założonego konta nie powiodła się powodów wymienionych poniżej:'
     errors:
-      invalid_client: Administratory tego panel nie skonfigurował poprawnych danych dostępowych OAUTH_KEY i OAUTH_SECRET.
-      invalid_grant: Login lub hasło są niepoprawne
+      too_short: klucz aktywacyjny jest zbyt krótki
+      invalid: |
+        klucz aktywacyjny jest niepoprawny, nie próbuj przepisywać ręcznie klucza do paska adresu - klinij link, lub
+        skopiuj link do schowka i wklej go w pasku adresu
+      already_activated: konto jest już aktywne - aktywacja jest operacją jednorazową - możesz przejśc na stronę logiwania
+    button_caption: Przejdź na stronę logowania
+  password_reset:
+    title: Resetowanie hasła
+    description: |
+      To narzedzie umożliwia zresetowanie zapomnianego hasła. Najpierw podaj login lub email Twojego konta
+      w Panelu Klienta. Jeśli uda się je odnaleźć, wyślemy na adres email powiązany z Twoim kontem
+      link, który będzie umożliwiał ustawienie nowego hasła.
+    login_or_email: Login lub adres email
+    submit: Odzyskaj hasło
+    cancel: Anuluj
+    errors:
+      not_found: Nie znaleziono użytkownika pasującego do podanego loginu lub adresu email
+  password_set:
+    title: Resetowanie hasła
+    description: |
+      Podaj nowe hasło dla Twojego konta.
+    password: Hasło
+    password_confirmation: Powtórz hasło
+    cancel: Anuluj
+    submit: Zmień hasło
+    errors:
+      too_weak: Podane hasło jest zbyt proste. Użyj małych i dużych znaków, znaków specjalnych, cyfr.
+      not_found: Link resetowania hasła jest niepoprawny lub stracił ważność. Możesz naprawić ten problem poprzez ponowne wysłanie linku do resetowania hasła.

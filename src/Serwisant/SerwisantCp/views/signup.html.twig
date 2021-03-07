@@ -1,53 +1,47 @@
-<h1>{{ t(_self, 'title') }}</h1>
-<p class="lead">{{ t(_self, 'description') }}</p>
+<div class="bg-light p-5 rounded mt-3">
+    <h1>{{ t(_self, 'title') }}</h1>
+    <p class="lead">{{ t(_self, 'description') }}</p>
 
-<form method="post" action="{{ path('create_signup') }}">
-    <div class="mb-3">
-        <label for="customerType" class="form-label">{{ t(_self, 'type') }}</label>
-        <select class="form-select" name="customer[type]" id="customerType">
-            <option value="{{ constant('\\Serwisant\\SerwisantApi\\Types\\SchemaPublic\\CustomerType::PERSONAL') }}">{{ t(_self, 'type_personal') }}</option>
-            <option value="{{ constant('\\Serwisant\\SerwisantApi\\Types\\SchemaPublic\\CustomerType::BUSINESS') }}">{{ t(_self, 'type_busness') }}</option>
-        </select>
-    </div>
-
-    <div class="mb-3">
-        <label for="customerPerson" class="form-label">{{ t(_self, 'person') }}</label>
-        <input type="text" {{ errors|has_error('customer.person', 'form-control')|raw }} id="customerPerson"
-               name="customer[person]">
-    </div>
-
-    <div class="mb-3">
-        <label for="customerCompanyName" class="form-label">{{ t(_self, 'company_name') }}</label>
-        <input type="text" {{ errors|has_error('customer.companyName', 'form-control')|raw }} id="customerCompanyName"
-               name="customer[companyName]">
-    </div>
-
-    <div class="mb-3">
-        <label for="customerEmail" class="form-label">{{ t(_self, 'email') }}</label>
-        <input type="text" {{ errors|has_error('customer.email', 'form-control')|raw }} id="customerEmail"
-               name="customer[email]">
-    </div>
-
-    <div class="mb-3">
-        <label for="customerLogin" class="form-label">{{ t(_self, 'login') }}</label>
-        <input type="text" {{ errors|has_error('customer.login', 'form-control')|raw }} id="customerLogin"
-               name="customer[login]">
-    </div>
-
-    <div class="mb-3">
-        <label for="customerPassword" class="form-label">{{ t(_self, 'password') }}</label>
-        <input type="password" {{ errors|has_error('customer.password', 'form-control')|raw }} id="customerPassword"
-               name="customer[password]">
-    </div>
-
-    {% for agreement in agreements %}
-        <div class="mb-3 form-check">
-            <input type="checkbox" {{ errors|has_error('agreements.%i.accepted', 'form-check-input', loop.index0)|raw }}
-                   id="customerAgreement_{{ agreement.ID }}"
-                   name="agreements[][ID]" value="{{ agreement.ID }}">
-            <label class="form-check-label" for="customerAgreement_{{ agreement.ID }}">{{ agreement.title }}</label>
+    <form method="post" action="{{ path('new_signup') }}">
+        <div class="mb-3">
+            {% set customerTypeOptions = {'PERSONAL': t(_self, 'customer_type.personal'),'BUSINESS': t(_self, 'customer_type.business')} %}
+            {{ form_field({type: 'select', argument: 'customer.type', caption: t(_self, 'type'), options: customerTypeOptions}, form_params, errors) }}
         </div>
-    {% endfor %}
 
-    <button type="submit" class="btn btn-primary mb-3">{{ t(_self, 'submit') }}</button>
-</form>
+        <div class="mb-3">
+            {{ form_field({type: 'text', argument: 'customer.person', caption: t(_self, 'person')}, form_params, errors) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_field({type: 'text', argument: 'customer.companyName', caption: t(_self, 'company_name')}, form_params, errors) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_field({type: 'text', argument: 'customer.email', caption: t(_self, 'email')}, form_params, errors) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_field({type: 'text', argument: 'customer.login', caption: t(_self, 'login')}, form_params, errors) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_field({type: 'password', argument: 'customer.password', caption: t(_self, 'password')}, form_params, errors) }}
+        </div>
+
+        {% for customField in customFieldsDefinitions %}
+            <div class="mb-3">
+                {{ custom_form_field(customField, "customer.customFields.#{loop.index0}", form_params, errors) }}
+            </div>
+        {% endfor %}
+
+        {% for agreement in agreementsDefinitions %}
+            <div class="mb-3">
+                {{ form_field({type: 'hidden', argument: "agreements.#{loop.index0}.ID", value: agreement.ID}, form_params, errors) }}
+                {{ form_field({type: 'checkbox', argument: "agreements.#{loop.index0}.accepted", caption: agreement.title, value: 1}, form_params, errors) }}
+            </div>
+        {% endfor %}
+
+        <a href="{{ path('dashboard') }}" class="btn btn-secondary mb-3">{{ t(_self, 'cancel') }}</a>
+        <button type="submit" class="btn btn-primary mb-3">{{ t(_self, 'submit') }}</button>
+    </form>
+</div>

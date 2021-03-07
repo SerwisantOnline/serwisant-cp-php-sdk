@@ -2,20 +2,16 @@
     <h1>{{ t(_self, 'title') }}</h1>
     <p class="lead">{{ t(_self, 'login_description') }}</p>
 
-    {% if createSessionError is defined %}
-        <h1>{{ t(_self, 'errors', createSessionError) }}</h1>
-    {% endif %}
-
-    <form method="post" action="{{ path('create_session') }}">
+    <form method="post" action="{{ path('new_session') }}">
         <div class="row">
             <div class="col-4">
-                <input class="form-control form-control-lg" type="text" placeholder="{{ t(_self, 'login') }}"
-                       aria-label=".form-control-lg example" name="session_credentials[login]">
+                {{ form_field({type: 'text', argument: 'session_credentials.login', caption: t(_self, 'login')}, formParams, []) }}
                 <br>
-                <input class="form-control form-control-lg" type="password" placeholder="{{ t(_self, 'password') }}"
-                       aria-label=".form-control-lg example" name="session_credentials[password]">
+                {{ form_field({type: 'password', argument: 'session_credentials.password', caption: t(_self, 'password')}, formParams, []) }}
                 <br>
                 <button type="submit" class="btn btn-primary mb-3">{{ t(_self, 'submit') }}</button>
+                <br>
+                <a href="{{ path('new_password_reset') }}">Zapomniałem hasła.</a>
             </div>
         </div>
     </form>

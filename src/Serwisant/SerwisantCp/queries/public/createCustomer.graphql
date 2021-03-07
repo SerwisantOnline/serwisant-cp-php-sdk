@@ -6,10 +6,5 @@ mutation createCustomer($customer: CustomerInput!, $agreements: [CustomerAgreeme
             argument
             code
         }
-        customer {
-            __typename
-            timeZone
-            internetAccess
-        }
     }
 }

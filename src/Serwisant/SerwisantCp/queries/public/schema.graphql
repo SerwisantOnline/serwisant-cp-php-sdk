@@ -41,6 +41,10 @@ type Customer {
     timeZone: String!
 }
 
+type CustomerActivationResult {
+    errors: [Error!]
+}
+
 type CustomerAgreement {
     ID: HashID!
     content: String
@@ -54,7 +58,6 @@ type CustomerAgreement {
 }
 
 type CustomerCreationResult {
-    customer: Customer
     errors: [Error!]
 }
 
@@ -131,6 +134,14 @@ type OnlineTransaction {
     status: OnlineTransactionStatus!
 }
 
+type PasswordResetResult {
+    errors: [Error!]
+}
+
+type PasswordSetResult {
+    errors: [Error!]
+}
+
 type Phone {
     "Country prefix, eg. +48"
     countryPrefix: String
@@ -150,6 +161,17 @@ type PublicMutation {
         "Repair token, the same was used to find repair."
         token: String!
     ): AcceptOrRejectRepairResult
+    """
+
+    Once customer is created via `createCustomer` he gets an email with activation URL contains a token.
+    Token must be used against this mutation to activate an accoint and allo customer to log-in.
+    """
+    activateCustomer(activationToken: String!): CustomerActivationResult
+    """
+
+    Creates a customer account usable in `Customer` schema. Account is self-created account.
+    Don't use it for purposes other than customer Panel sign-up.
+    """
     createCustomer(addresses: [AddressInput!], agreements: [CustomerAgreementInput!], customer: CustomerInput!): CustomerCreationResult
     """
 
@@ -157,6 +179,14 @@ type PublicMutation {
     queued: in that case pool for result, may be asked to redirect user to other site to complete a payment.
     """
     pay(errorUrl: String!, onlineTransaction: OnlineTransactionInput!, successUrl: String!, token: String!): OnlinePaymentResult
+    """
+
+    Give a login or email to get an email with password reset link. Email will contain a reset token to use with `setPassword` mutation.
+    Token is valid for limited time.
+    """
+    resetPassword(loginOrEmail: String!, subject: PasswordResetSubject!): PasswordResetResult
+    "Use a token sent by `resetPassword` to set a new password."
+    setPassword(password: String!, passwordConfirmation: String!, resetToken: String!): PasswordSetResult
 }
 
 type PublicQuery {
@@ -414,6 +444,10 @@ enum OrderTimeStatus {
     OK
     "Approaching to timespan border"
     WARNING
+}
+
+enum PasswordResetSubject {
+    CUSTOMER
 }
 
 enum RepairOfferItemType {
