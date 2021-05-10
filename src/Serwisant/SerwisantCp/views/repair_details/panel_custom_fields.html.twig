@@ -1,0 +1,15 @@
+<div class="panel panel-default">
+  <div class="panel-heading"><span class="glyphicon glyphicon-info-sign icon-margin pull-right"></span>
+    {{ t(_self, 'title') }}
+  </div>
+  <table class="table table-bordered">
+    <tbody>
+    {% for field in repair.customFields %}
+      <tr>
+        <td class="column-definition">{{ field.field.name }}</td>
+        <td>{{ custom_form_field_value(field.value, field.field.type) | raw }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>

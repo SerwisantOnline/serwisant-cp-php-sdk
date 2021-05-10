@@ -1,0 +1,63 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    {{ t(_self, 'title') }}
+  </div>
+  <table class="table table-bordered">
+    <tr>
+      <th></th>
+      <th>{{ t(_self, 'net') }}</th>
+      <th>{{ t(_self, 'gross') }}</th>
+    </tr>
+    {% if repair.costs.proposedNet %}
+      <tr>
+        <td>{{ t(_self, 'accepted_costs') }}</td>
+        <td>{{ repair.costs.proposedNet | format_currency(currency) }} </td>
+        <td>{{ repair.costs.proposedGross | format_currency(currency) }} </td>
+      </tr>
+    {% endif %}
+    {% if repair.status.confirmed and repair.costs.estimatedNet %}
+      <tr>
+        <td>{{ t(_self, 'confirmed_costs') }}</td>
+        <td>{{ repair.costs.estimatedNet | format_currency(currency) }}</td>
+        <td>{{ repair.costs.estimatedGross | format_currency(currency) }}</td>
+      </tr>
+    {% else %}
+      <tr>
+        <td>{{ t(_self, 'confirmed_costs') }}</td>
+        <td>{{ t(_self, 'not_defined') }}</td>
+        <td>{{ t(_self, 'not_defined') }}</td>
+      </tr>
+    {% endif %}
+    {% if repair.status.finished and not repair.status.canceledOrRejected and repair.costs.finalNet %}
+      <tr>
+        <td>{{ t(_self, 'final_cost') }}</td>
+        <td>{{ repair.costs.finalNet | format_currency(currency) }}</td>
+        <td>{{ repair.costs.finalGross | format_currency(currency) }}</td>
+      </tr>
+    {% endif %}
+    <tr class="warning">
+      <td>{{ t(_self, 'advance_amount') }} </td>
+      <td colspan="2">
+        {% if repair.advanceAmount > 0 %}
+          {{ repair.advanceAmount | format_currency(currency) }}
+        {% else %}
+          {{ t(_self, 'none_taken') }}
+        {% endif %}
+    </tr>
+    {% if repair.status.finished %}
+      {% if repair.status.canceledOrRejected %}
+        <tr class="danger">
+          <td><strong>{{ t(_self, 'to_pay') }} </strong></td>
+          <td><strong>0</strong></td>
+          <td><strong>0</strong></td>
+        </tr>
+      {% else %}
+        <tr class="success">
+          <td><strong>{{ t(_self, 'to_pay') }} </strong></td>
+          <td></td>
+          <td><strong>{{ repair.costs.payment | format_currency(currency) }}</strong></td>
+        </tr>
+      {% endif %}
+    {% endif %}
+  </table>
+</div>

@@ -1,0 +1,10 @@
+query CustomerAgreements($filter: CustomerAgreementsFilter) {
+    customerAgreements(filter: $filter) {
+        __typename
+        ID
+        content
+        description
+        title
+        type
+    }
+}

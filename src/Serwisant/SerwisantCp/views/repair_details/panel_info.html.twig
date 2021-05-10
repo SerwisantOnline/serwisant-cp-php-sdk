@@ -1,0 +1,61 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <span class="glyphicon glyphicon-info-sign icon-margin pull-right"></span>
+    {{ t(_self, 'title') }}
+  </div>
+  <table class="table table-bordered">
+    <tbody>
+    <tr>
+      <td class="column-definition">{{ t(_self, 'number') }}</td>
+      <td>{{ repair.rma }}</td>
+    </tr>
+    <tr>
+      <td class="column-definition">Rodzaj</td>
+      <td>{{ repair.type.name }}</td>
+    </tr>
+    {% if repair.vendor %}
+      <tr>
+        <td class="column-definition">{{ t(_self, 'vendor') }}</td>
+        <td>{{ repair.vendor }}</td>
+      </tr>
+    {% endif %}
+    {% if repair.model %}
+      <tr>
+        <td class="column-definition">{{ t(_self, 'model') }}</td>
+        <td>{{ repair.model }}</td>
+      </tr>
+    {% endif %}
+    <tr>
+      <td class="column-definition">{{ t(_self, 'serial') }}</td>
+      <td>{{ repair.serial }}</td>
+    </tr>
+    {% if repair.warranty %}
+      <tr>
+        <td class="column-definition">{{ t(_self, 'warranty_repair') }}</td>
+        <td><i class="glyphicon glyphicon-check"></i></td>
+      </tr>
+      {% if repair.warrantyPurchaseDate %}
+        <tr>
+          <td class="column-definition">{{ t(_self, 'purchase_date') }}</td>
+          <td>{{ repair.warrantyPurchaseDate }}</td>
+        </tr>
+      {% endif %}
+      {% if repair.warrantyPurchaseDocument %}
+        <tr>
+          <td class="column-definition">{{ t(_self, 'purchase_doc') }}</td>
+          <td>{{ repair.warrantyPurchaseDocument }}</td>
+        </tr>
+      {% endif %}
+    {% else %}
+      <tr>
+        <td class="column-definition">{{ t(_self, 'warranty_repair') }}</td>
+        <td><i class="glyphicon glyphicon-unchecked"></i></td>
+      </tr>
+    {% endif %}
+    <tr>
+      <td class="column-definition">{{ t(_self, 'collection_type') }}</td>
+      <td>{{ t(_self, 'collections', repair.collectionType) }}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>

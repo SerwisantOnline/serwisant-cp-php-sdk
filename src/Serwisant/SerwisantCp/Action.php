@@ -39,8 +39,20 @@ class Action
    */
   protected $access_token_public;
 
+  /**
+   * @var SerwisantApi\Api
+   */
   protected $api_customer;
+
+  /**
+   * @var SerwisantApi\Api
+   */
   protected $api_public;
+
+  /**
+   * @var bool
+   */
+  protected $debug = false;
 
   public function __construct(Silex\Application $app, Request $request)
   {
@@ -50,21 +62,26 @@ class Action
     $this->translator = $app['tr'];
     $this->access_token_customer = $app['access_token_customer'];
     $this->access_token_public = $app['access_token_public'];
+    $this->debug = ($this->app['env'] == 'development');
   }
 
   protected function renderPage(string $template, array $vars = [], $require_user = true)
   {
+    if ($this->debug) {
+      error_log("Rendering {$template}");
+    }
+    $result = $this->apiPublic()->publicQuery()->newRequest()->setFile('layoutAction.graphql')->execute();
     $inner_vars = [
       'pageTitle' => '',
       'locale' => $this->app['locale'],
-      'locale_ISO' => explode('_', $this->app['locale'])[0]
+      'locale_ISO' => explode('_', $this->app['locale'])[0],
+      'agreements' => $result->fetch('customerAgreements'),
+      'subscriber' => $result->fetch('viewer')->subscriber,
     ];
-
     if ($require_user) {
       $inner_vars['me'] = $this->apiCustomer()->customerQuery()->viewer();
     }
-
-    $inner_vars['innerHTML'] = $this->twig->render($template, $vars);
+    $inner_vars['innerHTML'] = $this->twig->render($template, array_merge($inner_vars, $vars));
 
     return $this->twig->render('layout.html.twig', array_merge($inner_vars, $vars));
   }
@@ -74,8 +91,17 @@ class Action
     if ($flash_tr) {
       $this->flashMessage($this->t($flash_tr));
     }
-    $url = $this->app['url_generator']->generate($binding);
+    if (is_array($binding)) {
+      $url = $this->app['url_generator']->generate($binding[0], $binding[1]);
+    } else {
+      $url = $this->app['url_generator']->generate($binding);
+    }
     return $this->app->redirect($url);
+  }
+
+  protected function notFound()
+  {
+    throw new ExceptionNotFound;
   }
 
   protected function flashMessage($txt)

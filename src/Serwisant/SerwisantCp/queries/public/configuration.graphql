@@ -1,0 +1,12 @@
+query {
+  configuration {
+    showOrderProgressInfo
+    currency
+    caPanelToken
+    caPanelRepairs
+    caPanelTickets
+    caPanelCommunication
+    timeZone
+    __typename
+  }
+}

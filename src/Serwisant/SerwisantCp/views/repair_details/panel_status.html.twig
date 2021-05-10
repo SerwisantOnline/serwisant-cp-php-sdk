@@ -1,0 +1,60 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <span class="glyphicon glyphicon-time icon-margin pull-right"></span>
+    {{ t(_self, 'title') }}
+  </div>
+  <table class="table table-bordered">
+    <tr>
+      <td class="column-definition col-md-6">
+        {{ t(_self, 'status_name') }}
+      </td>
+      <td class="col-md-6">
+        {{ repair.status.displayName }}
+      </td>
+    </tr>
+    {% if config.showOrderProgressInfo %}
+      <tr>
+        <td class="column-definition">{{ t(_self, 'work_progress') }}</td>
+        <td>{{ repair_progress_bar(repair.status.progress) | raw }}</td>
+      </tr>
+    {% endif %}
+    <tr>
+      <td class="column-definition">{{ t(_self, 'created_at') }}</td>
+      <td>{{ repair.status.createdAt | format_datetime(repair.timeZone) }}</td>
+    </tr>
+    <tr>
+      <td class="column-definition">{{ t(_self, 'started_at') }}</td>
+      <td>
+        {% if repair.status.startedAt %}
+          {{ repair.status.startedAt }}
+        {% else %}
+          {{ t(_self, 'tbc_after_rcv_at_office') }}
+        {% endif %}
+      </td>
+    </tr>
+
+    {% if config.showOrderProgressInfo %}
+      <tr>
+        <td class="column-definition">{{ t(_self, 'finish_date_estimated') }} </td>
+        <td>
+          {% if repair.status.finishDateEstimated %}
+            {{ repair.status.finishDateEstimated }}
+          {% else %}
+            {{ t(_self, 'tbc_after_rcv_at_office') }}
+          {% endif %}
+        </td>
+      </tr>
+      {% if repair.status.startedAt %}
+        <tr>
+          <td class="column-definition">
+            {{ t(_self, 'days_worked') }}
+            <i class="glyphicon glyphicon-question-sign text-tooltip" title="{{ t(_self, 'days_worked_tooltip') }}"></i>
+          </td>
+          <td>
+            {{ repair_time_pending_badge(repair.status.daysFromStart, repair.status.timeStatus) | raw }}
+          </td>
+        </tr>
+      {% endif %}
+    {% endif %}
+  </table>
+</div>

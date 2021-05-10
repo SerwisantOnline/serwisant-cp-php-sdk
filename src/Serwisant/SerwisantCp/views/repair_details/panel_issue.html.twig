@@ -1,0 +1,35 @@
+<div class="panel panel-success">
+  <div class="panel-heading">
+    <span class="glyphicon glyphicon-wrench icon-margin pull-right"></span>
+    {{ t(_self, 'title') }}
+  </div>
+  <div class="panel-body">
+    <p><b>{{ t(_self, 'issue_description') }}</b></p>
+    <p>{{ repair.issue | nl2br }}</p>
+
+    {% if repair.status.diagnosed and repair.diagnosis %}
+      <p>
+        <b>{{ t(_self, 'diagnosis_desctiption') }}</b>
+      </p>
+      <p>{{ (repair.diagnosis.publicRemarks ?? '') | nl2br }}</p>
+    {% endif %}
+
+    {% if repair.summary %}
+      {% if repair.status.finished and repair.status.canceledOrRejected %}
+        <p>
+          <b>{{ t(_self, 'summary_canceled_or_rejected') }}</b>
+        </p>
+        <p>
+          {{ (repair.summary.publicRemarks ?? '') | nl2br }}
+        </p>
+      {% elseif repair.status.finished and repair.status.summedUp %}
+        <p>
+          <b>{{ t(_self, 'summary') }}</b>
+        </p>
+        <p>
+          {{ (repair.summary.publicRemarks ?? '') | nl2br }}
+        </p>
+      {% endif %}
+    {% endif %}
+  </div>
+</div>

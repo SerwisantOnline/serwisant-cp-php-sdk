@@ -4,6 +4,8 @@ namespace Serwisant\SerwisantCp;
 
 use Twig\Environment;
 use Twig\TwigFunction;
+use Serwisant\SerwisantApi\Types\SchemaPublic\CustomFieldType;
+use Serwisant\SerwisantApi\Types\SchemaPublic\OrderTimeStatus;
 
 class TwigSerwisantExtensions extends TwigExtensions
 {
@@ -15,7 +17,7 @@ class TwigSerwisantExtensions extends TwigExtensions
       } else {
         $css_class = 'progress-bar-info';
       }
-      $title = $this->t(['generic.progressed_about', ['percent' => $percent]]);
+      $title = $this->t(['twig_extensions.progressed_about', ['percent' => $percent]]);
       return "
 <div class='progress text-tooltip' data-percent='{$percent}' title='{$title}'>
 <div class='progress-bar {$css_class}' role='progressbar' style='width: {$percent}%'>
@@ -26,9 +28,9 @@ class TwigSerwisantExtensions extends TwigExtensions
 
     $this->twig->addFunction(new TwigFunction('custom_form_field_value', function (Environment $env, $field_value, $field_type) {
       switch ($field_type) {
-        case SchemaPublic\CustomFieldType::PASSWORD:
+        case CustomFieldType::PASSWORD:
           return '****************';
-        case SchemaPublic\CustomFieldType::CHECKBOX:
+        case CustomFieldType::CHECKBOX:
           if ($field_value === '0') {
             return '<i class="glyphicon glyphicon-unchecked"></i>';
           } else {
@@ -41,10 +43,10 @@ class TwigSerwisantExtensions extends TwigExtensions
 
     $this->twig->addFunction(new TwigFunction('repair_time_pending_badge', function ($days_from_start, $time_status) {
       switch ($time_status) {
-        case SchemaPublic\OrderTimeStatus::WARNING:
+        case OrderTimeStatus::WARNING:
           $class = 'label label-warning';
           break;
-        case SchemaPublic\OrderTimeStatus::DELAYED:
+        case OrderTimeStatus::DELAYED:
           $class = 'label label-danger';
           break;
         default:

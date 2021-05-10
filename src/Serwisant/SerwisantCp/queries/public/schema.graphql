@@ -11,7 +11,6 @@ type AcceptOrRejectRepairResult {
 }
 
 type Address {
-    ID: HashID!
     building: String!
     city: String!
     countryIso: String!
@@ -33,12 +32,6 @@ type CustomField {
 type CustomFieldValue {
     field: CustomField!
     value: String
-}
-
-type Customer {
-    internetAccess: Boolean!
-    "Time zone of customer, all times wisible for customer should be represented in this time zone"
-    timeZone: String!
 }
 
 type CustomerActivationResult {
@@ -69,10 +62,10 @@ type CustomerPanelConfig {
     "Service currency, all API prices and other money values are in this currency"
     currency: Currency!
     showOrderProgressInfo: Boolean!
+    timeZone: String!
 }
 
 type Dictionary {
-    ID: HashID!
     name: String!
     type: DictionaryType!
 }
@@ -216,7 +209,6 @@ type Repair {
     costs: RepairCosts!
     "Will return a list of values for custom fields"
     customFields: [CustomFieldValue!]!
-    customer: Customer!
     deliveryType: RepairTransportType!
     diagnosis: RepairDiagnosis
     displayName: String!
@@ -234,6 +226,7 @@ type Repair {
     serviceSupplier: ServiceSupplier!
     status: RepairStatus!
     summary: RepairSummary
+    timeZone: String!
     type: Dictionary!
     vendor: String
     warranty: Boolean!
@@ -304,6 +297,7 @@ type RepairStatus {
     summedUp: Boolean!
     timeProgress: Float!
     timeStatus: OrderTimeStatus!
+    updatedAt: DateTime!
 }
 
 type RepairSummary {
@@ -534,12 +528,12 @@ enum TaxPrefix {
 }
 
 input AddressInput {
-    building: String!
-    city: String!
-    countryIso: CountryCode!
-    postalCode: String!
-    street: String!
-    type: AddressType!
+    building: String
+    city: String
+    countryIso: CountryCode
+    postalCode: String
+    street: String
+    type: AddressType
 }
 
 input CustomFieldValueInput {
@@ -567,7 +561,7 @@ input CustomerInput {
     phone: PhoneInput
     taxId: String
     taxPrefix: TaxPrefix
-    type: CustomerType!
+    type: CustomerType
 }
 
 input OnlineTransactionAgreementsInput {

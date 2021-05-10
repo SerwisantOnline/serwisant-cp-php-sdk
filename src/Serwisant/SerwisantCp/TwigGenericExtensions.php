@@ -23,7 +23,7 @@ class TwigGenericExtensions extends TwigExtensions
     }));
 
     $this->twig->addFilter(new TwigFilter('format_datetime', function ($date_ISO8601, $tz = null) {
-      $date = \DateTime::createFromFormat(\DateTime::ISO8601, $date_ISO8601);
+      $date = \DateTime::createFromFormat('Y-m-d\TH:i:sO', $date_ISO8601);
       if (!$tz) {
         $tz = $this->app['timezone'];
       }

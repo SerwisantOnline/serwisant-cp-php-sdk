@@ -1,0 +1,10 @@
+<h3>{{ t(_self, 'payment') }}</h3>
+
+{% include 'online_payment/panel_payment_details.html.twig' %}
+
+{% if payment.amountToPay > 0 and payment.status == 'WAITING_FOR_PAYMENT' %}
+    <h3>{{ t(_self, 'method') }}</h3>
+    {% include 'online_payment/panel_payment_methods.html.twig' %}
+{% endif %}
+
+{% include('online_payment/panel_js.html.twig') %}

@@ -1,0 +1,84 @@
+query($token: String!) {
+  payment: paymentByToken(token: $token) {
+    __typename
+    ID
+    amount
+    amountToPay
+    currency
+    description
+    status
+    number
+    items {
+      __typename
+      amount
+      description
+      secretToken {
+        __typename
+        subjectType
+        token
+      }
+    }
+    serviceSupplier {
+      displayName
+      address {
+        street
+        building
+        city
+        postalCode
+        countryIso
+        __typename
+      }
+      phone {
+        formatted
+        __typename
+      }
+      email
+      avatar {
+        url
+        __typename
+      }
+      __typename
+    }
+  }
+  paymentMethods: paymentMethods {
+    __typename
+    type
+    currency
+    channels {
+      __typename
+      ID
+      name
+      logo {
+        __typename
+        url
+        image
+        contentType
+      }
+    }
+  }
+  viewer: viewer {
+    __typename
+    subscriber {
+      __typename
+      companyName
+      displayName
+      businessActivity
+      email
+      taxId
+      taxPrefix
+      address {
+        street
+        building
+        city
+        postalCode
+        countryIso
+        __typename
+      }
+    }
+  }
+  customerAgreements: customerAgreements(filter: {types: [RULES, REFUND_POLICY, DATA_PROCESSING]}) {
+    __typename
+    description
+    content
+  }
+}

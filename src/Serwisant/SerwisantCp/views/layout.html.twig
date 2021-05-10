@@ -17,17 +17,7 @@
           integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw=="
           crossorigin="anonymous"/>
 
-    <style>
-        .datepicker td, .datepicker th {
-            width: 2.5rem;
-            height: 2.5rem;
-            font-size: 0.85rem;
-        }
-
-        .datepicker-dropdown {
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-        }
-    </style>
+    <link rel="stylesheet" href="{{ path('assets', {file: 'layout', type: 'css'}) }}"/>
 </head>
 <body>
 
@@ -73,24 +63,66 @@
 {% endif %}
 
 {% if app.flash.anyErrors() %}
-    <div class="alert alert-danger p-5 rounded mt-3 text-center" role="alert">
-        {% for alert in app.flash.getErrors() %}
-            <p>{{ alert }}</p>
-        {% endfor %}
+    <div class="container">
+        <div class="alert alert-danger p-5 rounded mt-3 text-center" role="alert">
+            {% for alert in app.flash.getErrors() %}
+                <p>{{ alert }}</p>
+            {% endfor %}
+        </div>
     </div>
 {% endif %}
 
 {% if app.flash.anyMessages() %}
-    <div class="alert alert-success p-5 rounded mt-3 text-center" role="alert">
-        {% for alert in app.flash.getMessages() %}
-            <p>{{ alert }}</p>
-        {% endfor %}
+    <div class="container">
+        <div class="alert alert-success p-5 rounded mt-3 text-center" role="alert">
+            {% for alert in app.flash.getMessages() %}
+                <p>{{ alert }}</p>
+            {% endfor %}
+        </div>
     </div>
 {% endif %}
 
 <main class="container">
     {{ innerHTML | raw }}
 </main>
+
+<footer>
+    <div class="container">
+        <hr>
+        <p class="pull-left">
+            <small>
+                {{ subscriber.displayName }}
+                {% if subscriber.address %}
+                    <br>
+                    {{ subscriber.address.street }} {{ subscriber.address.building }}, {{ subscriber.address.postalCode }} {{ subscriber.address.city }}
+                {% endif %}
+                {% if subscriber.taxId %}
+                    <br>
+                    NIP {{ subscriber.taxId }}
+                {% endif %}
+            </small>
+        </p>
+        <ul class="list-unstyled pull-right text-right">
+            {% for agreement in agreements %}
+                <li>
+                    <small>
+                        <a href="{{ path('agreement', {id: agreement.ID}) }}"
+                           data-title="{{ agreement.description }}">{{ agreement.description }}</a>
+                    </small>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</footer>
+
+<div class="alert text-center cookiealert" role="alert">
+    <h6>
+        {{ t(_self, 'cookie_info_html') }}
+        <button type="button" class="btn btn-success btn-sm acceptcookies">
+            {{ t(_self, 'cookie_accept') }}
+        </button>
+    </h6>
+</div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
@@ -108,15 +140,12 @@
         integrity="sha512-ScqJL8X5IqP89pKmQnXULodix6OkrTtcWiTdJxPGPGdrncyJkI7KOwNRPqzZ6lWnTk/u5xboSjEeYQgeyOHyhQ=="
         crossorigin="anonymous"></script>
 
+<script src="https://cdn.jsdelivr.net/gh/Wruczek/Bootstrap-Cookie-Alert@gh-pages/cookiealert.js"></script>
+
 <script>
-  $(document).ready(function () {
-    $('.datepicker').datepicker({
-      clearBtn: true,
-      format: "dd-mm-yyyy",
-      language: '{{ locale_ISO|lower }}'
-    });
-  });
+  var application_js_options = {}
 </script>
+<script src="{{ path('assets', {file: 'layout', type: 'js'}) }}"></script>
 
 </body>
 </html>

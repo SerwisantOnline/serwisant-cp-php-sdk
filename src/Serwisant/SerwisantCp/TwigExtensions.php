@@ -20,7 +20,13 @@ class TwigExtensions
 
   protected function t(array $keys)
   {
-    return $this->translator->t($this->app['locale'], ...$keys);
+    $translated = $this->translator->t($this->app['locale'], ...$keys);
+    $last = $keys[count($keys) - 1];
+    if (!is_array($last) && strpos($last, '_html') !== false) {
+      return new \Twig\Markup($translated, 'UTF-8');
+    } else {
+      return twig_escape_filter($this->twig, $translated);
+    }
   }
 
   protected function t_with_fallback(array $keys, array $keys_fallback)

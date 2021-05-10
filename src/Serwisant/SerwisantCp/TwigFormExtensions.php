@@ -15,35 +15,26 @@ class TwigFormExtensions extends TwigExtensions
    */
   public function call()
   {
-    $this->twig->addFunction(new TwigFunction('form_field', function (Environment $env, array $options, ParameterBag $post_data, $errors) {
+    $this->twig->addFunction(new TwigFunction('form_field', function (array $options, ParameterBag $post_data, $errors) {
       $html = '';
       $html .= "<div class='form-floating'>";
-      $html .= $this->formField($env, $options, $post_data, $errors);
+      $html .= $this->formField($options, $post_data, $errors);
       $html .= "</div>";
       return new \Twig\Markup($html, 'UTF-8');
-    }, ['needs_environment' => true]));
+    }));
 
-    $this->twig->addFunction(new TwigFunction('custom_form_field', function (Environment $env, $field, $argument, ParameterBag $post_data, $errors) {
+    $this->twig->addFunction(new TwigFunction('custom_form_field', function ($field, $argument, ParameterBag $post_data, $errors) {
       $html = '';
       $html .= "<div class='form-floating'>";
-      $html .= $this->customFormField($env, $field, $argument, $post_data, $errors);
+      $html .= $this->customFormField($field, $argument, $post_data, $errors);
       $html .= "</div>";
       return new \Twig\Markup($html, 'UTF-8');
-    }, ['needs_environment' => true]));
+    }));
 
     return $this->twig;
   }
 
-  /**
-   * @param Environment $env
-   * @param array $options [!argument !type id name value caption options tr_errors capture_argument_errors]
-   * @param ParameterBag $post_data
-   * @param $errors
-   * @return string
-   * @throws \Twig\Error\Error
-   * @throws \Twig\Error\RuntimeError
-   */
-  private function formField(Environment $env, array $options, ParameterBag $post_data, $errors)
+  private function formField(array $options, ParameterBag $post_data, $errors)
   {
     $options = new Adbar\Dot($options);
     $post_data = new Adbar\Dot($post_data->all());
@@ -60,7 +51,7 @@ class TwigFormExtensions extends TwigExtensions
 
     $id = $options->get('id', uniqid($argument));
     $name = $options->get('name', "{$name_container}{$name_arr}");
-    $value = $options->get('value', twig_escape_filter($env, $post_data->get($argument)));
+    $value = $options->get('value', twig_escape_filter($this->twig, $post_data->get($argument)));
 
     $tr_errors = $options->get('tr_errors');
     $capture_argument_errors = $options->get('capture_argument_errors', []);
@@ -146,17 +137,7 @@ class TwigFormExtensions extends TwigExtensions
     return $html;
   }
 
-  /**
-   * @param Environment $env
-   * @param $field
-   * @param $argument
-   * @param ParameterBag $post_data
-   * @param $errors
-   * @return string
-   * @throws \Twig\Error\Error
-   * @throws \Twig\Error\RuntimeError
-   */
-  private function customFormField(Environment $env, $field, $argument, ParameterBag $post_data, $errors)
+  private function customFormField($field, $argument, ParameterBag $post_data, $errors)
   {
     $html_prepend = '';
     $html_append = '';
@@ -170,17 +151,17 @@ class TwigFormExtensions extends TwigExtensions
       case SchemaPublic\CustomFieldType::CHECKBOX:
         $options['type'] = 'checkbox';
         $options['value'] = 1;
-        $form_field = $this->formField($env, $options, $post_data, $errors);
+        $form_field = $this->formField($options, $post_data, $errors);
         break;
 
       case SchemaPublic\CustomFieldType::TEXT:
         $options['type'] = 'text';
-        $form_field = $this->formField($env, $options, $post_data, $errors);
+        $form_field = $this->formField($options, $post_data, $errors);
         break;
 
       case SchemaPublic\CustomFieldType::TEXTAREA:
         $options['type'] = 'textarea';
-        $form_field = $this->formField($env, $options, $post_data, $errors);
+        $form_field = $this->formField($options, $post_data, $errors);
         break;
 
       case SchemaPublic\CustomFieldType::SELECT:
@@ -190,12 +171,12 @@ class TwigFormExtensions extends TwigExtensions
         }
         $options['type'] = 'select';
         $options['options'] = $select_options;
-        $form_field = $this->formField($env, $options, $post_data, $errors);
+        $form_field = $this->formField($options, $post_data, $errors);
         break;
 
       case SchemaPublic\CustomFieldType::PASSWORD:
         $options['type'] = 'password';
-        $form_field = $this->formField($env, $options, $post_data, $errors);
+        $form_field = $this->formField($options, $post_data, $errors);
         break;
 
       case SchemaPublic\CustomFieldType::DATE:
@@ -203,7 +184,7 @@ class TwigFormExtensions extends TwigExtensions
         $options['caption'] = null;
 
         $html_prepend .= "<div class='datepicker date form-floating'>";
-        $form_field = $this->formField($env, $options, $post_data, $errors);
+        $form_field = $this->formField($options, $post_data, $errors);
         $html_append .= "<div class='input-group-append'</div>";
         $html_append .= "</div>";
         $html_append .= "<label>{$field->name}</label>";
@@ -220,7 +201,7 @@ class TwigFormExtensions extends TwigExtensions
     ];
 
     $html = '';
-    $html .= (string)$this->formField($env, $options_hidden, $post_data, $errors);
+    $html .= (string)$this->formField($options_hidden, $post_data, $errors);
     $html .= $html_prepend;
     $html .= (string)$form_field;
     $html .= $html_append;

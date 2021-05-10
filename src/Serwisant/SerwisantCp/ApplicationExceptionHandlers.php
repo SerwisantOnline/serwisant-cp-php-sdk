@@ -17,7 +17,7 @@ class ApplicationExceptionHandlers
         $app['flash']->addMessage($app['tr']->t($app['locale'], 'flashes.login_first'));
         return new HttpFoundation\RedirectResponse($app['url_generator']->generate('new_session'));
       } elseif ($this->isApiOauthException($e)) {
-        return new HttpFoundation\Response("OAUTH ERROR: {$e->getMessage()}", 500);
+        return new HttpFoundation\RedirectResponse($app['url_generator']->generate('destroy_session'));
       } else {
         throw $e;
       }

@@ -1,0 +1,29 @@
+<div class="panel panel-default">
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-md-6">
+        <h4>{{ t(_self, 'title') }}</h4>
+        <address>
+          <strong>{{ repair.serviceSupplier.displayName }}</strong></br>
+          {% if repair.serviceSupplier.address %}
+            {{ repair.serviceSupplier.address.street }} {{ repair.serviceSupplier.address.postalCode }} {{ repair.serviceSupplier.address.city }}
+            <br>
+          {% endif %}
+          {% if repair.serviceSupplier.phone %}
+            tel.:
+            +{{ repair.serviceSupplier.phone.countryPrefix }} {{ repair.serviceSupplier.phone.number }}
+            <br>
+          {% endif %}
+          {% if repair.serviceSupplier.email %}
+            <a href="mailto:{{ repair.serviceSupplier.email }}">{{ repair.serviceSupplier.email }}</a>
+          {% endif %}
+        </address>
+      </div>
+      <div class="col-md-6">
+        {% if repair.serviceSupplier.avatar %}
+          <img class="pull-right" src="{{ repair.serviceSupplier.avatar.url }}" alt="{{ repair.serviceSupplier.displayName }}">
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>

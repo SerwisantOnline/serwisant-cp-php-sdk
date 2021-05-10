@@ -21,6 +21,7 @@ class Application
     $this->env = $env;
     $this->key = $key;
     $this->secret = $secret;
+
     $this->base_dir = __DIR__;
 
     array_unshift($this->view_paths, $this->base_dir . '/views');
@@ -34,7 +35,7 @@ class Application
    */
   protected function getRouter()
   {
-    return new RouterCp();
+    return new RouterSelfHosted();
   }
 
   protected function accessTokenUrl()
@@ -73,6 +74,7 @@ class Application
     $app = new Silex\Application(['env' => $this->env, 'debug' => ($this->env === 'development')]);
 
     $app['env'] = $this->env;
+    $app['base_dir'] = $this->base_dir;
     $app['gql_query_paths'] = $this->query_paths;
     $app['tr'] = new Translator($this->tr_files);
     $app['flash'] = new Flash();
@@ -108,10 +110,8 @@ class Application
       }
 
       $app['base_uri'] = $request->getScheme() . '://' . $request->getHost();
-
       $app['access_token_customer'] = $this->getCustomerAccessToken();
       $app['access_token_public'] = $this->getPublicAccessToken();
-
       $app['locale'] = 'pl_PL';
       $app['timezone'] = 'Europe/Warsaw';
 
@@ -120,7 +120,6 @@ class Application
     });
 
     $this->getRouter()->createRoutes($app);
-
     $app->run();
   }
 }

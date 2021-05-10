@@ -1,0 +1,18 @@
+{% if repair.files %}
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <span class="glyphicon glyphicon-file icon-margin pull-right"></span>
+      {{ t(_self, 'title') }}
+    </div>
+    <div class="panel-body">
+      {% for file in repair.files %}
+        {% if file.image %}
+          <a href="{{ file.url }}"><img src="{{ file.thumbUrl }}" class="img-thumbnail text-tooltip"></a>
+        {% else %}
+          <a href="{{ file.url }}">PNG</a>
+        {% endif %}
+
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}
