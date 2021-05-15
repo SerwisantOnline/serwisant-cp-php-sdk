@@ -39,3 +39,89 @@
     margin-left: 10px;
     vertical-align: baseline;
 }
+
+.undisplayed, .hidden {
+    display: none;
+}
+
+/* online payments */
+
+.loading {
+    background: url(/assets/loader.gif) center center no-repeat;
+}
+
+.code-modal-waiting {
+    background: url(/assets/iconfinder_phone.png) center center no-repeat;
+    margin: 0 auto 0 auto;
+}
+
+.code-modal-success {
+    background: url(/assets/iconfinder_phone_ok.png) center center no-repeat;
+    margin: 0 auto 0 auto;
+}
+
+.code-modal-failure {
+    background: url(/assets/iconfinder_phone_nope.png) center center no-repeat;
+    margin: 0 auto 0 auto;
+}
+
+.transfer-modal-waiting {
+    background: url(/assets/iconfinder_browser_clear.png) center center no-repeat;
+    margin: 0 auto 0 auto;
+}
+
+.transfer-modal-success {
+    background: url(/cassets/iconfinder_browser_website_okey.png) center center no-repeat;
+    margin: 0 auto 0 auto;
+}
+
+.transfer-modal-failure {
+    background: url(/assets/iconfinder_browser_website_nope.png) center center no-repeat;
+    margin: 0 auto 0 auto;
+}
+
+.code-modal-loading {
+    text-align: center;
+    margin: 0 auto 0 auto;
+    height: 128px;
+    width: 128px;
+}
+
+.code-step-txt {
+    margin-top: 5px;
+}
+
+@media (min-width: 992px) {
+    .code-step-txt {
+        height: 60px;
+    }
+}
+
+.transfer-channels {
+    margin-bottom: 5px;
+}
+
+.transfer-channel-tile {
+    cursor: pointer;
+    margin-top: 5px;
+    margin-right: 5px;
+}
+
+.transfer-channel-not-selected {
+    opacity: 0.8;
+}
+
+.transfer-channel-is-selected {
+    border-color: #5cb85c;
+    background-color: #ddd;
+    opacity: 1;
+}
+
+.transfer-modal-loading {
+    text-align: center;
+    margin: 0 auto 0 auto;
+    width: 256px;
+    height: 128px;
+}
+
+/* online payments */

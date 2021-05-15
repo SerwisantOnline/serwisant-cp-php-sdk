@@ -13,14 +13,6 @@ class RouterSelfHosted extends Router
     $app->get('/heartbeat', function () {
       return 'OK';
     });
-
-    $app->get('/cp_assets/{file}_{type}', function (Request $request, $file, $type) use ($app) {
-      return (new Actions\Asset($app, $request))->call($file, $type);
-    })
-      ->assert('file', '^[a-zA-Z]+$')
-      ->assert('type', '^[a-zA-Z]{2,3}$')
-      ->bind('assets');
-
     $this->createCaRoutes($app);
     $this->createCpRoutes($app);
   }
@@ -86,6 +78,7 @@ class RouterSelfHosted extends Router
           return (new Actions\PaymentByToken($app, $request))->call($token);
         default:
           $this->notFound();
+          return null;
       }
     })
       ->assert('token', '\w+')
@@ -94,9 +87,10 @@ class RouterSelfHosted extends Router
     $app->post('/token/{token}/payment/pay', function (Request $request, $token) use ($app) {
       switch ($this->tokenSubject($app, $request, $token)) {
         case  SecretTokenSubject::ONLINEPAYMENT:
-          return (new Actions\PaymentPayByToken($app, $request))->setToken($token)->call();
+          return (new Actions\PaymentPayByToken($app, $request))->call($token);
         default:
-          return $this->notFound();
+          $this->notFound();
+          return null;
       }
     })
       ->before($this->expectJson())
@@ -106,7 +100,7 @@ class RouterSelfHosted extends Router
     $app->get('/token/{token}/payment/pool', function (Request $request, $token) use ($app) {
       switch ($this->tokenSubject($app, $request, $token)) {
         case  SecretTokenSubject::ONLINEPAYMENT:
-          return (new Actions\PaymentPoolTransaction($app, $request))->call();
+          return (new Actions\PaymentPoolTransaction($app, $request))->call($token);
         default:
           return $this->notFound();
       }
@@ -115,7 +109,7 @@ class RouterSelfHosted extends Router
       ->assert('token', '\w+')
       ->bind('token_payment_pool');
 
-    $app->get('/token/{token}/repair/accept', function (Request $request, $token) use ($app) {
+    $app->post('/token/{token}/repair/accept', function (Request $request, $token) use ($app) {
       switch ($this->tokenSubject($app, $request, $token)) {
         case SecretTokenSubject::REPAIR:
           return (new Actions\RepairDecisionByToken($app, $request))->accept($token);
@@ -123,10 +117,11 @@ class RouterSelfHosted extends Router
           return $this->notFound();
       }
     })
+      ->before($this->expectJson())
       ->assert('token', '\w+')
       ->bind('token_repair_accept');
 
-    $app->get('/token/{token}/repair/accept/{offer_id}', function (Request $request, $token, $offer_id) use ($app) {
+    $app->post('/token/{token}/repair/accept/{offer_id}', function (Request $request, $token, $offer_id) use ($app) {
       switch ($this->tokenSubject($app, $request, $token)) {
         case SecretTokenSubject::REPAIR:
           return (new Actions\RepairDecisionByToken($app, $request))->acceptOffer($token, $offer_id);
@@ -134,11 +129,12 @@ class RouterSelfHosted extends Router
           return $this->notFound();
       }
     })
+      ->before($this->expectJson())
       ->assert('token', '\w+')
       ->assert('offer_id', '\w+')
       ->bind('token_repair_accept_offer');
 
-    $app->get('/token/{token}/repair/reject', function (Request $request, $token) use ($app) {
+    $app->post('/token/{token}/repair/reject', function (Request $request, $token) use ($app) {
       switch ($this->tokenSubject($app, $request, $token)) {
         case SecretTokenSubject::REPAIR:
           return (new Actions\RepairDecisionByToken($app, $request))->reject($token);
@@ -146,6 +142,7 @@ class RouterSelfHosted extends Router
           return $this->notFound();
       }
     })
+      ->before($this->expectJson())
       ->assert('token', '\w+')
       ->bind('token_repair_reject');
   }

@@ -1,0 +1,8 @@
+query($ID: HashID!) {
+  paymentTransaction(ID: $ID) {
+    __typename
+    ID
+    processorUrl
+    status
+  }
+}

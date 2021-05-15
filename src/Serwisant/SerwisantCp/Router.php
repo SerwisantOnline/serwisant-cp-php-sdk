@@ -9,6 +9,9 @@ abstract class Router
 {
   abstract public function createRoutes(Silex\Application $app);
 
+  /**
+   * @throws ExceptionNotFound
+   */
   protected function notFound()
   {
     throw new ExceptionNotFound;

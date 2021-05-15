@@ -9,6 +9,11 @@ class TwigGenericExtensions extends TwigExtensions
 {
   public function call()
   {
+
+    $this->twig->addFunction(new TwigFunction('import_css', function ($file) {
+      return $this->t($keys);
+    }));
+
     $this->twig->addFunction(new TwigFunction('t', function (...$keys) {
       return $this->t($keys);
     }));

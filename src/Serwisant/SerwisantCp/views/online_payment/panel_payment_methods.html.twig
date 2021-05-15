@@ -1,4 +1,4 @@
-<div class="accordion" id="accordionExample">
+<div class="accordion" id="accordion_payment_methods">
     {% for method in payment_methods %}
 
         <div class="accordion-item">
@@ -7,30 +7,32 @@
                         data-bs-target="#collapse-{{ method.type }}" aria-expanded="true"
                         aria-controls="collapse-{{ method.type }}">
                     {% if method.type == 'TRANSFER' %}
-                        <img src="{{ path('assets', {file: 'banktransfer', type: 'png'}) }}" width="100" height="50"
+                        <img src="/assets/bank_transfer.png" width="100" height="50"
                              alt="{{ t(_self, method.type) }}">
                     {% elseif method.type == 'BLIK' %}
-                        <img src="{{ path('assets', {file: 'blik', type: 'png'}) }}" width="100"
+                        <img src="/assets/blik.png" width="100"
                              alt="{{ t(_self, method.type) }}">
                     {% endif %}
                     {{ t(_self, method.type) | upper }}
                 </button>
             </h2>
             <div id="collapse-{{ method.type }}" class="accordion-collapse collapse"
-                 aria-labelledby="heading-{{ method.type }}" data-bs-parent="#accordionExample">
+                 aria-labelledby="heading-{{ method.type }}"
+                 data-bs-parent="#accordion_payment_methods"
+                 data-payment-method="{{ method.type }}">
                 <div class="accordion-body">
 
                     {% if method.type == 'TRANSFER' %}
-                        <div class="transfer-channels clearfix">
+                        <ul class="transfer-channels list-inline">
                             {% for channel in method.channels %}
-                                <div class="transfer-channel-tile pull-left"
+                                <li class="transfer-channel-tile list-inline-item"
                                      data-transfer-channel-id="{{ channel.ID }}">
                                     <img src="{{ channel.logo.url }}"
                                          class="img-thumbnail transfer-channel-not-selected"
                                          title="{{ channel.name }}" width="150">
-                                </div>
+                                </li>
                             {% endfor %}
-                        </div>
+                        </ul>
                     {% elseif method.type == 'BLIK' %}
                         <div class="row">
                             <div class="col-md-2">
@@ -43,7 +45,7 @@
                         <div class="row">
                             <div class="col-md-2">
                                 <div class="text-center visible-lg visible-md visible-sm">
-                                    <img src="{{ path('assets', {file: 'phone', type: 'png'}) }}">
+                                    <img src="/assets/phone.png">
                                 </div>
                             </div>
                             <div class="col-md-2">
@@ -61,7 +63,7 @@
 
     {% endfor %}
 </div>
-
+<br />
 <div class="checkbox">
     <label>
         <input type="checkbox" id="agreement_data_processing">
@@ -69,12 +71,13 @@
     </label>
 </div>
 
+<br />
 <div class="checkbox">
     <label>
         <input type="checkbox" id="agreement_payment">
-        {{ t(_self, 'agreement_payment') | raw }}
+        {{ t(_self, 'agreement_payment_html') }}
     </label>
 </div>
 
+<br />
 <input class="btn btn-lg btn-primary" type="button" id="pay-button" value="{{ t(_self, 'pay') }}">
-</div>

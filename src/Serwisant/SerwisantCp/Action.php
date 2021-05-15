@@ -86,15 +86,34 @@ class Action
     return $this->twig->render('layout.html.twig', array_merge($inner_vars, $vars));
   }
 
+  protected function generateUrl($to, $to_params = [], $data = [])
+  {
+    $url = $this->app['url_generator']->generate($to, $to_params);
+    if (count($data) > 0) {
+      $url .= '?' . http_build_query($data);
+    }
+    return $url;
+  }
+
+  protected function translateErrors(array $errors)
+  {
+    $errors_translated = [];
+    foreach ($errors as $error) {
+      $error->message = $this->t('errors', $error->argument, $error->code);
+      $errors_translated[] = $error;
+    }
+    return $errors_translated;
+  }
+
   protected function redirectTo($binding, $flash_tr = null)
   {
     if ($flash_tr) {
       $this->flashMessage($this->t($flash_tr));
     }
     if (is_array($binding)) {
-      $url = $this->app['url_generator']->generate($binding[0], $binding[1]);
+      $url = $this->generateUrl($binding[0], $binding[1]);
     } else {
-      $url = $this->app['url_generator']->generate($binding);
+      $url = $this->generateUrl($binding);
     }
     return $this->app->redirect($url);
   }

@@ -7,7 +7,7 @@ use Serwisant\SerwisantApi\Types\SchemaPublic;
 
 class PaymentPayByToken extends Action
 {
-  public function call()
+  public function call($secret_token)
   {
     $agreements = new SchemaPublic\OnlineTransactionAgreementsInput();
     $agreements->payment = ($this->request->get('agreement_payment') == '1');
@@ -26,11 +26,11 @@ class PaymentPayByToken extends Action
         $online_transaction->channel = $this->request->get('channel');
         break;
       default:
-        $this->notFound();
+        return $this->notFound();
         break;
     }
 
-    $payment = $this->callMutation($online_transaction);
+    $payment = $this->callMutation($online_transaction, $secret_token);
 
     if (!$payment->errors) {
       return $this->app->json($payment->onlineTransaction, 201);
@@ -39,14 +39,15 @@ class PaymentPayByToken extends Action
     }
   }
 
-  private function callMutation($online_transaction)
+  private function callMutation($online_transaction, $secret_token)
   {
-    $proto_host = $this->config->get('proto') . '://' . $this->config->get('host');
-    return $this->api->publicMutation()->pay(
-      $this->token,
+    $proto_host = $this->request->getScheme() . '://' . $this->request->getHttpHost();
+
+    return $this->apiPublic()->publicMutation()->pay(
+      $secret_token,
       $online_transaction,
-      $proto_host . $this->generateUrl('token', ['token' => $this->token], ['result' => SchemaPublic\OnlineTransactionStatus::POOL, 'id' => '%s']),
-      $proto_host . $this->generateUrl('token', ['token' => $this->token], ['result' => SchemaPublic\OnlineTransactionStatus::FAILED])
+      $proto_host . $this->generateUrl('token', ['token' => $secret_token], ['result' => SchemaPublic\OnlineTransactionStatus::POOL, 'id' => '%s']),
+      $proto_host . $this->generateUrl('token', ['token' => $secret_token], ['result' => SchemaPublic\OnlineTransactionStatus::FAILED])
     );
   }
 }

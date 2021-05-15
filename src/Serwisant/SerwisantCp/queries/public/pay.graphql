@@ -1,0 +1,17 @@
+mutation($token: String!, $onlineTransaction: OnlineTransactionInput!, $successUrl: String!, $errorUrl: String!) {
+  pay(token: $token, onlineTransaction: $onlineTransaction, successUrl: $successUrl, errorUrl: $errorUrl) {
+    __typename
+    errors {
+      __typename
+      argument
+      code
+      message
+    }
+    onlineTransaction {
+      __typename
+      ID
+      processorUrl
+      status
+    }
+  }
+}

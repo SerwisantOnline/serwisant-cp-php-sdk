@@ -6,162 +6,88 @@ Ten widok pozwala na akceptację jednej z przedstawionych ofert lub diagnozy.
 #}
 
 {% if repair.status.requireCustomerAccept %}
-    <div class="bg-light p-5 rounded mt-3">
-        {% if repair.offers %}
-
-            {% for offer in repair.offers %}
-                {% if (offer.accepted is null) or offer.accepted %}
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <div class="row">
+    {% if repair.offers %}
+        {% for offer in repair.offers %}
+            {% if (offer.accepted is null) or offer.accepted %}
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-10">
                                 <h3>{{ t(_self, 'offer') }} {{ offer.number }} </h3>
                             </div>
-                            <h4>{{ offer.title }}</h4>
-                        </div>
-                        <table class="table table-bordered">
-                            <thead>
-                            <tr>
-                                <th class="col-md-5">{{ t(_self, 'description') }}</th>
-                                <th>{{ t(_self, 'price_net') }} </th>
-                                <th>{{ t(_self, 'price_gross') }}</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for offerItem in offer.items %}
-                                <tr>
-                                    <td class="col-md-5">{{ offerItem.description | nl2br }}</td>
-                                    <td>{{ offerItem.priceNet | format_currency(currency) }}</td>
-                                    <td>{{ offerItem.priceGross | format_currency(currency) }}
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                            <tr>
-                                <td class="col-md-5">
-                                    {% if repair.status.requireCustomerAccept and (offer.accepted is null) %}
-                                        <a href="#" class="btn btn-success"
-                                           data-bs-toggle="modal"
-                                           data-bs-target="#order_confirm_{{ offer.ID }}">{{ t(_self, 'accept_offer') }}</a>
-
-                                        <div class="modal fade" id="order_confirm_{{ offer.ID }}"
-                                             data-bs-backdrop="static" data-bs-keyboard="false"
-                                             tabindex="-1" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title">{{ t(_self, 'confirmation') }}</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                                aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        {{ t(_self, 'accept_confirm_offer', {amount: (offer.priceGross | format_currency(currency)), offer_number: offer.number }) }}
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-primary click-and-get"
-                                                                data-url="{{ path('token_repair_accept_offer', {token: token, offer_id: offer.ID}) }}">{{ t(_self, 'confirm') }}</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    {% endif %}
-                                </td>
-                                <td><strong>{{ offer.priceNet | format_currency(currency) }}</strong></td>
-                                <td><strong>{{ offer.priceGross | format_currency(currency) }}</strong>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                {% endif %}
-            {% endfor %}
-
-            {% if repair.status.requireCustomerAccept %}
-                <div class="panel panel-danger">
-                    <div class="panel-body">
-                        <a href="#" class="btn btn-danger"
-                           data-bs-toggle="modal"
-                           data-bs-target="#order_reject_all">{{ t(_self, 'reject_all') }}</a>
-                    </div>
-                </div>
-
-                <div class="modal fade" id="order_reject_all" data-bs-backdrop="static" data-bs-keyboard="false"
-                     tabindex="-1" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">{{ t(_self, 'confirmation') }}</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                {{ t(_self, 'reject_confirm_html') }}
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button"
-                                        class="btn btn-primary click-and-get"
-                                        data-url="{{ path('token_repair_reject', {token: token}) }}">{{ t(_self, 'confirm') }}</button>
+                            <div class="col-md-2">
+                                {% if repair.status.requireCustomerAccept and (offer.accepted is null) %}
+                                    <a href="{{ path('token_repair_accept_offer', {token: token, offer_id: offer.ID}) }}"
+                                       class="btn btn-success" data-color="success"
+                                       data-confirm="{{ t(_self, 'accept_confirm_offer', {amount: (offer.priceGross | format_currency(currency)), offer_number: offer.number }) }}"
+                                       data-method="put"
+                                       rel="nofollow">{{ t(_self, 'accept_offer') }}</a>
+                                {% endif %}
                             </div>
                         </div>
+                        <h3><small>{{ offer.title }}</small></h3>
                     </div>
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th class="col-md-5">{{ t(_self, 'description') }}</th>
+                            <th>{{ t(_self, 'price_net') }} </th>
+                            <th>{{ t(_self, 'price_gross') }}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for offerItem in offer.items %}
+                            <tr>
+                                <td class="col-md-5">{{ offerItem.description | nl2br }}</td>
+                                <td>{{ offerItem.priceNet | format_currency(currency) }}</td>
+                                <td>{{ offerItem.priceGross | format_currency(currency) }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        <tr>
+                            <td class="col-md-5"></td>
+                            <td><strong>{{ offer.priceNet | format_currency(currency) }}</strong></td>
+                            <td class="danger"><strong>{{ offer.priceGross | format_currency(currency) }}</strong></td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             {% endif %}
-
-        {% elseif repair.status.diagnosed %}
-
-            <div class="panel {{ repair.status.requireCustomerAccept ? 'panel-danger' : 'panel-success' }}">
-                <div class="panel-heading">{{ t(_self, 'title') }}</div>
+        {% endfor %}
+        {% if repair.status.requireCustomerAccept %}
+            <div class="panel panel-danger">
                 <div class="panel-body">
+                    <a href="{{ path('token_repair_reject', {token: token}) }}" class="btn btn-danger"
+                       data-color="danger"
+                       data-confirm="{{ t(_self, 'reject_confirm_html') }}"
+                       data-method="put"
+                       rel="nofollow">{{ t(_self, 'reject_all') }}</a>
+                </div>
+            </div>
+        {% endif %}
+
+    {% elseif repair.status.diagnosed %}
+
+        <div class="panel {{ repair.status.requireCustomerAccept ? 'panel-danger' : 'panel-success' }}">
+            <div class="panel-heading">{{ t(_self, 'title') }}</div>
+            <div class="panel-body">
+                <p>
                     <b>{{ t(_self, 'price_estimated') }}</b>
                     {{ repair.costs.estimatedGross | format_currency(currency) }}
-                    <div class="btn-group">
-                        <a href="#" class="btn btn-danger"
-                           data-bs-toggle="modal"
-                           data-bs-target="#order_reject">{{ t(_self, 'reject') }}</a>
-                        <a href="#" class="btn btn-success"
-                           data-bs-toggle="modal"
-                           data-bs-target="#order_confirm">{{ t(_self, 'accept') }}</a>
-                    </div>
+                <div class="btn-group">
+                    <a href="{{ path('token_repair_reject', {token: token}) }}" class="btn btn-danger"
+                       data-color="danger"
+                       data-confirm="{{ t(_self, 'reject_confirm') }}"
+                       data-method="put"
+                       rel="nofollow">{{ t(_self, 'reject') }}</a>
+                    <a href="{{ path('token_repair_accept', {token: token}) }}" class="btn btn-success"
+                       data-color="success"
+                       data-confirm="{{ t(_self, 'accept_confirm', {amount: repair.costs.estimatedGross | format_currency(currency)}) }}"
+                       data-method="put"
+                       rel="nofollow">{{ t(_self, 'accept') }}</a>
                 </div>
             </div>
+        </div>
 
-            <div class="modal fade" id="order_reject" data-bs-backdrop="static" data-bs-keyboard="false"
-                 tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">{{ t(_self, 'confirmation') }}</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            {{ t(_self, 'reject_confirm_html') }}
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button"
-                                    class="btn btn-primary click-and-get"
-                                    data-url="{{ path('token_repair_reject', {token: token}) }}">{{ t(_self, 'confirm') }}</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="modal fade" id="order_confirm" data-bs-backdrop="static" data-bs-keyboard="false"
-                 tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">{{ t(_self, 'confirmation') }}</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            {{ t(_self, 'accept_confirm', {amount: repair.costs.estimatedGross | format_currency(currency)}) }}
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary click-and-get"
-                                    data-url="{{ path('token_repair_accept', {token: token}) }}">{{ t(_self, 'confirm') }}</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        {% endif %}
-    </div>
+    {% endif %}
 {% endif %}

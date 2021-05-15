@@ -5,6 +5,21 @@ pl_PL:
     invalid: Wartość podana w polu jest niepoprawna
     taken: Taka wartość istnieje już w bazie, wybierz inną
     required: Uzupełnienie lub zaznaczenie tego pola jest wymagane
+    onlineTransaction:
+      onlinePayment:
+        already_paid: Ta płatność jest już sfinalizowana, odśwież stronę aby sprawdzić stan
+      amountRequested:
+        greater_than: Kwota do zapłaty musi być wieksza od zera
+      code:
+        wrong_length: Kod BLIK nie jest prawidłowy. Prawidłowy kod powinien mieć 6 cyfr.
+      channel:
+        blank: Nie wybrano banku
+        invalid: Wybrany bank nie jest w tym momencie obsługiwany
+      agreements:
+        dataProcessing:
+          accepted: Zgoda na przetwarzanie danych osobowych musi zostać zaakceptowana
+        payment:
+          accepted: Regulamin płatności musi zostać zaakceptowany
   twig_extensions:
     progressed_about: "Wykonano w %{percent}%"
   flashes:
@@ -148,9 +163,8 @@ pl_PL:
       price_final: Do zapłaty
       reject: Nie akceptuję kosztów
       reject_all: Odrzuć wszystkie oferty
-      reject_confirm_html: >
-        Jeśli jesteś pewny, że nie chcesz kontynuować naprawy i potwierdzasz chęć odbioru naprawy kliknij "dalej".
-        Możesz także skontaktować się z nami, jeśli jesteś zainteresowany szczegółami wyceny.
+      reject_confirm_html: "Jeśli jesteś pewny, że nie chcesz kontynuować naprawy i potwierdzasz chęć odbioru naprawy kliknij 'dalej'.
+        Możesz także skontaktować się z nami, jeśli jesteś zainteresowany szczegółami wyceny."
       accept: Akceptuję koszty naprawy
       accept_offer: Akceptuję ofertę
       accept_confirm: >
@@ -171,8 +185,22 @@ pl_PL:
       confirmation: Potwierdzenie
       confirm: Potwierdzam
   online_payment_by_token:
-    payment: Płatność
     method: Wybierz metodę płatności
+    code_modal:
+      title:
+        sending: wysyłam dane do banku...
+        confirm: spójrz ponownie na telefon i potwierdź płatność
+        errors: pojawiły się pewne problemy, które możesz rozwiązać
+        failure: coś poszło nie tak, jesli anulowałeś transakcję możesz ją ponowić
+        success: dziękujemy, przekazaliśmy płatność do serwisu
+    transfer_modal:
+      title:
+        sending: wysyłam dane do banku...
+        errors: pojawiły się pewne problemy, które możesz rozwiązać
+        redirecting: za chwilę przekieruję do strony banku w celu finalizacji transakcji...
+        receiving: odbieram informacje z banku, to może zająć chwilę...
+        failure: coś poszło nie tak, jesli anulowałeś transakcję możesz ją ponowić
+        success: dziękujemy, przekazaliśmy płatność do serwisu
   online_payment:
     panel_payment_methods:
       BLIK: Kod BLIK z telefonu
@@ -187,25 +215,9 @@ pl_PL:
         zrealizowania płatności na rzecz %{name}, obejmującym imię, nazwisko i adres e-mail. Podanie danych
         jest dobrowolne, ale konieczne do dokonania płatności; przysługuje mi prawo dostępu do treści moich danych
         oraz ich poprawiania.
-      agreement_payment: |
+      agreement_payment_html: |
         Akceptuję regulamin płatności (<a href="https://tpay.com/user/assets/files_for_download/regulamin.pdf">regulamin</a>,
         <a href="https://tpay.com/user/assets/files_for_download/informacja-dla-konsumenta.pdf">informacje dla konsumenta</a>)
-    panel_js:
-      code_modal:
-        title:
-          sending: wysyłam dane do banku...
-          confirm: spójrz ponownie na telefon i potwierdź płatność
-          errors: pojawiły się pewne problemy, które możesz rozwiązać
-          failure: coś poszło nie tak, jesli anulowałeś transakcję możesz ją ponowić
-          success: dziękujemy, przekazaliśmy płatność do serwisu
-      transfer_modal:
-        title:
-          sending: wysyłam dane do banku...
-          errors: pojawiły się pewne problemy, które możesz rozwiązać
-          redirecting: za chwilę przekieruję do strony banku w celu finalizacji transakcji...
-          receiving: odbieram informacje z banku, to może zająć chwilę...
-          failure: coś poszło nie tak, jesli anulowałeś transakcję możesz ją ponowić
-          success: dziękujemy, przekazaliśmy płatność do serwisu
     panel_payment_details:
       items: Pozycje
       payment_receivier: Odbiorca

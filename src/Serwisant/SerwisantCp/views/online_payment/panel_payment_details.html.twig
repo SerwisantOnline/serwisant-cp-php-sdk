@@ -1,9 +1,9 @@
 <div class="panel panel-default">
-    <div class="panel-heading">
-        <h4 class="panel-title">{{ t(_self, 'title', {'number': payment.number}) }}</h4>
-    </div>
     <table class="table table-bordered">
         <tbody>
+        <tr>
+            <td colspan="2">{{ t(_self, 'title', {'number': payment.number}) }}</td>
+        </tr>
         <tr>
             <td class="column-definition text-nowrap">{{ t(_self, 'payment_receivier') }}</td>
             <td>
