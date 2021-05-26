@@ -235,7 +235,34 @@ Application.Ui.Popup.DataMethodAttach = function () {
   }
 };
 
+Application.Ui.FormErrorsToPopover = function () {
+  $.each($('.is-invalid'), function (i, input) {
+    var content = ($(input).attr("data-bs-content") || '').replace(/(?:\r\n|\r|\n)/g, '<br /><br />');
+    new bootstrap.Popover(document.getElementById($(input).attr('id')), {
+      trigger: 'hover',
+      delay: {"show": 100, "hide": 500},
+      placement: 'auto',
+      html: true,
+      content: content
+    })
+  });
+};
+
+$.fn.onEnterPress = function (fnc) {
+  return this.each(function () {
+    $(this).keypress(function (ev) {
+      console.log('press')
+      var keycode = (ev.keyCode ? ev.keyCode : ev.which);
+      if (parseInt(keycode) === 13) {
+        ev.preventDefault();
+        fnc.call(this, ev);
+      }
+    })
+  })
+}
+
 $(document).ready(function () {
   Application.Ui.Popup.DataMethodAttach();
   Application.Ui.DatePickerAttach();
+  Application.Ui.FormErrorsToPopover();
 });

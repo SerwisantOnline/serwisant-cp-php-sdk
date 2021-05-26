@@ -49,7 +49,7 @@ class TwigFormExtensions extends TwigExtensions
       return "[{$el}]";
     }, $arguments));
 
-    $id = $options->get('id', uniqid($argument));
+    $id = $options->get('id', "{$name_container}_" . join('_', $arguments));
     $name = $options->get('name', "{$name_container}{$name_arr}");
     $value = $options->get('value', twig_escape_filter($this->twig, $post_data->get($argument)));
 
@@ -66,10 +66,10 @@ class TwigFormExtensions extends TwigExtensions
       }
     }
     if (count($argument_errors) > 0) {
-      $title = implode(', ', $argument_errors);
+      $error_title = implode(', ', $argument_errors);
       $class_error = ' is-invalid';
     } else {
-      $title = '';
+      $error_title = '';
       $class_error = '';
     }
 
@@ -90,19 +90,28 @@ class TwigFormExtensions extends TwigExtensions
       case 'text':
       case 'password':
         $class = "{$options->get('class', 'form-control')}{$class_error}";
-        $html .= "<input type='{$options->get('type')}' id='{$id}' class='{$class}' name='{$name}' title='{$title}' value='{$value}' placeholder='{$caption}'>";
+        $html .= "<input type='{$options->get('type')}' id='{$id}' class='{$class}' name='{$name}' data-bs-content='{$error_title}' value='{$value}' placeholder='{$caption}' title='{$caption}'>";
+        $html .= $label;
+        break;
+
+      case 'date':
+        $class = "{$options->get('class', 'form-control')}{$class_error}";
+        $html .= "<div class='datepicker date form-floating'>";
+        $html .= "<input type='text' id='{$id}' class='{$class}' name='{$name}' data-bs-content='{$error_title}' value='{$value}' placeholder='{$caption}' title='{$caption}'>";
+        $html .= "<div class='input-group-append'</div>";
+        $html .= "</div>";
         $html .= $label;
         break;
 
       case 'textarea':
         $class = "{$options->get('class', 'form-control')}{$class_error}";
-        $html .= "<textarea id='{$id}' class='{$class}' name='{$name}' title='{$title}' rows='100'>{$value}</textarea>";
+        $html .= "<textarea id='{$id}' class='{$class}' name='{$name}' data-bs-content='{$error_title}' title='{$caption}' rows='100'>{$value}</textarea>";
         $html .= $label;
         break;
 
       case 'select':
         $class = "{$options->get('class', 'form-select')}{$class_error}";
-        $html .= "<select id='{$id}' class='{$class}' name='{$name}'>";
+        $html .= "<select id='{$id}' class='{$class}' name='{$name}' data-bs-content='{$error_title}' title='{$caption}'>";
         foreach ($options->get('options', []) as $v => $t) {
           if ($v == $value) {
             $selected = 'selected';
@@ -123,7 +132,7 @@ class TwigFormExtensions extends TwigExtensions
           $checked = "";
         }
         $html .= '<div class="form-check">';
-        $html .= "<input type='checkbox' {$checked} id={$id} class='{$class}' name='{$name}' value='{$value}'>";
+        $html .= "<input type='checkbox' {$checked} id={$id} class='{$class}' name='{$name}' value='{$value}' data-bs-content='{$error_title}' title='{$caption}'>";
         if ($caption) {
           $html .= "<label for='{$id}' class='form-check-label'>{$caption}</label>";
         }

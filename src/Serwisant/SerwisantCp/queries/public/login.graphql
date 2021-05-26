@@ -1,0 +1,7 @@
+query Login($loginCredential: String!) {
+    login(loginCredential: $loginCredential) {
+        __typename
+        login
+        unavailabilityReasons
+    }
+}

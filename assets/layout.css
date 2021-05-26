@@ -1,7 +1,29 @@
+:root {
+    --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+body {
+    font: 0.9rem var(--bs-font-sans-serif);
+}
+
+.undisplayed, .hidden {
+    display: none;
+}
+
+.navbar-logged-in {
+    margin-bottom: 140px;
+}
+
+.datepicker {
+    margin: 0;
+    padding: 0 0 15px;
+}
+
 .datepicker td, .datepicker th {
     width: 2.5rem;
     height: 2.5rem;
-    font-size: 0.85rem;
+    font-size: 0.7rem;
 }
 
 .datepicker-dropdown {
@@ -38,10 +60,6 @@
 .cookiealert .acceptcookies {
     margin-left: 10px;
     vertical-align: baseline;
-}
-
-.undisplayed, .hidden {
-    display: none;
 }
 
 /* online payments */

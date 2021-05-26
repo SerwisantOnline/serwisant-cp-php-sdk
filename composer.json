@@ -8,6 +8,7 @@
   "require": {
     "php": ">=7.2",
     "ext-json": "*",
+    "ext-openssl": "*",
     "composer/package-versions-deprecated": "*",
     "serwisant/serwisant-api": "3.1.*",
     "silex/silex": "^2.3",

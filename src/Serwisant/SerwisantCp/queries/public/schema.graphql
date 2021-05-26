@@ -83,6 +83,13 @@ type File {
     url(size: ImageSize = ORIGINAL): String
 }
 
+type LoginResult {
+    "Valid username"
+    login: String!
+    "Empty if credential can log in, otherwise list reasons prevent from log in"
+    unavailabilityReasons: [LoginUnavailabilityReason!]!
+}
+
 type OnlinePayment {
     ID: HashID!
     "Full transacion amount, sum of items"
@@ -183,10 +190,14 @@ type PublicMutation {
 }
 
 type PublicQuery {
+    "Get a basic customer panel configuration options"
     configuration: CustomerPanelConfig!
+    "List of agreements, eg. GDPR, rules, privacy policy to show/accept during a signup"
     customerAgreements(filter: CustomerAgreementsFilter): [CustomerAgreement!]!
-    "Will return a list of custom fields for customer signup form - for generic list see customFields"
+    "Will return a list of custom fields for customer signup form - for generic list see customFields in other schemas"
     customerCustomFields: [CustomField!]!
+    "This query map given login credential, ie. email, or login itself to username valid for OAuth password login. Please note: given credential can point to more than one login, so thus must be handled on frontend side."
+    login(loginCredential: String!): [LoginResult!]!
     "If token belongs to online payment, use this query to get details"
     paymentByToken(token: String!): OnlinePayment!
     """
@@ -400,6 +411,10 @@ enum DictionaryType {
 enum ImageSize {
     ORIGINAL
     THUMBNAIL
+}
+
+enum LoginUnavailabilityReason {
+    DELETED
 }
 
 enum OnlinePaymentMethodType {

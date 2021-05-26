@@ -9,18 +9,17 @@ use Serwisant\SerwisantApi;
 class Application
 {
   private $env;
-  private $key;
-  private $secret;
+  private $access_token_pubic;
+  private $access_token_customer;
+  private $router;
   private $base_dir;
   private $view_paths = [];
   private $query_paths = [];
   private $tr_files = [];
 
-  public function __construct($env, $key, $secret)
+  public function __construct($env)
   {
     $this->env = $env;
-    $this->key = $key;
-    $this->secret = $secret;
 
     $this->base_dir = __DIR__;
 
@@ -30,43 +29,22 @@ class Application
     array_unshift($this->tr_files, $this->base_dir . '/translations/pl.yml');
   }
 
-  /**
-   * @return Router
-   */
-  protected function getRouter()
+  public function setRouter(Router $router)
   {
-    return new RouterSelfHosted();
+    $this->router = $router;
+    return $this;
   }
 
-  protected function accessTokenUrl()
+  public function setPublicAccessToken(SerwisantApi\AccessToken $token)
   {
-    $url = null;
-    if ($this->env == 'development') {
-      $url = 'http://127.0.0.1:3000/oauth/token';
-    }
-    return $url;
+    $this->access_token_pubic = $token;
+    return $this;
   }
 
-  protected function getPublicAccessToken()
+  public function setCustomerAccessToken(SerwisantApi\AccessToken $token)
   {
-    return new SerwisantApi\AccessTokenOauth(
-      $this->key,
-      $this->secret,
-      'public',
-      new SerwisantApi\AccessTokenContainerFile(),
-      $this->accessTokenUrl()
-    );
-  }
-
-  protected function getCustomerAccessToken()
-  {
-    return new SerwisantApi\AccessTokenOauthUserCredentials(
-      $this->key,
-      $this->secret,
-      'customer',
-      new SerwisantApi\AccessTokenContainerSession(),
-      $this->accessTokenUrl()
-    );
+    $this->access_token_customer = $token;
+    return $this;
   }
 
   public function run()
@@ -81,7 +59,6 @@ class Application
 
     $app->register(new Silex\Provider\TwigServiceProvider(), ['twig.path' => $this->view_paths]);
     $app->register(new Silex\Provider\RoutingServiceProvider());
-
     $app->extend(
       'twig',
       function ($twig) use ($app) {
@@ -100,26 +77,33 @@ class Application
         return (new TwigSerwisantExtensions($twig, $app))->call();
       }
     );
-
     $app->error((new ApplicationExceptionHandlers())->call($app));
-
     $app->before(function (HttpFoundation\Request $request, Silex\Application $app) {
-      if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
-        $data = json_decode($request->getContent(), true);
-        $request->request->replace(is_array($data) ? $data : array());
-      }
-
-      $app['base_uri'] = $request->getScheme() . '://' . $request->getHost();
-      $app['access_token_customer'] = $this->getCustomerAccessToken();
-      $app['access_token_public'] = $this->getPublicAccessToken();
-      $app['locale'] = 'pl_PL';
-      $app['timezone'] = 'Europe/Warsaw';
-
-      setlocale(LC_ALL, $app['locale']);
-      date_default_timezone_set($app['timezone']);
+      $this->beforeRequest($request, $app);
     });
 
-    $this->getRouter()->createRoutes($app);
+    $this->router->createRoutes($app);
+
     $app->run();
+  }
+
+  private function beforeRequest(HttpFoundation\Request $request, Silex\Application $app)
+  {
+    if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
+      $data = json_decode($request->getContent(), true);
+      $request->request->replace(is_array($data) ? $data : array());
+    }
+
+    $app['base_uri'] = $request->getScheme() . '://' . $request->getHost();
+    $app['request'] = $request;
+    $app['access_token_customer'] = $this->access_token_customer;
+    $app['access_token_public'] = $this->access_token_pubic;
+
+    # @fixme - tutaj wykonuję automatyczną detekcję z nagłówków żądania HTTP
+    $app['locale'] = 'pl_PL';
+    $app['timezone'] = 'Europe/Warsaw';
+
+    setlocale(LC_ALL, $app['locale']);
+    date_default_timezone_set($app['timezone']);
   }
 }

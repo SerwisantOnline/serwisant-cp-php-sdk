@@ -1,0 +1,17 @@
+<a href="{{ path('repairs') }}" class="btn btn-secondary">{{ t(_self, 'close') }}</a>
+{% include 'repair_details/panel_change_status.html.twig' %}
+
+<div class="bg-light p-5 rounded mt-3">
+    <div class="row">
+        <div class="col-md-6">
+            {% include 'repair_details/panel_info.html.twig' %}
+            {% include 'repair_details/panel_custom_fields.html.twig' %}
+            {% include 'repair_details/panel_issue.html.twig' %}
+        </div>
+        <div class="col-md-6">
+            {% include 'repair_details/panel_money.html.twig' %}
+            {% include 'repair_details/panel_status.html.twig' %}
+            {% include 'repair_details/panel_files.html.twig' %}
+        </div>
+    </div>
+</div>

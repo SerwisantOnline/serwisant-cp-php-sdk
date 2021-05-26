@@ -1,0 +1,19 @@
+query messages($limit: Int, $page: Int, $filter: MessagesFilter, $list: Boolean = false, $single: Boolean = false) {
+    messages(limit: $limit, page: $page, filter: $filter) @include(if: $list) {
+        __typename
+        pages
+        items {
+            __typename
+            ID
+            createdAt
+            subject
+        }
+    }
+    messages(limit: $limit, page: $page, filter: $filter) @include(if: $single) {
+        __typename
+        items {
+            __typename
+            ID
+        }
+    }
+}

@@ -45,4 +45,12 @@ query {
         description
         ID
     }
+    configuration: configuration {
+        __typename
+        currency
+        caPanelRepairs
+        caPanelTickets
+        caPanelCommunication
+        orderDictModel
+    }
 }

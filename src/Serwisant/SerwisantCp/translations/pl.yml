@@ -1,232 +1,233 @@
 pl_PL:
   errors:
-    blank: Nie podano wymaganej wartości
-    too_short: Wartość podana w polu jest zbyt krótka
-    invalid: Wartość podana w polu jest niepoprawna
-    taken: Taka wartość istnieje już w bazie, wybierz inną
-    required: Uzupełnienie lub zaznaczenie tego pola jest wymagane
+    blank: "Nie podano wymaganej wartości"
+    too_short: "Wartość podana w polu jest zbyt krótka"
+    invalid: "Wartość podana w polu jest niepoprawna"
+    taken: "Taka wartość istnieje już w bazie, wybierz inną"
+    required: "Uzupełnienie lub zaznaczenie tego pola jest wymagane"
     onlineTransaction:
       onlinePayment:
-        already_paid: Ta płatność jest już sfinalizowana, odśwież stronę aby sprawdzić stan
+        already_paid: "Ta płatność jest już sfinalizowana, odśwież stronę aby sprawdzić stan"
       amountRequested:
-        greater_than: Kwota do zapłaty musi być wieksza od zera
+        greater_than: "Kwota do zapłaty musi być większa od zera"
       code:
-        wrong_length: Kod BLIK nie jest prawidłowy. Prawidłowy kod powinien mieć 6 cyfr.
+        wrong_length: "Kod BLIK nie jest prawidłowy. Prawidłowy kod powinien mieć 6 cyfr."
       channel:
-        blank: Nie wybrano banku
-        invalid: Wybrany bank nie jest w tym momencie obsługiwany
+        blank: "Nie wybrano banku"
+        invalid: "Wybrany bank nie jest w tym momencie obsługiwany"
       agreements:
         dataProcessing:
-          accepted: Zgoda na przetwarzanie danych osobowych musi zostać zaakceptowana
+          accepted: "Zgoda na przetwarzanie danych osobowych musi zostać zaakceptowana"
         payment:
-          accepted: Regulamin płatności musi zostać zaakceptowany
+          accepted: "Regulamin płatności musi zostać zaakceptowany"
   twig_extensions:
     progressed_about: "Wykonano w %{percent}%"
+    prev_page: "Poprzednia"
+    next_page: "Następna"
   flashes:
-    login_first: Zanim rozpoczniesz korzystanie z aplikacji powinieneś się zalogować.
-    signup_successful: |
-      Konto zostało zarejestrowane. Musisz je teraz potwierdzić za pomocą linka, który wysłaliśmy na adres email,
-      który podałeś/podałaś podczas rejestracji. Odczekaj minutę, a następnie sprawdź skrzynkę.
-      Jeśli nie nie widzisz w skrzynce maila z linkiem aktywacyjnym sprawdź w pierwszej kolejności skrzynki 'Spam', 'Niechciana poczta', etc.
-    signup_activated: Zarejestrowane konto zostało poprawnie aktywowane. Możesz się teraz zalogować.
+    login_first: "Zanim rozpoczniesz korzystanie z aplikacji powinieneś się zalogować."
+    signup_successful: "Konto zostało zarejestrowane. Musisz je teraz potwierdzić za pomocą linka, który wysłaliśmy na
+      adres email, który podałeś/podałaś podczas rejestracji. Odczekaj minutę, a następnie sprawdź skrzynkę.
+      Jeśli nie nie widzisz w skrzynce maila z linkiem aktywacyjnym sprawdź w pierwszej kolejności skrzynki 'Spam',
+      'Niechciana poczta', etc."
+    signup_activated: "Zarejestrowane konto zostało poprawnie aktywowane. Możesz się teraz zalogować."
     login_error:
-      invalid_client: Administrator tego panel nie skonfigurował poprawnych danych dostępowych OAUTH_KEY i OAUTH_SECRET.
-      invalid_grant: Nie udało się zalogować. Sprawdź czy podałeś poprawny login i hasło. Jeśli nie pamiętasz hasła, skożystaj z opcji resetowania.
-    login_successful: Pomyślnie zalogowano
-    logout_successful: Pomyślnie wylogowano z panelu klienta
-    password_reset_sent: |
-      Wysłaliśmy na Twoją skrzynkę pocztową wiadomość z linkiem do resetowania hasła. Odczekaj minutę i sprawdź pocztę.
-      Jeśli nie nie widzisz w skrzynce maila z linkiem aktywacyjnym sprawdź w pierwszej kolejności skrzynki 'Spam', 'Niechciana poczta', etc.
-    password_set: Hasło zostało zmienione. Zaloguj się używając nowego hasła.
-    order_diagnosis_rejected: Odrzucono koszty naprawy. W osobnej wiadomości mailowej orzymasz informację o możliwości odbioru przedmiotu naprawy lub o jego wysyłce.
+      invalid_client: "Administrator tego panel nie skonfigurował poprawnych danych dostępowych OAUTH_KEY i OAUTH_SECRET."
+      invalid_grant: "Nie udało się zalogować. Sprawdź czy podałeś poprawny login i hasło. Jeśli nie pamiętasz hasła, skorzystaj z opcji resetowania."
+    login_successful: "Pomyślnie zalogowano"
+    logout_successful: "Pomyślnie wylogowano z panelu klienta"
+    password_reset_sent: "Wysłaliśmy na Twoją skrzynkę pocztową wiadomość z linkiem do resetowania hasła. Odczekaj
+      minutę i sprawdź pocztę. Jeśli nie nie widzisz w skrzynce maila z linkiem aktywacyjnym sprawdź w pierwszej
+      kolejności skrzynki 'Spam', 'Niechciana poczta', etc."
+    password_set: "Hasło zostało zmienione. Zaloguj się używając nowego hasła."
+    order_diagnosis_rejected: "Odrzucono koszty naprawy. W osobnej wiadomości mailowej orzymasz informację o możliwości
+      odbioru przedmiotu naprawy lub o jego wysyłce."
     order_diagnosis_accepted: "Zaakceptowano koszty naprawy, serwis niebawem rozpocznie pracę nad twoim zgłoszeniem."
   layout:
-    me_edit: Edytuj dane
-    me_logout: Wyloguj
-    cookie_info_html: |
-      Nasza strona internetowa używa plików cookies &#x1F36A; w celach statystycznych oraz funkcjonalnych.
-      Dowiedz się <a target="_blank" href="https://bit.ly/3ryVxWL">jak je wyłączyć.</a>
-    cookie_accept: Zgadzam się
+    me_edit: "Edytuj dane"
+    me_logout: "Wyloguj"
+    cookie_info_html: "Nasza strona internetowa używa plików cookies &#x1F36A; w celach statystycznych oraz funkcjonalnych.
+      Dowiedz się <a target='_blank' href='https://bit.ly/3ryVxWL'>jak je wyłączyć.</a>"
+    cookie_accept: "Zgadzam się"
+    repairs: "Naprawy"
+    tickets: "Zgłoszenia"
+    messages: "Wiadomości"
   login:
-    title: Zaloguj się!
-    login_description: |
-      Zanim rozpoczniesz korzystanie z aplikacji powinieneś się zalogować.
-    signup_description: |
-      Jeśli nie masz danych do logowania możesz je utworzyć poprzez rejestrację swojego konta.
-    signup: Zarejestruj własne konto
-    login: Nazwa użytkownika
-    password: Hasło
-    submit: Rozpocznij
+    title: "Zaloguj się!"
+    login_description: "Zanim rozpoczniesz korzystanie z aplikacji powinieneś się zalogować."
+    signup_description:  "Jeśli nie masz danych do logowania możesz je utworzyć poprzez rejestrację swojego konta."
+    signup: "Zarejestruj własne konto"
+    login: "Adres email lub nazwa użytkownika"
+    login_not_found: "Nie znaleziono konta - upewnij się, że podano login lub adres email konta które rejestrowałeś."
+    password: "Hasło"
+    submit: "Rozpocznij"
   signup:
-    title: Rejestracja nowego konta
-    description: Zacznij od rejestracji własnego kotnta. Wypełnij formularz.
-    type: Typ konta
+    title: "Rejestracja nowego konta"
+    description: "Zacznij od rejestracji własnego konta. Wypełnij formularz."
+    type: "Typ konta"
     customer_type:
-      personal: Osoba prywatna, konsument
-      business: Firma
-    person: Imię i nazwisko
-    company_name: Nazwa firmy
-    email: Adres email
-    login: Login do konta
-    password: Hasło
-    submit: Zarejestruj własne konto
-    cancel: Anuluj
-    read_agreement: Czytaj
-    close: Zamknij
+      personal: "Osoba prywatna, konsument"
+      business: "Firma"
+    person: "Imię i nazwisko"
+    company_name: "Nazwa firmy"
+    email: "Adres email"
+    login: "Login do konta"
+    password: "Hasło"
+    submit: "Zarejestruj własne konto"
+    cancel: "Anuluj"
+    read_agreement: "Czytaj"
+    close: "Zamknij"
   signup_confirmation_failure:
-    title: Aktywacja konta nie powiodła się
+    title: "Aktywacja konta nie powiodła się"
     description: 'Aktywacja wcześniej założonego konta nie powiodła się powodów wymienionych poniżej:'
     errors:
       too_short: klucz aktywacyjny jest zbyt krótki
-      invalid: |
-        klucz aktywacyjny jest niepoprawny, nie próbuj przepisywać ręcznie klucza do paska adresu - klinij link, lub
-        skopiuj link do schowka i wklej go w pasku adresu
-      already_activated: konto jest już aktywne - aktywacja jest operacją jednorazową - możesz przejśc na stronę logiwania
-    button_caption: Przejdź na stronę logowania
+      invalid: "klucz aktywacyjny jest niepoprawny, nie próbuj przepisywać ręcznie klucza do paska adresu - kliknij
+        link, lub skopiuj link do schowka i wklej go w pasku adresu"
+      already_activated: "konto jest już aktywne - aktywacja jest operacją jednorazową - możesz przejść na stronę
+        logowania"
+    button_caption: "Przejdź na stronę logowania"
   password_reset:
-    title: Resetowanie hasła
-    description: |
-      To narzedzie umożliwia zresetowanie zapomnianego hasła. Najpierw podaj login lub email Twojego konta
+    title: "Resetowanie hasła"
+    description: "To narzędzie umożliwia zresetowanie zapomnianego hasła. Najpierw podaj login lub email Twojego konta
       w Panelu Klienta. Jeśli uda się je odnaleźć, wyślemy na adres email powiązany z Twoim kontem
-      link, który będzie umożliwiał ustawienie nowego hasła.
-    login_or_email: Login lub adres email
-    submit: Odzyskaj hasło
-    cancel: Anuluj
+      link, który będzie umożliwiał ustawienie nowego hasła."
+    login_or_email: "Login lub adres email"
+    submit: "Odzyskaj hasło"
+    cancel: "Anuluj"
     errors:
-      not_found: Nie znaleziono użytkownika pasującego do podanego loginu lub adresu email
+      not_found: "Nie znaleziono użytkownika pasującego do podanego loginu lub adresu email"
   password_set:
-    title: Resetowanie hasła
-    description: |
-      Podaj nowe hasło dla Twojego konta.
-    password: Hasło
-    password_confirmation: Powtórz hasło
-    cancel: Anuluj
-    submit: Zmień hasło
+    title: "Resetowanie hasła"
+    description: "Podaj nowe hasło dla Twojego konta."
+    password: "Hasło"
+    password_confirmation: "Powtórz hasło"
+    cancel: "Anuluj"
+    submit: "Zmień hasło"
     errors:
-      too_weak: Podane hasło jest zbyt proste. Użyj małych i dużych znaków, znaków specjalnych, cyfr.
-      not_found: Link resetowania hasła jest niepoprawny lub stracił ważność. Możesz naprawić ten problem poprzez ponowne wysłanie linku do resetowania hasła.
+      too_weak: "Podane hasło jest zbyt proste. Użyj małych i dużych znaków, znaków specjalnych, cyfr."
+      not_found: "Link resetowania hasła jest niepoprawny lub stracił ważność. Możesz naprawić ten problem poprzez
+        ponowne wysłanie linku do resetowania hasła."
+  repairs:
+    details: "Szczegóły"
+    create_repair: "Utwórz nową naprawę"
   repair_details:
     panel_service_supplier:
       title: 'Naprawiane przez:'
     panel_info:
       title: 'Informacje o naprawie:'
-      number: Numer
-      vendor: Producent
-      model: Model
-      serial: Numer seryjny
-      purchase_date: Data zakupu
-      purchase_doc: Numer dokumentu zakupu
-      warranty_repair: Naprawa gwarancyjna
-      collection_type: Sposób odbioru naprawy
+      number: "Numer"
+      vendor: "Producent"
+      model: "Model"
+      serial: "Numer seryjny"
+      purchase_date: "Data zakupu"
+      purchase_doc: "Numer dokumentu zakupu"
+      warranty_repair: "Naprawa gwarancyjna"
+      collection_type: "Sposób odbioru naprawy"
       collections:
-        PERSONAL: Odbiór osobisty
-        PARCEL: Wysyłka kurierem na twój adres
-        INTERNAL: Dostarczenie przez pracownika serwisu
+        PERSONAL: "Odbiór osobisty"
+        PARCEL: "Wysyłka kurierem na twój adres"
+        INTERNAL: "Dostarczenie przez pracownika serwisu"
     panel_custom_fields:
-      title: Dodatkowe informacje
+      title: "Dodatkowe informacje"
     panel_issue:
-      title: Problem
+      title: "Problem"
       issue_description: 'Opis problemu.'
       diagnosis_desctiption: 'Diagnoza.'
       summary_canceled_or_rejected: 'Opis naprawy: Naprawa nie jest możliwa.'
       summary: 'Opis naprawy.'
     panel_money:
-      title: Koszty naprawy
-      net: Netto
-      gross: Brutto
-      accepted_costs: Zaakceptowany próg kosztów
-      not_defined: Nie ustalono
-      confirmed_costs: Koszt potwierdzony
-      final_cost: Koszt ostateczny
-      none_taken: Nie pobrano
-      advance_amount: Kwota zaliczki
-      to_pay: Do zapłaty
+      title: "Koszty naprawy"
+      net: "Netto"
+      gross: "Brutto"
+      accepted_costs: "Zaakceptowany próg kosztów"
+      not_defined: "Nie ustalono"
+      confirmed_costs: "Koszt potwierdzony"
+      final_cost: "Koszt ostateczny"
+      none_taken: "Nie pobrano"
+      advance_amount: "Kwota zaliczki"
+      to_pay: "Do zapłaty"
     panel_status:
-      title: Stan naprawy
-      status_name: Status
-      delegation_status_name: Status naprawy zewnętrznej
-      delegation_info: Ta naprawa została przekazana zewnętrznemu partnerowi.
-      work_progress: Postęp prac
-      created_at: Data utworzenia
-      started_at: Data rozpoczęcia
-      tbc_after_rcv_at_office: Zostanie ustalona po odebraniu w serwisie
-      finish_date_estimated: Planowana data zakończenia
-      days_worked: Ilość dni, od daty przyjęcia
-      days_worked_tooltip: |
-        Ilość przepracowanych dni roboczych. Kolor pomarańczowy informuje o zbliżaniu sie do granicznej daty ustalonego
-        terminu wykonania usługi, kolor czerwony informuje o przekroczeniu daty.
-      time_status: Sytuacja czasowa
+      title: "Stan naprawy"
+      status_name: "Status"
+      delegation_status_name: "Status naprawy zewnętrznej"
+      delegation_info: "Ta naprawa została przekazana zewnętrznemu partnerowi."
+      work_progress: "Postęp prac"
+      created_at: "Data utworzenia"
+      started_at: "Data rozpoczęcia"
+      tbc_after_rcv_at_office: "Zostanie ustalona po odebraniu w serwisie"
+      finish_date_estimated: "Planowana data zakończenia"
+      days_worked: "Ilość dni, od daty przyjęcia"
+      days_worked_tooltip: "Ilość przepracowanych dni roboczych. Kolor pomarańczowy informuje o zbliżaniu sie do
+        granicznej daty ustalonego terminu wykonania usługi, kolor czerwony informuje o przekroczeniu daty."
+      time_status: "Sytuacja czasowa"
     panel_files:
-      title: Załączone pliki
+      title: "Załączone pliki"
     panel_change_status:
-      price_estimated: Szacowany koszt naprawy
-      price_final: Do zapłaty
-      reject: Nie akceptuję kosztów
-      reject_all: Odrzuć wszystkie oferty
+      price_estimated: "Szacowany koszt naprawy"
+      price_final: "Do zapłaty"
+      reject: "Nie akceptuję kosztów"
+      reject_all: "Odrzuć wszystkie oferty"
       reject_confirm_html: "Jeśli jesteś pewny, że nie chcesz kontynuować naprawy i potwierdzasz chęć odbioru naprawy kliknij 'dalej'.
         Możesz także skontaktować się z nami, jeśli jesteś zainteresowany szczegółami wyceny."
-      accept: Akceptuję koszty naprawy
-      accept_offer: Akceptuję ofertę
-      accept_confirm: >
-        Czy zgadzasz się na poniesienie kosztów naprawy w kwocie %{amount}? Jeśli zaakceptujesz koszty rozpoczniemy
-        naprawę.
-      accept_confirm_offer: >
-        Czy akceptujesz przygotowaną przez serwis ofertę numer %{offer_number} - całkowity koszt w przypadku wyboru tej oferty to
-         %{amount}? Zaakceptowanie równoznaczne jest ze zgodą na poniesienie ww. kosztów.
-      confirmed: >
-        Koszt naprawy został potwierdzony osobiście, e-mailem lub podczas rozmowy telefonicznej z
-        pracownikiem serwisu.
-      offer: Oferta
-      description: Opis
-      price_net: Cena netto
-      price_gross: Cena brutto
-      title: Decyzja dotycząca kosztów naprawy
-      repair: Naprawa
-      confirmation: Potwierdzenie
-      confirm: Potwierdzam
+      accept: "Akceptuję koszty naprawy"
+      accept_offer: "Akceptuję ofertę"
+      accept_confirm: "Czy zgadzasz się na poniesienie kosztów naprawy w kwocie %{amount}? Jeśli zaakceptujesz koszty
+        rozpoczniemy naprawę."
+      accept_confirm_offer: "Czy akceptujesz przygotowaną przez serwis ofertę numer %{offer_number} - całkowity koszt
+        w przypadku wyboru tej oferty to %{amount}? Zaakceptowanie równoznaczne jest ze zgodą na poniesienie ww.
+        kosztów."
+      confirmed: "Koszt naprawy został potwierdzony osobiście, e-mailem lub podczas rozmowy telefonicznej z
+        pracownikiem serwisu."
+      offer: "Oferta"
+      description: "Opis"
+      price_net: "Cena netto"
+      price_gross: "Cena brutto"
+      title: "Decyzja dotycząca kosztów naprawy"
+      repair: "Naprawa"
+      confirmation: "Potwierdzenie"
+      confirm: "Potwierdzam"
   online_payment_by_token:
-    method: Wybierz metodę płatności
+    method: "Wybierz metodę płatności"
     code_modal:
       title:
-        sending: wysyłam dane do banku...
-        confirm: spójrz ponownie na telefon i potwierdź płatność
-        errors: pojawiły się pewne problemy, które możesz rozwiązać
-        failure: coś poszło nie tak, jesli anulowałeś transakcję możesz ją ponowić
-        success: dziękujemy, przekazaliśmy płatność do serwisu
+        sending: "wysyłam dane do banku..."
+        confirm: "spójrz ponownie na telefon i potwierdź płatność"
+        errors: "pojawiły się pewne problemy, które możesz rozwiązać"
+        failure: "coś poszło nie tak, jeśli anulowałeś transakcję możesz ją ponowić"
+        success: "dziękujemy, przekazaliśmy płatność do serwisu"
     transfer_modal:
       title:
-        sending: wysyłam dane do banku...
-        errors: pojawiły się pewne problemy, które możesz rozwiązać
-        redirecting: za chwilę przekieruję do strony banku w celu finalizacji transakcji...
-        receiving: odbieram informacje z banku, to może zająć chwilę...
-        failure: coś poszło nie tak, jesli anulowałeś transakcję możesz ją ponowić
-        success: dziękujemy, przekazaliśmy płatność do serwisu
+        sending: "wysyłam dane do banku..."
+        errors: "pojawiły się pewne problemy, które możesz rozwiązać"
+        redirecting: "za chwilę przekieruję do strony banku w celu finalizacji transakcji..."
+        receiving: "odbieram informacje z banku, to może zająć chwilę..."
+        failure: "coś poszło nie tak, jeśli anulowałeś transakcję możesz ją ponowić"
+        success: "dziękujemy, przekazaliśmy płatność do serwisu"
   online_payment:
     panel_payment_methods:
-      BLIK: Kod BLIK z telefonu
-      TRANSFER: Szybki przelew z Twojego banku
-      pay: Zapłać
+      BLIK: "Kod BLIK z telefonu"
+      TRANSFER: "Szybki przelew z Twojego banku"
+      pay: "Zapłać"
       blik:
-        read: Odczytaj 6 cyfr kodu i wpisz poniżej
-        create: Utwórz kod BLIK w aplikacji banku
-      agreement_data_processing: |
-        Wyrażam zgodę, aby moje dane osobowe jako osoby dokonującej płatności, były przekazywane do firmy Krajowy
-        Integrator Płatności S.A., ul. Św. Marcin 73/6, 61-808 Poznań i przetwarzane w zakresie niezbędnym do
-        zrealizowania płatności na rzecz %{name}, obejmującym imię, nazwisko i adres e-mail. Podanie danych
-        jest dobrowolne, ale konieczne do dokonania płatności; przysługuje mi prawo dostępu do treści moich danych
-        oraz ich poprawiania.
-      agreement_payment_html: |
-        Akceptuję regulamin płatności (<a href="https://tpay.com/user/assets/files_for_download/regulamin.pdf">regulamin</a>,
-        <a href="https://tpay.com/user/assets/files_for_download/informacja-dla-konsumenta.pdf">informacje dla konsumenta</a>)
+        read: "Odczytaj 6 cyfr kodu i wpisz poniżej"
+        create: "Utwórz kod BLIK w aplikacji banku"
+      agreement_data_processing: "Wyrażam zgodę, aby moje dane osobowe jako osoby dokonującej płatności, były
+        przekazywane do firmy Krajowy Integrator Płatności S.A., ul. Św. Marcin 73/6, 61-808 Poznań i przetwarzane w
+        zakresie niezbędnym do zrealizowania płatności na rzecz %{name}, obejmującym imię, nazwisko i adres e-mail.
+        Podanie danych jest dobrowolne, ale konieczne do dokonania płatności; przysługuje mi prawo dostępu do treści
+        moich danych oraz ich poprawiania."
+      agreement_payment_html: "Akceptuję regulamin płatności (<a href='https://tpay.com/user/assets/files_for_download/regulamin.pdf'>regulamin</a>,
+        <a href='https://tpay.com/user/assets/files_for_download/informacja-dla-konsumenta.pdf'>informacje dla konsumenta</a>)"
     panel_payment_details:
-      items: Pozycje
-      payment_receivier: Odbiorca
-      title: Informacje o płatności %{number}
-      amount_to_pay: Pozostało do zapłaty
-      amount: Kwota
-      status: Stan płatności
-      description: Informacje od serwisu
+      items: "Pozycje"
+      payment_receivier: "Odbiorca"
+      title: "Informacje o płatności %{number}"
+      amount_to_pay: "Pozostało do zapłaty"
+      amount: "Kwota"
+      status: "Stan płatności"
+      description: "Informacje od serwisu"
       status_name:
-        WAITING_FOR_PAYMENT: Oczekuje na płatność
-        PAID: Zapłacono
-        UNPAID: Nie zapłacono
+        WAITING_FOR_PAYMENT: "Oczekuje na płatność"
+        PAID: "Zapłacono"
+        UNPAID: "Nie zapłacono"

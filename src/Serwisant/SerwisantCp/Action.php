@@ -30,29 +30,19 @@ class Action
   protected $translator;
 
   /**
-   * @var SerwisantApi\AccessToken
-   */
-  protected $access_token_customer;
-
-  /**
-   * @var SerwisantApi\AccessToken
-   */
-  protected $access_token_public;
-
-  /**
-   * @var SerwisantApi\Api
-   */
-  protected $api_customer;
-
-  /**
-   * @var SerwisantApi\Api
-   */
-  protected $api_public;
-
-  /**
    * @var bool
    */
   protected $debug = false;
+
+  private $access_token_customer;
+
+  private $access_token_public;
+
+  private $api_customer;
+
+  private $api_public;
+
+  private $layout_vars;
 
   public function __construct(Silex\Application $app, Request $request)
   {
@@ -70,20 +60,37 @@ class Action
     if ($this->debug) {
       error_log("Rendering {$template}");
     }
-    $result = $this->apiPublic()->publicQuery()->newRequest()->setFile('layoutAction.graphql')->execute();
     $inner_vars = [
       'pageTitle' => '',
       'locale' => $this->app['locale'],
       'locale_ISO' => explode('_', $this->app['locale'])[0],
-      'agreements' => $result->fetch('customerAgreements'),
-      'subscriber' => $result->fetch('viewer')->subscriber,
     ];
+    $inner_vars = array_merge($inner_vars, $this->getLayoutVars());
     if ($require_user) {
       $inner_vars['me'] = $this->apiCustomer()->customerQuery()->viewer();
     }
     $inner_vars['innerHTML'] = $this->twig->render($template, array_merge($inner_vars, $vars));
 
     return $this->twig->render('layout.html.twig', array_merge($inner_vars, $vars));
+  }
+
+  protected function getLayoutVars()
+  {
+    if (is_null($this->layout_vars)) {
+      $result = $this->apiPublic()->publicQuery()->newRequest()->setFile('layoutAction.graphql')->execute();
+      $this->layout_vars = [
+        'agreements' => $result->fetch('customerAgreements'),
+        'subscriber' => $result->fetch('viewer')->subscriber,
+        'configuration' => $result->fetch('configuration'),
+        'currency' => $result->fetch('configuration')->currency,
+      ];
+    }
+    return $this->layout_vars;
+  }
+
+  protected function getListLimit()
+  {
+    return 5;
   }
 
   protected function generateUrl($to, $to_params = [], $data = [])
@@ -137,6 +144,11 @@ class Action
   {
     $args = array_merge([$this->app['locale']], $keys);
     return call_user_func_array([$this->translator, 't'], $args);
+  }
+
+  protected function accessTokenCustomer()
+  {
+    return $this->access_token_customer;
   }
 
   protected function apiCustomer()

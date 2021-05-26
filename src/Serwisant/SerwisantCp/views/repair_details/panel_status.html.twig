@@ -12,7 +12,7 @@
         {{ repair.status.displayName }}
       </td>
     </tr>
-    {% if config.showOrderProgressInfo %}
+    {% if configuration.showOrderProgressInfo %}
       <tr>
         <td class="column-definition">{{ t(_self, 'work_progress') }}</td>
         <td>{{ repair_progress_bar(repair.status.progress) | raw }}</td>
@@ -33,7 +33,7 @@
       </td>
     </tr>
 
-    {% if config.showOrderProgressInfo %}
+    {% if configuration.showOrderProgressInfo %}
       <tr>
         <td class="column-definition">{{ t(_self, 'finish_date_estimated') }} </td>
         <td>

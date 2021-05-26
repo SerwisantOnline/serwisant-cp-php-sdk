@@ -7,7 +7,7 @@ use Serwisant\SerwisantCp\Action;
 
 class Agreement extends Action
 {
-  public function call($id)
+  public function show($id)
   {
     $filter = new CustomerAgreementsFilter();
     $filter->ID = $id;

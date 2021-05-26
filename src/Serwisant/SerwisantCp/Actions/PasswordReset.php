@@ -7,7 +7,7 @@ use Serwisant\SerwisantCp\Action;
 
 class PasswordReset extends Action
 {
-  public function newReset(array $errors = [])
+  public function new(array $errors = [])
   {
     $vars = [
       'formParams' => $this->request->request,
@@ -16,11 +16,11 @@ class PasswordReset extends Action
     return $this->renderPage('password_reset.html.twig', $vars, false);
   }
 
-  public function createReset()
+  public function create()
   {
     $result = $this->apiPublic()->publicMutation()->resetPassword($this->request->get('loginOrEmail'), PasswordResetSubject::CUSTOMER);
     if ($result->errors) {
-      return $this->newReset($result->errors);
+      return $this->new($result->errors);
     } else {
       return $this->redirectTo('new_session', 'flashes.password_reset_sent');
     }

@@ -6,7 +6,7 @@ use Serwisant\SerwisantCp\Action;
 
 class Dashboard extends Action
 {
-  public function dashboard()
+  public function index()
   {
     return $this->renderPage('dashboard.html.twig');
   }

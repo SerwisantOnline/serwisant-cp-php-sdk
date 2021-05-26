@@ -9,7 +9,7 @@ use Serwisant\SerwisantApi\Types\SchemaPublic\CustomFieldValueInput;
 
 class Signup extends Action
 {
-  public function newSignup($errors = [])
+  public function new($errors = [])
   {
     $result = $this->apiPublic()->publicQuery()->newRequest()->setFile('newSignup.graphql')->execute();
     $vars = [
@@ -21,7 +21,7 @@ class Signup extends Action
     return $this->renderPage('signup.html.twig', $vars, false);
   }
 
-  public function createSignup()
+  public function create()
   {
     $customer = $this->request->get('customer', []);
     $customer['customFields'] = array_map(function ($f) {
@@ -38,13 +38,13 @@ class Signup extends Action
     $result = $this->apiPublic()->publicMutation()->createCustomer($customer_input, $agreements_input, $addresses_input);
 
     if ($result->errors) {
-      return $this->newSignup($result->errors);
+      return $this->new($result->errors);
     } else {
       return $this->redirectTo('new_session', 'flashes.signup_successful');
     }
   }
 
-  public function signupConfirmation($token)
+  public function confirm($token)
   {
     $result = $this->apiPublic()->publicMutation()->activateCustomer($token);
     if ($result->errors) {

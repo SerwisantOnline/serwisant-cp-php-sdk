@@ -1,0 +1,22 @@
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">First</th>
+        <th scope="col">Last</th>
+        <th scope="col">Handle</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for ticket in tickets.items %}
+        <tr>
+            <th scope="row">{{ ticket.number }}</th>
+            <td>{{ ticket.priority.name }}</td>
+            <td>{{ ticket.status.displayName }}</td>
+            <td>@twitter</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{{ paginator(tickets.pages) }}

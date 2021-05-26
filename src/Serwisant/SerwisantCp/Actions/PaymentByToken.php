@@ -12,7 +12,8 @@ class PaymentByToken extends Action
     $vars = [
       'payment' => $result->fetch('payment'),
       'payment_methods' => $result->fetch('paymentMethods'),
-      'token' => $secret_token
+      'token' => $secret_token,
+      'js_files' => ['/assets/online_payment.js']
     ];
     return $this->renderPage('online_payment_by_token.html.twig', $vars, false);
   }

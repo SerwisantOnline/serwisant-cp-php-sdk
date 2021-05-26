@@ -1,0 +1,26 @@
+query tickets($limit: Int, $page: Int, $filter: TicketsFilter, $sort: TicketsSort, $list: Boolean = false, $single: Boolean = false) {
+    tickets(limit: $limit, page: $page, filter: $filter, sort: $sort) @include(if: $list) {
+        __typename
+        pages
+        items {
+            __typename
+            ID
+            number
+            priority {
+                __typename
+                name
+            }
+            status {
+                __typename
+                displayName
+            }
+        }
+    }
+    tickets(limit: $limit, page: $page, filter: $filter, sort: $sort) @include(if: $single) {
+        __typename
+        items {
+            __typename
+            ID
+        }
+    }
+}

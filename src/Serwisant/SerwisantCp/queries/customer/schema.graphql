@@ -6,7 +6,6 @@ schema {
 }
 
 type Address {
-    ID: HashID!
     building: String!
     city: String!
     countryIso: String!
@@ -19,6 +18,7 @@ type CustomField {
     ID: HashID!
     concern: Dictionary
     description: String
+    form: CustomFieldForm!
     name: String!
     required: Boolean!
     selectOptions: [String!]
@@ -64,19 +64,17 @@ type CustomerAgreement {
     visiblePersonal: Boolean!
 }
 
-type CustomerCreationResult {
-    customer: Customer
-    errors: [Error!]
-}
-
 type CustomerMutation {
-    createCustomer(addresses: [AddressInput!], agreements: [CustomerAgreementInput!], customer: CustomerInput!): CustomerCreationResult
+    createRepair(additionalItems: [RepairItemInput!], files: [FileInput!], repair: RepairInput!): RepairCreationResult
 }
 
 type CustomerQuery {
+    customFields(form: CustomFieldForm!): [CustomField!]!
     customerAgreements(filter: CustomerAgreementsFilter): [CustomerAgreement!]!
-    "Will return a list of custom fields for customer signup form - for generic list see customFields"
-    customerCustomFields: [CustomField!]!
+    dictionaryEntries(filter: DictionaryEntriesFilter): [Dictionary!]!
+    messages(filter: MessagesFilter = {type : ALL}, limit: Int = 20, page: Int = 1): MessagesResult!
+    repairs(filter: RepairsFilter = {type : OPEN}, limit: Int = 20, page: Int = 1, sort: RepairsSort): RepairsResult!
+    tickets(filter: TicketsFilter = {type : OPEN}, limit: Int = 20, page: Int = 1, sort: TicketsSort = ID): TicketsResult!
     "Return information about currently logged in customer"
     viewer: Viewer!
 }
@@ -85,6 +83,11 @@ type Dictionary {
     ID: HashID!
     name: String!
     type: DictionaryType!
+}
+
+type Employee {
+    displayName: String!
+    serviceSupplier: ServiceSupplier!
 }
 
 "Error from mutation"
@@ -100,6 +103,22 @@ type File {
     url(size: ImageSize = ORIGINAL): String
 }
 
+type Message {
+    content: String!
+}
+
+type MessageThread {
+    ID: HashID!
+    createdAt: DateTime!
+    messages: [Message!]!
+    subject: String
+}
+
+type MessagesResult {
+    items: [MessageThread!]!
+    pages: Int!
+}
+
 type Phone {
     "Country prefix, eg. +48"
     countryPrefix: String
@@ -109,6 +128,131 @@ type Phone {
     number: String
 }
 
+type Priority {
+    ID: HashID!
+    color: String
+    name: String!
+    sla: Int
+    type: PriorityType!
+}
+
+type Repair {
+    ID: HashID!
+    advanceAmount: Float!
+    collectionType: RepairTransportType!
+    costs: RepairCosts!
+    "Will return a list of values for custom fields"
+    customFields: [CustomFieldValue!]!
+    deliveryType: RepairTransportType!
+    diagnosis: RepairDiagnosis
+    displayName: String!
+    "Files attached to repair. For :service schema it includes private and public files, for otcher schemas only public files are included"
+    files: [File!]!
+    issue: String
+    model: String
+    offers: [RepairOffer!]
+    priceEstimated: Float
+    priceEstimatedTaxRate: Float
+    rma: String!
+    secretToken: SecretToken!
+    serial: String
+    "Service supplier who is currently processing this repair"
+    serviceSupplier: ServiceSupplier!
+    status: RepairStatus!
+    summary: RepairSummary
+    timeZone: String!
+    type: Dictionary!
+    vendor: String
+    warranty: Boolean!
+    warrantyPurchaseDate: Date
+    warrantyPurchaseDocument: String
+}
+
+type RepairCosts {
+    estimatedGross: Money
+    """
+
+    Net price given in repair diagnosis, this is a price customer must confirm. If null, diagnosis wan't performed,
+    no price given durring diagnosis or sepatate offers for this repair exists - see offer field
+    """
+    estimatedNet: Money
+    finalGross: Money
+    "Net price to be paid for repair"
+    finalNet: Money
+    "Full price (incl. tax) to be paid for whole service, decucted by advance, incremented by other possibe costs like shipping, etc."
+    payment: Money
+    proposedGross: Money
+    "Net price proposed durring repair aquisition, nil if nothing was proposed, it's not a real price, rather a guess"
+    proposedNet: Money
+}
+
+type RepairCreationResult {
+    errors: [Error!]
+    repair: Repair
+}
+
+type RepairDiagnosis {
+    publicRemarks: String
+}
+
+type RepairOffer {
+    ID: HashID!
+    "This field can be null - that means no desision was made - true or false means yes or no"
+    accepted: Boolean
+    description: String
+    items: [RepairOfferItem!]!
+    number: String!
+    priceGross: Float!
+    "Summary net price for this offer. If offered repair was diagnosed, diagnosis price is included here."
+    priceNet: Float!
+    title: String!
+}
+
+type RepairOfferItem {
+    description: String!
+    priceGross: Float!
+    priceNet: Float!
+    type: RepairOfferItemType!
+    vat: Float!
+}
+
+type RepairStatus {
+    canceledOrRejected: Boolean!
+    confirmed: Boolean!
+    createdAt: DateTime!
+    "Business days passed from startedAt date"
+    daysFromStart: Int!
+    "Business days to end of repair"
+    daysToEnd: Int!
+    diagnosed: Boolean!
+    displayName: String!
+    finishDateEstimated: Date
+    finished: Boolean!
+    progress: Float!
+    requireCustomerAccept: Boolean!
+    "Date when repair was started, for repair delivered by parcel this will differ from createdAt"
+    startedAt: Date
+    status: RepairState!
+    summedUp: Boolean!
+    timeProgress: Float!
+    timeStatus: OrderTimeStatus!
+    updatedAt: DateTime!
+}
+
+type RepairSummary {
+    publicRemarks: String
+}
+
+type RepairsResult {
+    items: [Repair!]!
+    pages: Int!
+}
+
+type SecretToken {
+    subjectType: SecretTokenSubject!
+    token: String!
+}
+
 type ServiceSupplier {
     address: Address
     addresses: [Address!]!
@@ -116,6 +260,39 @@ type ServiceSupplier {
     displayName: String!
     email: String
     phone: Phone
+}
+
+type Ticket {
+    ID: HashID!
+    address: Address
+    addressRemarks: String
+    employee: Employee
+    issue: String!
+    number: String!
+    priority: Priority!
+    status: TicketStatus!
+    type: Dictionary!
+}
+
+type TicketStatus {
+    createdAt: DateTime!
+    "Human readeable status"
+    displayName: String!
+    "Time of planned (agreed) finish"
+    finish: DateTime
+    "Real finish time, remarks are the same as for `started_on`"
+    finishedAt: DateTime
+    "Time of planned (agreed) start, this is not real start date"
+    start: DateTime
+    "Real start time based on status change - please note: if ticket status will not be updated or it will be updated post-factum date may be inaccurate"
+    startedOn: DateTime
+    "Ticket status as enum, use it to comparisons or other logic"
+    status: TicketState!
+}
+
+type TicketsResult {
+    items: [Ticket!]!
+    pages: Int!
 }
 
 type Viewer {
@@ -129,8 +306,10 @@ enum AddressType {
     OTHER
 }
 
-enum CountryCode {
-    PL
+enum CustomFieldForm {
+    CUSTOMER
+    REPAIR
+    TICKET
 }
 
 enum CustomFieldType {
@@ -182,6 +361,95 @@ enum ImageSize {
     THUMBNAIL
 }
 
+enum MessagesFilterType {
+    ALL
+    ARCHIVED
+    ID
+}
+
+enum OrderTimeStatus {
+    "Out of time"
+    DELAYED
+    "Inside agreed timespan"
+    OK
+    "Approaching to timespan border"
+    WARNING
+}
+
+enum PriorityType {
+    TICKET
+}
+
+enum RepairOfferItemType {
+    "Diagnosis part, inserted in automated way if present"
+    DIAGNOSIS
+    "This is a part od offer"
+    OFFER
+}
+
+enum RepairState {
+    CANCELED
+    CLOSED
+    CONFIRMED
+    DIAGNOSIS
+    IN_PROGRESS
+    NOT_ACCEPTED
+    NOT_PROCESSABLE
+    PASSED_FOR_RETURN
+    REQ_CUSTOMER_ACCEPT
+    REQ_SUMMARY
+    SCRAPPED
+    UNDER_TESTING
+    UNSAVED
+    WAITING_FOR_COLLECTION
+    WAITING_FOR_DELIVERY
+    WAITING_FOR_DIAGNOSIS
+    WAITING_FOR_PARTS
+}
+
+enum RepairTransportType {
+    "Repair will be delivered or returned-back by service employee"
+    INTERNAL
+    "Repair will be delivered or returned-back via parcel"
+    PARCEL
+    "Customer will deliver or pick-up repair by himself"
+    PERSONAL
+}
+
+enum RepairsFilterType {
+    "All repairs"
+    ALL
+    "Only expired repairs"
+    EXPIRED
+    "Repair with particular ID, ID argument required"
+    ID
+    "Only open repairs"
+    OPEN
+    "Search for repairs using keywords, argument q is required"
+    SEARCH
+    "Repairs in given status, status argument required"
+    STATUS
+}
+
+enum RepairsSort {
+    CUSTOMER
+    "Creation date"
+    DATE_CREATED
+    DATE_STARTED
+    DATE_STARTED_REV
+    DATE_UPDATED
+    DAYS_REMAINING
+    RMA
+    STATUS
+}
+
+enum SecretTokenSubject {
+    LICENCE
+    ONLINEPAYMENT
+    PARCEL
+    REPAIR
+}
+
 enum TaxPrefix {
     AT
     BE
@@ -213,13 +481,28 @@ enum TaxPrefix {
     SK
 }
 
-input AddressInput {
-    building: String!
-    city: String!
-    countryIso: CountryCode!
-    postalCode: String!
-    street: String!
-    type: AddressType!
+enum TicketState {
+    ASSIGNED
+    CANCELED
+    IN_PROGRESS
+    NEW
+    ON_THE_WAY
+    RESOLVED
+    UNSAVED
+}
+
+enum TicketsFilterType {
+    ALL
+    ID
+    OPEN
+    SEARCH
+    STATUS
+}
+
+enum TicketsSort {
+    CREATED_AT
+    ID
+    STATUS
 }
 
 input CustomFieldValueInput {
@@ -227,33 +510,73 @@ input CustomFieldValueInput {
     value: String!
 }
 
-input CustomerAgreementInput {
-    ID: HashID!
-    accepted: Boolean!
-}
-
 input CustomerAgreementsFilter {
     ID: HashID
     types: [CustomerAgreementType!]
 }
 
-input CustomerInput {
-    companyName: String
+input DictionaryEntriesFilter {
+    type: DictionaryType
+}
+
+input FileInput {
+    "File MIME type, eg. image/png - must be valid IANA media type, list: http://www.iana.org/assignments/media-types/media-types.xhtml"
+    contentType: String!
+    "File name, only for display purposes"
+    name: String!
+    "File content encoded with base64. Please note: generic request size limit is always applied - whole mutation must be below 100MB"
+    payload: String!
+}
+
+input MessagesFilter {
+    ID: HashID
+    type: MessagesFilterType!
+}
+
+input RepairInput {
+    collection: RepairTransportType
     customFields: [CustomFieldValueInput!]
-    email: String
-    login: String
-    password: String
-    person: String
-    phone: PhoneInput
-    taxId: String
-    taxPrefix: TaxPrefix
-    type: CustomerType!
+    delivery: RepairTransportType
+    issue: String
+    model: String
+    pickUpAddress: HashID
+    returnAddress: HashID
+    serial: String
+    type: HashID!
+    vendor: String
+    warranty: Boolean
+    warrantyPurchaseDate: Date
+    warrantyPurchaseDocument: String
 }
 
-input PhoneInput {
-    countryPrefix: String!
-    number: String!
+input RepairItemInput {
+    description: String
+    serial: String
+    type: HashID!
 }
 
+input RepairsFilter {
+    ID: HashID
+    q: String
+    status: RepairState
+    type: RepairsFilterType!
+}
+
+input TicketsFilter {
+    ID: HashID
+    q: String
+    status: TicketState
+    type: TicketsFilterType!
+}
+
+
+"An ISO 8601-encoded date"
+scalar Date
+
+"An ISO 8601-encoded datetime"
+scalar DateTime
 
 scalar HashID
+
+"A decimal number represents amount of money."
+scalar Money

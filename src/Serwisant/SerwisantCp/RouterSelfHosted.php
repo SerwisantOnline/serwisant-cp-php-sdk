@@ -8,6 +8,8 @@ use Serwisant\SerwisantApi\Types\SchemaPublic\SecretTokenSubject;
 
 class RouterSelfHosted extends Router
 {
+  const HASHID_ASSERTION = '\w{8,64}';
+
   public function createRoutes(Silex\Application $app)
   {
     $app->get('/heartbeat', function () {
@@ -20,43 +22,54 @@ class RouterSelfHosted extends Router
   private function createCpRoutes(Silex\Application $app)
   {
     $app->get('/', function (Request $request) use ($app) {
-      return (new Actions\Dashboard($app, $request))->dashboard();
-    })->bind('dashboard');
+      return (new Actions\Dashboard($app, $request))->index();
+    })
+      ->bind('dashboard');
 
     $app->get('/agreement/{id}', function (Request $request, $id) use ($app) {
-      return (new Actions\Agreement($app, $request))->call($id);
-    })->assert('id', '\w+')->bind('agreement');
+      return (new Actions\Agreement($app, $request))->show($id);
+    })
+      ->assert('id', self::HASHID_ASSERTION)
+      ->bind('agreement');
 
     $app->get('/login', function (Request $request) use ($app) {
-      return (new Actions\Login($app, $request))->newSession();
-    })->bind('new_session');
+      return (new Actions\Login($app, $request))->new();
+    })
+      ->bind('new_session');
+
+    $app->post('/login/resolve', function (Request $request) use ($app) {
+      return (new Actions\Login($app, $request))->resolveCredential();
+    })
+      ->before($this->expectJson())
+      ->bind('new_session_resolve_login');
 
     $app->post('/login', function (Request $request) use ($app) {
-      return (new Actions\Login($app, $request))->createSession();
+      return (new Actions\Login($app, $request))->create();
     });
 
     $app->get('/logout', function (Request $request) use ($app) {
-      return (new Actions\Login($app, $request))->destroySession();
-    })->bind('destroy_session');
+      return (new Actions\Login($app, $request))->destroy();
+    })
+      ->bind('destroy_session');
 
     $app->get('/signup', function (Request $request) use ($app) {
-      return (new Actions\Signup($app, $request))->newSignup();
+      return (new Actions\Signup($app, $request))->new();
     })->bind('new_signup');
 
     $app->post('/signup', function (Request $request) use ($app) {
-      return (new Actions\Signup($app, $request))->createSignup();
+      return (new Actions\Signup($app, $request))->create();
     });
 
     $app->get('/signup/{token}', function (Request $request, $token) use ($app) {
-      return (new Actions\Signup($app, $request))->signupConfirmation($token);
+      return (new Actions\Signup($app, $request))->confirm($token);
     });
 
     $app->get('/reset_password', function (Request $request) use ($app) {
-      return (new Actions\PasswordReset($app, $request))->newReset();
+      return (new Actions\PasswordReset($app, $request))->new();
     })->bind('new_password_reset');
 
     $app->post('/reset_password', function (Request $request) use ($app) {
-      return (new Actions\PasswordReset($app, $request))->createReset();
+      return (new Actions\PasswordReset($app, $request))->create();
     });
 
     $app->get('/set_password/{token}', function (Request $request, $token) use ($app) {
@@ -65,7 +78,39 @@ class RouterSelfHosted extends Router
 
     $app->post('/set_password', function (Request $request) use ($app) {
       return (new Actions\PasswordReset($app, $request))->createPassword();
-    })->bind('set_password');
+    })
+      ->bind('set_password');
+
+    $app->get('/repairs', function (Request $request) use ($app) {
+      return (new Actions\Repairs($app, $request))->index();
+    })
+      ->bind('repairs');
+
+    $app->get('/repairs/create', function (Request $request) use ($app) {
+      return (new Actions\Repairs($app, $request))->new();
+    })
+      ->bind('new_repair');
+
+    $app->post('/repairs/create', function (Request $request) use ($app) {
+      return (new Actions\Repairs($app, $request))->create();
+    })
+      ->bind('create_repair');
+
+    $app->get('/repair/{id}', function (Request $request, $id) use ($app) {
+      return (new Actions\Repairs($app, $request))->show($id);
+    })
+      ->assert('id', self::HASHID_ASSERTION)
+      ->bind('repair');
+
+    $app->get('/tickets', function (Request $request) use ($app) {
+      return (new Actions\Tickets($app, $request))->index();
+    })
+      ->bind('tickets');
+
+    $app->get('/messages', function (Request $request) use ($app) {
+      return (new Actions\Messages($app, $request))->index();
+    })
+      ->bind('messages');
   }
 
   private function createCaRoutes(Silex\Application $app)
@@ -73,7 +118,7 @@ class RouterSelfHosted extends Router
     $app->get('/token/{token}', function (Request $request, $token) use ($app) {
       switch ($this->tokenSubject($app, $request, $token)) {
         case SecretTokenSubject::REPAIR:
-          return (new Actions\RepairDetailsByToken($app, $request))->call($token);
+          return (new Actions\RepairByToken($app, $request))->call($token);
         case  SecretTokenSubject::ONLINEPAYMENT:
           return (new Actions\PaymentByToken($app, $request))->call($token);
         default:

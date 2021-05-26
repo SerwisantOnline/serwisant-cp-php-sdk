@@ -2,19 +2,48 @@
     <h1>{{ t(_self, 'title') }}</h1>
     <p class="lead">{{ t(_self, 'login_description') }}</p>
 
-    <form method="post" action="{{ path('new_session') }}">
-        <div class="row">
+    <form method="post" action="{{ path('new_session') }}" id="new-session-form">
+
+        <div class="row p-1">
             <div class="col-4">
-                {{ form_field({type: 'text', argument: 'session_credentials.login', caption: t(_self, 'login')}, formParams, []) }}
-                <br>
-                {{ form_field({type: 'password', argument: 'session_credentials.password', caption: t(_self, 'password')}, formParams, []) }}
-                <br>
-                <button type="submit" class="btn btn-primary mb-3">{{ t(_self, 'submit') }}</button>
-                <br>
-                <a href="{{ path('new_password_reset') }}">Zapomniałem hasła.</a>
+                {{ form_field({type: 'text', argument: 'session_credentials.login_credential', caption: t(_self, 'login')}, formParams, []) }}
             </div>
         </div>
+
+        <div id="new-session-d-login">
+            <div class="row p-1">
+                <div class="col-4">
+                    <button type="button"
+                            class="btn btn-primary mb-3"
+                            data-url="{{ path('new_session_resolve_login') }}"
+                            data-tr-login-not-found="{{ t(_self, 'login_not_found') }}"
+                            id="new-session-resolve-login-btn">{{ t(_self, 'submit') }}</button>
+                    <br/>
+                    <a href="{{ path('new_password_reset') }}">Zapomniałem hasła.</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="new-session-d-password" class="undisplayed">
+            <div class="row p-1">
+                <div class="col-4">
+                    {{ form_field({type: 'hidden', argument: 'session_credentials.login'}, formParams, []) }}
+                    {{ form_field({type: 'password', argument: 'session_credentials.password', caption: t(_self, 'password')}, formParams, []) }}
+                </div>
+            </div>
+            <div class="row p-1">
+                <div class="col-4">
+                    <button type="submit"
+                            class="btn btn-primary mb-3"
+                            id="new-session-btn">{{ t(_self, 'submit') }}</button>
+                    <br/>
+                    <a href="{{ path('new_password_reset') }}">Zapomniałem hasła.</a>
+                </div>
+            </div>
+        </div>
+
     </form>
+
 </div>
 
 <div class="bg-light p-5 rounded mt-3">

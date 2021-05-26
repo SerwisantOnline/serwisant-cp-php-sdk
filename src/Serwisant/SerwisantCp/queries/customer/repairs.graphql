@@ -1,0 +1,143 @@
+query repairs($limit: Int, $page: Int, $filter: RepairsFilter, $sort: RepairsSort, $list: Boolean = false, $single: Boolean = false) {
+    repairs(limit: $limit, page: $page, filter: $filter, sort: $sort) @include(if: $list) {
+        __typename
+        pages
+        items {
+            __typename
+            ID
+            displayName
+            model
+            rma
+            serial
+            status {
+                __typename
+                displayName
+            }
+            type {
+                __typename
+                ID
+                name
+                type
+            }
+            vendor
+        }
+    }
+    repairs(limit: $limit, page: $page, filter: $filter, sort: $sort) @include(if: $single) {
+        __typename
+        items {
+            ID
+            serviceSupplier {
+                displayName
+                address {
+                    street
+                    building
+                    city
+                    postalCode
+                    countryIso
+                    __typename
+                }
+                phone {
+                    number
+                    countryPrefix
+                    __typename
+                }
+                email
+                avatar {
+                    url
+                    __typename
+                }
+                __typename
+            }
+            rma
+            displayName
+            type {
+                name
+                __typename
+            }
+            advanceAmount
+            deliveryType
+            collectionType
+            issue
+            priceEstimated
+            priceEstimatedTaxRate
+            serial
+            vendor
+            model
+            warranty
+            warrantyPurchaseDate
+            warrantyPurchaseDocument
+            customFields {
+                field {
+                    name
+                    description
+                    type
+                    __typename
+                }
+                value
+                __typename
+            }
+            status {
+                status
+                displayName
+                progress
+                createdAt
+                startedAt
+                daysFromStart
+                finishDateEstimated
+                timeStatus
+                diagnosed
+                finished
+                canceledOrRejected
+                summedUp
+                confirmed
+                requireCustomerAccept
+                __typename
+            }
+            costs {
+                proposedNet
+                proposedGross
+                estimatedNet
+                estimatedGross
+                finalNet
+                finalGross
+                payment
+                __typename
+            }
+            diagnosis {
+                publicRemarks
+                __typename
+            }
+            summary {
+                publicRemarks
+                __typename
+            }
+            offers {
+                ID
+                number
+                title
+                description
+                priceNet
+                priceGross
+                accepted
+                items {
+                    description
+                    priceNet
+                    vat
+                    priceGross
+                    type
+                    __typename
+                }
+                __typename
+            }
+            files {
+                contentType
+                image
+                url
+                thumbUrl: url(size: THUMBNAIL)
+                __typename
+            }
+            timeZone
+            __typename
+        }
+    }
+}
