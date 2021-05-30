@@ -27,7 +27,13 @@ class Application
     array_unshift($this->query_paths, $this->base_dir . '/queries/customer');
     array_unshift($this->query_paths, $this->base_dir . '/queries/public');
     array_unshift($this->tr_files, $this->base_dir . '/translations/pl.yml');
+
+    # wszystkie czasy liczę względem UTC
+    date_default_timezone_set('UTC');
+
+    $this->sessionStart();
   }
+
 
   public function setRouter(Router $router)
   {
@@ -49,9 +55,6 @@ class Application
 
   public function run()
   {
-    # wszystkie czasy liczę względem UTC
-    date_default_timezone_set('UTC');
-
     $app = new Silex\Application(['env' => $this->env, 'debug' => ($this->env === 'development')]);
 
     $app['env'] = $this->env;
@@ -90,7 +93,19 @@ class Application
     $app->run();
   }
 
-  private function beforeRequest(HttpFoundation\Request $request, Silex\Application $app)
+  protected function sessionStart()
+  {
+    $dir = getenv('TMPDIR');
+    if (is_null($dir) || trim($dir) == '') {
+      $dir = sys_get_temp_dir();
+    }
+    if (!is_dir($dir)) {
+      throw new Exception("Directory do not exists - please create '{$dir}' directory.");
+    }
+    session_start(['cookie_lifetime' => (60 * 60 * 6), 'save_path' => getenv('TMPDIR')]);
+  }
+
+  protected function beforeRequest(HttpFoundation\Request $request, Silex\Application $app)
   {
     if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
       $data = json_decode($request->getContent(), true);

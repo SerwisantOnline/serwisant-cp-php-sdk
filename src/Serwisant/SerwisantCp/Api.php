@@ -18,9 +18,5 @@ class Api extends \Serwisant\SerwisantApi\Api
     foreach ($app['gql_query_paths'] as $path) {
       $this->addLoadPath($path);
     }
-
-    if ($app['env'] === 'development') {
-      $this->setUrl('http://127.0.0.1:3000/graphql');
-    }
   }
 }
