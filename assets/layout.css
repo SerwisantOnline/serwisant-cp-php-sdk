@@ -15,19 +15,32 @@ body {
     margin-bottom: 140px;
 }
 
-.datepicker {
-    margin: 0;
-    padding: 0 0 15px;
+textarea {
+    height: 10em !important;
 }
 
-.datepicker td, .datepicker th {
-    width: 2.5rem;
-    height: 2.5rem;
-    font-size: 0.7rem;
+/* pluginy */
+
+.dtpicker-button, .dtpicker-compButton, .dtpicker-close  {
+    text-decoration: none;
+}
+.dtpicker-buttonSet {
+    background-color: var(--bs-primary) !important;
+}
+.dtpicker-buttonClear {
+    background-color: var(--bs-secondary) !important;
+}
+.dtpicker-value, .dtpicker-title, .dtpicker-compValue, .dtpicker-compButton, .dtpicker-close {
+    color: var(--bs-dark) !important;
 }
 
-.datepicker-dropdown {
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+.dtpicker-bg {
+    font: 0.9rem var(--bs-font-sans-serif);
+}
+
+.filepond--item {
+    width: calc(20% - .5em);
+    margin-left: 10px !important;
 }
 
 .cookiealert {

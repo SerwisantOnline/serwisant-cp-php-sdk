@@ -77,7 +77,7 @@ Ten widok pozwala na akceptację jednej z przedstawionych ofert lub diagnozy.
                 <div class="btn-group">
                     <a href="{{ path('token_repair_reject', {token: token}) }}" class="btn btn-danger"
                        data-color="danger"
-                       data-confirm="{{ t(_self, 'reject_confirm') }}"
+                       data-confirm="{{ t(_self, 'reject_confirm_html') }}"
                        data-method="put"
                        rel="nofollow">{{ t(_self, 'reject') }}</a>
                     <a href="{{ path('token_repair_accept', {token: token}) }}" class="btn btn-success"

@@ -6,6 +6,7 @@ schema {
 }
 
 type Address {
+    ID: HashID!
     building: String!
     city: String!
     countryIso: String!
@@ -65,7 +66,11 @@ type CustomerAgreement {
 }
 
 type CustomerMutation {
-    createRepair(additionalItems: [RepairItemInput!], files: [FileInput!], repair: RepairInput!): RepairCreationResult
+    "Create new repair as customer. Field `temporaryFiles` takes IDs of temporary files create via `createTemporaryFile `. Temporary files will be attached to repair and persisted."
+    createRepair(additionalItems: [RepairItemInput!], repair: RepairInput!, temporaryFiles: [HashID!]): RepairCreationResult
+    "Create a temporary file - file can be attached to created repair and will be persisted. It's useful to scenarios, where files must be uploaded before creation of eg. repair - and persisted with repair."
+    createTemporaryFile(file: FileInput!): TemporaryFileCreationResult
+    createTicket(temporaryFiles: [HashID!], ticket: TicketInput!): TicketCreationResult
 }
 
 type CustomerQuery {
@@ -73,7 +78,10 @@ type CustomerQuery {
     customerAgreements(filter: CustomerAgreementsFilter): [CustomerAgreement!]!
     dictionaryEntries(filter: DictionaryEntriesFilter): [Dictionary!]!
     messages(filter: MessagesFilter = {type : ALL}, limit: Int = 20, page: Int = 1): MessagesResult!
+    priorities(filter: PrioritiesFilter): [Priority!]!
     repairs(filter: RepairsFilter = {type : OPEN}, limit: Int = 20, page: Int = 1, sort: RepairsSort): RepairsResult!
+    "Return details of temporary files identified by ID passed in arguments."
+    temporaryFiles(ID: [HashID!]!): [TemporaryFile!]!
     tickets(filter: TicketsFilter = {type : OPEN}, limit: Int = 20, page: Int = 1, sort: TicketsSort = ID): TicketsResult!
     "Return information about currently logged in customer"
     viewer: Viewer!
@@ -262,6 +270,18 @@ type ServiceSupplier {
     phone: Phone
 }
 
+type TemporaryFile {
+    ID: HashID!
+    contentType: String!
+    name: String!
+    url(size: ImageSize = ORIGINAL): String
+}
+
+type TemporaryFileCreationResult {
+    errors: [Error!]
+    temporaryFile: TemporaryFile
+}
+
 type Ticket {
     ID: HashID!
     address: Address
@@ -272,6 +292,11 @@ type Ticket {
     priority: Priority!
     status: TicketStatus!
     type: Dictionary!
+}
+
+type TicketCreationResult {
+    errors: [Error!]
+    ticket: Ticket
 }
 
 type TicketStatus {
@@ -533,6 +558,10 @@ input MessagesFilter {
     type: MessagesFilterType!
 }
 
+input PrioritiesFilter {
+    type: PriorityType
+}
+
 input RepairInput {
     collection: RepairTransportType
     customFields: [CustomFieldValueInput!]
@@ -562,6 +591,16 @@ input RepairsFilter {
     type: RepairsFilterType!
 }
 
+input TicketInput {
+    address: HashID
+    addressOther: String
+    customFields: [CustomFieldValueInput!]
+    issue: String
+    priority: HashID
+    startAt: DateTime
+    wantInvoice: Boolean
+}
+
 input TicketsFilter {
     ID: HashID
     q: String
@@ -570,7 +609,7 @@ input TicketsFilter {
 }
 
 
-"An ISO 8601-encoded date"
+"An ISO 8601-encoded date, eg. 2000-01-01, YYYY-MM-DD"
 scalar Date
 
 "An ISO 8601-encoded datetime"

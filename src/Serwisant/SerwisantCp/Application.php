@@ -49,6 +49,9 @@ class Application
 
   public function run()
   {
+    # wszystkie czasy liczę względem UTC
+    date_default_timezone_set('UTC');
+
     $app = new Silex\Application(['env' => $this->env, 'debug' => ($this->env === 'development')]);
 
     $app['env'] = $this->env;
@@ -99,11 +102,12 @@ class Application
     $app['access_token_customer'] = $this->access_token_customer;
     $app['access_token_public'] = $this->access_token_pubic;
 
-    # @fixme - tutaj wykonuję automatyczną detekcję z nagłówków żądania HTTP
-    $app['locale'] = 'pl_PL';
-    $app['timezone'] = 'Europe/Warsaw';
+    # ustawiam locale zgodne z językiem klienta, nie zmieniam natomiast domyślnej strefy czasowej - daty przed wyświetleniem
+    # muszą zostać sformatowane zgodnie z $app[timezone]
 
+    $app['locale'] = 'pl_PL';
     setlocale(LC_ALL, $app['locale']);
-    date_default_timezone_set($app['timezone']);
+
+    $app['timezone'] = 'Europe/Warsaw';
   }
 }

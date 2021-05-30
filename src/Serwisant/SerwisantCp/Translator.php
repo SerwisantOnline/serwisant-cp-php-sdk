@@ -105,7 +105,9 @@ class Translator
         break;
       }
     }
-
+    if (is_array($tr)) {
+      return $tr;
+    }
     if (trim($tr) === '') {
       throw new TranslatorException("Missing translation {$key}");
     } elseif (count($replacements) > 0) {

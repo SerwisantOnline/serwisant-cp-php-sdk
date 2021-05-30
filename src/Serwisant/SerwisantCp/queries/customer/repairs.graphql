@@ -136,7 +136,6 @@ query repairs($limit: Int, $page: Int, $filter: RepairsFilter, $sort: RepairsSor
                 thumbUrl: url(size: THUMBNAIL)
                 __typename
             }
-            timeZone
             __typename
         }
     }

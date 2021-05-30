@@ -1,6 +1,6 @@
-Application.Repairs = {}
+Application.Tickets = {}
 
-Application.Repairs.Form = function () {
+Application.Tickets.Form = function () {
   var customFields = function (id) {
     $('.custom-field').each(function () {
       if ($(this).attr('data-type-id') !== '') {
@@ -18,20 +18,6 @@ Application.Repairs.Form = function () {
   });
   customFields($('#repair_type').val());
 
-  $('#repair_warranty').change(function () {
-    if ($(this).is(":checked")) {
-      $('#create_repair_warranty_attributes').slideDown();
-    } else {
-      $('#create_repair_warranty_attributes').slideUp();
-      $('#repair_warrantyPurchaseDate').val('');
-      $('#repair_warrantyPurchaseDocument').val('');
-
-    }
-  })
-  if ($('#repair_warranty').is(":checked")) {
-    $('#create_repair_warranty_attributes').removeClass('undisplayed');
-  }
-
   var pond = FilePond.create({
     files: _.map($('.temporary-file-json'), function (div) {
       return {
@@ -46,5 +32,5 @@ Application.Repairs.Form = function () {
 }
 
 $(document).ready(function () {
-  Application.Repairs.Form();
+  Application.Tickets.Form();
 })

@@ -110,7 +110,6 @@ query($token: String!) {
             thumbUrl: url(size: THUMBNAIL)
             __typename
         }
-        timeZone
         __typename
     }
     configuration: configuration {

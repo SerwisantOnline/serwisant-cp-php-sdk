@@ -6,7 +6,7 @@ use Silex;
 use Symfony\Component\HttpFoundation\Request;
 use Serwisant\SerwisantApi\Types\SchemaPublic\SecretTokenSubject;
 
-class RouterSelfHosted extends Router
+class ApplicationRouter extends Router
 {
   const HASHID_ASSERTION = '\w{8,64}';
 
@@ -81,6 +81,25 @@ class RouterSelfHosted extends Router
     })
       ->bind('set_password');
 
+    $app->post('/temporary_file', function (Request $request) use ($app) {
+      return (new Actions\TemporaryFile($app, $request))->create();
+    });
+
+    $app->delete('/temporary_file', function (Request $request) use ($app) {
+      return 'OK';
+    });
+
+    $app->get('/temporary_file', function (Request $request) use ($app) {
+      return (new Actions\TemporaryFile($app, $request))->show();
+    });
+
+    $this->createRepairsRoutes($app);
+    $this->createTicketsRoutes($app);
+    $this->createMessagesRoutes($app);
+  }
+
+  private function createRepairsRoutes(Silex\Application $app)
+  {
     $app->get('/repairs', function (Request $request) use ($app) {
       return (new Actions\Repairs($app, $request))->index();
     })
@@ -101,12 +120,28 @@ class RouterSelfHosted extends Router
     })
       ->assert('id', self::HASHID_ASSERTION)
       ->bind('repair');
+  }
 
+  private function createTicketsRoutes(Silex\Application $app)
+  {
     $app->get('/tickets', function (Request $request) use ($app) {
       return (new Actions\Tickets($app, $request))->index();
     })
       ->bind('tickets');
 
+    $app->get('/tickets/create', function (Request $request) use ($app) {
+      return (new Actions\Tickets($app, $request))->new();
+    })
+      ->bind('new_ticket');
+
+    $app->post('/tickets/create', function (Request $request) use ($app) {
+      return (new Actions\Tickets($app, $request))->create();
+    })
+      ->bind('create_ticket');
+  }
+
+  private function createMessagesRoutes(Silex\Application $app)
+  {
     $app->get('/messages', function (Request $request) use ($app) {
       return (new Actions\Messages($app, $request))->index();
     })

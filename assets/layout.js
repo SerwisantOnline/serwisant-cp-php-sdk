@@ -116,12 +116,27 @@ Application.Json.Request = function (url, method, data, on_success, on_error) {
 Application.Ui = {};
 
 Application.Ui.DatePickerAttach = function () {
-  $('.datepicker').datepicker({
-    clearBtn: true,
-    format: "dd-mm-yyyy",
-    language: '{{ locale_ISO|lower }}'
+  var translations = Application.Options.Get('dpTranslations')
+  $("#dtBox").DateTimePicker({
+    dateFormat: 'yyyy-MM-dd',
+    dateTimeFormat: 'yyyy-MM-dd hh:mm',
+    minuteInterval: 5,
+    animationDuration: 600,
+    shortDayNames: _.map(_.split(translations.shortDayNames, ','), _.trim),
+    fullDayNames: _.map(_.split(translations.fullDayNames, ','), _.trim),
+    shortMonthNames: _.map(_.split(translations.shortMonthNames, ','), _.trim),
+    fullMonthNames: _.map(_.split(translations.fullMonthNames, ','), _.trim),
+    titleContentDate: translations.titleContentDate,
+    titleContentTime: translations.titleContentTime,
+    titleContentDateTime: translations.titleContentDateTime,
+    setButtonContent: translations.setButtonContent,
+    clearButtonContent: translations.clearButtonContent,
+    afterShow: function () {
+      $('.dtpicker-content').addClass('rounded-3');
+      $('.dtpicker-button').addClass('rounded-1');
+    }
   });
-}
+};
 
 Application.Ui.Popup = {};
 
@@ -248,6 +263,60 @@ Application.Ui.FormErrorsToPopover = function () {
   });
 };
 
+Application.Ui.FileUploadConfigure = function () {
+  var translations = {
+    labelIdle: 'Przeciągnij i upuść lub <span class="filepond--label-action">wybierz</span> pliki',
+    labelInvalidField: 'Nieprawidłowe pliki',
+    labelFileWaitingForSize: 'Pobieranie rozmiaru',
+    labelFileSizeNotAvailable: 'Nieznany rozmiar',
+    labelFileLoading: 'Wczytywanie',
+    labelFileLoadError: 'Błąd wczytywania',
+    labelFileProcessing: 'Przesyłanie',
+    labelFileProcessingComplete: 'Przesłano',
+    labelFileProcessingAborted: 'Przerwano',
+    labelFileProcessingError: 'Przesyłanie nie powiodło się',
+    labelFileProcessingRevertError: 'Coś poszło nie tak',
+    labelFileRemoveError: 'Nieudane usunięcie',
+    labelTapToCancel: 'Anuluj',
+    labelTapToRetry: 'Ponów',
+    labelTapToUndo: 'Cofnij',
+    labelButtonRemoveItem: 'Usuń',
+    labelButtonAbortItemLoad: 'Przerwij',
+    labelButtonRetryItemLoad: 'Ponów',
+    labelButtonAbortItemProcessing: 'Anuluj',
+    labelButtonUndoItemProcessing: 'Cofnij',
+    labelButtonRetryItemProcessing: 'Ponów',
+    labelButtonProcessItem: 'Prześlij',
+    labelMaxFileSizeExceeded: 'Plik jest zbyt duży',
+    labelMaxFileSize: 'Dopuszczalna wielkość pliku to {filesize}',
+    labelMaxTotalFileSizeExceeded: 'Przekroczono łączny rozmiar plików',
+    labelMaxTotalFileSize: 'Łączny rozmiar plików nie może przekroczyć {filesize}',
+    labelFileTypeNotAllowed: 'Niedozwolony rodzaj pliku',
+    fileValidateTypeLabelExpectedTypes: 'Oczekiwano {allButLastType} lub {lastType}',
+    imageValidateSizeLabelFormatError: 'Nieobsługiwany format obrazu',
+    imageValidateSizeLabelImageSizeTooSmall: 'Obraz jest zbyt mały',
+    imageValidateSizeLabelImageSizeTooBig: 'Obraz jest zbyt duży',
+    imageValidateSizeLabelExpectedMinSize: 'Minimalne wymiary obrazu to {minWidth}×{minHeight}',
+    imageValidateSizeLabelExpectedMaxSize: 'Maksymalna wymiary obrazu to {maxWidth}×{maxHeight}',
+    imageValidateSizeLabelImageResolutionTooLow: 'Rozdzielczość jest zbyt niska',
+    imageValidateSizeLabelImageResolutionTooHigh: 'Rozdzielczość jest zbyt wysoka',
+    imageValidateSizeLabelExpectedMinResolution: 'Minimalna rozdzielczość to {minResolution}',
+    imageValidateSizeLabelExpectedMaxResolution: 'Maksymalna rozdzielczość to {maxResolution}'
+  }
+
+  FilePond.registerPlugin(FilePondPluginImagePreview);
+  FilePond.setOptions(_.merge(translations, {
+    server: {
+      url: '/temporary_file'
+    },
+    maxFiles: 10,
+    allowMultiple: true,
+    stylePanelLayout: 'compact',
+    name: 'temporary_files[]',
+    credits: []
+  }));
+}
+
 $.fn.onEnterPress = function (fnc) {
   return this.each(function () {
     $(this).keypress(function (ev) {
@@ -265,4 +334,5 @@ $(document).ready(function () {
   Application.Ui.Popup.DataMethodAttach();
   Application.Ui.DatePickerAttach();
   Application.Ui.FormErrorsToPopover();
+  Application.Ui.FileUploadConfigure();
 });

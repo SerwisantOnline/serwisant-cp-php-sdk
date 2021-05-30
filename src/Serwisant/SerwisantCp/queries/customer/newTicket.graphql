@@ -1,0 +1,35 @@
+query {
+    orderCustomFields: customFields(form: TICKET) {
+        __typename
+        ID
+        type
+        selectOptions
+        required
+        concern {
+            __typename
+            ID
+        }
+        name
+        description
+    }
+    priorities: priorities(filter: {type: TICKET}) {
+        __typename
+        ID
+        name
+    }
+    viewer: viewer {
+        __typename
+        customer {
+            __typename
+            addresses {
+                __typename
+                ID
+                building
+                city
+                countryIso
+                postalCode
+                street
+            }
+        }
+    }
+}

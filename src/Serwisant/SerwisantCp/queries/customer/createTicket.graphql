@@ -1,0 +1,10 @@
+mutation createTicket($ticket: TicketInput!, $temporaryFiles: [HashID!]) {
+    createTicket(ticket: $ticket, temporaryFiles: $temporaryFiles) {
+        __typename
+        errors {
+            __typename
+            argument
+            code
+        }
+    }
+}

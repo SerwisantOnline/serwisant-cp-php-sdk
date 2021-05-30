@@ -11,10 +11,6 @@ class TwigGenericExtensions extends TwigExtensions
   {
 
     $this->twig->addFunction(new TwigFunction('paginator', function ($pages) {
-      if ($pages < 2) {
-        return '';
-      }
-
       $current_uri = parse_url($this->app['request']->getUri());
 
       $get_args = [];
@@ -62,11 +58,9 @@ class TwigGenericExtensions extends TwigExtensions
       return number_format($number, 2, ',', '') . ' ' . $symbol;
     }));
 
-    $this->twig->addFilter(new TwigFilter('format_datetime', function ($date_ISO8601, $tz = null) {
+    $this->twig->addFilter(new TwigFilter('format_datetime', function ($date_ISO8601) {
       $date = \DateTime::createFromFormat('Y-m-d\TH:i:sO', $date_ISO8601);
-      if (!$tz) {
-        $tz = $this->app['timezone'];
-      }
+      $tz = $this->app['timezone'];
       $date->setTimezone(new \DateTimeZone($tz));
       return $date->format('Y-m-d H:i');
     }));

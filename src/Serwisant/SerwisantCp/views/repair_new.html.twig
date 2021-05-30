@@ -26,6 +26,7 @@
             {{ form_field({type: 'checkbox', argument: "repair.warranty", caption: t(_self, 'warranty'), value: 1}, form_params, errors) }}
         </div>
 
+        <div class="undisplayed" id="create_repair_warranty_attributes">
         <div class="mb-3">
             {{ form_field({type: 'date', argument: 'repair.warrantyPurchaseDate', caption: t(_self, 'warrantyPurchaseDate')}, form_params, errors) }}
         </div>
@@ -33,9 +34,16 @@
         <div class="mb-3">
             {{ form_field({type: 'text', argument: 'repair.warrantyPurchaseDocument', caption: t(_self, 'warrantyPurchaseDocument')}, form_params, errors) }}
         </div>
+        </div>
 
         <div class="mb-3">
             {{ form_field({type: 'textarea', argument: 'repair.issue', caption: t(_self, 'issue')}, form_params, errors) }}
+        </div>
+
+        <div class="clearfix" id="create_repair_file_uploader">
+            {% for temporary_file in temporary_files %}
+                <div class="undisplayed temporary-file-json" data-ID="{{ temporary_file }}"></div>
+            {% endfor %}
         </div>
 
         {% for customField in customFieldsDefinitions %}

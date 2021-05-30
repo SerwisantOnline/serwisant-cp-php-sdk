@@ -20,7 +20,7 @@
     {% endif %}
     <tr>
       <td class="column-definition">{{ t(_self, 'created_at') }}</td>
-      <td>{{ repair.status.createdAt | format_datetime(repair.timeZone) }}</td>
+      <td>{{ repair.status.createdAt | format_datetime }}</td>
     </tr>
     <tr>
       <td class="column-definition">{{ t(_self, 'started_at') }}</td>

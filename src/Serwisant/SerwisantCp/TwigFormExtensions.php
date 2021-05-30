@@ -94,12 +94,10 @@ class TwigFormExtensions extends TwigExtensions
         $html .= $label;
         break;
 
+      case 'datetime':
       case 'date':
         $class = "{$options->get('class', 'form-control')}{$class_error}";
-        $html .= "<div class='datepicker date form-floating'>";
-        $html .= "<input type='text' id='{$id}' class='{$class}' name='{$name}' data-bs-content='{$error_title}' value='{$value}' placeholder='{$caption}' title='{$caption}'>";
-        $html .= "<div class='input-group-append'</div>";
-        $html .= "</div>";
+        $html .= "<input type='text' id='{$id}' class='{$class}' name='{$name}' data-bs-content='{$error_title}' value='{$value}' placeholder='{$caption}' title='{$caption}' readonly='readonly' data-field='{$options->get('type', '')}'>";
         $html .= $label;
         break;
 
@@ -107,6 +105,20 @@ class TwigFormExtensions extends TwigExtensions
         $class = "{$options->get('class', 'form-control')}{$class_error}";
         $html .= "<textarea id='{$id}' class='{$class}' name='{$name}' data-bs-content='{$error_title}' title='{$caption}' rows='100'>{$value}</textarea>";
         $html .= $label;
+        break;
+
+      case 'radios':
+        $html .= '<fieldset class="row mb-3"><legend class="col-form-label col-sm-2 pt-0">';
+        $html .= $options->get('caption');
+        $html .= '</legend><div class="col-sm-10">';
+        foreach ($options->get('options', []) as $v => $t) {
+          $checked = ($v == $value) ? "checked='checked'" : "";
+          $html .= '<div class="form-check">';
+          $html .= "<input class='form-check-input' type='radio' name='{$name}' id='{$id}_{$v}' value='{$v}' {$checked}>";
+          $html .= "<label class='form-check-label' for='{$id}_{$v}'>{$t}</label>";
+          $html .= '</div>';
+        }
+        $html .= '</div></fieldset>';
         break;
 
       case 'select':
@@ -131,8 +143,8 @@ class TwigFormExtensions extends TwigExtensions
         } else {
           $checked = "";
         }
-        $html .= '<div class="form-check">';
-        $html .= "<input type='checkbox' {$checked} id={$id} class='{$class}' name='{$name}' value='{$value}' data-bs-content='{$error_title}' title='{$caption}'>";
+        $html .= '<div class="form-check form-switch form-switch-md">';
+        $html .= "<input type='checkbox' {$checked} id={$id} class='form-check-input' name='{$name}' value='{$value}' data-bs-content='{$error_title}' title='{$caption}'>";
         if ($caption) {
           $html .= "<label for='{$id}' class='form-check-label'>{$caption}</label>";
         }

@@ -20,10 +20,21 @@ pl_PL:
           accepted: "Zgoda na przetwarzanie danych osobowych musi zostać zaakceptowana"
         payment:
           accepted: "Regulamin płatności musi zostać zaakceptowany"
+    not_a_date: "Wartość nie jest poprawną datą"
   twig_extensions:
     progressed_about: "Wykonano w %{percent}%"
     prev_page: "Poprzednia"
     next_page: "Następna"
+  dp:
+    shortDayNames: "Nie, Pon, Wto, Śro, Czw, Pią, Sob"
+    fullDayNames: "Niedziela, Poniedziałek, Wtorek, Środa, Czwartek, Piątek, Sobota"
+    shortMonthNames: "Sty, Lut, Marz, Kwi, Maj, Cze, Lip, Sie, Wrz, Paź, List, Gru"
+    fullMonthNames: "Styczeń, Luty, Marzec, Kwiecień, Maj, Czerwiec, Lipiec, Sierpień, Wrzesień, Październik, Listopad, Grudzień"
+    titleContentDate: "Wybierz datę"
+    titleContentTime: "Wybierz czas"
+    titleContentDateTime: "Wybierz datę i czas"
+    setButtonContent: "Wybierz"
+    clearButtonContent: "Wyczyść"
   flashes:
     login_first: "Zanim rozpoczniesz korzystanie z aplikacji powinieneś się zalogować."
     signup_successful: "Konto zostało zarejestrowane. Musisz je teraz potwierdzić za pomocą linka, który wysłaliśmy na
@@ -43,6 +54,7 @@ pl_PL:
     order_diagnosis_rejected: "Odrzucono koszty naprawy. W osobnej wiadomości mailowej orzymasz informację o możliwości
       odbioru przedmiotu naprawy lub o jego wysyłce."
     order_diagnosis_accepted: "Zaakceptowano koszty naprawy, serwis niebawem rozpocznie pracę nad twoim zgłoszeniem."
+    repair_creation_successful: "Utworzono naprawę."
   layout:
     me_edit: "Edytuj dane"
     me_logout: "Wyloguj"
@@ -52,12 +64,13 @@ pl_PL:
     repairs: "Naprawy"
     tickets: "Zgłoszenia"
     messages: "Wiadomości"
+
   login:
     title: "Zaloguj się!"
     login_description: "Zanim rozpoczniesz korzystanie z aplikacji powinieneś się zalogować."
     signup_description:  "Jeśli nie masz danych do logowania możesz je utworzyć poprzez rejestrację swojego konta."
     signup: "Zarejestruj własne konto"
-    login: "Adres email lub nazwa użytkownika"
+    login: "Login lub adres email"
     login_not_found: "Nie znaleziono konta - upewnij się, że podano login lub adres email konta które rejestrowałeś."
     password: "Hasło"
     submit: "Rozpocznij"
@@ -81,7 +94,7 @@ pl_PL:
     title: "Aktywacja konta nie powiodła się"
     description: 'Aktywacja wcześniej założonego konta nie powiodła się powodów wymienionych poniżej:'
     errors:
-      too_short: klucz aktywacyjny jest zbyt krótki
+      too_short: "klucz aktywacyjny jest zbyt krótki"
       invalid: "klucz aktywacyjny jest niepoprawny, nie próbuj przepisywać ręcznie klucza do paska adresu - kliknij
         link, lub skopiuj link do schowka i wklej go w pasku adresu"
       already_activated: "konto jest już aktywne - aktywacja jest operacją jednorazową - możesz przejść na stronę
@@ -111,6 +124,11 @@ pl_PL:
   repairs:
     details: "Szczegóły"
     create_repair: "Utwórz nową naprawę"
+    rma: "Numer naprawy"
+    description: "Przedmiot naprawy"
+    status: "Stan"
+  repair:
+    close: "Zamknij"
   repair_details:
     panel_service_supplier:
       title: 'Naprawiane przez:'
@@ -187,6 +205,33 @@ pl_PL:
       repair: "Naprawa"
       confirmation: "Potwierdzenie"
       confirm: "Potwierdzam"
+  repair_new:
+    title: "Dodaj nową naprawę"
+    description: "Aby zarejestrować nową naprawę w bazie serwisu uzupełnij poniższy formularz."
+    type: "Przedmiot naprawy"
+    vendor: "Producent"
+    model: "Model"
+    serial: "Numer seryjny urządzenia"
+    warranty: "Naprawa w ramach gwarancji"
+    warrantyPurchaseDate: "Data zakupu"
+    warrantyPurchaseDocument: "Numer dokumentu zakupu"
+    issue: "Opis usterki, problemu"
+    cancel: "Anuluj"
+    submit: "Dodaj naprawę"
+  tickets:
+    create_ticket: "Dodaj zgłoszenie awarii"
+  ticket_new:
+    title: "Dodaj zgłoszenie awarii"
+    description: "Aby zgłosić nową usterkę, awarię lub inny problem wymagający ingerencji serwisu u ciebie uzupełnij
+      poniższy formularz podając wszystkie szczegóły."
+    priority: "Priorytet zgłoszenia"
+    startAt: "Najbliższy możliwy termin przyjazdu serwisanta"
+    issue: "Informacje o awarii"
+    address: "Adres zgłoszenia"
+    addressOther: "Inny, dowolny adres"
+    other_address: "Podaj inny adres"
+    cancel: "Anuluj"
+    submit: "Dodaj zgłoszenie"
   online_payment_by_token:
     method: "Wybierz metodę płatności"
     code_modal:

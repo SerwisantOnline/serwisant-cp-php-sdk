@@ -90,7 +90,7 @@ class Action
 
   protected function getListLimit()
   {
-    return 5;
+    return 20;
   }
 
   protected function generateUrl($to, $to_params = [], $data = [])

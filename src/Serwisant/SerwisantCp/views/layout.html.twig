@@ -5,25 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ pageTitle }}</title>
     <link rel="stylesheet" href="/assets/bootstrap.min.css"/>
-    <link rel="stylesheet" href="/assets/bootstrap-datepicker.min.css"/>
+    <link rel="stylesheet" href="/assets/filepond.min.css"/>
+    <link rel="stylesheet" href="/assets/filepond-plugin-image-preview.min.css"/>
+    <link rel="stylesheet" href="/assets/DateTimePicker.min.css"/>
     <link rel="stylesheet" href="/assets/layout.css"/>
 </head>
 <body>
 
 <script>
-  var application_js_options = {}
+  var application_js_options = {
+    locale: "{{ locale_ISO|lower }}",
+    dpTranslations: {{ t('dp')|json_encode()|raw }}
+  }
 </script>
 
 {% if me is defined %}
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="#">{{ subscriber.displayName }}</a>
+            <a class="navbar-brand" href="{{ path('dashboard') }}">{{ subscriber.displayName }}</a>
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarsExampleDefault"
                     aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+
             <div class="collapse navbar-collapse" id="navbarsExampleDefault">
                 <ul class="navbar-nav me-auto mb-2 mb-md-0">
                     {% if configuration.caPanelRepairs %}
@@ -117,6 +124,7 @@
 </div>
 
 <div class="hidden-print" id="modal-popups-container"></div>
+<div id="dtBox"></div>
 
 <div class="alert text-center cookiealert" role="alert">
     <h6>
@@ -130,11 +138,14 @@
 <script src="/assets/lodash.min.js"></script>
 <script src="/assets/jquery.min.js"></script>
 <script src="/assets/bootstrap.bundle.min.js"></script>
+
 <script src="/assets/cookiealert.js"></script>
-<script src="/assets/bootstrap-datepicker.min.js"></script>
-<script src="/assets/bootstrap-datepicker.pl.min.js"></script>
 <script src="/assets/purl.js"></script>
-<script src="/assets/application.js"></script>
+<script src="/assets/filepond.min.js"></script>
+<script src="/assets/filepond-plugin-image-preview.min.js"></script>
+<script src="/assets/DateTimePicker.min.js"></script>
+
+<script src="/assets/layout.js"></script>
 {% if js_files is defined %}
     {% for js_file in js_files %}
         <script src="{{ js_file }}"></script>

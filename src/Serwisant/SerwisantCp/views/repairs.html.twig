@@ -1,25 +1,28 @@
-<a class="btn btn-primary" href="{{ path('new_repair') }}">{{ t(_self, 'create_repair') }}</a>
-<table class="table">
-    <thead>
-    <tr>
-        <th scope="col">#</th>
-        <th scope="col">First</th>
-        <th scope="col">Last</th>
-        <th scope="col">Handle</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for repair in repairs.items %}
-    <tr>
-        <th scope="row">{{ repair.rma }}</th>
-        <td>{{ repair.displayName }}</td>
-        <td>{{ repair.status.displayName }}</td>
-        <td>
-            <a href="{{ path('repair', {'id': repair.ID}) }}">{{ t(_self, 'details') }}</a>
-        </td>
-    </tr>
-    {% endfor %}
-    </tbody>
-</table>
+<a class="btn btn-primary btn-lg" href="{{ path('new_repair') }}">{{ t(_self, 'create_repair') }}</a>
 
-{{ paginator(repairs.pages) }}
+<div class="bg-light p-5 rounded mt-3">
+    {{ paginator(repairs.pages) }}
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">{{ t(_self, 'rma') }}</th>
+            <th scope="col">{{ t(_self, 'description') }}</th>
+            <th scope="col">{{ t(_self, 'status') }}</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for repair in repairs.items %}
+            <tr>
+                <td>{{ repair.rma }}</th>
+                <td>{{ repair.displayName }}</td>
+                <td>{{ repair.status.displayName }}</td>
+                <td>
+                    <a href="{{ path('repair', {'id': repair.ID}) }}">{{ t(_self, 'details') }}</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {{ paginator(repairs.pages) }}
+</div>

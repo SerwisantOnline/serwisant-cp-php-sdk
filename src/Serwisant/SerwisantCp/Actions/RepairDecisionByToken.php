@@ -26,7 +26,7 @@ class RepairDecisionByToken extends Action
 
   private function makeDecision($decision, $secret_token, $offer_id = null)
   {
-    $this->apiPublic()->publicMutation()->acceptOrRejectRepair($secret_token, new SchemaPublic\AcceptOrRejectRepairDecision($decision), $offer_id);
+    $this->apiPublic()->publicMutation()->acceptOrRejectRepair($secret_token, $decision, $offer_id);
 
     $response = new HttpFoundation\Response('', 204);
 
