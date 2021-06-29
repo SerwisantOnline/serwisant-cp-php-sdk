@@ -19,17 +19,33 @@ textarea {
     height: 10em !important;
 }
 
+.bd-callout-info {
+    border-left-color: var(--bs-primary);
+}
+
+.bd-callout {
+    padding: 1.25rem;
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
+    border: 1px solid #e9ecef;
+    border-left-width: .25rem;
+    border-radius: .25rem;
+}
+
 /* pluginy */
 
-.dtpicker-button, .dtpicker-compButton, .dtpicker-close  {
+.dtpicker-button, .dtpicker-compButton, .dtpicker-close {
     text-decoration: none;
 }
+
 .dtpicker-buttonSet {
     background-color: var(--bs-primary) !important;
 }
+
 .dtpicker-buttonClear {
     background-color: var(--bs-secondary) !important;
 }
+
 .dtpicker-value, .dtpicker-title, .dtpicker-compValue, .dtpicker-compButton, .dtpicker-close {
     color: var(--bs-dark) !important;
 }

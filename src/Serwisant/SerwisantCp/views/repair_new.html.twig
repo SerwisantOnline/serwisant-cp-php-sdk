@@ -23,7 +23,7 @@
         </div>
 
         <div class="mb-3">
-            {{ form_field({type: 'checkbox', argument: "repair.warranty", caption: t(_self, 'warranty'), value: 1}, form_params, errors) }}
+            {{ form_field({type: 'switch', argument: "repair.warranty", caption: t(_self, 'warranty'), value: 1}, form_params, errors) }}
         </div>
 
         <div class="undisplayed" id="create_repair_warranty_attributes">

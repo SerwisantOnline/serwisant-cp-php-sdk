@@ -1,0 +1,3 @@
+mutation markMessageRead($message: HashID!) {
+    markMessageRead(message: $message)
+}

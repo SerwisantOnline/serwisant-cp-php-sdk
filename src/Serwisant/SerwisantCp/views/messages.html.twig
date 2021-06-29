@@ -1,19 +1,29 @@
+<a class="btn btn-primary btn-lg" href="{{ path('new_message') }}">{{ t(_self, 'create_message') }}</a>
+
 <table class="table">
     <thead>
     <tr>
-        <th scope="col">#</th>
-        <th scope="col">First</th>
-        <th scope="col">Last</th>
-        <th scope="col">Handle</th>
+        <th scope="col">{{ t(_self, 'subject') }}</th>
+        <th scope="col">{{ t(_self, 'date') }}</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
     </tr>
     </thead>
     <tbody>
-    {% for message in messages.items %}
+    {% for thread in messages.items %}
         <tr>
-            <th scope="row">{{ message.createdAt }}</th>
-            <td>{{ message.subject }}</td>
-            <td></td>
-            <td></td>
+            <th scope="row">{{ thread.subject }}</th>
+            <td>{{ thread.lastMessageAt | format_datetime }}</td>
+            <td>
+                {% if thread.unreadMessages > 0 %}
+                    <i class="fas fa-envelope"></i>
+                    <span class="badge bg-danger">{{ thread.unreadMessages }}</span>
+                {% else %}
+                    <i class="fas fa-envelope-open"></i>
+                    <span class="badge bg-light text-dark">{{ thread.allMessages }}</span>
+                {% endif %}
+            </td>
+            <td><a href="{{ path('message', {'id': thread.ID}) }}">{{ t(_self, 'read') }}</a></td>
         </tr>
     {% endfor %}
     </tbody>

@@ -5,8 +5,10 @@ query messages($limit: Int, $page: Int, $filter: MessagesFilter, $list: Boolean 
         items {
             __typename
             ID
-            createdAt
             subject
+            lastMessageAt
+            allMessages
+            unreadMessages
         }
     }
     messages(limit: $limit, page: $page, filter: $filter) @include(if: $single) {
@@ -14,6 +16,20 @@ query messages($limit: Int, $page: Int, $filter: MessagesFilter, $list: Boolean 
         items {
             __typename
             ID
+            subject
+            recipients {
+                __typename
+                displayName
+            }
+            messages {
+                __typename
+                content
+                createdAt
+                sender {
+                    __typename
+                    displayName
+                }
+            }
         }
     }
 }

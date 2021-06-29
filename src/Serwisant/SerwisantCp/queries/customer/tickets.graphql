@@ -14,6 +14,10 @@ query tickets($limit: Int, $page: Int, $filter: TicketsFilter, $sort: TicketsSor
                 __typename
                 displayName
             }
+            employee {
+                __typename
+                displayName
+            }
         }
     }
     tickets(limit: $limit, page: $page, filter: $filter, sort: $sort) @include(if: $single) {
@@ -21,6 +25,61 @@ query tickets($limit: Int, $page: Int, $filter: TicketsFilter, $sort: TicketsSor
         items {
             __typename
             ID
+            address {
+                __typename
+                building
+                city
+                countryIso
+                postalCode
+                street
+            }
+            addressRemarks
+            employee {
+                __typename
+                displayName
+            }
+            files {
+                __typename
+                image
+                url
+                thumbUrl: url(size: THUMBNAIL)
+            }
+            issue
+            number
+            priority {
+                __typename
+                name
+            }
+            status {
+                __typename
+                createdAt
+                status
+                displayName
+                scheduledOn
+                scheduledTo
+                startedOn
+                finishedAt
+            }
+            type {
+                __typename
+                name
+            }
+            payment {
+                __typename
+                amountGross
+                amountNet
+                hoursSpend
+                paid
+                paymentGross
+                paymentNet
+                type
+            }
+            actions {
+                __typename
+                performedAt
+                remarks
+                hoursSpend
+            }
         }
     }
 }

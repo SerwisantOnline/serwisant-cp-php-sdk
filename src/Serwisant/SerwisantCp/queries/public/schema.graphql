@@ -61,13 +61,12 @@ type CustomerPanelConfig {
     caPanelToken: String
     "Service currency, all API prices and other money values are in this currency"
     currency: Currency!
+    orderDictModel: Boolean!
     showOrderProgressInfo: Boolean!
-    timeZone: String!
 }
 
 type Dictionary {
     name: String!
-    type: DictionaryType!
 }
 
 "Error from mutation"
@@ -237,7 +236,6 @@ type Repair {
     serviceSupplier: ServiceSupplier!
     status: RepairStatus!
     summary: RepairSummary
-    timeZone: String!
     type: Dictionary!
     vendor: String
     warranty: Boolean!
@@ -395,17 +393,6 @@ enum CustomerType {
     BUSINESS
     "Person"
     PERSONAL
-}
-
-enum DictionaryType {
-    "Type of component from inventory"
-    COMPONENT_TYPE
-    "Group od customers"
-    CUSTOMER_GROUP
-    "Repaired equipment types"
-    REPAIR_SUBJECT_TYPE
-    "Category of ticket"
-    TICKET_CATEGORY
 }
 
 enum ImageSize {
@@ -603,12 +590,13 @@ input PhoneInput {
 }
 
 
-"An ISO 8601-encoded date"
+"An ISO 8601-encoded date, eg. 2000-01-01, YYYY-MM-DD"
 scalar Date
 
 "An ISO 8601-encoded datetime"
 scalar DateTime
 
+"A reference to other, related entity or primary key of updated entity. 8 or more chars, uniq in scope of particular entity."
 scalar HashID
 
 "A decimal number represents amount of money."

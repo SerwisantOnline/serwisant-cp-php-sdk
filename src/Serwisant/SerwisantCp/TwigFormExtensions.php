@@ -81,8 +81,9 @@ class TwigFormExtensions extends TwigExtensions
     }
 
     $html = '';
+    $type = $options->get('type', '');
 
-    switch ($options->get('type', '')) {
+    switch ($type) {
       case 'hidden':
         $html .= "<input type='{$options->get('type')}' id='{$id}' name='{$name}' value='{$value}'>";
         break;
@@ -137,14 +138,19 @@ class TwigFormExtensions extends TwigExtensions
         break;
 
       case 'checkbox':
-        $class = "{$options->get('class', 'form-check-input')}{$class_error}";
+      case 'switch':
+        if ($type == 'switch') {
+          $class = "{$options->get('class', 'form-check form-switch form-switch-md')}";
+        } else {
+          $class = "{$options->get('class', 'form-check')}";
+        }
         if ($post_data->get($argument, false)) {
           $checked = "checked='checked'";
         } else {
           $checked = "";
         }
-        $html .= '<div class="form-check form-switch form-switch-md">';
-        $html .= "<input type='checkbox' {$checked} id={$id} class='form-check-input' name='{$name}' value='{$value}' data-bs-content='{$error_title}' title='{$caption}'>";
+        $html .= "<div class=\"{$class}\">";
+        $html .= "<input type='checkbox' {$checked} id={$id} class='form-check-input{$class_error}' name='{$name}' value='{$value}' data-bs-content='{$error_title}' title='{$caption}'>";
         if ($caption) {
           $html .= "<label for='{$id}' class='form-check-label'>{$caption}</label>";
         }

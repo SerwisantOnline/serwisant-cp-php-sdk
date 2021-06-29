@@ -1,21 +1,21 @@
 const fs = require('fs');
 const path = require('path');
 
-function mkdir() {
+function mkdir(dir) {
   let app_dir = process.cwd();
-  fs.mkdir(path.join(app_dir, 'public/assets'), (err) => {
+  fs.mkdir(path.join(app_dir, dir), (err) => {
     if (err && err.code !== 'EEXIST') {
       throw err;
     }
-    console.log('mkdir public/assets');
+    console.log('mkdir ' + dir);
   });
 }
 
-function copy(file, prefix = '') {
+function copy(file, prefix = '', to_dir = 'public/assets') {
   let app_dir = process.cwd();
   let file_parts = file.split('/');
   let file_name = file_parts[file_parts.length - 1]
-  let target = path.join(app_dir, 'public/assets', prefix + file_name);
+  let target = path.join(app_dir, to_dir, prefix + file_name);
   try {
     fs.unlinkSync(target)
   } catch (err) {
@@ -39,6 +39,7 @@ function with_files(in_dir, perform) {
 }
 
 mkdir('public/assets')
+mkdir('public/webfonts')
 
 copy('node_modules/lodash/lodash.min.js')
 
@@ -58,6 +59,11 @@ copy('node_modules/filepond/dist/filepond.min.js')
 copy('node_modules/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.js')
 copy('node_modules/filepond/dist/filepond.min.css')
 copy('node_modules/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css')
+
+copy('node_modules/@fortawesome/fontawesome-free/css/all.min.css', 'fa-')
+with_files('node_modules/@fortawesome/fontawesome-free/webfonts', function (file) {
+  copy(file, '', 'public/webfonts')
+})
 
 with_files('vendor/serwisant/serwisant-cp/assets', function (file) {
   copy(file)

@@ -1,0 +1,14 @@
+<h4>{{ thread.subject }}</h4>
+
+<p>
+    {% for recipient in thread.recipients %}
+        {{ recipient.displayName }}
+    {% endfor %}
+</p>
+
+{% for message in thread.messages %}
+    <hr>
+    <p>{{ message.sender.displayName }}</p>
+    <p>{{ message.createdAt | format_datetime }}</p>
+    {{ message.content | raw }}
+{% endfor %}

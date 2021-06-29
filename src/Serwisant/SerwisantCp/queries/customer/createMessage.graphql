@@ -1,0 +1,10 @@
+mutation createMessage($message: MessageInput!) {
+    createMessage(message: $message) {
+        __typename
+        errors {
+            __typename
+            argument
+            code
+        }
+    }
+}

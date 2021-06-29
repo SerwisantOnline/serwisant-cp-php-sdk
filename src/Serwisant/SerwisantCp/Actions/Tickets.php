@@ -2,10 +2,12 @@
 
 namespace Serwisant\SerwisantCp\Actions;
 
-use Serwisant\SerwisantCp\Action;
-use Serwisant\SerwisantCp\ActionFormHelpers;
+use Serwisant\SerwisantApi\Types\SchemaCustomer\RepairsFilterType;
+use Serwisant\SerwisantApi\Types\SchemaCustomer\TicketsFilter;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\TicketsSort;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\TicketInput;
+use Serwisant\SerwisantCp\Action;
+use Serwisant\SerwisantCp\ActionFormHelpers;
 
 class Tickets extends Action
 {
@@ -22,6 +24,23 @@ class Tickets extends Action
       'tickets' => $tickets
     ];
     return $this->renderPage('tickets.html.twig', $variables);
+  }
+
+  public function show($id)
+  {
+    $this->checkModuleActive();
+
+    $filter = new TicketsFilter(['type' => RepairsFilterType::ID, 'ID' => $id]);
+    $result = $this->apiCustomer()->customerQuery()->tickets(null, null, $filter, null, ['single' => true]);
+    if (count($result->items) !== 1) {
+      $this->notFound();
+      return null;
+    }
+    $variables = [
+      'ticket' => $result->items[0],
+    ];
+
+    return $this->renderPage('ticket.html.twig', $variables);
   }
 
   public function new($errors = [])

@@ -66,11 +66,15 @@ type CustomerAgreement {
 }
 
 type CustomerMutation {
+    createMessage(message: MessageInput!): MessageCreationResult
+    createMessageReply(content: String, message: HashID!): MessageReplyCreationResult
     "Create new repair as customer. Field `temporaryFiles` takes IDs of temporary files create via `createTemporaryFile `. Temporary files will be attached to repair and persisted."
     createRepair(additionalItems: [RepairItemInput!], repair: RepairInput!, temporaryFiles: [HashID!]): RepairCreationResult
     "Create a temporary file - file can be attached to created repair and will be persisted. It's useful to scenarios, where files must be uploaded before creation of eg. repair - and persisted with repair."
     createTemporaryFile(file: FileInput!): TemporaryFileCreationResult
     createTicket(temporaryFiles: [HashID!], ticket: TicketInput!): TicketCreationResult
+    markMessageRead(message: HashID!): Boolean
+    updateViewer(addresses: [AddressUpdateInput!], agreements: [CustomerAgreementUpdateInput!], customer: CustomerUpdateInput): ViewerUpdateResult
 }
 
 type CustomerQuery {
@@ -112,14 +116,42 @@ type File {
 }
 
 type Message {
+    ID: HashID!
     content: String!
+    createdAt: DateTime!
+    sender: MessageSender!
+    thread: MessageThread!
+}
+
+type MessageCreationResult {
+    errors: [Error!]
+    message: Message
+}
+
+type MessageRecipient {
+    displayName: String!
+    type: MessageRecipientType!
+}
+
+type MessageReplyCreationResult {
+    errors: [Error!]
+    message: Message
+}
+
+type MessageSender {
+    displayName: String!
+    type: MessageSenderType!
 }
 
 type MessageThread {
     ID: HashID!
+    allMessages: Int!
     createdAt: DateTime!
+    lastMessageAt: DateTime!
     messages: [Message!]!
+    recipients: [MessageRecipient!]!
     subject: String
+    unreadMessages: Int!
 }
 
 type MessagesResult {
@@ -168,7 +200,6 @@ type Repair {
     serviceSupplier: ServiceSupplier!
     status: RepairStatus!
     summary: RepairSummary
-    timeZone: String!
     type: Dictionary!
     vendor: String
     warranty: Boolean!
@@ -284,14 +315,23 @@ type TemporaryFileCreationResult {
 
 type Ticket {
     ID: HashID!
+    actions: [TicketAction!]!
     address: Address
     addressRemarks: String
     employee: Employee
+    files: [File!]!
     issue: String!
     number: String!
+    payment: TicketPayment!
     priority: Priority!
     status: TicketStatus!
-    type: Dictionary!
+    type: Dictionary
+}
+
+type TicketAction {
+    hoursSpend: Decimal
+    performedAt: DateTime!
+    remarks: String
 }
 
 type TicketCreationResult {
@@ -299,16 +339,24 @@ type TicketCreationResult {
     ticket: Ticket
 }
 
+type TicketPayment {
+    amountGross: Money
+    amountNet: Money
+    hoursSpend: Decimal
+    paid: Boolean!
+    paymentGross: Money
+    paymentNet: Money
+    type: TicketPaymentType
+}
+
 type TicketStatus {
     createdAt: DateTime!
     "Human readeable status"
     displayName: String!
-    "Time of planned (agreed) finish"
-    finish: DateTime
     "Real finish time, remarks are the same as for `started_on`"
     finishedAt: DateTime
-    "Time of planned (agreed) start, this is not real start date"
-    start: DateTime
+    scheduledOn: DateTime
+    scheduledTo: DateTime
     "Real start time based on status change - please note: if ticket status will not be updated or it will be updated post-factum date may be inaccurate"
     startedOn: DateTime
     "Ticket status as enum, use it to comparisons or other logic"
@@ -324,11 +372,20 @@ type Viewer {
     customer: Customer!
 }
 
+type ViewerUpdateResult {
+    errors: [Error!]
+    viewer: Viewer
+}
+
 enum AddressType {
     BILLING
     BUSINESS
     HOME
     OTHER
+}
+
+enum CountryCode {
+    PL
 }
 
 enum CustomFieldForm {
@@ -384,6 +441,18 @@ enum DictionaryType {
 enum ImageSize {
     ORIGINAL
     THUMBNAIL
+}
+
+enum MessageRecipientType {
+    CUSTOMER
+    EMPLOYEE
+    SERVICE_SUPPLIER
+}
+
+enum MessageSenderType {
+    CUSTOMER
+    EMPLOYEE
+    SERVICE_SUPPLIER
 }
 
 enum MessagesFilterType {
@@ -506,6 +575,14 @@ enum TaxPrefix {
     SK
 }
 
+enum TicketPaymentType {
+    CONTRACT
+    INSTANT_FIXED
+    INSTANT_TIME
+    SUBSCRIPTION_FIXED
+    SUBSCRIPTION_TIME
+}
+
 enum TicketState {
     ASSIGNED
     CANCELED
@@ -530,14 +607,48 @@ enum TicketsSort {
     STATUS
 }
 
+input AddressUpdateInput {
+    PK: HashID
+    building: String
+    city: String
+    countryIso: CountryCode
+    postalCode: String
+    street: String
+    type: AddressType
+}
+
 input CustomFieldValueInput {
     ID: HashID!
     value: String!
 }
 
+input CustomFieldValueUpdateInput {
+    ID: HashID
+    PK: HashID
+    value: String!
+}
+
+input CustomerAgreementUpdateInput {
+    ID: HashID
+    PK: HashID
+    accepted: Boolean!
+}
+
 input CustomerAgreementsFilter {
     ID: HashID
     types: [CustomerAgreementType!]
+}
+
+input CustomerUpdateInput {
+    companyName: String
+    customFields: [CustomFieldValueUpdateInput!]
+    email: String
+    password: String
+    person: String
+    phone: PhoneInput
+    taxId: String
+    taxPrefix: TaxPrefix
+    type: CustomerType
 }
 
 input DictionaryEntriesFilter {
@@ -553,9 +664,19 @@ input FileInput {
     payload: String!
 }
 
+input MessageInput {
+    content: String
+    subject: String
+}
+
 input MessagesFilter {
     ID: HashID
     type: MessagesFilterType!
+}
+
+input PhoneInput {
+    countryPrefix: String!
+    number: String!
 }
 
 input PrioritiesFilter {
@@ -563,14 +684,19 @@ input PrioritiesFilter {
 }
 
 input RepairInput {
+    "How repair will be returned from service to customer"
     collection: RepairTransportType
     customFields: [CustomFieldValueInput!]
+    "How repair will be delivered to service"
     delivery: RepairTransportType
     issue: String
     model: String
+    "ID passed from one Address entity points to address where from repair will be picked up"
     pickUpAddress: HashID
+    "ID passed from one Address entity points to address where repair will be returned"
     returnAddress: HashID
     serial: String
+    "ID passed from one of REPAIR_SUBJECT_TYPE Dictionary entity"
     type: HashID!
     vendor: String
     warranty: Boolean
@@ -615,6 +741,10 @@ scalar Date
 "An ISO 8601-encoded datetime"
 scalar DateTime
 
+"Represents decimal."
+scalar Decimal
+
+"A reference to other, related entity or primary key of updated entity. 8 or more chars, uniq in scope of particular entity."
 scalar HashID
 
 "A decimal number represents amount of money."

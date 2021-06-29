@@ -12,9 +12,6 @@ class ApplicationRouter extends Router
 
   public function createRoutes(Silex\Application $app)
   {
-    $app->get('/heartbeat', function () {
-      return 'OK';
-    });
     $this->createCaRoutes($app);
     $this->createCpRoutes($app);
   }
@@ -129,6 +126,12 @@ class ApplicationRouter extends Router
     })
       ->bind('tickets');
 
+    $app->get('/ticket/{id}', function (Request $request, $id) use ($app) {
+      return (new Actions\Tickets($app, $request))->show($id);
+    })
+      ->assert('id', self::HASHID_ASSERTION)
+      ->bind('ticket');
+
     $app->get('/tickets/create', function (Request $request) use ($app) {
       return (new Actions\Tickets($app, $request))->new();
     })
@@ -146,6 +149,22 @@ class ApplicationRouter extends Router
       return (new Actions\Messages($app, $request))->index();
     })
       ->bind('messages');
+
+    $app->get('/message/{id}', function (Request $request, $id) use ($app) {
+      return (new Actions\Messages($app, $request))->show($id);
+    })
+      ->assert('id', self::HASHID_ASSERTION)
+      ->bind('message');
+
+    $app->get('/messages/create', function (Request $request) use ($app) {
+      return (new Actions\Messages($app, $request))->new();
+    })
+      ->bind('new_message');
+
+    $app->post('/messages/create', function (Request $request) use ($app) {
+      return (new Actions\Messages($app, $request))->create();
+    })
+      ->bind('create_message');
   }
 
   private function createCaRoutes(Silex\Application $app)

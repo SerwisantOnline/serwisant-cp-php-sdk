@@ -64,6 +64,12 @@ pl_PL:
     repairs: "Naprawy"
     tickets: "Zgłoszenia"
     messages: "Wiadomości"
+  payment_types:
+    INSTANT_FIXED: "Płatność po zakończeniu, za zlecenie"
+    INSTANT_TIME: "Płatność po zakończeniu, stawka godzinowa"
+    SUBSCRIPTION_FIXED: "Płatność na koniec miesiąca, za zlecenie"
+    SUBSCRIPTION_TIME: "Płatność na koniec miesiąca, stawka godzinowa"
+    CONTRACT: "Płatność na koniec miesiąca, abonament"
 
   login:
     title: "Zaloguj się!"
@@ -220,6 +226,11 @@ pl_PL:
     submit: "Dodaj naprawę"
   tickets:
     create_ticket: "Dodaj zgłoszenie awarii"
+    number: "Numer zgłoszenia"
+    employee: "Odpowiedzialny pracownik"
+    type: "Rodzaj"
+    status: "Stan"
+    details: "Szczegóły"
   ticket_new:
     title: "Dodaj zgłoszenie awarii"
     description: "Aby zgłosić nową usterkę, awarię lub inny problem wymagający ingerencji serwisu u ciebie uzupełnij
