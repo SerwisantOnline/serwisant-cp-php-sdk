@@ -1,0 +1,10 @@
+mutation createMessageReply($message: HashID!, $content: String!) {
+    createMessageReply(message: $message, content: $content) {
+        __typename
+        errors {
+            __typename
+            argument
+            code
+        }
+    }
+}

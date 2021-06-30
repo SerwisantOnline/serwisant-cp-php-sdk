@@ -16,7 +16,16 @@ class Repairs extends Action
   {
     $this->checkModuleActive();
 
-    $repairs = $this->apiCustomer()->customerQuery()->repairs($this->getListLimit(), $this->request->get('page'), null, RepairsSort::DATE_UPDATED, ['list' => true]);
+    $limit = $this->getListLimit();
+    $page = $this->request->get('page', 1);
+    $filter = new RepairsFilter(['type' => RepairsFilterType::ALL]);
+    $sort = RepairsSort::DATE_UPDATED;
+
+    $repairs = $this
+      ->apiCustomer()
+      ->customerQuery()
+      ->repairs($limit, $page, $filter, $sort, ['list' => true]);
+
     $variables = [
       'repairs' => $repairs
     ];

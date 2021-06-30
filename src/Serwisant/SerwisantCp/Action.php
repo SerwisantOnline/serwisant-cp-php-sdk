@@ -57,11 +57,13 @@ class Action
 
   protected function renderPage(string $template, array $vars = [], $require_user = true)
   {
+
     if ($this->debug) {
       error_log("Rendering {$template}");
     }
     $inner_vars = [
       'pageTitle' => '',
+      'currentAction' => array_slice(explode("\\", get_class($this)), -1)[0],
       'locale' => $this->app['locale'],
       'locale_ISO' => explode('_', $this->app['locale'])[0],
     ];
@@ -90,7 +92,7 @@ class Action
 
   protected function getListLimit()
   {
-    return 20;
+    return 15;
   }
 
   protected function generateUrl($to, $to_params = [], $data = [])

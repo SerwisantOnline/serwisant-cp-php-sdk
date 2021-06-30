@@ -1,0 +1,13 @@
+<div class="bg-light p-5 rounded mt-3">
+    <h1>{{ t(_self, 'title') }}</h1>
+    <p class="lead">{{ t(_self, 'description', {'subject': thread.subject}) }}</p>
+
+    <form method="post" action="{{ path('create_message_reply', {'id': thread.ID}) }}">
+        <div class="mb-3">
+            {{ form_field({type: 'textarea', argument: 'message.content', caption: t(_self, 'content')}, form_params, errors) }}
+        </div>
+
+        <a href="{{ path('message', {'id': thread.ID}) }}" class="btn btn-secondary mb-3">{{ t(_self, 'cancel') }}</a>
+        <button type="submit" class="btn btn-primary mb-3">{{ t(_self, 'submit') }}</button>
+    </form>
+</div>

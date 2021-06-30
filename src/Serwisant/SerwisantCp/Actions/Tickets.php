@@ -4,6 +4,7 @@ namespace Serwisant\SerwisantCp\Actions;
 
 use Serwisant\SerwisantApi\Types\SchemaCustomer\RepairsFilterType;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\TicketsFilter;
+use Serwisant\SerwisantApi\Types\SchemaCustomer\TicketsFilterType;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\TicketsSort;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\TicketInput;
 use Serwisant\SerwisantCp\Action;
@@ -15,10 +16,15 @@ class Tickets extends Action
   {
     $this->checkModuleActive();
 
+    $limit = $this->getListLimit();
+    $page = $this->request->get('page', 1);
+    $filter = new TicketsFilter(['type' => TicketsFilterType::ALL]);
+    $sort = TicketsSort::CREATED_AT;
+
     $tickets = $this
       ->apiCustomer()
       ->customerQuery()
-      ->tickets($this->getListLimit(), $this->request->get('page'), null, TicketsSort::CREATED_AT, ['list' => true]);
+      ->tickets($limit, $page, $filter, $sort, ['list' => true]);
 
     $variables = [
       'tickets' => $tickets

@@ -36,18 +36,20 @@
                 <ul class="navbar-nav me-auto mb-2 mb-md-0">
                     {% if configuration.caPanelRepairs %}
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page"
+                            <a class="nav-link {{ currentAction == 'Repairs' ? 'active' : '' }}" aria-current="page"
                                href="{{ path('repairs') }}">{{ t(_self, 'repairs') }}</a>
                         </li>
                     {% endif %}
                     {% if configuration.caPanelTickets %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ path('tickets') }}">{{ t(_self, 'tickets') }}</a>
+                            <a class="nav-link {{ currentAction == 'Tickets' ? 'active' : '' }}"
+                               href="{{ path('tickets') }}">{{ t(_self, 'tickets') }}</a>
                         </li>
                     {% endif %}
                     {% if configuration.caPanelCommunication %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ path('messages') }}">{{ t(_self, 'messages') }}</a>
+                            <a class="nav-link {{ currentAction == 'Messages' ? 'active' : '' }}"
+                               href="{{ path('messages') }}">{{ t(_self, 'messages') }}</a>
                         </li>
                     {% endif %}
                 </ul>

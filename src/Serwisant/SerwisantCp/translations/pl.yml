@@ -55,6 +55,7 @@ pl_PL:
       odbioru przedmiotu naprawy lub o jego wysyłce."
     order_diagnosis_accepted: "Zaakceptowano koszty naprawy, serwis niebawem rozpocznie pracę nad twoim zgłoszeniem."
     repair_creation_successful: "Utworzono naprawę."
+    message_creation_successful: "Pomyślnie wysłano twoją wiadomość"
   layout:
     me_edit: "Edytuj dane"
     me_logout: "Wyloguj"
@@ -74,7 +75,7 @@ pl_PL:
   login:
     title: "Zaloguj się!"
     login_description: "Zanim rozpoczniesz korzystanie z aplikacji powinieneś się zalogować."
-    signup_description:  "Jeśli nie masz danych do logowania możesz je utworzyć poprzez rejestrację swojego konta."
+    signup_description: "Jeśli nie masz danych do logowania możesz je utworzyć poprzez rejestrację swojego konta."
     signup: "Zarejestruj własne konto"
     login: "Login lub adres email"
     login_not_found: "Nie znaleziono konta - upewnij się, że podano login lub adres email konta które rejestrowałeś."
@@ -243,6 +244,28 @@ pl_PL:
     other_address: "Podaj inny adres"
     cancel: "Anuluj"
     submit: "Dodaj zgłoszenie"
+  ticket:
+    close: "Zamknij"
+    panel_info: "Ogólne informacje"
+    number: "Numer zgłoszenia"
+    employee: "Odpowiedzialny pracownik"
+    address: "Adres realizacji zgłoszenia"
+    group: "Grupa"
+    panel_payments: "Informacje o płatności"
+    payment_type: "Sposób zapłaty"
+    time: "Czas poświęcony na realizację zgłoszenia"
+    payment: "Do zapłaty"
+    paid: "Zapłacono"
+    panel_status: "Stan zgłoszenia"
+    priority: "Priorytet"
+    status: "Stan"
+    created: "Data przyjęcia zgłoszenia"
+    scheduled_on: "Planowana data rozpoczęcia pracy nad zgłoszeniem"
+    scheduled_to: "Planowana data zakończenia pracy nad zgłoszeniem"
+    started_on: "Data rozpoczęcia pracy"
+    finished_at: "Data zakończenia pracy"
+    panel_custom_form_fields: "Dodatkowe informacje"
+
   online_payment_by_token:
     method: "Wybierz metodę płatności"
     code_modal:
@@ -287,3 +310,28 @@ pl_PL:
         WAITING_FOR_PAYMENT: "Oczekuje na płatność"
         PAID: "Zapłacono"
         UNPAID: "Nie zapłacono"
+  messages:
+    create_message: "Napisz wiadomość"
+    subject: "Temat"
+    date: "Data"
+    read: "Czytaj wątek"
+  message:
+    close: "Zamknij"
+    create_message_reply: "Napisz odpowiedź"
+    service: "Serwis"
+    employee: "Pracownik serwisu"
+    you: "Ty"
+  message_new:
+    title: "Napisz nową wiadomość"
+    description: "Za pomocą tego formularza możesz utworzyć wiadomość, która trafi do serwisu. W treści wiadomości
+      przekaż wszystkie niezbędne informacje."
+    subject: "Temat wiadomości"
+    content: "Treść wiadomości"
+    cancel: "Anuluj"
+    submit: "Wyślij wiadomość"
+  message_new_reply:
+    title: "Odpowiedź na wiadomość"
+    description: "Odpowiadasz na wiadomość o tytule %{subject}"
+    content: "Treść odpowiedzi"
+    cancel: "Anuluj"
+    submit: "Wyślij odpowiedź"

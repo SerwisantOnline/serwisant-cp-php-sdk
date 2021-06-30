@@ -18,17 +18,16 @@ class ApplicationRouter extends Router
 
   private function createCpRoutes(Silex\Application $app)
   {
-    $app->get('/', function (Request $request) use ($app) {
-      return (new Actions\Dashboard($app, $request))->index();
-    })
-      ->bind('dashboard');
+    $this->createLayoutRoutes($app);
+    $this->createUserRoutes($app);
+    $this->createTemporaryFilesRoutes($app);
+    $this->createRepairsRoutes($app);
+    $this->createTicketsRoutes($app);
+    $this->createMessagesRoutes($app);
+  }
 
-    $app->get('/agreement/{id}', function (Request $request, $id) use ($app) {
-      return (new Actions\Agreement($app, $request))->show($id);
-    })
-      ->assert('id', self::HASHID_ASSERTION)
-      ->bind('agreement');
-
+  private function createUserRoutes(Silex\Application $app)
+  {
     $app->get('/login', function (Request $request) use ($app) {
       return (new Actions\Login($app, $request))->new();
     })
@@ -77,7 +76,10 @@ class ApplicationRouter extends Router
       return (new Actions\PasswordReset($app, $request))->createPassword();
     })
       ->bind('set_password');
+  }
 
+  private function createTemporaryFilesRoutes(Silex\Application $app)
+  {
     $app->post('/temporary_file', function (Request $request) use ($app) {
       return (new Actions\TemporaryFile($app, $request))->create();
     });
@@ -89,10 +91,6 @@ class ApplicationRouter extends Router
     $app->get('/temporary_file', function (Request $request) use ($app) {
       return (new Actions\TemporaryFile($app, $request))->show();
     });
-
-    $this->createRepairsRoutes($app);
-    $this->createTicketsRoutes($app);
-    $this->createMessagesRoutes($app);
   }
 
   private function createRepairsRoutes(Silex\Application $app)
@@ -165,6 +163,18 @@ class ApplicationRouter extends Router
       return (new Actions\Messages($app, $request))->create();
     })
       ->bind('create_message');
+
+    $app->get('/message/{id}/create', function (Request $request, $id) use ($app) {
+      return (new Actions\Messages($app, $request))->newReply($id);
+    })
+      ->assert('id', self::HASHID_ASSERTION)
+      ->bind('new_message_reply');
+
+    $app->post('/message/{id}/create', function (Request $request, $id) use ($app) {
+      return (new Actions\Messages($app, $request))->createReply($id);
+    })
+      ->assert('id', self::HASHID_ASSERTION)
+      ->bind('create_message_reply');
   }
 
   private function createCaRoutes(Silex\Application $app)
@@ -251,5 +261,19 @@ class ApplicationRouter extends Router
     $public_api = new Api($app, $request, $app['access_token_public']);
     $result = $public_api->publicQuery()->secretToken($secret_token);
     return $result->subjectType;
+  }
+
+  private function createLayoutRoutes(Silex\Application $app)
+  {
+    $app->get('/', function (Request $request) use ($app) {
+      return (new Actions\Dashboard($app, $request))->index();
+    })
+      ->bind('dashboard');
+
+    $app->get('/agreement/{id}', function (Request $request, $id) use ($app) {
+      return (new Actions\Agreement($app, $request))->show($id);
+    })
+      ->assert('id', self::HASHID_ASSERTION)
+      ->bind('agreement');
   }
 }

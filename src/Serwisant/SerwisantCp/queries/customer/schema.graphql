@@ -81,7 +81,7 @@ type CustomerQuery {
     customFields(form: CustomFieldForm!): [CustomField!]!
     customerAgreements(filter: CustomerAgreementsFilter): [CustomerAgreement!]!
     dictionaryEntries(filter: DictionaryEntriesFilter): [Dictionary!]!
-    messages(filter: MessagesFilter = {type : ALL}, limit: Int = 20, page: Int = 1): MessagesResult!
+    messages(filter: MessagesFilter = {type : ALL}, limit: Int = 20, page: Int = 1, sort: MessagesSort): MessagesResult!
     priorities(filter: PrioritiesFilter): [Priority!]!
     repairs(filter: RepairsFilter = {type : OPEN}, limit: Int = 20, page: Int = 1, sort: RepairsSort): RepairsResult!
     "Return details of temporary files identified by ID passed in arguments."
@@ -318,6 +318,8 @@ type Ticket {
     actions: [TicketAction!]!
     address: Address
     addressRemarks: String
+    "Will return a list of values for custom fields"
+    customFields: [CustomFieldValue!]!
     employee: Employee
     files: [File!]!
     issue: String!
@@ -459,6 +461,10 @@ enum MessagesFilterType {
     ALL
     ARCHIVED
     ID
+}
+
+enum MessagesSort {
+    DATE_UPDATED
 }
 
 enum OrderTimeStatus {

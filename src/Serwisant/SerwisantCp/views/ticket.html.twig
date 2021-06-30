@@ -3,7 +3,6 @@
 <div class="bg-light p-5 rounded mt-3">
     <div class="row">
         <div class="col-md-6">
-
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <span class="pull-right"></span>
@@ -53,7 +52,7 @@
                         <td colspan="2">{{ ticket.payment.hoursSpend ? ticket.payment.hoursSpend : '' }}</td>
                     </tr>
                     <tr>
-                        <td class="column-definition">{{ t(_self, 'payment_net') }}</td>
+                        <td class="column-definition">{{ t(_self, 'payment') }}</td>
                         <td>
                             {% if not ticket.payment.paymentNet is null %}
                                 {{ ticket.payment.paymentNet | format_currency }}
@@ -75,9 +74,23 @@
                 </table>
             </div>
 
+            <div class="panel panel-default">
+                <div class="panel-heading"><span class="glyphicon glyphicon-info-sign icon-margin pull-right"></span>
+                    {{ t(_self, 'panel_custom_form_fields') }}
+                </div>
+                <table class="table table-bordered">
+                    <tbody>
+                    {% for field in ticket.customFields %}
+                        <tr>
+                            <td class="column-definition">{{ field.field.name }}</td>
+                            <td>{{ custom_form_field_value(field.value, field.field.type) | raw }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
         <div class="col-md-6">
-
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <span class="pull-right"></span>
@@ -123,10 +136,6 @@
 
             {% if ticket.files %}
                 <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <span class="glyphicon glyphicon-file icon-margin pull-right"></span>
-                        {{ t(_self, 'title') }}
-                    </div>
                     <div class="panel-body">
                         {% for file in ticket.files %}
                             {% if file.image %}
@@ -140,8 +149,6 @@
                     </div>
                 </div>
             {% endif %}
-
-
         </div>
     </div>
 </div>

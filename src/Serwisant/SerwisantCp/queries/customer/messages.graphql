@@ -20,6 +20,7 @@ query messages($limit: Int, $page: Int, $filter: MessagesFilter, $list: Boolean 
             recipients {
                 __typename
                 displayName
+                type
             }
             messages {
                 __typename
@@ -28,6 +29,7 @@ query messages($limit: Int, $page: Int, $filter: MessagesFilter, $list: Boolean 
                 sender {
                     __typename
                     displayName
+                    type
                 }
             }
         }

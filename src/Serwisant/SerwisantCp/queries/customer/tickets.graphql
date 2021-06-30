@@ -80,6 +80,15 @@ query tickets($limit: Int, $page: Int, $filter: TicketsFilter, $sort: TicketsSor
                 remarks
                 hoursSpend
             }
+            customFields {
+                __typename
+                field {
+                    __typename
+                    name
+                    type
+                }
+                value
+            }
         }
     }
 }
