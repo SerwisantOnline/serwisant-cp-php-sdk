@@ -1,9 +1,65 @@
-query {
-    viewer {
+query viewer($basic: Boolean = false, $complete: Boolean = false) {
+    viewer @include(if: $basic) {
         __typename
         customer {
             __typename
             displayName
+        }
+    }
+    viewer @include(if: $complete) {
+        __typename
+        customer {
+            __typename
+            addresses {
+                __typename
+                ID
+                building
+                city
+                countryIso
+                postalCode
+                street
+                type
+            }
+            agreements {
+                __typename
+                ID
+                accepted
+                agreement {
+                    __typename
+                    ID
+                    content
+                    description
+                    title
+                    type
+                    visibleBusiness
+                    visiblePersonal
+                }
+            }
+            companyName
+            customFields {
+                __typename
+                ID
+                value
+                field {
+                    __typename
+                    ID
+                    name
+                    description
+                    type
+                    selectOptions
+                    required
+                }
+            }
+            email
+            person
+            phone {
+                __typename
+                countryPrefix
+                number
+            }
+            taxId
+            taxPrefix
+            type
         }
     }
 }

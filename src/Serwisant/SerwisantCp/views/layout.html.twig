@@ -24,7 +24,7 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="{{ path('dashboard') }}">{{ subscriber.displayName }}</a>
+            <a class="navbar-brand" href="{{ path('dashboard') }}">{{ subscriber.serviceSupplier.displayName }}</a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarsExampleDefault"
@@ -59,16 +59,16 @@
                     <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown"
                        aria-expanded="false">{{ me.customer.displayName }} </a>
                     <ul class="dropdown-menu" aria-labelledby="dropdown01">
-                        <li><a class="dropdown-item" href="#">{{ t(_self, 'me_edit') }}</a></li>
+                        <li><a class="dropdown-item" href="{{ path('viewer') }}">{{ t(_self, 'viewer') }}</a></li>
                         <li><a class="dropdown-item"
-                               href="{{ path('destroy_session') }}">{{ t(_self, 'me_logout') }}</a>
+                               href="{{ path('destroy_session') }}">{{ t(_self, 'logout') }}</a>
                         </li>
                     </ul>
                 </li>
             </ul>
         </div>
     </nav>
-    <div class="m-2"></div>
+    <div class="mb-3"></div>
 
 {% endif %}
 
@@ -76,7 +76,7 @@
     <div class="container">
         <div class="alert alert-danger p-3 rounded mt-3 text-center" role="alert">
             {% for alert in app.flash.getErrors() %}
-                <p>{{ alert }}</p>
+                <p class="p_alert">{{ alert }}</p>
             {% endfor %}
         </div>
     </div>
@@ -86,7 +86,7 @@
     <div class="container">
         <div class="alert alert-success p-3 rounded mt-3 text-center" role="alert">
             {% for alert in app.flash.getMessages() %}
-                <p>{{ alert }}</p>
+                <p class="p_alert">{{ alert }}</p>
             {% endfor %}
         </div>
     </div>
@@ -147,6 +147,9 @@
 <script src="/assets/filepond.min.js"></script>
 <script src="/assets/filepond-plugin-image-preview.min.js"></script>
 <script src="/assets/DateTimePicker.min.js"></script>
+
+<script src="/assets/password_strength.js"></script>
+<script src="/assets/jquery_strength.js"></script>
 
 <script src="/assets/layout.js"></script>
 {% if js_files is defined %}

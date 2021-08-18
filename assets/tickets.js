@@ -29,6 +29,18 @@ Application.Tickets.Form = function () {
     })
   });
   pond.appendTo(document.getElementById('create_repair_file_uploader'));
+
+  var otherAddressFunc = function () {
+    var addressRadio = $('input[name="ticket[address]"]:checked');
+    if (!addressRadio.val()) {
+      $('.address-other-container').slideDown()
+    } else {
+      $('.address-other-container').slideUp()
+    }
+  }
+
+  $('input[name="ticket[address]"]').change(otherAddressFunc);
+  otherAddressFunc();
 }
 
 $(document).ready(function () {

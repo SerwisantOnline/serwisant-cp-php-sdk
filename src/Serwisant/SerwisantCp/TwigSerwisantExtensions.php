@@ -56,6 +56,18 @@ class TwigSerwisantExtensions extends TwigExtensions
       return "<span class='{$class}'>{$days_from_start}</span>";
     }));
 
+    $this->twig->addFunction(new TwigFunction('customer_agreement_class', function ($customer_agreement) {
+      if ($customer_agreement->visibleBusiness && $customer_agreement->visiblePersonal) {
+        return '';
+      } elseif ($customer_agreement->visiblePersonal) {
+        return 'personal_container';
+      } elseif ($customer_agreement->visibleBusiness) {
+        return 'business_container undisplayed';
+      } else {
+        return '';
+      }
+    }));
+
     return $this->twig;
   }
 }

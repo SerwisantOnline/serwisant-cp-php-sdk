@@ -18,4 +18,23 @@ query {
         name
         type
     }
+    viewer: viewer {
+        __typename
+        customer {
+            __typename
+            address {
+                __typename
+                ID
+            }
+            addresses {
+                __typename
+                building
+                city
+                countryIso
+                postalCode
+                street
+                ID
+            }
+        }
+    }
 }

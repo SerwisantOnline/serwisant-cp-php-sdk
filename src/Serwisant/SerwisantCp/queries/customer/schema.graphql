@@ -27,13 +27,19 @@ type CustomField {
 }
 
 type CustomFieldValue {
+    "Primary key of particular field value to be used for update. NULL value means it's a field created after this entity creation."
+    ID: HashID
+    "Entity of field definition."
     field: CustomField!
+    "Value of field for this particular object - it's always a string here - look into `field` definition to get proper casting."
     value: String
 }
 
 type Customer {
     address: Address
     addresses: [Address!]!
+    "Customer agreements, including any new agreement customer should take (this is complete agreements list)"
+    agreements: [CustomerAgreementValue!]!
     avatar: File
     companyName: String
     "Will return a list of values for custom fields"
@@ -44,7 +50,6 @@ type Customer {
     isAnonymous: Boolean!
     person: String
     phone: Phone
-    "Service supplier who is default for that customer"
     serviceSupplier: ServiceSupplier!
     taxId: String
     taxPrefix: TaxPrefix
@@ -65,6 +70,15 @@ type CustomerAgreement {
     visiblePersonal: Boolean!
 }
 
+type CustomerAgreementValue {
+    "Primary key to be used to update agreement decision. NULL means this is a new created agreement and customer has no opportunity to make decision."
+    ID: HashID
+    "True mean customer accepted agreement"
+    accepted: Boolean!
+    "Entity of CustomerAgreement with all agreement details"
+    agreement: CustomerAgreement!
+}
+
 type CustomerMutation {
     createMessage(message: MessageInput!): MessageCreationResult
     createMessageReply(content: String, message: HashID!): MessageReplyCreationResult
@@ -78,6 +92,7 @@ type CustomerMutation {
 }
 
 type CustomerQuery {
+    autocomplete(query: String!, scope: AutocompleteScope!): [String!]!
     customFields(form: CustomFieldForm!): [CustomField!]!
     customerAgreements(filter: CustomerAgreementsFilter): [CustomerAgreement!]!
     dictionaryEntries(filter: DictionaryEntriesFilter): [Dictionary!]!
@@ -87,7 +102,6 @@ type CustomerQuery {
     "Return details of temporary files identified by ID passed in arguments."
     temporaryFiles(ID: [HashID!]!): [TemporaryFile!]!
     tickets(filter: TicketsFilter = {type : OPEN}, limit: Int = 20, page: Int = 1, sort: TicketsSort = ID): TicketsResult!
-    "Return information about currently logged in customer"
     viewer: Viewer!
 }
 
@@ -293,7 +307,9 @@ type SecretToken {
 }
 
 type ServiceSupplier {
+    "Main address"
     address: Address
+    "All given addresses, including a main one"
     addresses: [Address!]!
     avatar: File
     displayName: String!
@@ -371,7 +387,12 @@ type TicketsResult {
 }
 
 type Viewer {
+    "Current customer"
     customer: Customer!
+    "Service supplier dedicated for handling all repairs - it can be differ from main service supplier"
+    repairsServiceSupplier: ServiceSupplier
+    "Service supplier dedicated for handling ticketing - it can be differ from main service supplier"
+    ticketsServiceSupplier: ServiceSupplier
 }
 
 type ViewerUpdateResult {
@@ -384,6 +405,11 @@ enum AddressType {
     BUSINESS
     HOME
     OTHER
+}
+
+enum AutocompleteScope {
+    MODEL
+    VENDOR
 }
 
 enum CountryCode {
@@ -614,7 +640,7 @@ enum TicketsSort {
 }
 
 input AddressUpdateInput {
-    PK: HashID
+    ID: HashID
     building: String
     city: String
     countryIso: CountryCode
@@ -624,20 +650,22 @@ input AddressUpdateInput {
 }
 
 input CustomFieldValueInput {
-    ID: HashID!
+    "Field's primary key taken from customFields query"
+    customField: HashID
+    "Field's value relevant to definition - string, `1`/`0` for boolean or one of value from set (select)"
     value: String!
 }
 
 input CustomFieldValueUpdateInput {
     ID: HashID
-    PK: HashID
+    customField: HashID
     value: String!
 }
 
 input CustomerAgreementUpdateInput {
     ID: HashID
-    PK: HashID
     accepted: Boolean!
+    customerAgreement: HashID
 }
 
 input CustomerAgreementsFilter {

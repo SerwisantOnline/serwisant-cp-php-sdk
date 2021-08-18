@@ -43,6 +43,10 @@ Application.Repairs.Form = function () {
     })
   });
   pond.appendTo(document.getElementById('create_repair_file_uploader'));
+
+  Application.Ui.Autocomplete($('#repair_vendor'));
+  Application.Ui.Autocomplete($('#repair_model'));
+
 }
 
 $(document).ready(function () {

@@ -21,6 +21,10 @@ query {
         __typename
         customer {
             __typename
+            address {
+                __typename
+                ID
+            }
             addresses {
                 __typename
                 ID

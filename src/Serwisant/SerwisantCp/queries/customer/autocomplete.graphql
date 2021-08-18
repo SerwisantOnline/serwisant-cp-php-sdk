@@ -1,0 +1,3 @@
+query autocomplete($scope: AutocompleteScope!, $query: String!) {
+    autocomplete(scope: $scope, query: $query)
+}

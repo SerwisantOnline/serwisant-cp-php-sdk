@@ -2,7 +2,8 @@
 
 namespace Serwisant\SerwisantCp;
 
-use Serwisant\SerwisantApi\Types\SchemaCustomer\CustomFieldValueInput;
+use Adbar;
+
 
 class ActionFormHelpers
 {
@@ -17,13 +18,39 @@ class ActionFormHelpers
     return $date->format('c');
   }
 
+  public function mapAgreements($agreements_input)
+  {
+    if (!is_array($agreements_input)) {
+      return [];
+    }
+    return array_map(function ($f) {
+      $f = new Adbar\Dot($f);
+      $a = ['customerAgreement' => $f->get('customerAgreement'), 'accepted' => ($f->get('accepted') == '1')];
+      if ($f->get('ID')) {
+        $a['ID'] = $f->get('ID');
+        $klass = 'Serwisant\SerwisantApi\Types\SchemaCustomer\CustomerAgreementUpdateInput';
+      } else {
+        $klass = 'Serwisant\SerwisantApi\Types\SchemaPublic\CustomerAgreementInput';
+      }
+      return new $klass($a);
+    }, $agreements_input);
+  }
+
   public function mapCustomFields($custom_fields_input)
   {
     if (!is_array($custom_fields_input)) {
       return [];
     }
     return array_map(function ($f) {
-      return new CustomFieldValueInput(['ID' => $f['ID'], 'value' => (array_key_exists('value', $f) ? $f['value'] : '')]);
+      $f = new Adbar\Dot($f);
+      $a = ['customField' => $f->get('customField'), 'value' => $f->get('value', '')];
+      if ($f->get('ID')) {
+        $a['ID'] = $f->get('ID');
+        $klass = 'Serwisant\SerwisantApi\Types\SchemaCustomer\CustomFieldValueUpdateInput';
+      } else {
+        $klass = 'Serwisant\SerwisantApi\Types\SchemaCustomer\CustomFieldValueInput';
+      }
+      return new $klass($a);
     }, $custom_fields_input);
   }
 

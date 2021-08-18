@@ -8,6 +8,7 @@ class Dashboard extends Action
 {
   public function index()
   {
-    return $this->renderPage('dashboard.html.twig');
+    $vars = [];
+    return $this->renderPage('dashboard.html.twig', $vars);
   }
 }

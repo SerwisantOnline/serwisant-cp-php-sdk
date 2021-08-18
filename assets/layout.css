@@ -7,6 +7,10 @@ body {
     font: 0.9rem var(--bs-font-sans-serif);
 }
 
+.p_alert {
+    margin-top: 1rem !important;
+}
+
 .undisplayed, .hidden {
     display: none;
 }
@@ -89,6 +93,10 @@ textarea {
 .cookiealert .acceptcookies {
     margin-left: 10px;
     vertical-align: baseline;
+}
+
+.password-progress {
+    margin-top: 3px;
 }
 
 /* online payments */

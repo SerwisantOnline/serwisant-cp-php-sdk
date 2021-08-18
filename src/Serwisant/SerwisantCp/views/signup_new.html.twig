@@ -12,7 +12,7 @@
             {{ form_field({type: 'text', argument: 'customer.person', caption: t(_self, 'person')}, form_params, errors) }}
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3 business_container undisplayed">
             {{ form_field({type: 'text', argument: 'customer.companyName', caption: t(_self, 'company_name')}, form_params, errors) }}
         </div>
 
@@ -26,11 +26,15 @@
 
         <div class="mb-3">
             {{ form_field({type: 'password', argument: 'customer.password', caption: t(_self, 'password')}, form_params, errors) }}
+            <div class="progress password-progress">
+                <div id="password-strength-indicator" class="progress-bar" role="progressbar" aria-valuenow="0"
+                     aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
         </div>
 
         {% for customField in customFieldsDefinitions %}
             <div class="mb-3">
-                {{ custom_form_field(customField, "customer.customFields.#{loop.index0}", form_params, errors) }}
+                {{ custom_form_field(customField, {argument: "customer.customFields.#{loop.index0}"}, form_params, errors) }}
             </div>
         {% endfor %}
 
@@ -38,12 +42,16 @@
             {% for agreement in agreementsDefinitions %}
                 <tr>
                     <td>
-                        {{ form_field({type: 'hidden', argument: "agreements.#{loop.index0}.ID", value: agreement.ID}, form_params, errors) }}
-                        {{ form_field({type: 'checkbox', argument: "agreements.#{loop.index0}.accepted", caption: agreement.title, value: 1}, form_params, errors) }}
+                        <div class="{{ customer_agreement_class(agreement) }}">
+                            {{ form_field({type: 'hidden', argument: "agreements.#{loop.index0}.customerAgreement", value: agreement.ID}, form_params, errors) }}
+                            {{ form_field({type: 'checkbox', argument: "agreements.#{loop.index0}.accepted", caption: agreement.title, value: 1}, form_params, errors) }}
+                        </div>
                     </td>
                     <td>
-                        <a href="#" data-bs-toggle="modal"
-                           data-bs-target="#agreement_content_{{ agreement.ID }}">{{ t(_self, 'read_agreement') }}</a>
+                        <div class="{{ customer_agreement_class(agreement) }}">
+                            <a href="#" data-bs-toggle="modal"
+                               data-bs-target="#agreement_content_{{ agreement.ID }}">{{ t(_self, 'read_agreement') }}</a>
+                        </div>
                     </td>
                 </tr>
             {% endfor %}

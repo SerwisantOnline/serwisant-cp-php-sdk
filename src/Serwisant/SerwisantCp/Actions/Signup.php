@@ -6,33 +6,35 @@ use Serwisant\SerwisantCp\Action;
 use Serwisant\SerwisantApi\Types\SchemaPublic\CustomerInput;
 use Serwisant\SerwisantApi\Types\SchemaPublic\CustomerAgreementInput;
 use Serwisant\SerwisantApi\Types\SchemaPublic\CustomFieldValueInput;
+use Serwisant\SerwisantCp\ActionFormHelpers;
 
 class Signup extends Action
 {
   public function new($errors = [])
   {
+    $this->checkModuleActive();
+
     $result = $this->apiPublic()->publicQuery()->newRequest()->setFile('newSignup.graphql')->execute();
     $vars = [
       'customFieldsDefinitions' => $result->fetch('customerCustomFields'),
       'agreementsDefinitions' => $result->fetch('customerAgreements'),
       'form_params' => $this->request->request,
       'errors' => $errors,
+      'js_files' => ['/assets/signup_new.js']
     ];
-    return $this->renderPage('signup.html.twig', $vars, false);
+
+    return $this->renderPage('signup_new.html.twig', $vars, false);
   }
 
   public function create()
   {
+    $this->checkModuleActive();
+
     $customer = $this->request->get('customer', []);
-    $customer['customFields'] = array_map(function ($f) {
-      return new CustomFieldValueInput(['ID' => $f['ID'], 'value' => (array_key_exists('value', $f) ? $f['value'] : '')]);
-    }, $customer['customFields']);
+    $customer['customFields'] = $this->formHelper()->mapCustomFields($customer['customFields']);
+
     $customer_input = new CustomerInput($customer);
-
-    $agreements_input = array_map(function ($f) {
-      return new CustomerAgreementInput(['ID' => $f['ID'], 'accepted' => (array_key_exists('accepted', $f) && $f['accepted'] == '1')]);
-    }, $this->request->get('agreements', []));
-
+    $agreements_input = $this->formHelper()->mapAgreements($this->request->get('agreements', []));
     $addresses_input = [];
 
     $result = $this->apiPublic()->publicMutation()->createCustomer($customer_input, $agreements_input, $addresses_input);
@@ -46,6 +48,8 @@ class Signup extends Action
 
   public function confirm($token)
   {
+    $this->checkModuleActive();
+
     $result = $this->apiPublic()->publicMutation()->activateCustomer($token);
     if ($result->errors) {
       $vars = [
@@ -54,6 +58,13 @@ class Signup extends Action
       return $this->renderPage('signup_confirmation_failure.html.twig', $vars, false);
     } else {
       return $this->redirectTo('new_session', 'flashes.signup_activated');
+    }
+  }
+
+  private function checkModuleActive()
+  {
+    if (false === $this->getLayoutVars()['configuration']->caPanelSignups) {
+      $this->notFound();
     }
   }
 }

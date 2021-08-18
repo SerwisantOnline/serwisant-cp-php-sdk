@@ -1,0 +1,22 @@
+mutation updateViewer($customer: CustomerUpdateInput, $agreements: [CustomerAgreementUpdateInput!], $addresses: [AddressUpdateInput!]) {
+    updateViewer(customer: $customer, agreements: $agreements, addresses: $addresses) {
+        __typename
+        errors {
+            __typename
+            argument
+            code
+            message
+        }
+        viewer {
+            __typename
+            customer {
+                __typename
+                displayName
+                address {
+                    __typename
+                    ID
+                }
+            }
+        }
+    }
+}

@@ -30,7 +30,11 @@ type CustomField {
 }
 
 type CustomFieldValue {
+    "Primary key of particular field value to be used for update. NULL value means it's a field created after this entity creation."
+    ID: HashID
+    "Entity of field definition."
     field: CustomField!
+    "Value of field for this particular object - it's always a string here - look into `field` definition to get proper casting."
     value: String
 }
 
@@ -55,14 +59,25 @@ type CustomerCreationResult {
 }
 
 type CustomerPanelConfig {
+    "True when service want to use a messaging system in customer panel"
     caPanelCommunication: Boolean!
+    "True if service want to use repairs module"
     caPanelRepairs: Boolean!
+    "True if service allow to customer self-register - False must disable signup possibility"
+    caPanelSignups: Boolean!
+    "True if service want to use ticketing module"
     caPanelTickets: Boolean!
     caPanelToken: String
     "Service currency, all API prices and other money values are in this currency"
     currency: Currency!
+    "Message to be shown after login - only for authorised users"
+    dashboardMessage: String
     orderDictModel: Boolean!
     showOrderProgressInfo: Boolean!
+    showRepairDelegation: Boolean!
+    uploadOnlyImages: Boolean!
+    "Message to be shown before login - for every user"
+    welcomeMessage: String
 }
 
 type Dictionary {
@@ -210,6 +225,7 @@ type PublicQuery {
     repairByToken(token: String!): Repair!
     "Using this query you can lookup a token, to determine where it belongs, eg. order, or payment"
     secretToken(token: String!): SecretToken!
+    "Information about a service, public registry name, address and branded name, address as well"
     viewer: Viewer!
 }
 
@@ -319,7 +335,9 @@ type SecretToken {
 }
 
 type ServiceSupplier {
+    "Main address"
     address: Address
+    "All given addresses, including a main one"
     addresses: [Address!]!
     avatar: File
     displayName: String!
@@ -331,14 +349,17 @@ type Subscriber {
     address: Address
     businessActivity: SubscriberBusinessActivity
     companyName: String
+    "Formatted legal name"
     displayName: String!
     email: String!
+    "Data of main service supplier - branded - this is a data for customer information"
     serviceSupplier: ServiceSupplier!
     taxId: String
     taxPrefix: TaxPrefix
 }
 
 type Viewer {
+    "Information from public registry"
     subscriber: Subscriber!
 }
 
@@ -539,13 +560,17 @@ input AddressInput {
 }
 
 input CustomFieldValueInput {
-    ID: HashID!
+    "Field's primary key taken from customFields query"
+    customField: HashID
+    "Field's value relevant to definition - string, `1`/`0` for boolean or one of value from set (select)"
     value: String!
 }
 
 input CustomerAgreementInput {
-    ID: HashID!
+    "True id customer accepts agreement"
     accepted: Boolean!
+    "Agreement's primary key taken from customerAgreements query"
+    customerAgreement: HashID
 }
 
 input CustomerAgreementsFilter {

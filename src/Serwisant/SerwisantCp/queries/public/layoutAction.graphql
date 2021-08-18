@@ -51,6 +51,13 @@ query {
         caPanelRepairs
         caPanelTickets
         caPanelCommunication
+        caPanelSignups
+        caPanelToken
+        dashboardMessage
         orderDictModel
+        showOrderProgressInfo
+        showRepairDelegation
+        uploadOnlyImages
+        welcomeMessage
     }
 }

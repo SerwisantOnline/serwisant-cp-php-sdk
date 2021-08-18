@@ -1,3 +1,9 @@
+{% if configuration.welcomeMessage %}
+    <div class="bg-light p-5 rounded mt-3">
+        {{ configuration.welcomeMessage | raw }}
+    </div>
+{% endif %}
+
 <div class="bg-light p-5 rounded mt-3">
     <h1>{{ t(_self, 'title') }}</h1>
     <p class="lead">{{ t(_self, 'login_description') }}</p>
@@ -43,10 +49,11 @@
         </div>
 
     </form>
-
 </div>
 
-<div class="bg-light p-5 rounded mt-3">
-    <p class="lead">{{ t(_self, 'signup_description') }}</p>
-    <a href="{{ path('new_signup') }}" class="btn btn-primary mb-3">{{ t(_self, 'signup') }}</a>
-</div>
+{% if configuration.caPanelSignups %}
+    <div class="bg-light p-5 rounded mt-3">
+        <p class="lead">{{ t(_self, 'signup_description') }}</p>
+        <a href="{{ path('new_signup') }}" class="btn btn-primary mb-3">{{ t(_self, 'signup') }}</a>
+    </div>
+{% endif %}

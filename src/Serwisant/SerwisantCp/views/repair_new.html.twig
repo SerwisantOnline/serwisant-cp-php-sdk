@@ -3,18 +3,17 @@
     <p class="lead">{{ t(_self, 'description') }}</p>
 
     <form method="post" action="{{ path('create_repair') }}">
-
         <div class="mb-3">
-            {{ form_field({type: 'select', argument: 'repair.type', caption: t(_self, 'type'), options: dictionary_select_options}, form_params, errors) }}
+            {{ form_field({type: 'select', argument: 'repair.type', caption: t(_self, 'type'), options: dictionary_select_options, include_blank: true}, form_params, errors) }}
         </div>
 
         {% if not configuration.orderDictModel %}
             <div class="mb-3">
-                {{ form_field({type: 'text', argument: 'repair.vendor', caption: t(_self, 'vendor')}, form_params, errors) }}
+                {{ form_field({type: 'datalist', argument: 'repair.vendor', caption: t(_self, 'vendor'), data_url: path('autocomplete_vendor')}, form_params, errors) }}
             </div>
 
             <div class="mb-3">
-                {{ form_field({type: 'text', argument: 'repair.model', caption: t(_self, 'model')}, form_params, errors) }}
+                {{ form_field({type: 'datalist', argument: 'repair.model', caption: t(_self, 'model'), data_url: path('autocomplete_model')}, form_params, errors) }}
             </div>
         {% endif %}
 
@@ -27,13 +26,13 @@
         </div>
 
         <div class="undisplayed" id="create_repair_warranty_attributes">
-        <div class="mb-3">
-            {{ form_field({type: 'date', argument: 'repair.warrantyPurchaseDate', caption: t(_self, 'warrantyPurchaseDate')}, form_params, errors) }}
-        </div>
+            <div class="mb-3">
+                {{ form_field({type: 'date', argument: 'repair.warrantyPurchaseDate', caption: t(_self, 'warrantyPurchaseDate')}, form_params, errors) }}
+            </div>
 
-        <div class="mb-3">
-            {{ form_field({type: 'text', argument: 'repair.warrantyPurchaseDocument', caption: t(_self, 'warrantyPurchaseDocument')}, form_params, errors) }}
-        </div>
+            <div class="mb-3">
+                {{ form_field({type: 'text', argument: 'repair.warrantyPurchaseDocument', caption: t(_self, 'warrantyPurchaseDocument')}, form_params, errors) }}
+            </div>
         </div>
 
         <div class="mb-3">
@@ -55,9 +54,33 @@
                 {% set data_type_id = '' %}
             {% endif %}
             <div class="mb-3 custom-field {{ class }}" data-type-id="{{ data_type_id }}">
-                {{ custom_form_field(customField, "repair.customFields.#{loop.index0}", form_params, errors) }}
+                {{ custom_form_field(customField, {argument: "repair.customFields.#{loop.index0}"}, form_params, errors) }}
             </div>
         {% endfor %}
+
+        {% if addresses_radio_options is empty %}
+            {{ form_field({type: 'hidden', argument: 'addresses.0.countryIso', value: locale_ISO|upper}, form_params, errors) }}
+            <div class="row">
+                <label class="form-label">{{ t(_self, 'returnAddress') }}</label>
+                <div class="col-sm-4">
+                    {{ form_field({type: 'text', argument: 'addresses.0.street', caption: t(_self, 'street')}, form_params, errors) }}
+                </div>
+                <div class="col-sm-2">
+                    {{ form_field({type: 'text', argument: 'addresses.0.building', caption: t(_self, 'building')}, form_params, errors) }}
+                </div>
+                <div class="col-sm-2">
+                    {{ form_field({type: 'text', argument: 'addresses.0.postalCode', caption: t(_self, 'postalCode')}, form_params, errors) }}
+                </div>
+                <div class="col-sm">
+                    {{ form_field({type: 'text', argument: 'addresses.0.city', caption: t(_self, 'city')}, form_params, errors) }}
+                </div>
+            </div>
+            <div class="m-3"></div>
+        {% else %}
+            <div class="mb-3">
+                {{ form_field({type: 'radios', argument: 'repair.returnAddress', caption: t(_self, 'returnAddress'), options: addresses_radio_options, value: defaultReturnAddress}, form_params, errors) }}
+            </div>
+        {% endif %}
 
         <a href="{{ path('repairs') }}" class="btn btn-secondary mb-3">{{ t(_self, 'cancel') }}</a>
         <button type="submit" class="btn btn-primary mb-3">{{ t(_self, 'submit') }}</button>

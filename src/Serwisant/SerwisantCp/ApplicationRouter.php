@@ -24,6 +24,7 @@ class ApplicationRouter extends Router
     $this->createRepairsRoutes($app);
     $this->createTicketsRoutes($app);
     $this->createMessagesRoutes($app);
+    $this->createMiscRoutes($app);
   }
 
   private function createUserRoutes(Silex\Application $app)
@@ -74,8 +75,15 @@ class ApplicationRouter extends Router
 
     $app->post('/set_password', function (Request $request) use ($app) {
       return (new Actions\PasswordReset($app, $request))->createPassword();
-    })
-      ->bind('set_password');
+    })->bind('set_password');
+
+    $app->get('/viewer', function (Request $request) use ($app) {
+      return (new Actions\Viewer($app, $request))->edit();
+    })->bind('viewer');
+
+    $app->post('/viewer', function (Request $request) use ($app) {
+      return (new Actions\Viewer($app, $request))->update();
+    })->bind('viewer_update');
   }
 
   private function createTemporaryFilesRoutes(Silex\Application $app)
@@ -275,5 +283,18 @@ class ApplicationRouter extends Router
     })
       ->assert('id', self::HASHID_ASSERTION)
       ->bind('agreement');
+  }
+
+  private function createMiscRoutes(Silex\Application $app)
+  {
+    $app->get('/ac/vendor', function (Request $request) use ($app) {
+      return (new Actions\Autocomplete($app, $request))->vendor();
+    })
+      ->bind('autocomplete_vendor');
+
+    $app->get('/ac/model', function (Request $request) use ($app) {
+      return (new Actions\Autocomplete($app, $request))->model();
+    })
+      ->bind('autocomplete_model');
   }
 }

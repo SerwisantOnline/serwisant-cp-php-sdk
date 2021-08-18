@@ -115,6 +115,36 @@ Application.Json.Request = function (url, method, data, on_success, on_error) {
 
 Application.Ui = {};
 
+Application.Ui.Autocomplete = function (input) {
+  var
+    eventSource = null,
+    url = input.attr('data-url'),
+    datalist_container = $('#' + input.attr('id') + '_datalist');
+
+  if (url && datalist_container.length > 0) {
+    input.on('keydown', function (e) {
+      eventSource = e.key ? 'input' : 'list';
+    })
+
+    input.on('input', function () {
+      if (eventSource === 'input') {
+        if (input.val().length < 2) {
+          return;
+        }
+        Application.Json.Request(url, 'get', {q: input.val()}, function (data) {
+          var html = ''
+          _.each(data, function (row) {
+            html += "<option value=\"" + row + "\">";
+          });
+          datalist_container.html(html);
+        });
+      } else {
+        datalist_container.html('');
+      }
+    });
+  }
+}
+
 Application.Ui.DatePickerAttach = function () {
   var translations = Application.Options.Get('dpTranslations')
   $("#dtBox").DateTimePicker({
@@ -317,10 +347,87 @@ Application.Ui.FileUploadConfigure = function () {
   }));
 }
 
+Application.Ui.GenerateLogin = function (user_login, src_fields, watch_fields) {
+  if (!watch_fields) {
+    watch_fields = src_fields;
+  }
+
+  // blokuj zmiany loginu jeśli cokolwiek zostało wpisane tam ręcznie
+  var user_login_touched = false;
+  user_login.bind('blur', function (e) {
+    user_login_touched = (user_login.val().replace(/\s+/g, '') !== '');
+  });
+
+  // funkcja generująca login na podstawie innych pól
+  var display_name_to_login = function () {
+    if (user_login_touched || user_login.is('[disabled=disabled]')) {
+      return;
+    }
+
+    var input = null;
+
+    _.each(src_fields, function (field) {
+      if (!input && field.val() !== '') {
+        input = field;
+      }
+    });
+
+    if (input) {
+      var str = input.val().toLocaleLowerCase().replace(/[^a-z0-9]/g, '').replace(/\s+/g, '') + ((new Date()).getDate() + 1) + ((new Date()).getDay() + 2) + ((new Date()).getMonth() + 3);
+      if (input.val() === '') {
+        str = '';
+      }
+
+      user_login.val(str);
+    }
+  };
+
+  _.each(watch_fields, function (field) {
+    if (field.attr('type') === 'checkbox') {
+      field.bind('change', display_name_to_login);
+    } else {
+      field.bind('blur', display_name_to_login)
+    }
+  });
+};
+
+Application.Ui.PasswordStrength = function (login, password) {
+  var func_password_validate = function (username, password, strength) {
+    var
+      indicator = $('#password-strength-indicator'),
+      val = _.get(strength, 'score', 0),
+      status = _.get(strength, 'status', ''),
+      level_class = 'bg-danger',
+      level_info = '<i class="fas fa-ban"></i>';
+
+    if (status === 'good') {
+      level_class = 'bg-warning';
+      level_info = '<i class="fas fa-check"></i>';
+    } else if (status === 'strong') {
+      level_class = 'bg-success';
+      level_info = '<i class="fas fa-thumbs-up"></i>';
+    }
+
+    if (val < 10) {
+      val = 10;
+    }
+
+    indicator.removeClass('bg-danger').removeClass('bg-warning').removeClass('bg-success');
+
+    if (_.get(strength, 'password', '').length > 0) {
+      indicator.addClass(level_class).css('width', val + '%').attr('aria-valuenow', val).html(level_info);
+    } else {
+      indicator.addClass(level_class).css('width', 0 + '%').attr('aria-valuenow', 0).html('');
+    }
+  };
+
+  $.strength(login, password, func_password_validate);
+  $(login).keyup();
+};
+
 $.fn.onEnterPress = function (fnc) {
   return this.each(function () {
     $(this).keypress(function (ev) {
-      console.log('press')
       var keycode = (ev.keyCode ? ev.keyCode : ev.which);
       if (parseInt(keycode) === 13) {
         ev.preventDefault();

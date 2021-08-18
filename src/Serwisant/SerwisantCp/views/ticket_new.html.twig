@@ -5,7 +5,7 @@
     <form method="post" action="{{ path('create_ticket') }}">
 
         <div class="mb-3">
-            {{ form_field({type: 'select', argument: 'ticket.priority', caption: t(_self, 'priority'), options: priorities_select_options}, form_params, errors) }}
+            {{ form_field({type: 'select', argument: 'ticket.priority', caption: t(_self, 'priority'), options: priorities_select_options, include_blank: true}, form_params, errors) }}
         </div>
 
         <div class="mb-3">
@@ -13,10 +13,10 @@
         </div>
 
         <div class="mb-3">
-            {{ form_field({type: 'radios', argument: 'ticket.address', caption: t(_self, 'address'), options: addresses_radio_options}, form_params, errors) }}
+            {{ form_field({type: 'radios', argument: 'ticket.address', caption: t(_self, 'address'), options: addresses_radio_options, value: defaultAddress}, form_params, errors) }}
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3 address-other-container undisplayed">
             {{ form_field({type: 'textarea', argument: 'ticket.addressOther', caption: t(_self, 'addressOther')}, form_params, errors) }}
         </div>
 
@@ -39,7 +39,7 @@
                 {% set data_type_id = '' %}
             {% endif %}
             <div class="mb-3 custom-field {{ class }}" data-type-id="{{ data_type_id }}">
-                {{ custom_form_field(customField, "ticket.customFields.#{loop.index0}", form_params, errors) }}
+                {{ custom_form_field(customField, {argument: "ticket.customFields.#{loop.index0}"}, form_params, errors) }}
             </div>
         {% endfor %}
 

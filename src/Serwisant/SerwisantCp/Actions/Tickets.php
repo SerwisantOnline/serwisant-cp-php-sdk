@@ -53,11 +53,9 @@ class Tickets extends Action
   {
     $this->checkModuleActive();
 
-    $helper = new ActionFormHelpers();
-
     $result = $this->apiCustomer()->customerQuery()->newRequest()->setFile('newTicket.graphql')->execute();
 
-    $priorities_select_options = ['' => ''];
+    $priorities_select_options = [];
     foreach ($result->fetch('priorities') as $entry) {
       $priorities_select_options[$entry->ID] = $entry->name;
     }
@@ -72,8 +70,10 @@ class Tickets extends Action
       'customFieldsDefinitions' => $result->fetch('orderCustomFields'),
       'priorities_select_options' => $priorities_select_options,
       'addresses_radio_options' => $addresses_radio_options,
+      'defaultAddress' => ($result->fetch('viewer')->customer->address ? $result->fetch('viewer')->customer->address->ID : null),
+
       'form_params' => $this->request->request,
-      'temporary_files' => $helper->mapTemporaryFiles($this->request->get('temporary_files')),
+      'temporary_files' => $this->formHelper()->mapTemporaryFiles($this->request->get('temporary_files')),
       'errors' => $errors,
       'js_files' => ['/assets/tickets.js']
     ];
@@ -85,7 +85,7 @@ class Tickets extends Action
   {
     $this->checkModuleActive();
 
-    $helper = new ActionFormHelpers();
+    $helper = $this->formHelper();
 
     $ticket = $this->request->get('ticket', []);
     $ticket['customFields'] = $helper->mapCustomFields($ticket['customFields']);

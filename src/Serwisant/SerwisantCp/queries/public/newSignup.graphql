@@ -8,13 +8,12 @@ query {
         selectOptions
         required
     }
-    customerAgreements: customerAgreements(filter: {types: [RULES, REFUND_POLICY, DATA_PROCESSING]}) {
+    customerAgreements: customerAgreements {
         __typename
         ID
         title
         content
         visiblePersonal
         visibleBusiness
-
     }
 }

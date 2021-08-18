@@ -55,9 +55,16 @@ class Action
     $this->debug = ($this->app['env'] == 'development');
   }
 
+  /**
+   * @return ActionFormHelpers
+   */
+  protected function formHelper()
+  {
+    return new ActionFormHelpers();
+  }
+
   protected function renderPage(string $template, array $vars = [], $require_user = true)
   {
-
     if ($this->debug) {
       error_log("Rendering {$template}");
     }
@@ -69,7 +76,7 @@ class Action
     ];
     $inner_vars = array_merge($inner_vars, $this->getLayoutVars());
     if ($require_user) {
-      $inner_vars['me'] = $this->apiCustomer()->customerQuery()->viewer();
+      $inner_vars['me'] = $this->apiCustomer()->customerQuery()->viewer(['basic' => true]);
     }
     $inner_vars['innerHTML'] = $this->twig->render($template, array_merge($inner_vars, $vars));
 

@@ -4,6 +4,7 @@ namespace Serwisant\SerwisantCp;
 
 use Adbar;
 use Twig\Environment;
+use Twig\Error\Error;
 use Twig\TwigFunction;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Serwisant\SerwisantApi\Types\SchemaPublic;
@@ -17,17 +18,17 @@ class TwigFormExtensions extends TwigExtensions
   {
     $this->twig->addFunction(new TwigFunction('form_field', function (array $options, ParameterBag $post_data, $errors) {
       $html = '';
-      $html .= "<div class='form-floating'>";
-      $html .= $this->formField($options, $post_data, $errors);
-      $html .= "</div>";
+      $html .= "<div class='form-floating'>\n";
+      $html .= $this->formField($options, $post_data, $errors) . "\n";
+      $html .= "</div>\n";
       return new \Twig\Markup($html, 'UTF-8');
     }));
 
     $this->twig->addFunction(new TwigFunction('custom_form_field', function ($field, $argument, ParameterBag $post_data, $errors) {
       $html = '';
-      $html .= "<div class='form-floating'>";
-      $html .= $this->customFormField($field, $argument, $post_data, $errors);
-      $html .= "</div>";
+      $html .= "<div class='form-floating'>\n";
+      $html .= $this->customFormField($field, $argument, $post_data, $errors) . "\n";
+      $html .= "</div>\n";
       return new \Twig\Markup($html, 'UTF-8');
     }));
 
@@ -41,7 +42,7 @@ class TwigFormExtensions extends TwigExtensions
 
     $argument = $options->get('argument', '');
     if ($argument === '') {
-      throw new \Twig\Error\Error('missing argument key in options');
+      throw new Error('missing argument key in options');
     }
     $arguments = explode('.', $argument);
     $name_container = array_shift($arguments);
@@ -51,7 +52,13 @@ class TwigFormExtensions extends TwigExtensions
 
     $id = $options->get('id', "{$name_container}_" . join('_', $arguments));
     $name = $options->get('name', "{$name_container}{$name_arr}");
-    $value = $options->get('value', twig_escape_filter($this->twig, $post_data->get($argument)));
+
+    // Priorytet ma to, co zejdzie z POST, później wartość przekazana z konfiguracji
+    $value = $post_data->get($argument);
+    if ($value === null) {
+      $value = $options->get('value');
+    }
+    $value = twig_escape_filter($this->twig, $value);
 
     $tr_errors = $options->get('tr_errors');
     $capture_argument_errors = $options->get('capture_argument_errors', []);
@@ -91,8 +98,20 @@ class TwigFormExtensions extends TwigExtensions
       case 'text':
       case 'password':
         $class = "{$options->get('class', 'form-control')}{$class_error}";
-        $html .= "<input type='{$options->get('type')}' id='{$id}' class='{$class}' name='{$name}' data-bs-content='{$error_title}' value='{$value}' placeholder='{$caption}' title='{$caption}'>";
+        $html .= "<input type='{$options->get('type')}' id='{$id}' class='{$class}' name='{$name}' data-bs-content='{$error_title}' value='{$value}' placeholder='{$caption}' title='{$caption}'";
+        if ($type == 'password') {
+          $html .= " autocomplete='off' ";
+        }
+        $html .= ">";
         $html .= $label;
+        break;
+
+      case 'datalist':
+        $class = "{$options->get('class', 'form-control')}{$class_error}";
+        $html .= "<input list='{$id}_datalist' data-url='{$options->get('data_url', '')}'  id='{$id}' class='{$class}' name='{$name}' data-bs-content='{$error_title}' value='{$value}' placeholder='{$caption}' title='{$caption}'>";
+        $html .= $label;
+        $html .= "<datalist id='{$id}_datalist'>";
+        $html .= "</datalist>";
         break;
 
       case 'datetime':
@@ -125,7 +144,11 @@ class TwigFormExtensions extends TwigExtensions
       case 'select':
         $class = "{$options->get('class', 'form-select')}{$class_error}";
         $html .= "<select id='{$id}' class='{$class}' name='{$name}' data-bs-content='{$error_title}' title='{$caption}'>";
-        foreach ($options->get('options', []) as $v => $t) {
+        $rows = $options->get('options', []);
+        if ($options->get('include_blank', false)) {
+          $rows = ['' => ''] + $rows;
+        }
+        foreach ($rows as $v => $t) {
           if ($v == $value) {
             $selected = 'selected';
           } else {
@@ -144,94 +167,106 @@ class TwigFormExtensions extends TwigExtensions
         } else {
           $class = "{$options->get('class', 'form-check')}";
         }
-        if ($post_data->get($argument, false)) {
+        if (($post_data->isEmpty() && $options->get('checked', false)) || !$post_data->isEmpty() && $post_data->get($argument, false)) {
           $checked = "checked='checked'";
         } else {
           $checked = "";
         }
-        $html .= "<div class=\"{$class}\">";
-        $html .= "<input type='checkbox' {$checked} id={$id} class='form-check-input{$class_error}' name='{$name}' value='{$value}' data-bs-content='{$error_title}' title='{$caption}'>";
+        $html .= "<div class=\"{$class}\">\n";
+        $html .= "<input type='checkbox' {$checked} id={$id} class='form-check-input{$class_error}' name='{$name}' value='{$value}' data-bs-content='{$error_title}' title='{$caption}'>\n";
         if ($caption) {
-          $html .= "<label for='{$id}' class='form-check-label'>{$caption}</label>";
+          $html .= "<label for='{$id}' class='form-check-label'>{$caption}</label>\n";
         }
-        $html .= '</div>';
+        $html .= "</div>\n";
         break;
 
       default:
-        throw new \Twig\Error\Error("unsupported type {$options->get('type')}");
+        throw new Error("unsupported type {$options->get('type')}");
     }
 
     return $html;
   }
 
-  private function customFormField($field, $argument, ParameterBag $post_data, $errors)
+  private function customFormField(object $field, array $options, ParameterBag $post_data, $errors)
   {
     $html_prepend = '';
     $html_append = '';
 
-    $options = [
-      'argument' => "{$argument}.value",
-      'caption' => $field->name,
-    ];
+    $options = new Adbar\Dot($options);
+
+    $argument = $options->get('argument');
+    if (!$argument) {
+      throw new Error('Argument keyword is expected in options');
+    }
+
+    $value = $options->get('value');
+
+    $options['argument'] = "{$argument}.value";
+    $options['caption'] = $field->name;
 
     switch ($field->type) {
       case SchemaPublic\CustomFieldType::CHECKBOX:
         $options['type'] = 'checkbox';
+        $options['checked'] = ($value == '1');
         $options['value'] = 1;
-        $form_field = $this->formField($options, $post_data, $errors);
+        $form_field = $this->formField($options->all(), $post_data, $errors);
         break;
 
       case SchemaPublic\CustomFieldType::TEXT:
         $options['type'] = 'text';
-        $form_field = $this->formField($options, $post_data, $errors);
+        $form_field = $this->formField($options->all(), $post_data, $errors);
         break;
 
       case SchemaPublic\CustomFieldType::TEXTAREA:
         $options['type'] = 'textarea';
-        $form_field = $this->formField($options, $post_data, $errors);
+        $form_field = $this->formField($options->all(), $post_data, $errors);
         break;
 
       case SchemaPublic\CustomFieldType::SELECT:
-        $select_options = [];
+        $select_options = ['' => ''];
         foreach ($field->selectOptions as $option) {
           $select_options[$option] = $option;
         }
         $options['type'] = 'select';
         $options['options'] = $select_options;
-        $form_field = $this->formField($options, $post_data, $errors);
+        $form_field = $this->formField($options->all(), $post_data, $errors);
         break;
 
       case SchemaPublic\CustomFieldType::PASSWORD:
         $options['type'] = 'password';
-        $form_field = $this->formField($options, $post_data, $errors);
+        $form_field = $this->formField($options->all(), $post_data, $errors);
         break;
 
       case SchemaPublic\CustomFieldType::DATE:
-        $options['type'] = 'text';
-        $options['caption'] = null;
-
-        $html_prepend .= "<div class='datepicker date form-floating'>";
-        $form_field = $this->formField($options, $post_data, $errors);
-        $html_append .= "<div class='input-group-append'</div>";
-        $html_append .= "</div>";
-        $html_append .= "<label>{$field->name}</label>";
+        $options['type'] = 'date';
+        $form_field = $this->formField($options->all(), $post_data, $errors);
         break;
 
       default:
         return '';
     }
 
-    $options_hidden = [
+    $html = '';
+
+    $options_hidden_cf = [
       'type' => 'hidden',
-      'argument' => "{$argument}.ID",
+      'argument' => "{$argument}.customField",
       'value' => $field->ID
     ];
+    $html .= $this->formField($options_hidden_cf, $post_data, $errors) . "\n";
 
-    $html = '';
-    $html .= (string)$this->formField($options_hidden, $post_data, $errors);
-    $html .= $html_prepend;
-    $html .= (string)$form_field;
-    $html .= $html_append;
+    if ($options->get('pk')) {
+      $options_hidden_id = [
+        'type' => 'hidden',
+        'argument' => "{$argument}.ID",
+        'value' => $options->get('pk')
+      ];
+      $html .= $this->formField($options_hidden_id, $post_data, $errors) . "\n";
+    }
+
+    $html .= $html_prepend . "\n";
+    $html .= (string)$form_field . "\n";
+    $html .= $html_append . "\n";
 
     return $html;
   }
