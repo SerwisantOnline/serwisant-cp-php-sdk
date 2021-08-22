@@ -27,7 +27,8 @@ class Tickets extends Action
       ->tickets($limit, $page, $filter, $sort, ['list' => true]);
 
     $variables = [
-      'tickets' => $tickets
+      'tickets' => $tickets,
+      'pageTitle' => $this->t('tickets.title'),
     ];
     return $this->renderPage('tickets.html.twig', $variables);
   }
@@ -44,6 +45,7 @@ class Tickets extends Action
     }
     $variables = [
       'ticket' => $result->items[0],
+      'pageTitle' => $result->items[0]->number,
     ];
 
     return $this->renderPage('ticket.html.twig', $variables);
@@ -75,7 +77,8 @@ class Tickets extends Action
       'form_params' => $this->request->request,
       'temporary_files' => $this->formHelper()->mapTemporaryFiles($this->request->get('temporary_files')),
       'errors' => $errors,
-      'js_files' => ['/assets/tickets.js']
+      'js_files' => ['/assets/tickets.js'],
+      'pageTitle' => $this->t('ticket_new.title'),
     ];
 
     return $this->renderPage('ticket_new.html.twig', $variables);
@@ -88,7 +91,9 @@ class Tickets extends Action
     $helper = $this->formHelper();
 
     $ticket = $this->request->get('ticket', []);
-    $ticket['customFields'] = $helper->mapCustomFields($ticket['customFields']);
+    if (array_key_exists('customFields', $ticket)) {
+      $ticket['customFields'] = $helper->mapCustomFields($ticket['customFields']);
+    }
     $ticket['startAt'] = $helper->dateTimeToISO8601($ticket['startAt'], $this->app['timezone']);
 
     $ticket_input = new TicketInput($ticket);

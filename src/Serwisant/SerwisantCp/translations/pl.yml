@@ -74,13 +74,18 @@ pl_PL:
     SUBSCRIPTION_TIME: "Płatność na koniec miesiąca, stawka godzinowa"
     CONTRACT: "Płatność na koniec miesiąca, abonament"
 
-  login:
+  login_new:
     title: "Zaloguj się!"
     login_description: "Zanim rozpoczniesz korzystanie z aplikacji powinieneś się zalogować."
     signup_description: "Jeśli nie masz danych do logowania możesz je utworzyć poprzez rejestrację swojego konta."
     signup: "Zarejestruj własne konto"
     login: "Login lub adres email"
     login_not_found: "Nie znaleziono konta - upewnij się, że podano login lub adres email konta które rejestrowałeś."
+    subscriber_deleted: "Serwis do którego próbujesz się zalogować nie jest już dostępny na naszej platformie.
+      Skontaktuj się z serwisem telefonicznie."
+    login_not_activated: "Aktywuj twoje konto linkiem, który otrzymałeś zaraz po rejestracji."
+    login_disabled: "Twoje konto zostało usunięte lub zablokowane. Skontaktuj się z serwisem w celu wyjaśnienia
+      sytuacji"
     password: "Hasło"
     submit: "Rozpocznij"
   signup_new:
@@ -110,6 +115,7 @@ pl_PL:
     company_name: "Nazwa firmy"
     tax_id: "NIP"
     email: "Adres email"
+    phone_number: "Numer telefonu"
     login: "Login do konta"
     password: "Hasło"
     submit: "Aktualizuj dane"
@@ -153,8 +159,9 @@ pl_PL:
       not_found: "Link resetowania hasła jest niepoprawny lub stracił ważność. Możesz naprawić ten problem poprzez
         ponowne wysłanie linku do resetowania hasła."
   repairs:
-    details: "Szczegóły"
+    title: "Naprawy"
     create_repair: "Utwórz nową naprawę"
+    details: "Szczegóły"
     rma: "Numer naprawy"
     description: "Przedmiot naprawy"
     status: "Stan"
@@ -256,6 +263,7 @@ pl_PL:
     cancel: "Anuluj"
     submit: "Dodaj naprawę"
   tickets:
+    title: "Zgłoszenia"
     create_ticket: "Dodaj zgłoszenie awarii"
     number: "Numer zgłoszenia"
     employee: "Odpowiedzialny pracownik"
@@ -341,6 +349,7 @@ pl_PL:
         PAID: "Zapłacono"
         UNPAID: "Nie zapłacono"
   messages:
+    title: "Wiadomości"
     no_messages: "Nie wysłałeś, ani nie otrzymałeś żadnej wiadomości od serwisu. Jeśli chcesz skontaktować się z serwisem poprzez
       wiadomość, kliknij w przycisk znajdujący się w górnej części strony."
     create_message: "Napisz wiadomość"
@@ -348,6 +357,7 @@ pl_PL:
     date: "Data"
     read: "Czytaj wątek"
   message:
+    title: "Czytaj wiadomość"
     close: "Zamknij"
     create_message_reply: "Napisz odpowiedź"
     service: "Serwis"
@@ -367,3 +377,5 @@ pl_PL:
     content: "Treść odpowiedzi"
     cancel: "Anuluj"
     submit: "Wyślij odpowiedź"
+  dashboard:
+    title: "Strona początkowa"

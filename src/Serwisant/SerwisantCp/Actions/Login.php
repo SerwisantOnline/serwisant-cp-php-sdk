@@ -11,9 +11,10 @@ class Login extends Action
   {
     $vars = [
       'formParams' => $this->request->request,
-      'js_files' => ['/assets/login.js']
+      'js_files' => ['/assets/login_new.js'],
+      'pageTitle' => $this->t('login_new.title'),
     ];
-    return $this->renderPage('login.html.twig', $vars, false);
+    return $this->renderPage('login_new.html.twig', $vars);
   }
 
   public function resolveCredential()
@@ -30,12 +31,8 @@ class Login extends Action
       $this->accessTokenCustomer()->login($session_credentials['login'], $session_credentials['password']);
       return $this->redirectTo('dashboard', 'flashes.login_successful');
     } catch (SerwisantApi\ExceptionUnauthorized $ex) {
-      $vars = [
-        'formParams' => $this->request->request,
-        'js_files' => ['/assets/login.js']
-      ];
       $this->flashError($this->t("flashes.login_error.{$ex->getHandle()}"));
-      return $this->renderPage('login.html.twig', $vars, false);
+      return $this->new();
     }
   }
 

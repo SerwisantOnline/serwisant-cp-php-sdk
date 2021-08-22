@@ -24,7 +24,7 @@
             {{ form_field({type: 'textarea', argument: 'ticket.issue', caption: t(_self, 'issue')}, form_params, errors) }}
         </div>
 
-        <div class="clearfix" id="create_repair_file_uploader">
+        <div class="mb-3 clearfix" id="create_repair_file_uploader">
             {% for temporary_file in temporary_files %}
                 <div class="undisplayed temporary-file-json" data-ID="{{ temporary_file }}"></div>
             {% endfor %}
@@ -43,7 +43,9 @@
             </div>
         {% endfor %}
 
-        <a href="{{ path('tickets') }}" class="btn btn-secondary mb-3">{{ t(_self, 'cancel') }}</a>
-        <button type="submit" class="btn btn-primary mb-3">{{ t(_self, 'submit') }}</button>
+        <div class="mb-3 form-buttons">
+            <a href="{{ path('tickets') }}" class="btn btn-secondary mb-3">{{ t(_self, 'cancel') }}</a>
+            <button type="submit" class="btn btn-primary mb-3">{{ t(_self, 'submit') }}</button>
+        </div>
     </form>
 </div>

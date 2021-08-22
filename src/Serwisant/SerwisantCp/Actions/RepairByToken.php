@@ -15,6 +15,6 @@ class RepairByToken extends Action
       'currency' => $result->fetch('configuration')->currency,
       'token' => $secret_token
     ];
-    return $this->renderPage('repair_by_token.html.twig', $vars, false);
+    return $this->renderPage('repair_by_token.html.twig', $vars);
   }
 }

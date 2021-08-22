@@ -27,7 +27,8 @@ class Repairs extends Action
       ->repairs($limit, $page, $filter, $sort, ['list' => true]);
 
     $variables = [
-      'repairs' => $repairs
+      'repairs' => $repairs,
+      'pageTitle' => $this->t('repairs.title'),
     ];
 
     return $this->renderPage('repairs.html.twig', $variables);
@@ -45,6 +46,7 @@ class Repairs extends Action
     }
     $variables = [
       'repair' => $result->items[0],
+      'pageTitle' => $result->items[0]->rma,
     ];
 
     return $this->renderPage('repair.html.twig', $variables);
@@ -75,7 +77,8 @@ class Repairs extends Action
       'form_params' => $this->request->request,
       'temporary_files' => $this->formHelper()->mapTemporaryFiles($this->request->get('temporary_files')),
       'errors' => $errors,
-      'js_files' => ['/assets/repairs.js']
+      'js_files' => ['/assets/repairs.js'],
+      'pageTitle' => $this->t('repair_new.title'),
     ];
 
     return $this->renderPage('repair_new.html.twig', $variables);
@@ -106,7 +109,9 @@ class Repairs extends Action
     }
 
     $repair = $this->request->get('repair', []);
-    $repair['customFields'] = $helper->mapCustomFields($repair['customFields']);
+    if (array_key_exists('customFields', $repair)) {
+      $repair['customFields'] = $helper->mapCustomFields($repair['customFields']);
+    }
     $repair['warranty'] = (array_key_exists('warranty', $repair) && $repair['warranty'] == '1');
 
     $repair_input = new RepairInput($repair);

@@ -29,6 +29,12 @@ Application.Tickets.Form = function () {
     })
   });
   pond.appendTo(document.getElementById('create_repair_file_uploader'));
+  pond.on('addfilestart', function () {
+    $('.form-buttons > button').addClass('disabled');
+  })
+  pond.on('processfile', function () {
+    $('.form-buttons > button').removeClass('disabled');
+  })
 
   var otherAddressFunc = function () {
     var addressRadio = $('input[name="ticket[address]"]:checked');

@@ -26,7 +26,8 @@ class Messages extends Action
       ->messages($limit, $page, $filter, $sort, ['list' => true]);
 
     $variables = [
-      'messages' => $messages
+      'messages' => $messages,
+      'pageTitle' => $this->t('messages.title'),
     ];
 
     return $this->renderPage('messages.html.twig', $variables);
@@ -38,6 +39,7 @@ class Messages extends Action
 
     $variables = [
       'thread' => $this->getThread($id),
+      'pageTitle' => $this->t('message.title'),
     ];
 
     $this->apiCustomer()->customerMutation()->markMessageRead($id);
@@ -52,6 +54,7 @@ class Messages extends Action
     $variables = [
       'form_params' => $this->request->request,
       'errors' => $errors,
+      'pageTitle' => $this->t('message_new.title'),
     ];
 
     return $this->renderPage('message_new.html.twig', $variables);

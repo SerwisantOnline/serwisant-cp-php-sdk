@@ -13,7 +13,7 @@ class PasswordReset extends Action
       'formParams' => $this->request->request,
       'errors' => $errors
     ];
-    return $this->renderPage('password_reset.html.twig', $vars, false);
+    return $this->renderPage('password_reset.html.twig', $vars);
   }
 
   public function create()
@@ -33,7 +33,7 @@ class PasswordReset extends Action
       'formParams' => $this->request->request,
       'errors' => $errors
     ];
-    return $this->renderPage('password_set.html.twig', $vars, false);
+    return $this->renderPage('password_set.html.twig', $vars);
   }
 
   public function createPassword()

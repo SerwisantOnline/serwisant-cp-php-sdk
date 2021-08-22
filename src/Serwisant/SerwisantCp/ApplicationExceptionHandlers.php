@@ -12,12 +12,23 @@ class ApplicationExceptionHandlers
   {
     return function (\Exception $e) use ($app) {
       if ($this->is404exception($e)) {
-        return new HttpFoundation\Response($app['twig']->render('404.html.twig', []), 404);
+        return new HttpFoundation\Response(
+          $app['twig']->render('404.html.twig', []),
+          404
+        );
       } elseif ($this->is401exception($e)) {
         $app['flash']->addMessage($app['tr']->t($app['locale'], 'flashes.login_first'));
         return new HttpFoundation\RedirectResponse($app['url_generator']->generate('new_session'));
       } elseif ($this->isApiOauthException($e)) {
         return new HttpFoundation\RedirectResponse($app['url_generator']->generate('destroy_session'));
+      } elseif ($e instanceof SerwisantApi\ExceptionAccessDenied) {
+        return new HttpFoundation\Response(
+          $app['twig']->render('403.html.twig', [
+            'error_message' => $e->getMessage(),
+            'error_code' => $e->getHandle(),
+          ]),
+          403
+        );
       } else {
         throw $e;
       }
@@ -30,7 +41,9 @@ class ApplicationExceptionHandlers
    */
   private function is401exception($e)
   {
-    return ($e instanceof SerwisantApi\ExceptionUserCredentialsRequired);
+    return
+      ($e instanceof SerwisantApi\ExceptionUserCredentialsRequired) ||
+      ($e instanceof ExceptionUnauthorized);
   }
 
   /**

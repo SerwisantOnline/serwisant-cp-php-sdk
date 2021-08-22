@@ -63,19 +63,23 @@ class Action
     return new ActionFormHelpers();
   }
 
-  protected function renderPage(string $template, array $vars = [], $require_user = true)
+  protected function renderPage(string $template, array $vars = [])
   {
     if ($this->debug) {
       error_log("Rendering {$template}");
     }
+
     $inner_vars = [
       'pageTitle' => '',
       'currentAction' => array_slice(explode("\\", get_class($this)), -1)[0],
       'locale' => $this->app['locale'],
       'locale_ISO' => explode('_', $this->app['locale'])[0],
+      'locale_PhonePrefix' => '+48',
+      'isAuthenticated' => $this->access_token_customer->isAuthenticated(),
     ];
+
     $inner_vars = array_merge($inner_vars, $this->getLayoutVars());
-    if ($require_user) {
+    if ($this->access_token_customer->isAuthenticated()) {
       $inner_vars['me'] = $this->apiCustomer()->customerQuery()->viewer(['basic' => true]);
     }
     $inner_vars['innerHTML'] = $this->twig->render($template, array_merge($inner_vars, $vars));

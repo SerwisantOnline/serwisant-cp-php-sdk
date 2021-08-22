@@ -16,7 +16,8 @@ class Viewer extends Action
       'customer' => $this->apiCustomer()->customerQuery()->viewer(['complete' => true])->customer,
       'form_params' => $this->request->request,
       'errors' => $errors,
-      'js_files' => ['/assets/signup_new.js']
+      'js_files' => ['/assets/signup_new.js'],
+      'pageTitle' => $this->t('viewer_edit.title'),
     ];
 
     return $this->renderPage('viewer_edit.html.twig', $vars);
@@ -25,7 +26,9 @@ class Viewer extends Action
   public function update()
   {
     $customer = $this->request->get('customer', []);
-    $customer['customFields'] = $this->formHelper()->mapCustomFields($customer['customFields']);
+    if (array_key_exists('customFields', $customer)) {
+      $customer['customFields'] = $this->formHelper()->mapCustomFields($customer['customFields']);
+    }
 
     $customer_input = new CustomerUpdateInput($customer);
     $agreements_input = $this->formHelper()->mapAgreements($this->request->get('agreements', []));

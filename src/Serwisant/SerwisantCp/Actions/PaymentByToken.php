@@ -15,6 +15,6 @@ class PaymentByToken extends Action
       'token' => $secret_token,
       'js_files' => ['/assets/online_payment.js']
     ];
-    return $this->renderPage('online_payment_by_token.html.twig', $vars, false);
+    return $this->renderPage('online_payment_by_token.html.twig', $vars);
   }
 }

@@ -7,7 +7,10 @@
             {{ form_field({type: 'textarea', argument: 'message.content', caption: t(_self, 'content')}, form_params, errors) }}
         </div>
 
-        <a href="{{ path('message', {'id': thread.ID}) }}" class="btn btn-secondary mb-3">{{ t(_self, 'cancel') }}</a>
-        <button type="submit" class="btn btn-primary mb-3">{{ t(_self, 'submit') }}</button>
+        <div class="mb-3 form-buttons">
+            <a href="{{ path('message', {'id': thread.ID}) }}"
+               class="btn btn-secondary mb-3">{{ t(_self, 'cancel') }}</a>
+            <button type="submit" class="btn btn-primary mb-3">{{ t(_self, 'submit') }}</button>
+        </div>
     </form>
 </div>

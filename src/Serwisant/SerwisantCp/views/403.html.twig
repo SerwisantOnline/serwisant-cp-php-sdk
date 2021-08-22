@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>404</title>
+    <title>403</title>
     <link rel="stylesheet" href="/assets/bootstrap.min.css"/>
     <link rel="stylesheet" href="/assets/layout.css"/>
 </head>
@@ -11,10 +11,12 @@
 
 <main class="container">
     <div class="bg-light p-5 rounded mt-3">
-        <h1>Nie znaleziono strony</h1>
-        <p class="lead">Strona, której szukasz nie istnieje. Użyj przycisku wstecz lub przejdź do głównej strony
-            aplikacji.</p>
-        <a class="btn btn-lg btn-primary" href="/" role="button">Strona główna &raquo;</a>
+        <h1>Nieoprawna konfiguracja aplikacji</h1>
+        <p class="lead">
+            {{ error_message }}
+            <br>
+            [{{ error_code }}]
+        </p>
     </div>
 </main>
 

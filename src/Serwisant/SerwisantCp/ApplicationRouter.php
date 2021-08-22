@@ -47,11 +47,13 @@ class ApplicationRouter extends Router
     $app->get('/logout', function (Request $request) use ($app) {
       return (new Actions\Login($app, $request))->destroy();
     })
+      ->before($this->expectAuthenticated($app))
       ->bind('destroy_session');
 
     $app->get('/signup', function (Request $request) use ($app) {
       return (new Actions\Signup($app, $request))->new();
-    })->bind('new_signup');
+    })
+      ->bind('new_signup');
 
     $app->post('/signup', function (Request $request) use ($app) {
       return (new Actions\Signup($app, $request))->create();
@@ -63,7 +65,8 @@ class ApplicationRouter extends Router
 
     $app->get('/reset_password', function (Request $request) use ($app) {
       return (new Actions\PasswordReset($app, $request))->new();
-    })->bind('new_password_reset');
+    })
+      ->bind('new_password_reset');
 
     $app->post('/reset_password', function (Request $request) use ($app) {
       return (new Actions\PasswordReset($app, $request))->create();
@@ -75,30 +78,38 @@ class ApplicationRouter extends Router
 
     $app->post('/set_password', function (Request $request) use ($app) {
       return (new Actions\PasswordReset($app, $request))->createPassword();
-    })->bind('set_password');
+    })
+      ->bind('set_password');
 
     $app->get('/viewer', function (Request $request) use ($app) {
       return (new Actions\Viewer($app, $request))->edit();
-    })->bind('viewer');
+    })
+      ->before($this->expectAuthenticated($app))
+      ->bind('viewer');
 
     $app->post('/viewer', function (Request $request) use ($app) {
       return (new Actions\Viewer($app, $request))->update();
-    })->bind('viewer_update');
+    })
+      ->before($this->expectAuthenticated($app))
+      ->bind('viewer_update');
   }
 
   private function createTemporaryFilesRoutes(Silex\Application $app)
   {
     $app->post('/temporary_file', function (Request $request) use ($app) {
       return (new Actions\TemporaryFile($app, $request))->create();
-    });
+    })
+      ->before($this->expectAuthenticated($app));
 
     $app->delete('/temporary_file', function (Request $request) use ($app) {
       return 'OK';
-    });
+    })
+      ->before($this->expectAuthenticated($app));
 
     $app->get('/temporary_file', function (Request $request) use ($app) {
       return (new Actions\TemporaryFile($app, $request))->show();
-    });
+    })
+      ->before($this->expectAuthenticated($app));
   }
 
   private function createRepairsRoutes(Silex\Application $app)
@@ -106,21 +117,25 @@ class ApplicationRouter extends Router
     $app->get('/repairs', function (Request $request) use ($app) {
       return (new Actions\Repairs($app, $request))->index();
     })
+      ->before($this->expectAuthenticated($app))
       ->bind('repairs');
 
     $app->get('/repairs/create', function (Request $request) use ($app) {
       return (new Actions\Repairs($app, $request))->new();
     })
+      ->before($this->expectAuthenticated($app))
       ->bind('new_repair');
 
     $app->post('/repairs/create', function (Request $request) use ($app) {
       return (new Actions\Repairs($app, $request))->create();
     })
+      ->before($this->expectAuthenticated($app))
       ->bind('create_repair');
 
     $app->get('/repair/{id}', function (Request $request, $id) use ($app) {
       return (new Actions\Repairs($app, $request))->show($id);
     })
+      ->before($this->expectAuthenticated($app))
       ->assert('id', self::HASHID_ASSERTION)
       ->bind('repair');
   }
@@ -130,22 +145,26 @@ class ApplicationRouter extends Router
     $app->get('/tickets', function (Request $request) use ($app) {
       return (new Actions\Tickets($app, $request))->index();
     })
+      ->before($this->expectAuthenticated($app))
       ->bind('tickets');
 
     $app->get('/ticket/{id}', function (Request $request, $id) use ($app) {
       return (new Actions\Tickets($app, $request))->show($id);
     })
       ->assert('id', self::HASHID_ASSERTION)
+      ->before($this->expectAuthenticated($app))
       ->bind('ticket');
 
     $app->get('/tickets/create', function (Request $request) use ($app) {
       return (new Actions\Tickets($app, $request))->new();
     })
+      ->before($this->expectAuthenticated($app))
       ->bind('new_ticket');
 
     $app->post('/tickets/create', function (Request $request) use ($app) {
       return (new Actions\Tickets($app, $request))->create();
     })
+      ->before($this->expectAuthenticated($app))
       ->bind('create_ticket');
   }
 
@@ -154,34 +173,40 @@ class ApplicationRouter extends Router
     $app->get('/messages', function (Request $request) use ($app) {
       return (new Actions\Messages($app, $request))->index();
     })
+      ->before($this->expectAuthenticated($app))
       ->bind('messages');
 
     $app->get('/message/{id}', function (Request $request, $id) use ($app) {
       return (new Actions\Messages($app, $request))->show($id);
     })
       ->assert('id', self::HASHID_ASSERTION)
+      ->before($this->expectAuthenticated($app))
       ->bind('message');
 
     $app->get('/messages/create', function (Request $request) use ($app) {
       return (new Actions\Messages($app, $request))->new();
     })
+      ->before($this->expectAuthenticated($app))
       ->bind('new_message');
 
     $app->post('/messages/create', function (Request $request) use ($app) {
       return (new Actions\Messages($app, $request))->create();
     })
+      ->before($this->expectAuthenticated($app))
       ->bind('create_message');
 
     $app->get('/message/{id}/create', function (Request $request, $id) use ($app) {
       return (new Actions\Messages($app, $request))->newReply($id);
     })
       ->assert('id', self::HASHID_ASSERTION)
+      ->before($this->expectAuthenticated($app))
       ->bind('new_message_reply');
 
     $app->post('/message/{id}/create', function (Request $request, $id) use ($app) {
       return (new Actions\Messages($app, $request))->createReply($id);
     })
       ->assert('id', self::HASHID_ASSERTION)
+      ->before($this->expectAuthenticated($app))
       ->bind('create_message_reply');
   }
 
@@ -276,6 +301,7 @@ class ApplicationRouter extends Router
     $app->get('/', function (Request $request) use ($app) {
       return (new Actions\Dashboard($app, $request))->index();
     })
+      ->before($this->expectAuthenticated($app))
       ->bind('dashboard');
 
     $app->get('/agreement/{id}', function (Request $request, $id) use ($app) {
@@ -290,11 +316,13 @@ class ApplicationRouter extends Router
     $app->get('/ac/vendor', function (Request $request) use ($app) {
       return (new Actions\Autocomplete($app, $request))->vendor();
     })
+      ->before($this->expectAuthenticated($app))
       ->bind('autocomplete_vendor');
 
     $app->get('/ac/model', function (Request $request) use ($app) {
       return (new Actions\Autocomplete($app, $request))->model();
     })
+      ->before($this->expectAuthenticated($app))
       ->bind('autocomplete_model');
   }
 }

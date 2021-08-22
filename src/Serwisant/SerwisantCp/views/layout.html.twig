@@ -20,8 +20,7 @@
   }
 </script>
 
-{% if me is defined %}
-
+{% if isAuthenticated %}
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="{{ path('dashboard') }}">{{ subscriber.serviceSupplier.displayName }}</a>
@@ -69,7 +68,6 @@
         </div>
     </nav>
     <div class="mb-3"></div>
-
 {% endif %}
 
 {% if app.flash.anyErrors() %}

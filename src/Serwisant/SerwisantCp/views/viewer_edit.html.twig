@@ -19,13 +19,20 @@
         <div class="mb-3 business_container undisplayed">
             <div class="input-group">
                 <span class="input-group-text">{{ locale_ISO|upper }}</span>
+                {{ form_field({type: 'hidden', argument: 'customer.taxPrefix', value:locale_ISO|upper}, form_params, errors) }}
                 {{ form_field({type: 'text', argument: 'customer.taxId', caption: t(_self, 'tax_id'), value: customer.taxId}, form_params, errors) }}
-                {{ form_field({type: 'hidden', argument: 'customer.taxPrefix', value: locale_ISO|upper}, form_params, errors) }}
             </div>
         </div>
 
-        <div class="mb-3">
-            {{ form_field({type: 'text', argument: 'customer.email', caption: t(_self, 'email'), value: customer.email}, form_params, errors) }}
+        <div class="row">
+            <div class="col-sm-6">
+                {{ form_field({type: 'text', argument: 'customer.email', caption: t(_self, 'email'), value: customer.email}, form_params, errors) }}
+            </div>
+            <div class="col-sm-6">
+                {{ form_field({type: 'hidden', argument: 'customer.phone.countryPrefix', value: customer.phone ? customer.phone.countryPrefix : locale_PhonePrefix}, form_params, errors) }}
+                {{ form_field({type: 'text', argument: 'customer.phone.number', caption: t(_self, 'phone_number'), value: customer.phone ? customer.phone.number : ''}, form_params, errors) }}
+            </div>
+            <div class="mb-3"></div>
         </div>
 
         <div class="mb-3">
@@ -76,13 +83,13 @@
                 <div class="mb-3"></div>
             {% endfor %}
         {% endif %}
-<!-- ff -->
+
         {% for customField in customer.customFields %}
             <div class="mb-3">
                 {{ custom_form_field(customField.field, {argument: "customer.customFields.#{loop.index0}", value: customField.value, pk: customField.ID}, form_params, errors) }}
             </div>
         {% endfor %}
-<!-- ff -->
+
         <table class="table table-borderless">
             {% for agreement in customer.agreements %}
                 <tr>
@@ -103,8 +110,10 @@
             {% endfor %}
         </table>
 
-        <a href="{{ path('dashboard') }}" class="btn btn-secondary mb-3">{{ t(_self, 'cancel') }}</a>
-        <button type="submit" class="btn btn-primary mb-3">{{ t(_self, 'submit') }}</button>
+        <div class="mb-3 form-buttons">
+            <a href="{{ path('dashboard') }}" class="btn btn-secondary mb-3">{{ t(_self, 'cancel') }}</a>
+            <button type="submit" class="btn btn-primary mb-3">{{ t(_self, 'submit') }}</button>
+        </div>
     </form>
 </div>
 

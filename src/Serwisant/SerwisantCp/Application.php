@@ -17,7 +17,7 @@ class Application
   private $query_paths = [];
   private $tr_files = [];
 
-  public function __construct($env)
+  public function __construct($env = 'production')
   {
     $this->env = $env;
 
@@ -65,6 +65,7 @@ class Application
 
     $app->register(new Silex\Provider\TwigServiceProvider(), ['twig.path' => $this->view_paths]);
     $app->register(new Silex\Provider\RoutingServiceProvider());
+
     $app->extend(
       'twig',
       function ($twig) use ($app) {
@@ -83,7 +84,9 @@ class Application
         return (new TwigSerwisantExtensions($twig, $app))->call();
       }
     );
+
     $app->error((new ApplicationExceptionHandlers())->call($app));
+
     $app->before(function (HttpFoundation\Request $request, Silex\Application $app) {
       $this->beforeRequest($request, $app);
     });

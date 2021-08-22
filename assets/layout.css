@@ -36,6 +36,10 @@ textarea {
     border-radius: .25rem;
 }
 
+.form-buttons {
+    padding-top: 60px;
+}
+
 /* pluginy */
 
 .dtpicker-button, .dtpicker-compButton, .dtpicker-close {

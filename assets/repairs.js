@@ -43,10 +43,15 @@ Application.Repairs.Form = function () {
     })
   });
   pond.appendTo(document.getElementById('create_repair_file_uploader'));
+  pond.on('addfilestart', function () {
+    $('.form-buttons > button').addClass('disabled');
+  })
+  pond.on('processfile', function () {
+    $('.form-buttons > button').removeClass('disabled');
+  })
 
   Application.Ui.Autocomplete($('#repair_vendor'));
   Application.Ui.Autocomplete($('#repair_model'));
-
 }
 
 $(document).ready(function () {

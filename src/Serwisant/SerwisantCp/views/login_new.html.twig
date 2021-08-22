@@ -9,7 +9,6 @@
     <p class="lead">{{ t(_self, 'login_description') }}</p>
 
     <form method="post" action="{{ path('new_session') }}" id="new-session-form">
-
         <div class="row p-1">
             <div class="col-4">
                 {{ form_field({type: 'text', argument: 'session_credentials.login_credential', caption: t(_self, 'login')}, formParams, []) }}
@@ -22,7 +21,10 @@
                     <button type="button"
                             class="btn btn-primary mb-3"
                             data-url="{{ path('new_session_resolve_login') }}"
-                            data-tr-login-not-found="{{ t(_self, 'login_not_found') }}"
+                            data-tr-NOT_FOUND="{{ t(_self, 'login_not_found') }}"
+                            data-tr-DELETED="{{ t(_self, 'subscriber_deleted') }}"
+                            data-tr-NOT_ACTIVATED="{{ t(_self, 'login_not_activated') }}"
+                            data-tr-DISABLED="{{ t(_self, 'login_disabled') }}"
                             id="new-session-resolve-login-btn">{{ t(_self, 'submit') }}</button>
                     <br/>
                     <a href="{{ path('new_password_reset') }}">Zapomniałem hasła.</a>
@@ -47,7 +49,6 @@
                 </div>
             </div>
         </div>
-
     </form>
 </div>
 

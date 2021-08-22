@@ -14,12 +14,13 @@ class Agreement extends Action
 
     $agreements = $this->apiPublic()->publicQuery()->customerAgreements($filter);
     if (count($agreements) == 0) {
-      return $this->notFound();
+      $this->notFound();
     }
 
     $vars = [
-      'agreement' => $agreements[0]
+      'agreement' => $agreements[0],
+      'pageTitle' => $agreements[0]->description,
     ];
-    return $this->renderPage('agreements.html.twig', $vars, false);
+    return $this->renderPage('agreements.html.twig', $vars);
   }
 }
