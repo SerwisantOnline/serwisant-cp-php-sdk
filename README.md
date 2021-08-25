@@ -51,14 +51,14 @@ use Serwisant\SerwisantApi;
 
 $application = new SerwisantCp\Application();
 
-$application->setPublicAccessToken(new SerwisantApi\AccessTokenOauth(
+$application->set('access_token_public', new SerwisantApi\AccessTokenOauth(
   $oauth_key,
   $oauth_secret,
   'public',
   new SerwisantApi\AccessTokenContainerEncryptedFile(sha1($oauth_secret))
 ));
 
-$application->setCustomerAccessToken(new SerwisantApi\AccessTokenOauthUserCredentials(
+$application->set('access_token_customer', new SerwisantApi\AccessTokenOauthUserCredentials(
   $oauth_key,
   $oauth_secret,
   'customer',
