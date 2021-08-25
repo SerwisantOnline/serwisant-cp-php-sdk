@@ -106,36 +106,36 @@ textarea {
 /* online payments */
 
 .loading {
-    background: url(/assets/loader.gif) center center no-repeat;
+    background: url(/assets-serwisant-cp/loader.gif) center center no-repeat;
 }
 
 .code-modal-waiting {
-    background: url(/assets/iconfinder_phone.png) center center no-repeat;
+    background: url(/assets-serwisant-cp/iconfinder_phone.png) center center no-repeat;
     margin: 0 auto 0 auto;
 }
 
 .code-modal-success {
-    background: url(/assets/iconfinder_phone_ok.png) center center no-repeat;
+    background: url(/assets-serwisant-cp/iconfinder_phone_ok.png) center center no-repeat;
     margin: 0 auto 0 auto;
 }
 
 .code-modal-failure {
-    background: url(/assets/iconfinder_phone_nope.png) center center no-repeat;
+    background: url(/assets-serwisant-cp/iconfinder_phone_nope.png) center center no-repeat;
     margin: 0 auto 0 auto;
 }
 
 .transfer-modal-waiting {
-    background: url(/assets/iconfinder_browser_clear.png) center center no-repeat;
+    background: url(/assets-serwisant-cp/iconfinder_browser_clear.png) center center no-repeat;
     margin: 0 auto 0 auto;
 }
 
 .transfer-modal-success {
-    background: url(/cassets/iconfinder_browser_website_okey.png) center center no-repeat;
+    background: url(/assets-serwisant-cp/iconfinder_browser_website_okey.png) center center no-repeat;
     margin: 0 auto 0 auto;
 }
 
 .transfer-modal-failure {
-    background: url(/assets/iconfinder_browser_website_nope.png) center center no-repeat;
+    background: url(/assets-serwisant-cp/iconfinder_browser_website_nope.png) center center no-repeat;
     margin: 0 auto 0 auto;
 }
 

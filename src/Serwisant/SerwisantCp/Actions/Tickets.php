@@ -2,13 +2,14 @@
 
 namespace Serwisant\SerwisantCp\Actions;
 
+use Serwisant\SerwisantCp\Action;
+use Serwisant\SerwisantCp\ExceptionNotFound;
+
 use Serwisant\SerwisantApi\Types\SchemaCustomer\RepairsFilterType;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\TicketsFilter;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\TicketsFilterType;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\TicketsSort;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\TicketInput;
-use Serwisant\SerwisantCp\Action;
-use Serwisant\SerwisantCp\ActionFormHelpers;
 
 class Tickets extends Action
 {
@@ -40,8 +41,7 @@ class Tickets extends Action
     $filter = new TicketsFilter(['type' => RepairsFilterType::ID, 'ID' => $id]);
     $result = $this->apiCustomer()->customerQuery()->tickets(null, null, $filter, null, ['single' => true]);
     if (count($result->items) !== 1) {
-      $this->notFound();
-      return null;
+      throw new ExceptionNotFound(__CLASS__, __LINE__);
     }
     $variables = [
       'ticket' => $result->items[0],
@@ -77,7 +77,7 @@ class Tickets extends Action
       'form_params' => $this->request->request,
       'temporary_files' => $this->formHelper()->mapTemporaryFiles($this->request->get('temporary_files')),
       'errors' => $errors,
-      'js_files' => ['/assets/tickets.js'],
+      'js_files' => ['tickets.js'],
       'pageTitle' => $this->t('ticket_new.title'),
     ];
 
@@ -112,7 +112,7 @@ class Tickets extends Action
   private function checkModuleActive()
   {
     if (false === $this->getLayoutVars()['configuration']->caPanelTickets) {
-      $this->notFound();
+      throw new ExceptionNotFound(__CLASS__, __LINE__);
     }
   }
 }

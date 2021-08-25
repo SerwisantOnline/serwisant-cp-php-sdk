@@ -11,7 +11,7 @@ class Login extends Action
   {
     $vars = [
       'formParams' => $this->request->request,
-      'js_files' => ['/assets/login_new.js'],
+      'js_files' => ['login_new.js'],
       'pageTitle' => $this->t('login_new.title'),
     ];
     return $this->renderPage('login_new.html.twig', $vars);
@@ -38,7 +38,7 @@ class Login extends Action
 
   public function destroy()
   {
-    $this->accessTokenCustomer()->logout();
+    $this->accessTokenCustomer()->revoke();
     return $this->redirectTo('dashboard', 'flashes.logout_successful');
   }
 }

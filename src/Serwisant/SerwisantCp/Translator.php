@@ -5,7 +5,13 @@ namespace Serwisant\SerwisantCp;
 class Translator
 {
   const CURRENCIES = [
-    ['locale' => 'pl_PL', 'code' => 'PLN', 'symbol' => 'zł']
+    ['locale' => 'en_US', 'code' => 'USD', 'symbol' => '$'],
+    ['locale' => 'pl_PL', 'code' => 'PLN', 'symbol' => 'zł'],
+  ];
+
+  const PHONE_PREFIXES = [
+    'en_US' => '1',
+    'pl_PL' => '48',
   ];
 
   private $translations = [];
@@ -53,6 +59,17 @@ class Translator
       if ($currency['locale'] == $locale) {
         return $currency['symbol'];
       }
+    }
+    throw new TranslatorException("Locale {$locale} not supported");
+  }
+
+  public function localeToPhonePrefix($locale = null)
+  {
+    if (!$locale) {
+      $locale = $this->default_locale;
+    }
+    if (array_key_exists($locale, self::PHONE_PREFIXES)) {
+      return self::PHONE_PREFIXES[$locale];
     }
     throw new TranslatorException("Locale {$locale} not supported");
   }

@@ -11,16 +11,21 @@ class ApplicationExceptionHandlers
   public function call(Silex\Application $app)
   {
     return function (\Exception $e) use ($app) {
-      if ($this->is404exception($e)) {
+      $redirect_variables = [];
+      if (isset($app['token'])) {
+        $redirect_variables['token'] = (string)$app['token'];
+      }
+
+      if ($this->pageNotFound($e)) {
         return new HttpFoundation\Response(
-          $app['twig']->render('404.html.twig', []),
+          $app['twig']->render('404.html.twig', ['message' => "{$e->getMessage()}:{$e->getCode()}"]),
           404
         );
-      } elseif ($this->is401exception($e)) {
+
+      } elseif ($this->requireAuthentication($e)) {
         $app['flash']->addMessage($app['tr']->t($app['locale'], 'flashes.login_first'));
-        return new HttpFoundation\RedirectResponse($app['url_generator']->generate('new_session'));
-      } elseif ($this->isApiOauthException($e)) {
-        return new HttpFoundation\RedirectResponse($app['url_generator']->generate('destroy_session'));
+        return $app->redirect($app['url_generator']->generate('new_session', $redirect_variables));
+
       } elseif ($e instanceof SerwisantApi\ExceptionAccessDenied) {
         return new HttpFoundation\Response(
           $app['twig']->render('403.html.twig', [
@@ -29,6 +34,7 @@ class ApplicationExceptionHandlers
           ]),
           403
         );
+
       } else {
         throw $e;
       }
@@ -39,27 +45,22 @@ class ApplicationExceptionHandlers
    * @param $e
    * @return bool
    */
-  private function is401exception($e)
+  private function requireAuthentication($e)
   {
     return
-      ($e instanceof SerwisantApi\ExceptionUserCredentialsRequired) ||
-      ($e instanceof ExceptionUnauthorized);
+      ($e instanceof ExceptionUnauthorized) ||
+      ($e instanceof SerwisantApi\ExceptionUserCredentialsRequired);
   }
 
   /**
    * @param $e
    * @return bool
    */
-  private function is404exception($e)
+  private function pageNotFound($e)
   {
     return
       ($e instanceof ExceptionNotFound) ||
       ($e instanceof SerwisantApi\ExceptionNotFound) ||
       ($e instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException);
-  }
-
-  private function isApiOauthException($e)
-  {
-    return ($e instanceof SerwisantApi\ExceptionUnauthorized);
   }
 }

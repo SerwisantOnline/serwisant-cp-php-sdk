@@ -3,6 +3,7 @@
 namespace Serwisant\SerwisantCp\Actions;
 
 use Serwisant\SerwisantCp\Action;
+use Serwisant\SerwisantCp\ExceptionNotFound;
 
 use Serwisant\SerwisantApi\Types\SchemaCustomer\RepairsFilter;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\RepairsFilterType;
@@ -41,8 +42,7 @@ class Repairs extends Action
     $filter = new RepairsFilter(['type' => RepairsFilterType::ID, 'ID' => $id]);
     $result = $this->apiCustomer()->customerQuery()->repairs(null, null, $filter, null, ['single' => true]);
     if (count($result->items) !== 1) {
-      $this->notFound();
-      return null;
+      throw new ExceptionNotFound(__CLASS__, __LINE__);
     }
     $variables = [
       'repair' => $result->items[0],
@@ -77,7 +77,7 @@ class Repairs extends Action
       'form_params' => $this->request->request,
       'temporary_files' => $this->formHelper()->mapTemporaryFiles($this->request->get('temporary_files')),
       'errors' => $errors,
-      'js_files' => ['/assets/repairs.js'],
+      'js_files' => ['repairs.js'],
       'pageTitle' => $this->t('repair_new.title'),
     ];
 
@@ -130,7 +130,7 @@ class Repairs extends Action
   private function checkModuleActive()
   {
     if (false === $this->getLayoutVars()['configuration']->caPanelRepairs) {
-      $this->notFound();
+      throw new ExceptionNotFound(__CLASS__, __LINE__);
     }
   }
 }

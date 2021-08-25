@@ -9,17 +9,21 @@ use Serwisant\SerwisantApi;
 class Application
 {
   private $env;
-  private $access_token_pubic;
-  private $access_token_customer;
-  private $router;
-  private $base_dir;
   private $view_paths = [];
   private $query_paths = [];
   private $tr_files = [];
 
-  public function __construct($env = 'production')
+  private $base_dir;
+
+  private $app;
+  private $router;
+
+  public function __construct($env = 'production', $view_paths = [], $query_paths = [], $tr_files = [])
   {
     $this->env = $env;
+    $this->view_paths = $view_paths;
+    $this->query_paths = $query_paths;
+    $this->tr_files = $tr_files;
 
     $this->base_dir = __DIR__;
 
@@ -32,8 +36,9 @@ class Application
     date_default_timezone_set('UTC');
 
     $this->sessionStart();
-  }
 
+    $this->app = new Silex\Application(['env' => $this->env, 'debug' => ($this->env === 'development')]);
+  }
 
   public function setRouter(Router $router)
   {
@@ -41,59 +46,53 @@ class Application
     return $this;
   }
 
-  public function setPublicAccessToken(SerwisantApi\AccessToken $token)
+  public function set($key, $obj)
   {
-    $this->access_token_pubic = $token;
-    return $this;
-  }
-
-  public function setCustomerAccessToken(SerwisantApi\AccessToken $token)
-  {
-    $this->access_token_customer = $token;
+    $this->app[$key] = $obj;
     return $this;
   }
 
   public function run()
   {
-    $app = new Silex\Application(['env' => $this->env, 'debug' => ($this->env === 'development')]);
+    $this->app['env'] = $this->env;
+    $this->app['base_dir'] = $this->base_dir;
+    $this->app['gql_query_paths'] = $this->query_paths;
+    $this->app['tr'] = new Translator($this->tr_files);
+    $this->app['flash'] = new Flash();
 
-    $app['env'] = $this->env;
-    $app['base_dir'] = $this->base_dir;
-    $app['gql_query_paths'] = $this->query_paths;
-    $app['tr'] = new Translator($this->tr_files);
-    $app['flash'] = new Flash();
+    $this->app->register(new Silex\Provider\TwigServiceProvider(), ['twig.path' => $this->view_paths]);
+    $this->app->register(new Silex\Provider\RoutingServiceProvider());
 
-    $app->register(new Silex\Provider\TwigServiceProvider(), ['twig.path' => $this->view_paths]);
-    $app->register(new Silex\Provider\RoutingServiceProvider());
-
-    $app->extend(
+    $this->app->extend(
       'twig',
-      function ($twig) use ($app) {
-        return (new TwigGenericExtensions($twig, $app))->call();
+      function ($twig) {
+        return (new TwigGenericExtensions($twig, $this->app))->call();
       }
     );
-    $app->extend(
+    $this->app->extend(
       'twig',
-      function ($twig) use ($app) {
-        return (new TwigFormExtensions($twig, $app))->call();
+      function ($twig) {
+        return (new TwigFormExtensions($twig, $this->app))->call();
       }
     );
-    $app->extend(
+    $this->app->extend(
       'twig',
-      function ($twig) use ($app) {
-        return (new TwigSerwisantExtensions($twig, $app))->call();
+      function ($twig) {
+        return (new TwigSerwisantExtensions($twig, $this->app))->call();
       }
     );
 
-    $app->error((new ApplicationExceptionHandlers())->call($app));
+    $this->app->error((new ApplicationExceptionHandlers())->call($this->app));
 
-    $app->before(function (HttpFoundation\Request $request, Silex\Application $app) {
+    $this->app->before(function (HttpFoundation\Request $request, Silex\Application $app) {
       $this->beforeRequest($request, $app);
     });
 
-    $this->router->createRoutes($app);
+    $this->router->createRoutes($this->app);
 
-    $app->run();
+    $this->app->run();
+
+    return $this;
   }
 
   protected function sessionStart()
@@ -117,8 +116,6 @@ class Application
 
     $app['base_uri'] = $request->getScheme() . '://' . $request->getHost();
     $app['request'] = $request;
-    $app['access_token_customer'] = $this->access_token_customer;
-    $app['access_token_public'] = $this->access_token_pubic;
 
     # ustawiam locale zgodne z językiem klienta, nie zmieniam natomiast domyślnej strefy czasowej - daty przed wyświetleniem
     # muszą zostać sformatowane zgodnie z $app[timezone]

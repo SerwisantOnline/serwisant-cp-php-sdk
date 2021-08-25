@@ -4,29 +4,34 @@ namespace Serwisant\SerwisantCp\Actions;
 
 use Symfony\Component\HttpFoundation;
 
+use Serwisant\SerwisantCp\ExceptionNotFound;
 use Serwisant\SerwisantCp\Action;
+
 use Serwisant\SerwisantApi\Types\SchemaPublic;
 
 class RepairDecisionByToken extends Action
 {
-  public function accept($secret_token)
+  public function accept()
   {
-    return $this->makeDecision(SchemaPublic\AcceptOrRejectRepairDecision::ACCEPT, $secret_token);
+    return $this->makeDecision(SchemaPublic\AcceptOrRejectRepairDecision::ACCEPT, (string)$this->token);
   }
 
-  public function acceptOffer($secret_token, $offer_id)
+  public function acceptOffer($offer_id)
   {
-    return $this->makeDecision(SchemaPublic\AcceptOrRejectRepairDecision::ACCEPT, $secret_token, $offer_id);
+    return $this->makeDecision(SchemaPublic\AcceptOrRejectRepairDecision::ACCEPT, (string)$this->token, $offer_id);
   }
 
-  public function reject($secret_token)
+  public function reject()
   {
-    return $this->makeDecision(SchemaPublic\AcceptOrRejectRepairDecision::REJECT, $secret_token);
+    return $this->makeDecision(SchemaPublic\AcceptOrRejectRepairDecision::REJECT, (string)$this->token);
   }
 
-  private function makeDecision($decision, $secret_token, $offer_id = null)
+  private function makeDecision($decision, $slug, $offer_id = null)
   {
-    $this->apiPublic()->publicMutation()->acceptOrRejectRepair($secret_token, $decision, $offer_id);
+    $this
+      ->apiPublic()
+      ->publicMutation()
+      ->acceptOrRejectRepair($slug, $decision, $offer_id);
 
     $response = new HttpFoundation\Response('', 204);
 
@@ -38,7 +43,7 @@ class RepairDecisionByToken extends Action
         $this->flashMessage($this->t('flashes.order_diagnosis_rejected'));
         return $response;
       default:
-        return $this->notFound();
+        throw new ExceptionNotFound(__CLASS__, __LINE__);
     }
   }
 }

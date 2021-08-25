@@ -2,12 +2,13 @@
 
 namespace Serwisant\SerwisantCp\Actions;
 
+use Serwisant\SerwisantCp\Action;
+use Serwisant\SerwisantCp\ExceptionNotFound;
+
 use Serwisant\SerwisantApi\Types\SchemaCustomer\MessageInput;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\MessagesFilter;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\MessagesFilterType;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\MessagesSort;
-
-use Serwisant\SerwisantCp\Action;
 
 class Messages extends Action
 {
@@ -116,8 +117,7 @@ class Messages extends Action
     $result = $this->apiCustomer()->customerQuery()->messages(null, null, $filter, null, ['single' => true]);
 
     if (count($result->items) !== 1) {
-      $this->notFound();
-      return null;
+      throw new ExceptionNotFound(__CLASS__, __LINE__);
     }
 
     return $result->items[0];
@@ -126,7 +126,7 @@ class Messages extends Action
   private function checkModuleActive()
   {
     if (false === $this->getLayoutVars()['configuration']->caPanelCommunication) {
-      $this->notFound();
+      throw new ExceptionNotFound(__CLASS__, __LINE__);
     }
   }
 }

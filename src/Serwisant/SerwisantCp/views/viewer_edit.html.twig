@@ -19,7 +19,7 @@
         <div class="mb-3 business_container undisplayed">
             <div class="input-group">
                 <span class="input-group-text">{{ locale_ISO|upper }}</span>
-                {{ form_field({type: 'hidden', argument: 'customer.taxPrefix', value:locale_ISO|upper}, form_params, errors) }}
+                {{ form_field({type: 'hidden', argument: 'customer.taxPrefix', value:locale_ISO | upper}, form_params, errors) }}
                 {{ form_field({type: 'text', argument: 'customer.taxId', caption: t(_self, 'tax_id'), value: customer.taxId}, form_params, errors) }}
             </div>
         </div>
@@ -44,7 +44,7 @@
         </div>
 
         {% if customer.addresses is empty %}
-            {{ form_field({type: 'hidden', argument: 'addresses.0.countryIso', value: locale_ISO|upper}, form_params, errors) }}
+            {{ form_field({type: 'hidden', argument: 'addresses.0.countryIso', value: locale_ISO | upper}, form_params, errors) }}
             <div class="row">
                 <label class="form-label">{{ t(_self, 'address') }}</label>
                 <div class="col-sm-4">

@@ -16,7 +16,7 @@ class Viewer extends Action
       'customer' => $this->apiCustomer()->customerQuery()->viewer(['complete' => true])->customer,
       'form_params' => $this->request->request,
       'errors' => $errors,
-      'js_files' => ['/assets/signup_new.js'],
+      'js_files' => ['signup_new.js'],
       'pageTitle' => $this->t('viewer_edit.title'),
     ];
 

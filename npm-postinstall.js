@@ -1,3 +1,6 @@
+var args = process.argv.slice(2);
+var action = (args[0] || 'copy');
+
 const fs = require('fs');
 const path = require('path');
 
@@ -11,7 +14,7 @@ function mkdir(dir) {
   });
 }
 
-function copy(file, prefix = '', to_dir = 'public/assets') {
+function copy(file, prefix = '', to_dir = 'public/assets-serwisant-cp') {
   let app_dir = process.cwd();
   let file_parts = file.split('/');
   let file_name = file_parts[file_parts.length - 1]
@@ -23,10 +26,18 @@ function copy(file, prefix = '', to_dir = 'public/assets') {
       throw err;
     }
   }
-  fs.symlink(path.join(app_dir, file), target, (err) => {
-    if (err) throw err;
-    console.log('cp ' + prefix + file_name);
-  });
+
+  if (action == 'symlink') {
+    fs.symlink(path.join(app_dir, file), target, (err) => {
+      if (err) throw err;
+      console.log('ln ' + prefix + file_name);
+    });
+  } else if (action == 'copy') {
+    fs.copyFile(path.join(app_dir, file), target, (err) => {
+      if (err) throw err;
+      console.log('cp ' + prefix + file_name);
+    });
+  }
 }
 
 function with_files(in_dir, perform) {
@@ -38,7 +49,7 @@ function with_files(in_dir, perform) {
   });
 }
 
-mkdir('public/assets')
+mkdir('public/assets-serwisant-cp')
 mkdir('public/webfonts')
 
 copy('node_modules/lodash/lodash.min.js')

@@ -1,7 +1,7 @@
 {
   "name": "serwisant/serwisant-cp",
   "description": "Customer Panel SDK for https://serwisant.online service",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "library",
   "homepage": "https://github.com/SerwisantOnline/serwisant-cp-php-sdk",
   "license": "Apache-2.0",
@@ -15,7 +15,6 @@
     "symfony/twig-bridge": "^3.4",
     "symfony/yaml": "^3.4",
     "twig/twig": "^2.12",
-    "noodlehaus/config": "^2.0",
     "adbario/php-dot-notation": "^2.2"
   },
   "authors": [

@@ -9,6 +9,12 @@ class TwigGenericExtensions extends TwigExtensions
 {
   public function call()
   {
+    $this->twig->addFunction(new TwigFunction('path', function ($binding, $variables = []) {
+      if (!array_key_exists('token', $variables) && isset($this->app['token']) && (string)$this->app['token'] !== '') {
+        $variables['token'] = (string)$this->app['token'];
+      }
+      return $this->app['url_generator']->generate($binding, $variables);
+    }));
 
     $this->twig->addFunction(new TwigFunction('paginator', function ($pages) {
       $current_uri = parse_url($this->app['request']->getUri());

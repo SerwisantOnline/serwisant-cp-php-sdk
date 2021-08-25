@@ -17,7 +17,7 @@ Ten widok pozwala na akceptację jednej z przedstawionych ofert lub diagnozy.
                             </div>
                             <div class="col-md-2">
                                 {% if repair.status.requireCustomerAccept and (offer.accepted is null) %}
-                                    <a href="{{ path('token_repair_accept_offer', {token: token, offer_id: offer.ID}) }}"
+                                    <a href="{{ path('token_repair_accept_offer', {offer_id: offer.ID}) }}"
                                        class="btn btn-success" data-color="success"
                                        data-confirm="{{ t(_self, 'accept_confirm_offer', {amount: (offer.priceGross | format_currency(currency)), offer_number: offer.number }) }}"
                                        data-method="put"
@@ -57,7 +57,7 @@ Ten widok pozwala na akceptację jednej z przedstawionych ofert lub diagnozy.
         {% if repair.status.requireCustomerAccept %}
             <div class="panel panel-danger">
                 <div class="panel-body">
-                    <a href="{{ path('token_repair_reject', {token: token}) }}" class="btn btn-danger"
+                    <a href="{{ path('token_repair_reject') }}" class="btn btn-danger"
                        data-color="danger"
                        data-confirm="{{ t(_self, 'reject_confirm_html') }}"
                        data-method="put"
@@ -75,12 +75,12 @@ Ten widok pozwala na akceptację jednej z przedstawionych ofert lub diagnozy.
                     <b>{{ t(_self, 'price_estimated') }}</b>
                     {{ repair.costs.estimatedGross | format_currency(currency) }}
                 <div class="btn-group">
-                    <a href="{{ path('token_repair_reject', {token: token}) }}" class="btn btn-danger"
+                    <a href="{{ path('token_repair_reject') }}" class="btn btn-danger"
                        data-color="danger"
                        data-confirm="{{ t(_self, 'reject_confirm_html') }}"
                        data-method="put"
                        rel="nofollow">{{ t(_self, 'reject') }}</a>
-                    <a href="{{ path('token_repair_accept', {token: token}) }}" class="btn btn-success"
+                    <a href="{{ path('token_repair_accept') }}" class="btn btn-success"
                        data-color="success"
                        data-confirm="{{ t(_self, 'accept_confirm', {amount: repair.costs.estimatedGross | format_currency(currency)}) }}"
                        data-method="put"

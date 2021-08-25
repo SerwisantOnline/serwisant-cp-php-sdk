@@ -3,62 +3,47 @@
 namespace Serwisant\SerwisantCp;
 
 use Silex;
-use Twig;
 use Symfony\Component\HttpFoundation\Request;
-use Serwisant\SerwisantApi;
 
 class Action
 {
-  /**
-   * @var Silex\Application
-   */
   protected $app;
-
-  /**
-   * @var Request
-   */
   protected $request;
-
-  /**
-   * @var Twig\Environment;
-   */
+  protected $token;
   protected $twig;
 
   /**
-   * @var Translator
+   * @var Translator $translator
    */
   protected $translator;
 
-  /**
-   * @var bool
-   */
   protected $debug = false;
 
   private $access_token_customer;
-
   private $access_token_public;
-
   private $api_customer;
-
   private $api_public;
-
   private $layout_vars;
 
-  public function __construct(Silex\Application $app, Request $request)
+  public function __construct(Silex\Application $app, Request $request, Token $token)
   {
     $this->app = $app;
     $this->request = $request;
+    $this->token = $token;
+
+    if (isset($app['access_token_customer'])) {
+      $this->access_token_customer = $app['access_token_customer'];
+    }
+    if (isset($app['access_token_public'])) {
+      $this->access_token_public = $app['access_token_public'];
+    }
+
     $this->twig = $app['twig'];
     $this->translator = $app['tr'];
-    $this->access_token_customer = $app['access_token_customer'];
-    $this->access_token_public = $app['access_token_public'];
     $this->debug = ($this->app['env'] == 'development');
   }
 
-  /**
-   * @return ActionFormHelpers
-   */
-  protected function formHelper()
+  protected function formHelper(): ActionFormHelpers
   {
     return new ActionFormHelpers();
   }
@@ -66,37 +51,49 @@ class Action
   protected function renderPage(string $template, array $vars = [])
   {
     if ($this->debug) {
-      error_log("Rendering {$template}");
+      error_log("Rendering $template");
     }
 
     $inner_vars = [
       'pageTitle' => '',
+      'token' => (string)$this->token,
       'currentAction' => array_slice(explode("\\", get_class($this)), -1)[0],
       'locale' => $this->app['locale'],
-      'locale_ISO' => explode('_', $this->app['locale'])[0],
-      'locale_PhonePrefix' => '+48',
-      'isAuthenticated' => $this->access_token_customer->isAuthenticated(),
+      'locale_ISO' => strtoupper(explode('_', $this->app['locale'])[1]),
+      'locale_PhonePrefix' => $this->translator->localeToPhonePrefix($this->app['locale']),
+      'isAuthenticated' => (!is_null($this->access_token_customer) && $this->access_token_customer->isAuthenticated()),
     ];
 
     $inner_vars = array_merge($inner_vars, $this->getLayoutVars());
-    if ($this->access_token_customer->isAuthenticated()) {
+
+    if (!is_null($this->access_token_customer) && $this->access_token_customer->isAuthenticated()) {
       $inner_vars['me'] = $this->apiCustomer()->customerQuery()->viewer(['basic' => true]);
     }
+
     $inner_vars['innerHTML'] = $this->twig->render($template, array_merge($inner_vars, $vars));
 
-    return $this->twig->render('layout.html.twig', array_merge($inner_vars, $vars));
+    return $this->twig->render($this->getLayoutName(), array_merge($inner_vars, $vars));
   }
 
-  protected function getLayoutVars()
+  protected function getLayoutName()
+  {
+    return 'layout.html.twig';
+  }
+
+  protected function getLayoutVars(): array
   {
     if (is_null($this->layout_vars)) {
-      $result = $this->apiPublic()->publicQuery()->newRequest()->setFile('layoutAction.graphql')->execute();
-      $this->layout_vars = [
-        'agreements' => $result->fetch('customerAgreements'),
-        'subscriber' => $result->fetch('viewer')->subscriber,
-        'configuration' => $result->fetch('configuration'),
-        'currency' => $result->fetch('configuration')->currency,
-      ];
+      if (is_null($this->apiPublic())) {
+        $this->layout_vars = [];
+      } else {
+        $result = $this->apiPublic()->publicQuery()->newRequest()->setFile('layoutAction.graphql')->execute();
+        $this->layout_vars = [
+          'agreements' => $result->fetch('customerAgreements'),
+          'subscriber' => $result->fetch('viewer')->subscriber,
+          'configuration' => $result->fetch('configuration'),
+          'currency' => $result->fetch('configuration')->currency,
+        ];
+      }
     }
     return $this->layout_vars;
   }
@@ -127,20 +124,20 @@ class Action
 
   protected function redirectTo($binding, $flash_tr = null)
   {
+    $redirect_variables = [];
+    if (isset($this->app['token'])) {
+      $redirect_variables['token'] = (string)$this->app['token'];
+    }
+
     if ($flash_tr) {
       $this->flashMessage($this->t($flash_tr));
     }
     if (is_array($binding)) {
-      $url = $this->generateUrl($binding[0], $binding[1]);
+      $url = $this->generateUrl($binding[0], array_merge($binding[1], $redirect_variables));
     } else {
-      $url = $this->generateUrl($binding);
+      $url = $this->generateUrl($binding, $redirect_variables);
     }
     return $this->app->redirect($url);
-  }
-
-  protected function notFound()
-  {
-    throw new ExceptionNotFound;
   }
 
   protected function flashMessage($txt)
@@ -166,7 +163,7 @@ class Action
 
   protected function apiCustomer()
   {
-    if (is_null($this->api_customer)) {
+    if (is_null($this->api_customer) && !is_null($this->access_token_customer)) {
       $this->api_customer = new Api($this->app, $this->request, $this->access_token_customer);
     }
     return $this->api_customer;
@@ -174,7 +171,7 @@ class Action
 
   protected function apiPublic()
   {
-    if (is_null($this->api_public)) {
+    if (is_null($this->api_public) && !is_null($this->access_token_public)) {
       $this->api_public = new Api($this->app, $this->request, $this->access_token_public);
     }
     return $this->api_public;

@@ -61,7 +61,7 @@ pl_PL:
   layout:
     viewer: "Edytuj dane"
     logout: "Wyloguj"
-    cookie_info_html: "Nasza strona internetowa używa plików cookies &#x1F36A; w celach statystycznych oraz funkcjonalnych.
+    cookie_info_html: "Nasza strona internetowa używa plików cookies &#x1F36A;&nbsp; w celach statystycznych oraz funkcjonalnych.
       Dowiedz się <a target='_blank' href='https://bit.ly/3ryVxWL'>jak je wyłączyć.</a>"
     cookie_accept: "Zgadzam się"
     repairs: "Naprawy"

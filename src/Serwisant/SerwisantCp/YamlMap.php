@@ -2,7 +2,8 @@
 
 namespace Serwisant\SerwisantCp;
 
-use Noodlehaus\Config;
+use Adbar\Dot;
+use Symfony\Component\Yaml\Yaml;
 
 class YamlMap
 {
@@ -13,7 +14,7 @@ class YamlMap
   public function __construct($file, $env = null)
   {
     $this->env = $env;
-    $this->config = new Config($file);
+    $this->config = new Dot(Yaml::parseFile($file));
   }
 
   public function get($key)

@@ -2,8 +2,10 @@
 
 namespace Serwisant\SerwisantCp\Actions;
 
-use Serwisant\SerwisantApi\Types\SchemaPublic\CustomerAgreementsFilter;
 use Serwisant\SerwisantCp\Action;
+use Serwisant\SerwisantCp\ExceptionNotFound;
+
+use Serwisant\SerwisantApi\Types\SchemaPublic\CustomerAgreementsFilter;
 
 class Agreement extends Action
 {
@@ -14,7 +16,7 @@ class Agreement extends Action
 
     $agreements = $this->apiPublic()->publicQuery()->customerAgreements($filter);
     if (count($agreements) == 0) {
-      $this->notFound();
+      throw new ExceptionNotFound(__CLASS__, __LINE__);
     }
 
     $vars = [

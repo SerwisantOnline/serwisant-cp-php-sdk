@@ -53,7 +53,7 @@
         {% endfor %}
 
         {% if addresses_radio_options is empty %}
-            {{ form_field({type: 'hidden', argument: 'addresses.0.countryIso', value: locale_ISO|upper}, form_params, errors) }}
+            {{ form_field({type: 'hidden', argument: 'addresses.0.countryIso', value: locale_ISO | upper}, form_params, errors) }}
             <div class="row">
                 <label class="form-label">{{ t(_self, 'returnAddress') }}</label>
                 <div class="col-sm-4">

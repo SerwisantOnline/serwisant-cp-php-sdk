@@ -120,7 +120,7 @@ To get frontend working you must to:
 - copy all files from package's asset directory to your public directory.
 
 It's strongly recommended to use `npm` tool for that. In `package.json` define all required dependencies and call
-post-install script provided with this package (`npm-postinstall.js`).
+post-install script provided with this package (`npm-postinstall.js copy`).
 
 Sample  `package.json` file can be found
 in [reference implementation repository](https://github.com/SerwisantOnline/serwisant-cp-php/blob/main/package.json).

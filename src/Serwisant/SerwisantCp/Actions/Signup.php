@@ -3,10 +3,9 @@
 namespace Serwisant\SerwisantCp\Actions;
 
 use Serwisant\SerwisantCp\Action;
+use Serwisant\SerwisantCp\ExceptionNotFound;
+
 use Serwisant\SerwisantApi\Types\SchemaPublic\CustomerInput;
-use Serwisant\SerwisantApi\Types\SchemaPublic\CustomerAgreementInput;
-use Serwisant\SerwisantApi\Types\SchemaPublic\CustomFieldValueInput;
-use Serwisant\SerwisantCp\ActionFormHelpers;
 
 class Signup extends Action
 {
@@ -20,7 +19,7 @@ class Signup extends Action
       'agreementsDefinitions' => $result->fetch('customerAgreements'),
       'form_params' => $this->request->request,
       'errors' => $errors,
-      'js_files' => ['/assets/signup_new.js']
+      'js_files' => ['signup_new.js']
     ];
 
     return $this->renderPage('signup_new.html.twig', $vars);
@@ -66,7 +65,7 @@ class Signup extends Action
   private function checkModuleActive()
   {
     if (false === $this->getLayoutVars()['configuration']->caPanelSignups) {
-      $this->notFound();
+      throw new ExceptionNotFound(__CLASS__, __LINE__);
     }
   }
 }
