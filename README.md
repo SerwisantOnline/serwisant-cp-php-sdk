@@ -1,7 +1,7 @@
 # Serwisant Online Customer Panel PHP SDK
 
 This package contains complexcustomer panel application including PHP code, GraphQL queries, Twig templates and CSS/JS
-assets.
+assets. Whole application is based on [Silex micro-framework](https://web.archive.org/web/20200813150217/https://silex.symfony.com/doc/2.0/)
 
 Layout is powered by  [Bootstrap](https://getbootstrap.com/) and like whole application is Apache licenced.
 
@@ -32,11 +32,24 @@ If you installing it as-is you can include any version (`*`), to get upgrades.
 ## Usage
 
 Require package in `composer.json`, next create `index.php` including composer autoload and application bootstrap. Don't
-forget to override apache/nginx config to point every single request, except `/assets` and `/webfints` to
-your `index.php` (`.htaccess` file).
+forget to override apache/nginx config to point every single request, except `/assets-serwisant-cp` and `/webfints` to
+your `index.php`. It can be done witj a `.htaccess` file:
+
+```
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+    RewriteRule ^index\.php$ - [L]
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule . /index.php [L]
+</IfModule>
+```
 
 Typical directory structure looks like
 in [reference implementation repository](https://github.com/SerwisantOnline/serwisant-cp-php).
+
+Of course you can attach this module to existing application.
 
 ### Bootstrap
 
@@ -70,7 +83,7 @@ $application->setRouter(new SerwisantCp\ApplicationRouter());
 $application->run();
 ```
 
-#### setPublicAccessToken
+#### set public access token
 
 Public access token is stored in encrypted local file via `AccessTokenContainerEncryptedFile`. By default system `/tmp`
 is used for that purpose. You can change TMP dir for whole module by setting a `TMPDIR` env variable, i.e.:
@@ -88,14 +101,15 @@ new SerwisantApi\AccessTokenContainerPDO(['mysql:dbname=db;host=127.0.0.1', 'use
 
 Public access token is common for all users - it's generated in first request, cached and re-used by other users.
 
-#### setCustomerAccessToken
+#### set customer access token
 
 Customer access token is kept in session. You can keep it into other storage but you must remember that a customer
 access token is user specific, each logged in customer has its own token related to username/password.
 
 #### setRouter
 
-This is default path/routes set. If you want to create own pages create a new router by extending `ApplicationRouter`.
+This is default path/routes set. If you want to create own pages or change prefix paths create a new router by extending `Router`.
+By default you need to mount 
 
 ### Assets
 
