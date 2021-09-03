@@ -10,6 +10,12 @@ class Action
   protected $app;
   protected $request;
   protected $token;
+
+  /**
+   * @var ActionDecorator
+   */
+  protected $decorator;
+
   protected $twig;
 
   /**
@@ -30,6 +36,10 @@ class Action
     $this->app = $app;
     $this->request = $request;
     $this->token = $token;
+
+    if (isset($app['action_decorator'])) {
+      $this->decorator = $app['action_decorator'];
+    }
 
     if (isset($app['access_token_customer'])) {
       $this->access_token_customer = $app['access_token_customer'];
@@ -66,18 +76,26 @@ class Action
 
     $inner_vars = array_merge($inner_vars, $this->getLayoutVars());
 
+    if ($this->decorator instanceof ActionDecorator) {
+      $inner_vars = array_merge($inner_vars, $this->decorator->getLayoutVars($template));
+    }
+
     if (!is_null($this->access_token_customer) && $this->access_token_customer->isAuthenticated()) {
       $inner_vars['me'] = $this->apiCustomer()->customerQuery()->viewer(['basic' => true]);
     }
 
     $inner_vars['innerHTML'] = $this->twig->render($template, array_merge($inner_vars, $vars));
 
-    return $this->twig->render($this->getLayoutName(), array_merge($inner_vars, $vars));
+    return $this->twig->render($this->getLayoutName($template), array_merge($inner_vars, $vars));
   }
 
-  protected function getLayoutName()
+  private function getLayoutName($template)
   {
-    return 'layout.html.twig';
+    if ($this->decorator instanceof ActionDecorator && !is_null($this->decorator->getLayoutName($template))) {
+      return $this->decorator->getLayoutName($template);
+    } else {
+      return 'layout.html.twig';
+    }
   }
 
   protected function getLayoutVars(): array
@@ -89,6 +107,7 @@ class Action
         $result = $this->apiPublic()->publicQuery()->newRequest()->setFile('layoutAction.graphql')->execute();
         $this->layout_vars = [
           'agreements' => $result->fetch('customerAgreements'),
+          'statements' => $result->fetch('customerStatements'),
           'subscriber' => $result->fetch('viewer')->subscriber,
           'configuration' => $result->fetch('configuration'),
           'currency' => $result->fetch('configuration')->currency,
@@ -100,7 +119,18 @@ class Action
 
   protected function getListLimit()
   {
-    return 15;
+    if ($this->decorator instanceof ActionDecorator && !is_null($this->decorator->getListLimit())) {
+      return $this->decorator->getListLimit();
+    } else {
+      return 15;
+    }
+  }
+
+  protected function checkPanelActive()
+  {
+    if (false === $this->getLayoutVars()['configuration']->panelEnabled) {
+      throw new ExceptionNotFound(__CLASS__, __LINE__);
+    }
   }
 
   protected function generateUrl($to, $to_params = [], $data = [])

@@ -1,0 +1,8 @@
+query {
+    customerStatements {
+        __typename
+        ID
+        title
+        content
+    }
+}

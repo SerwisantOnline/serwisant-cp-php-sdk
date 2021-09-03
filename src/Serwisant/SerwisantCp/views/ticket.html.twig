@@ -3,8 +3,8 @@
 <div class="bg-light p-5 rounded mt-3">
     <div class="row">
         <div class="col-md-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">
+            <div class="card">
+                <div class="card-header">
                     <span class="pull-right"></span>
                     {{ t(_self, 'panel_info') }}
                 </div>
@@ -36,8 +36,8 @@
                 </table>
             </div>
 
-            <div class="panel panel-default">
-                <div class="panel-heading">
+            <div class="card">
+                <div class="card-header">
                     <span class="pull-right"></span>
                     {{ t(_self, 'panel_payments') }}
                 </div>
@@ -74,8 +74,8 @@
                 </table>
             </div>
 
-            <div class="panel panel-default">
-                <div class="panel-heading"><span class="glyphicon glyphicon-info-sign icon-margin pull-right"></span>
+            <div class="card">
+                <div class="card-header"><span class="glyphicon glyphicon-info-sign icon-margin pull-right"></span>
                     {{ t(_self, 'panel_custom_form_fields') }}
                 </div>
                 <table class="table table-bordered">
@@ -91,8 +91,8 @@
             </div>
         </div>
         <div class="col-md-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">
+            <div class="card">
+                <div class="card-header">
                     <span class="pull-right"></span>
                     {{ t(_self, 'panel_status') }}
                 </div>
@@ -135,8 +135,8 @@
             </div>
 
             {% if ticket.files %}
-                <div class="panel panel-default">
-                    <div class="panel-body">
+                <div class="card">
+                    <div class="card-body">
                         {% for file in ticket.files %}
                             {% if file.image %}
                                 <a href="{{ file.url }}"><img src="{{ file.thumbUrl }}"

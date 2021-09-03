@@ -8,9 +8,14 @@ class Dashboard extends Action
 {
   public function index()
   {
-    $vars = [
-      'pageTitle' => $this->t('dashboard.title'),
-    ];
+    $this->checkModuleActive();
+
+    $vars = ['pageTitle' => $this->t('dashboard.title')];
     return $this->renderPage('dashboard.html.twig', $vars);
+  }
+
+  private function checkModuleActive()
+  {
+    $this->checkPanelActive();
   }
 }

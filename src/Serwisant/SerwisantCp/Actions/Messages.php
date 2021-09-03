@@ -125,7 +125,8 @@ class Messages extends Action
 
   private function checkModuleActive()
   {
-    if (false === $this->getLayoutVars()['configuration']->caPanelCommunication) {
+    $this->checkPanelActive();
+    if (false === $this->getLayoutVars()['configuration']->panelCommunication) {
       throw new ExceptionNotFound(__CLASS__, __LINE__);
     }
   }

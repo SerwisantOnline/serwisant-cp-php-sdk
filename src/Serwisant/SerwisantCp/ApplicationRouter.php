@@ -10,6 +10,7 @@ class ApplicationRouter implements Router
   public function createRoutes(Silex\Application $app)
   {
     $app->mount('/', (new RoutesCp($app))->getRoutes());
-    $app->mount('/code', (new RoutesCa($app))->getRoutes());
+    $app->mount('/token', (new RoutesCa($app))->getRoutes());
+    $app->mount('/docs', (new RoutesDocuments($app))->getRoutes());
   }
 }

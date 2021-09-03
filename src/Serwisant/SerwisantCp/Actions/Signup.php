@@ -64,7 +64,8 @@ class Signup extends Action
 
   private function checkModuleActive()
   {
-    if (false === $this->getLayoutVars()['configuration']->caPanelSignups) {
+    $this->checkPanelActive();
+    if (false === $this->getLayoutVars()['configuration']->panelSignups) {
       throw new ExceptionNotFound(__CLASS__, __LINE__);
     }
   }

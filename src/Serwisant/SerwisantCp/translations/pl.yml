@@ -305,23 +305,25 @@ pl_PL:
     finished_at: "Data zakończenia pracy"
     panel_custom_form_fields: "Dodatkowe informacje"
   online_payment_by_token:
+    payment: "Płatność"
     method: "Wybierz metodę płatności"
-    code_modal:
-      title:
-        sending: "wysyłam dane do banku..."
-        confirm: "spójrz ponownie na telefon i potwierdź płatność"
-        errors: "pojawiły się pewne problemy, które możesz rozwiązać"
-        failure: "coś poszło nie tak, jeśli anulowałeś transakcję możesz ją ponowić"
-        success: "dziękujemy, przekazaliśmy płatność do serwisu"
-    transfer_modal:
-      title:
-        sending: "wysyłam dane do banku..."
-        errors: "pojawiły się pewne problemy, które możesz rozwiązać"
-        redirecting: "za chwilę przekieruję do strony banku w celu finalizacji transakcji..."
-        receiving: "odbieram informacje z banku, to może zająć chwilę..."
-        failure: "coś poszło nie tak, jeśli anulowałeś transakcję możesz ją ponowić"
-        success: "dziękujemy, przekazaliśmy płatność do serwisu"
   online_payment:
+    popus:
+      code_modal:
+        title:
+          sending: "wysyłam dane do banku..."
+          confirm: "spójrz ponownie na telefon i potwierdź płatność"
+          errors: "pojawiły się pewne problemy, które możesz rozwiązać"
+          failure: "coś poszło nie tak, jeśli anulowałeś transakcję możesz ją ponowić"
+          success: "dziękujemy, przekazaliśmy płatność do serwisu"
+      transfer_modal:
+        title:
+          sending: "wysyłam dane do banku..."
+          errors: "pojawiły się pewne problemy, które możesz rozwiązać"
+          redirecting: "za chwilę przekieruję do strony banku w celu finalizacji transakcji..."
+          receiving: "odbieram informacje z banku, to może zająć chwilę..."
+          failure: "coś poszło nie tak, jeśli anulowałeś transakcję możesz ją ponowić"
+          success: "dziękujemy, przekazaliśmy płatność do serwisu"
     panel_payment_methods:
       BLIK: "Kod BLIK z telefonu"
       TRANSFER: "Szybki przelew z Twojego banku"
@@ -379,3 +381,7 @@ pl_PL:
     submit: "Wyślij odpowiedź"
   dashboard:
     title: "Strona początkowa"
+  subscriber_by_token:
+    search: "sprawdź kod"
+    or: "lub"
+    customer_panel: "przejdź do panelu klienckiego"

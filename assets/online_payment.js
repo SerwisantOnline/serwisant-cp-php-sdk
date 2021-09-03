@@ -50,6 +50,7 @@ Application.OnlinePayment.PayByBlik = function () {
     var onError = function () {
       container.find('.modal-header').html($('#code-header-failure').html());
       container.find('.modal-body').html($('#code-body-failure').html());
+
       container.find('.modal-popup-btn-cancel').slideDown();
       unlockControls();
     };

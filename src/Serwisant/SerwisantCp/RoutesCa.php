@@ -7,11 +7,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class RoutesCa extends Routes
 {
-  protected function tokenAssertion(): string
-  {
-    return '[a-zA-Z0-9]{6,32}';
-  }
-
   protected function tokenConverter(): callable
   {
     return function (string $token, Request $request) {
@@ -20,6 +15,11 @@ class RoutesCa extends Routes
       $this->app['token'] = $t;
       return $t;
     };
+  }
+
+  protected function tokenAssertion(): string
+  {
+    return '[a-zA-Z0-9]{6,32}';
   }
 
   public function getRoutes()
@@ -98,6 +98,8 @@ class RoutesCa extends Routes
           return (new Actions\RepairByToken($this->app, $request, $token))->call();
         case  SecretTokenSubject::ONLINEPAYMENT:
           return (new Actions\PaymentByToken($this->app, $request, $token))->call();
+        case SecretTokenSubject::LICENCE:
+          return (new Actions\SubscriberByToken($this->app, $request, $token))->call();
         default:
           throw new ExceptionNotFound(__CLASS__, __LINE__);
       }

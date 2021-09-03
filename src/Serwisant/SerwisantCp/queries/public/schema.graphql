@@ -59,25 +59,33 @@ type CustomerCreationResult {
 }
 
 type CustomerPanelConfig {
-    "True when service want to use a messaging system in customer panel"
-    caPanelCommunication: Boolean!
-    "True if service want to use repairs module"
-    caPanelRepairs: Boolean!
-    "True if service allow to customer self-register - False must disable signup possibility"
-    caPanelSignups: Boolean!
-    "True if service want to use ticketing module"
-    caPanelTickets: Boolean!
-    caPanelToken: String
     "Service currency, all API prices and other money values are in this currency"
     currency: Currency!
     "Message to be shown after login - only for authorised users"
     dashboardMessage: String
     orderDictModel: Boolean!
+    "True when service want to use a messaging system in customer panel"
+    panelCommunication: Boolean!
+    "Is access to customer panel enables"
+    panelEnabled: Boolean!
+    "True if service want to use repairs module"
+    panelRepairs: Boolean!
+    "True if service allow to customer self-register - False must disable signup possibility"
+    panelSignups: Boolean!
+    "True if service want to use ticketing module"
+    panelTickets: Boolean!
+    panelToken: String
     showOrderProgressInfo: Boolean!
     showRepairDelegation: Boolean!
     uploadOnlyImages: Boolean!
     "Message to be shown before login - for every user"
     welcomeMessage: String
+}
+
+type CustomerStatement {
+    ID: HashID!
+    content: String!
+    title: String!
 }
 
 type Dictionary {
@@ -210,6 +218,7 @@ type PublicQuery {
     customerAgreements(filter: CustomerAgreementsFilter): [CustomerAgreement!]!
     "Will return a list of custom fields for customer signup form - for generic list see customFields in other schemas"
     customerCustomFields: [CustomField!]!
+    customerStatements: [CustomerStatement!]!
     "This query map given login credential, ie. email, or login itself to username valid for OAuth password login. Please note: given credential can point to more than one login, so thus must be handled on frontend side."
     login(loginCredential: String!): [LoginResult!]!
     "If token belongs to online payment, use this query to get details"
@@ -423,6 +432,8 @@ enum ImageSize {
 
 enum LoginUnavailabilityReason {
     DELETED
+    DISABLED
+    NOT_ACTIVATED
 }
 
 enum OnlinePaymentMethodType {

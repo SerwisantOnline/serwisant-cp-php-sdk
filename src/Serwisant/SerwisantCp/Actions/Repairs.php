@@ -129,7 +129,8 @@ class Repairs extends Action
 
   private function checkModuleActive()
   {
-    if (false === $this->getLayoutVars()['configuration']->caPanelRepairs) {
+    $this->checkPanelActive();
+    if (false === $this->getLayoutVars()['configuration']->panelRepairs) {
       throw new ExceptionNotFound(__CLASS__, __LINE__);
     }
   }

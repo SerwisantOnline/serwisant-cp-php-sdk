@@ -6,17 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class RoutesCp extends Routes
 {
-  protected function tokenConverter(): callable
-  {
-    return function ($token, Request $request) {
-      return new Token();
-    };
-  }
-
-  protected function tokenAssertion(): string
-  {
-    return '\w+';
-  }
+  use Traits\RoutesNoToken;
 
   public function getRoutes()
   {
@@ -250,14 +240,6 @@ class RoutesCp extends Routes
       ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
       ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
       ->bind('dashboard');
-
-    $cp->get('/agreement/{id}', function (Request $request, Token $token, $id) {
-      return (new Actions\Agreement($this->app, $request, $token))->show($id);
-    })
-      ->before($this->expectAccessTokens())
-      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
-      ->assert('id', $this->hashIdAssertion())
-      ->bind('agreement');
 
     $cp->get('/ac/vendor', function (Request $request, Token $token) {
       return (new Actions\Autocomplete($this->app, $request, $token))->vendor();

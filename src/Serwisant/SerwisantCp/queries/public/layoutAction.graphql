@@ -45,19 +45,22 @@ query {
         description
         ID
     }
+    customerStatements: customerStatements {
+        __typename
+        ID
+        title
+    }
     configuration: configuration {
         __typename
         currency
-        caPanelRepairs
-        caPanelTickets
-        caPanelCommunication
-        caPanelSignups
-        caPanelToken
+        panelEnabled
+        panelRepairs
+        panelTickets
+        panelCommunication
+        panelSignups
         dashboardMessage
         orderDictModel
         showOrderProgressInfo
-        showRepairDelegation
-        uploadOnlyImages
         welcomeMessage
     }
 }

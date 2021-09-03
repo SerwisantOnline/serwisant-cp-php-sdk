@@ -111,7 +111,8 @@ class Tickets extends Action
 
   private function checkModuleActive()
   {
-    if (false === $this->getLayoutVars()['configuration']->caPanelTickets) {
+    $this->checkPanelActive();
+    if (false === $this->getLayoutVars()['configuration']->panelTickets) {
       throw new ExceptionNotFound(__CLASS__, __LINE__);
     }
   }

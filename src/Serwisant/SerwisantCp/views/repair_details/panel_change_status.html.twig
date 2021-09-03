@@ -7,27 +7,16 @@ Ten widok pozwala na akceptację jednej z przedstawionych ofert lub diagnozy.
 
 {% if repair.status.requireCustomerAccept %}
     {% if repair.offers %}
-        {% for offer in repair.offers %}
-            {% if (offer.accepted is null) or offer.accepted %}
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-md-10">
-                                <h3>{{ t(_self, 'offer') }} {{ offer.number }} </h3>
-                            </div>
-                            <div class="col-md-2">
-                                {% if repair.status.requireCustomerAccept and (offer.accepted is null) %}
-                                    <a href="{{ path('token_repair_accept_offer', {offer_id: offer.ID}) }}"
-                                       class="btn btn-success" data-color="success"
-                                       data-confirm="{{ t(_self, 'accept_confirm_offer', {amount: (offer.priceGross | format_currency(currency)), offer_number: offer.number }) }}"
-                                       data-method="put"
-                                       rel="nofollow">{{ t(_self, 'accept_offer') }}</a>
-                                {% endif %}
-                            </div>
-                        </div>
-                        <h3><small>{{ offer.title }}</small></h3>
+        <div class="card">
+            {% for offer in repair.offers %}
+                {% if (offer.accepted is null) or offer.accepted %}
+                    <div class="card-header">
+                        <h3>
+                            {{ t(_self, 'offer') }} {{ offer.number }} - <small
+                                    class="fw-light">{{ offer.title }}</small>
+                        </h3>
                     </div>
-                    <table class="table table-bordered">
+                    <table class="table table-striped">
                         <thead>
                         <tr>
                             <th class="col-md-5">{{ t(_self, 'description') }}</th>
@@ -47,30 +36,40 @@ Ten widok pozwala na akceptację jednej z przedstawionych ofert lub diagnozy.
                         <tr>
                             <td class="col-md-5"></td>
                             <td><strong>{{ offer.priceNet | format_currency(currency) }}</strong></td>
-                            <td class="danger"><strong>{{ offer.priceGross | format_currency(currency) }}</strong></td>
+                            <td class="danger">
+                                <strong>{{ offer.priceGross | format_currency(currency) }}</strong>
+
+                                {% if repair.status.requireCustomerAccept and (offer.accepted is null) %}
+                                    <a href="{{ path('token_repair_accept_offer', {offer_id: offer.ID}) }}"
+                                       class="btn btn-success" data-color="success"
+                                       data-confirm="{{ t(_self, 'accept_confirm_offer', {amount: (offer.priceGross | format_currency(currency)), offer_number: offer.number }) }}"
+                                       data-method="put"
+                                       rel="nofollow">{{ t(_self, 'accept_offer') }}</a>
+                                {% endif %}
+                            </td>
                         </tr>
                         </tbody>
                     </table>
-                </div>
-            {% endif %}
-        {% endfor %}
-        {% if repair.status.requireCustomerAccept %}
-            <div class="panel panel-danger">
-                <div class="panel-body">
+
+                {% endif %}
+            {% endfor %}
+            <div class="card-footer">
+                {% if repair.status.requireCustomerAccept %}
+
                     <a href="{{ path('token_repair_reject') }}" class="btn btn-danger"
                        data-color="danger"
                        data-confirm="{{ t(_self, 'reject_confirm_html') }}"
                        data-method="put"
                        rel="nofollow">{{ t(_self, 'reject_all') }}</a>
-                </div>
+
+                {% endif %}
             </div>
-        {% endif %}
+        </div>
 
     {% elseif repair.status.diagnosed %}
-
-        <div class="panel {{ repair.status.requireCustomerAccept ? 'panel-danger' : 'panel-success' }}">
-            <div class="panel-heading">{{ t(_self, 'title') }}</div>
-            <div class="panel-body">
+        <div class="card {{ repair.status.requireCustomerAccept ? 'danger' : 'success' }}">
+            <div class="card-header">{{ t(_self, 'title') }}</div>
+            <div class="card-body">
                 <p>
                     <b>{{ t(_self, 'price_estimated') }}</b>
                     {{ repair.costs.estimatedGross | format_currency(currency) }}

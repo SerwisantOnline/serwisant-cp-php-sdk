@@ -9,6 +9,8 @@ class Login extends Action
 {
   public function new()
   {
+    $this->checkModuleActive();
+
     $vars = [
       'formParams' => $this->request->request,
       'js_files' => ['login_new.js'],
@@ -26,6 +28,8 @@ class Login extends Action
 
   public function create()
   {
+    $this->checkModuleActive();
+
     $session_credentials = $this->request->get('session_credentials');
     try {
       $this->accessTokenCustomer()->login($session_credentials['login'], $session_credentials['password']);
@@ -40,5 +44,10 @@ class Login extends Action
   {
     $this->accessTokenCustomer()->revoke();
     return $this->redirectTo('dashboard', 'flashes.logout_successful');
+  }
+
+  private function checkModuleActive()
+  {
+    $this->checkPanelActive();
   }
 }

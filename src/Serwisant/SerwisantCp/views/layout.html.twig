@@ -34,19 +34,19 @@
 
             <div class="collapse navbar-collapse" id="navbarsExampleDefault">
                 <ul class="navbar-nav me-auto mb-2 mb-md-0">
-                    {% if configuration.caPanelRepairs %}
+                    {% if configuration.panelRepairs %}
                         <li class="nav-item">
                             <a class="nav-link {{ currentAction == 'Repairs' ? 'active' : '' }}" aria-current="page"
                                href="{{ path('repairs') }}">{{ t(_self, 'repairs') }}</a>
                         </li>
                     {% endif %}
-                    {% if configuration.caPanelTickets %}
+                    {% if configuration.panelTickets %}
                         <li class="nav-item">
                             <a class="nav-link {{ currentAction == 'Tickets' ? 'active' : '' }}"
                                href="{{ path('tickets') }}">{{ t(_self, 'tickets') }}</a>
                         </li>
                     {% endif %}
-                    {% if configuration.caPanelCommunication %}
+                    {% if configuration.panelCommunication %}
                         <li class="nav-item">
                             <a class="nav-link {{ currentAction == 'Messages' ? 'active' : '' }}"
                                href="{{ path('messages') }}">{{ t(_self, 'messages') }}</a>
@@ -121,6 +121,14 @@
                     </small>
                 </li>
             {% endfor %}
+            {% for statement in statements %}
+                <li>
+                    <small>
+                        <a href="{{ path('statement', {id: statement.ID}) }}"
+                           data-title="{{ statement.title }}">{{ statement.title }}</a>
+                    </small>
+                </li>
+            {% endfor %}
         </ul>
     </footer>
 </div>
@@ -154,6 +162,7 @@
 <script src="/assets-serwisant-cp/application_ui.js"></script>
 
 <script src="/assets-serwisant-cp/layout.js"></script>
+
 {% if js_files is defined %}
     {% for js_file in js_files %}
         <script src="/assets-serwisant-cp/{{ js_file }}"></script>

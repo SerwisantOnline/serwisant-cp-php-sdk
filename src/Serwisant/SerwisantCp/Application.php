@@ -27,9 +27,12 @@ class Application
 
     $this->base_dir = __DIR__;
 
-    array_unshift($this->view_paths, $this->base_dir . '/views');
-    array_unshift($this->query_paths, $this->base_dir . '/queries/customer');
-    array_unshift($this->query_paths, $this->base_dir . '/queries/public');
+    // widoki i zapytania dokładane są na koniec, własne pliki mogą nadpisywać te domyślne
+    $this->view_paths[] = $this->base_dir . '/views';
+
+    $this->query_paths[] = $this->base_dir . '/queries/customer';
+    $this->query_paths[] = $this->base_dir . '/queries/public';
+
     array_unshift($this->tr_files, $this->base_dir . '/translations/pl.yml');
 
     # wszystkie czasy liczę względem UTC
@@ -81,6 +84,12 @@ class Application
         return (new TwigSerwisantExtensions($twig, $this->app))->call();
       }
     );
+    if (isset($this->app['action_decorator'])) {
+      $decorator_twig_extension = $this->app['action_decorator']->getTwigExtension($this->app);
+      if (is_callable($decorator_twig_extension)) {
+        $this->app->extend('twig', $decorator_twig_extension);
+      }
+    }
 
     $this->app->error((new ApplicationExceptionHandlers())->call($this->app));
 

@@ -1,9 +1,10 @@
-<div class="panel panel-default">
+<div class="card">
+    <div class="card-header">
+        {{ t(_self, 'title', {'number': payment.number}) }}
+    </div>
+
     <table class="table table-bordered">
         <tbody>
-        <tr>
-            <td colspan="2">{{ t(_self, 'title', {'number': payment.number}) }}</td>
-        </tr>
         <tr>
             <td class="column-definition text-nowrap">{{ t(_self, 'payment_receivier') }}</td>
             <td>
@@ -14,7 +15,7 @@
                     {% endif %}
                     <div class="pull-left">
                         <strong>{{ payment.serviceSupplier.displayName }}</strong>
-                        </br>
+                        <br>
                         {% if payment.serviceSupplier.address %}
                             {{ payment.serviceSupplier.address.street }} {{ payment.serviceSupplier.address.building }}, {{ payment.serviceSupplier.address.postalCode }} {{ payment.serviceSupplier.address.city }}
                             <br>

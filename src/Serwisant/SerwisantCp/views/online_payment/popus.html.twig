@@ -1,0 +1,78 @@
+<div class="undisplayed">
+    <div id="code-header-sending">
+        <h4 class="modal-title text-center">{{ t(_self, 'code_modal.title.sending') }}</h4>
+    </div>
+    <div id="code-header-confirm">
+        <h4 class="modal-title text-center">{{ t(_self, 'code_modal.title.confirm') }}</h4>
+    </div>
+    <div id="code-body-waiting">
+        <div class="code-modal-waiting">
+            <div class="code-modal-loading loading">
+            </div>
+        </div>
+    </div>
+    <div id="code-header-errors">
+        <h4 class="modal-title text-center">{{ t(_self, 'code_modal.title.errors') }}</h4>
+    </div>
+    <div id="code-header-failure">
+        <h4 class="modal-title text-center">{{ t(_self, 'code_modal.title.failure') }}</h4>
+    </div>
+    <div id="code-body-failure">
+        <div class="code-modal-failure">
+            <div class="code-modal-loading">
+            </div>
+        </div>
+    </div>
+    <div id="code-header-success">
+        <h4 class="modal-title text-center">{{ t(_self, 'code_modal.title.success') }}</h4>
+    </div>
+    <div id="code-body-success">
+        <div class="code-modal-success">
+            <div class="code-modal-loading">
+            </div>
+        </div>
+    </div>
+
+    <div id="transfer-header-sending">
+        <h4 class="modal-title text-center">{{ t(_self, 'transfer_modal.title.sending') }}</h4>
+    </div>
+    <div id="transfer-header-errors">
+        <h4 class="modal-title text-center">{{ t(_self, 'transfer_modal.title.errors') }}</h4>
+    </div>
+    <div id="transfer-header-redirecting">
+        <h4 class="modal-title text-center">{{ t(_self, 'transfer_modal.title.redirecting') }}</h4>
+    </div>
+    <div id="transfer-header-receiving">
+        <h4 class="modal-title text-center">{{ t(_self, 'transfer_modal.title.receiving') }}</h4>
+    </div>
+    <div id="transfer-header-failure">
+        <h4 class="modal-title text-center">{{ t(_self, 'transfer_modal.title.failure') }}</h4>
+    </div>
+    <div id="transfer-header-success">
+        <h4 class="modal-title text-center">{{ t(_self, 'transfer_modal.title.success') }}</h4>
+    </div>
+    <div id="transfer-body-waiting">
+        <div class="transfer-modal-waiting">
+            <div class="transfer-modal-loading loading">
+            </div>
+        </div>
+    </div>
+    <div id="transfer-body-failure">
+        <div class="transfer-modal-failure">
+            <div class="transfer-modal-loading">
+            </div>
+        </div>
+    </div>
+    <div id="transfer-body-success">
+        <div class="transfer-modal-success">
+            <div class="transfer-modal-loading">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+  application_js_options['token_payment_pay_path'] = "{{ path('token_payment_pay') }}"
+  application_js_options['token_payment_pool_path'] = "{{ path('token_payment_pool') }}"
+  application_js_options['token_path'] = "{{ path('token') }}"
+</script>

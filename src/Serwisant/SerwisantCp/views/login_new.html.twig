@@ -52,7 +52,7 @@
     </form>
 </div>
 
-{% if configuration.caPanelSignups %}
+{% if configuration.panelSignups %}
     <div class="bg-light p-5 rounded mt-3">
         <p class="lead">{{ t(_self, 'signup_description') }}</p>
         <a href="{{ path('new_signup') }}" class="btn btn-primary mb-3">{{ t(_self, 'signup') }}</a>
