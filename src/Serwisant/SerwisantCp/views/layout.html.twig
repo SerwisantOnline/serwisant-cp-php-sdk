@@ -4,12 +4,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ pageTitle }}</title>
-    <link rel="stylesheet" href="/assets-serwisant-cp/bootstrap.min.css"/>
-    <link rel="stylesheet" href="/assets-serwisant-cp/filepond.min.css"/>
-    <link rel="stylesheet" href="/assets-serwisant-cp/filepond-plugin-image-preview.min.css"/>
-    <link rel="stylesheet" href="/assets-serwisant-cp/DateTimePicker.min.css"/>
-    <link rel="stylesheet" href="/assets-serwisant-cp/fa-all.min.css"/>
-    <link rel="stylesheet" href="/assets-serwisant-cp/layout.css"/>
+
+    <link rel="stylesheet" href="{{ asset('assets-serwisant-cp/bootstrap.min.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('assets-serwisant-cp/filepond.min.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('assets-serwisant-cp/filepond-plugin-image-preview.min.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('assets-serwisant-cp/DateTimePicker.min.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('assets-serwisant-cp/fa-all.min.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('assets-serwisant-cp/layout.css') }}"/>
 </head>
 <body>
 
@@ -145,27 +146,27 @@
     </h6>
 </div>
 
-<script src="/assets-serwisant-cp/lodash.min.js"></script>
-<script src="/assets-serwisant-cp/jquery.min.js"></script>
-<script src="/assets-serwisant-cp/bootstrap.bundle.min.js"></script>
+<script src="{{ asset('assets-serwisant-cp/lodash.min.js') }}"></script>
+<script src="{{ asset('assets-serwisant-cp/jquery.min.js') }}"></script>
+<script src="{{ asset('assets-serwisant-cp/bootstrap.bundle.min.js') }}"></script>
 
-<script src="/assets-serwisant-cp/cookiealert.js"></script>
-<script src="/assets-serwisant-cp/purl.js"></script>
-<script src="/assets-serwisant-cp/filepond.min.js"></script>
-<script src="/assets-serwisant-cp/filepond-plugin-image-preview.min.js"></script>
-<script src="/assets-serwisant-cp/DateTimePicker.min.js"></script>
+<script src="{{ asset('assets-serwisant-cp/cookiealert.js') }}"></script>
+<script src="{{ asset('assets-serwisant-cp/purl.js') }}"></script>
+<script src="{{ asset('assets-serwisant-cp/filepond.min.js') }}"></script>
+<script src="{{ asset('assets-serwisant-cp/filepond-plugin-image-preview.min.js') }}"></script>
+<script src="{{ asset('assets-serwisant-cp/DateTimePicker.min.js') }}"></script>
 
-<script src="/assets-serwisant-cp/password_strength.js"></script>
-<script src="/assets-serwisant-cp/jquery_strength.js"></script>
+<script src="{{ asset('assets-serwisant-cp/password_strength.js') }}"></script>
+<script src="{{ asset('assets-serwisant-cp/jquery_strength.js') }}"></script>
 
-<script src="/assets-serwisant-cp/application.js"></script>
-<script src="/assets-serwisant-cp/application_ui.js"></script>
+<script src="{{ asset('assets-serwisant-cp/application.js') }}"></script>
+<script src="{{ asset('assets-serwisant-cp/application_ui.js') }}"></script>
 
-<script src="/assets-serwisant-cp/layout.js"></script>
+<script src="{{ asset('assets-serwisant-cp/layout.js') }}"></script>
 
 {% if js_files is defined %}
-    {% for js_file in js_files %}
-        <script src="/assets-serwisant-cp/{{ js_file }}"></script>
+    {%- for js_file in js_files %}
+<script src="{{ asset("assets-serwisant-cp/#{ js_file }") }}"></script>
     {% endfor %}
 {% endif %}
 

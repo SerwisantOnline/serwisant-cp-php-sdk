@@ -66,6 +66,15 @@ class Application
     $this->app->register(new Silex\Provider\TwigServiceProvider(), ['twig.path' => $this->view_paths]);
     $this->app->register(new Silex\Provider\RoutingServiceProvider());
 
+    $this->app->register(
+      new Silex\Provider\AssetServiceProvider(),
+      [
+        'assets.version_format' => '%s?%s',
+        'assets.version' => (isset($this->app['assets_version']) ? (string)$this->app['assets_version'] : sha1(date('ymd'))),
+        'assets.base_path' => '/',
+      ]
+    );
+    
     $this->app->extend(
       'twig',
       function ($twig) {
