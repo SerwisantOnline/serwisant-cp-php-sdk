@@ -119,6 +119,8 @@ class Application
     ini_set('session.cookie_samesite', 1);
     ini_set('session.use_strict_mode', 1);
 
+    $session_optipns = [];
+
     if (isset($this->app['session_handler'])) {
       session_set_save_handler($this->app['session_handler'], true);
     } else {
@@ -132,7 +134,7 @@ class Application
       $session_optipns['save_path'] = getenv('TMPDIR');
     }
 
-    session_start();
+    session_start($session_optipns);
   }
 
   protected function beforeRequest(HttpFoundation\Request $request, Silex\Application $app)
