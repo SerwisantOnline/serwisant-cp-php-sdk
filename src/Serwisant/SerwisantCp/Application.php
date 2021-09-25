@@ -74,7 +74,7 @@ class Application
         'assets.base_path' => '/',
       ]
     );
-    
+
     $this->app->extend(
       'twig',
       function ($twig) {
@@ -115,7 +115,9 @@ class Application
 
   protected function sessionStart()
   {
-    $session_optipns = ['cookie_lifetime' => (60 * 60 * 6)];
+    session_set_cookie_params((60 * 60 * 6), '/', null, ($this->env == 'production'), false);
+    ini_set('session.cookie_samesite', 1);
+    ini_set('session.use_strict_mode', 1);
 
     if (isset($this->app['session_handler'])) {
       session_set_save_handler($this->app['session_handler'], true);
@@ -130,7 +132,7 @@ class Application
       $session_optipns['save_path'] = getenv('TMPDIR');
     }
 
-    session_start($session_optipns);
+    session_start();
   }
 
   protected function beforeRequest(HttpFoundation\Request $request, Silex\Application $app)
