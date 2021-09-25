@@ -40,6 +40,10 @@ textarea {
     padding-top: 60px;
 }
 
+.card-table {
+    margin-bottom: 0 !important;
+}
+
 /* pluginy */
 
 .dtpicker-button, .dtpicker-compButton, .dtpicker-close {
