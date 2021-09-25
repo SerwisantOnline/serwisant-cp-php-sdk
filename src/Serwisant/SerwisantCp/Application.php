@@ -38,8 +38,6 @@ class Application
     # wszystkie czasy liczę względem UTC
     date_default_timezone_set('UTC');
 
-    $this->sessionStart();
-
     $this->app = new Silex\Application(['env' => $this->env, 'debug' => ($this->env === 'development')]);
   }
 
@@ -57,6 +55,8 @@ class Application
 
   public function run()
   {
+    $this->sessionStart();
+
     $this->app['env'] = $this->env;
     $this->app['base_dir'] = $this->base_dir;
     $this->app['gql_query_paths'] = $this->query_paths;
@@ -106,14 +106,22 @@ class Application
 
   protected function sessionStart()
   {
-    $dir = getenv('TMPDIR');
-    if (is_null($dir) || trim($dir) == '') {
-      $dir = sys_get_temp_dir();
+    $session_optipns = ['cookie_lifetime' => (60 * 60 * 6)];
+
+    if (isset($this->app['session_handler'])) {
+      session_set_save_handler($this->app['session_handler'], true);
+    } else {
+      $dir = getenv('TMPDIR');
+      if (is_null($dir) || trim($dir) == '') {
+        $dir = sys_get_temp_dir();
+      }
+      if (!is_dir($dir)) {
+        throw new Exception("Directory do not exists - please create '{$dir}' directory.");
+      }
+      $session_optipns['save_path'] = getenv('TMPDIR');
     }
-    if (!is_dir($dir)) {
-      throw new Exception("Directory do not exists - please create '{$dir}' directory.");
-    }
-    session_start(['cookie_lifetime' => (60 * 60 * 6), 'save_path' => getenv('TMPDIR')]);
+
+    session_start($session_optipns);
   }
 
   protected function beforeRequest(HttpFoundation\Request $request, Silex\Application $app)
