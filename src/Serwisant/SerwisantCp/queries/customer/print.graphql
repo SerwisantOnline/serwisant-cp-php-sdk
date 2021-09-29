@@ -1,0 +1,15 @@
+mutation print($type: PrintType!, $ID: HashID!) {
+    print(type: $type, ID: $ID) {
+        __typename
+        errors {
+            __typename
+            argument
+            message
+            code
+        }
+        temporaryFile {
+            __typename
+            url
+        }
+    }
+}

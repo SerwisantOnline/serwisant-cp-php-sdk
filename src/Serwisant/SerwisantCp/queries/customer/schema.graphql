@@ -88,13 +88,13 @@ type CustomerMutation {
     createTemporaryFile(file: FileInput!): TemporaryFileCreationResult
     createTicket(temporaryFiles: [HashID!], ticket: TicketInput!): TicketCreationResult
     markMessageRead(message: HashID!): Boolean
+    print(ID: HashID!, type: PrintType!): TemporaryFileCreationResult
     updateViewer(addresses: [AddressUpdateInput!], agreements: [CustomerAgreementUpdateInput!], customer: CustomerUpdateInput): ViewerUpdateResult
 }
 
 type CustomerQuery {
     autocomplete(query: String!, scope: AutocompleteScope!): [String!]!
     customFields(form: CustomFieldForm!): [CustomField!]!
-    customerAgreements(filter: CustomerAgreementsFilter): [CustomerAgreement!]!
     dictionaryEntries(filter: DictionaryEntriesFilter): [Dictionary!]!
     messages(filter: MessagesFilter = {type : ALL}, limit: Int = 20, page: Int = 1, sort: MessagesSort): MessagesResult!
     priorities(filter: PrioritiesFilter): [Priority!]!
@@ -272,6 +272,7 @@ type RepairOfferItem {
 type RepairStatus {
     canceledOrRejected: Boolean!
     confirmed: Boolean!
+    "Repair creation date - first apear in database"
     createdAt: DateTime!
     "Business days passed from startedAt date"
     daysFromStart: Int!
@@ -279,16 +280,20 @@ type RepairStatus {
     daysToEnd: Int!
     diagnosed: Boolean!
     displayName: String!
+    "This is estimated end date - this date is set by service once repair is created. It can differ from real `finishedAt`"
     finishDateEstimated: Date
     finished: Boolean!
+    "Real date of repair finish. Finish mean transition into WAITING_FOR_COLLECTION or PASSED_FOR_RETURN state."
+    finishedAt: Date
     progress: Float!
     requireCustomerAccept: Boolean!
-    "Date when repair was started, for repair delivered by parcel this will differ from createdAt"
+    "Date when repair was started. For repair delivered by parcel or created via customer panel this will be set once repair will be delivered to service and its status will be set to WAITING_FOR_DIAGNOSIS"
     startedAt: Date
     status: RepairState!
     summedUp: Boolean!
     timeProgress: Float!
     timeStatus: OrderTimeStatus!
+    "Date when repair was touched last time - repair update, status update, new diagnosis, repair acton will update this date"
     updatedAt: DateTime!
 }
 
@@ -502,6 +507,12 @@ enum OrderTimeStatus {
     WARNING
 }
 
+enum PrintType {
+    REPAIR_INTRO
+    REPAIR_SUMMARY
+    TICKET
+}
+
 enum PriorityType {
     TICKET
 }
@@ -666,11 +677,6 @@ input CustomerAgreementUpdateInput {
     ID: HashID
     accepted: Boolean!
     customerAgreement: HashID
-}
-
-input CustomerAgreementsFilter {
-    ID: HashID
-    types: [CustomerAgreementType!]
 }
 
 input CustomerUpdateInput {

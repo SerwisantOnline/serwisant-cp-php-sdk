@@ -10,6 +10,7 @@ use Serwisant\SerwisantApi\Types\SchemaCustomer\RepairsFilterType;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\RepairsSort;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\RepairInput;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\AddressUpdateInput;
+use Serwisant\SerwisantApi\Types\SchemaCustomer\PrintType;
 
 class Repairs extends Action
 {
@@ -50,6 +51,25 @@ class Repairs extends Action
     ];
 
     return $this->renderPage('repair.html.twig', $variables);
+  }
+
+  public function print($id, $type)
+  {
+    $this->checkModuleActive();
+
+    switch ($type) {
+      case 'intro':
+        $print_type = PrintType::REPAIR_INTRO;
+        break;
+      case 'summary':
+        $print_type = PrintType::REPAIR_SUMMARY;
+        break;
+      default:
+        throw new ExceptionNotFound(__CLASS__, __LINE__);
+    }
+
+    $result = $this->apiCustomer()->customerMutation()->print($print_type, $id);
+    return $this->app->redirect($result->temporaryFile->url);
   }
 
   public function new($errors = [])

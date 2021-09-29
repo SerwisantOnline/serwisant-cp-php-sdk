@@ -168,6 +168,8 @@ pl_PL:
     no_repairs: "Nie dodałeś jeszcze żadnej naprawy. Aby dodać jakąś, kliknij w przycisk znajdujący się w górnej części strony."
   repair:
     close: "Zamknij"
+    print_intro: "Wydruk przyjęcia"
+    print_summary: "Wydruk podsumowania"
   repair_details:
     panel_service_supplier:
       title: 'Naprawiane przez:'
@@ -285,6 +287,7 @@ pl_PL:
     submit: "Dodaj zgłoszenie"
   ticket:
     close: "Zamknij"
+    print: "Wydruk"
     panel_info: "Ogólne informacje"
     number: "Numer zgłoszenia"
     employee: "Odpowiedzialny pracownik"

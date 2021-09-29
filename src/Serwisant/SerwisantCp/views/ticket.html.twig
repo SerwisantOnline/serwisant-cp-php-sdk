@@ -1,4 +1,7 @@
-<a href="{{ path('tickets') }}" class="btn btn-secondary btn-lg">{{ t(_self, 'close') }}</a>
+<div class="btn-group" role="group">
+    <a href="{{ path('tickets') }}" class="btn btn-secondary btn-lg">{{ t(_self, 'close') }}</a>
+    <a href="{{ path('ticket_print', {id: ticket.ID}) }}" class="btn btn-outline-dark btn-lg">{{ t(_self, 'print') }}</a>
+</div>
 
 <div class="bg-light p-5 rounded mt-3">
     <div class="row">

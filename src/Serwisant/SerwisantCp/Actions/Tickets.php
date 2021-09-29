@@ -10,6 +10,7 @@ use Serwisant\SerwisantApi\Types\SchemaCustomer\TicketsFilter;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\TicketsFilterType;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\TicketsSort;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\TicketInput;
+use Serwisant\SerwisantApi\Types\SchemaCustomer\PrintType;
 
 class Tickets extends Action
 {
@@ -49,6 +50,12 @@ class Tickets extends Action
     ];
 
     return $this->renderPage('ticket.html.twig', $variables);
+  }
+
+  public function print($id)
+  {
+    $result = $this->apiCustomer()->customerMutation()->print(PrintType::TICKET, $id);
+    return $this->app->redirect($result->temporaryFile->url);
   }
 
   public function new($errors = [])

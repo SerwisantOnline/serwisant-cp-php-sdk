@@ -154,6 +154,15 @@ class RoutesCp extends Routes
       ->assert('id', $this->hashIdAssertion())
       ->bind('repair');
 
+    $cp->get('/repair/{id}/print/{type}', function (Request $request, Token $token, $id, $type) {
+      return (new Actions\Repairs($this->app, $request, $token))->print($id, $type);
+    })
+      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
+      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
+      ->assert('id', $this->hashIdAssertion())
+      ->assert('type', '[a-z]{5,10}')
+      ->bind('repair_print');
+
     // TICKETS
 
     $cp->get('/tickets', function (Request $request, Token $token) {
@@ -170,6 +179,14 @@ class RoutesCp extends Routes
       ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
       ->assert('id', $this->hashIdAssertion())
       ->bind('ticket');
+
+    $cp->get('/ticket/{id}/print', function (Request $request, Token $token, $id) {
+      return (new Actions\Tickets($this->app, $request, $token))->print($id);
+    })
+      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
+      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
+      ->assert('id', $this->hashIdAssertion())
+      ->bind('ticket_print');
 
     $cp->get('/tickets/create', function (Request $request, Token $token) {
       return (new Actions\Tickets($this->app, $request, $token))->new();
