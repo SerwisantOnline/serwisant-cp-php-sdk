@@ -14,18 +14,16 @@ Layout is powered by  [Bootstrap](https://getbootstrap.com/) and like whole appl
 
 This is special package. Because it contains complex application we can't provide long term compatibility. There is high
 risk implementing breaking changes once new features will be added. So when you're building own application, with custom
-modifications of templates, assets, logic ***please specify explicite version*** or at least major in your `
+modifications of templates, assets, logic ***please specify explicite version*** in your `
 composer.json i.e.:
 
 ```
 "require": {
-    "serwisant/serwisant-cp": "1.0.*"
+    "serwisant/serwisant-cp": "1.0.0"
 },
 ```
 
-All breaking changes will be increasing major version by one, i.e. "1.0.5" -> "1.1.1".
-
-If you installing it as-is you can include any version (`*`), to get upgrades.
+If you installing it as-is, and no modification will be made, you can include major version (`^1.0`), to get upgrades.
 
 ***YOU HAVE BEING WARNED.***
 
