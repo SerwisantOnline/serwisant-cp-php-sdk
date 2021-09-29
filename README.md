@@ -14,8 +14,7 @@ Layout is powered by  [Bootstrap](https://getbootstrap.com/) and like whole appl
 
 This is special package. Because it contains complex application we can't provide long term compatibility. There is high
 risk implementing breaking changes once new features will be added. So when you're building own application, with custom
-modifications of templates, assets, logic ***please specify explicite version*** in your `
-composer.json i.e.:
+modifications of templates, assets, logic ***please specify explicite version*** in your `composer.json` i.e.:
 
 ```
 "require": {
