@@ -12,6 +12,7 @@
     "composer/package-versions-deprecated": "*",
     "serwisant/serwisant-api": "~3.1.1",
     "silex/silex": "^2.3",
+    "devimteam/silex-cors-provider": "^1.0",
     "symfony/asset": "^3.4",
     "symfony/twig-bridge": "^3.4",
     "symfony/yaml": "^3.4",

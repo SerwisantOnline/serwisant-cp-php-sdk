@@ -16,7 +16,7 @@ class ApplicationExceptionHandlers
         $redirect_variables['token'] = (string)$app['token'];
       }
 
-      if ($this->pageNotFound($e)) {
+      if ($this->pageNotFound($e) || $this->methodError($e)) {
         return new HttpFoundation\Response(
           $app['twig']->render('404.html.twig', ['message' => "{$e->getMessage()}:{$e->getCode()}"]),
           404
@@ -41,22 +41,19 @@ class ApplicationExceptionHandlers
     };
   }
 
-  /**
-   * @param $e
-   * @return bool
-   */
-  private function requireAuthentication($e)
+  private function methodError($e): bool
+  {
+    return ($e instanceof \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException);
+  }
+
+  private function requireAuthentication($e): bool
   {
     return
       ($e instanceof ExceptionUnauthorized) ||
       ($e instanceof SerwisantApi\ExceptionUserCredentialsRequired);
   }
 
-  /**
-   * @param $e
-   * @return bool
-   */
-  private function pageNotFound($e)
+  private function pageNotFound($e): bool
   {
     return
       ($e instanceof ExceptionNotFound) ||
