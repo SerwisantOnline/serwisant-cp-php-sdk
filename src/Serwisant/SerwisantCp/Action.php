@@ -10,19 +10,10 @@ class Action
   protected $app;
   protected $request;
   protected $token;
-
-  /**
-   * @var ActionDecorator
-   */
   protected $decorator;
-
+  protected $client_ip;
   protected $twig;
-
-  /**
-   * @var Translator $translator
-   */
   protected $translator;
-
   protected $debug = false;
 
   private $access_token_customer;
@@ -41,16 +32,24 @@ class Action
       $this->decorator = $app['action_decorator'];
     }
 
-    if (isset($app['access_token_customer'])) {
-      $this->access_token_customer = $app['access_token_customer'];
-    }
-    if (isset($app['access_token_public'])) {
-      $this->access_token_public = $app['access_token_public'];
+    if ($request->headers->has('CF-Connecting-IP')) {
+      $this->client_ip = $request->headers->get('CF-Connecting-IP');
+    } else {
+      $this->client_ip = $request->getClientIp();
     }
 
     $this->twig = $app['twig'];
     $this->translator = $app['tr'];
     $this->debug = ($this->app['env'] == 'development');
+
+    if (isset($app['access_token_customer'])) {
+      $this->access_token_customer = $app['access_token_customer'];
+      $this->access_token_customer->setIp($this->client_ip);
+    }
+    if (isset($app['access_token_public'])) {
+      $this->access_token_public = $app['access_token_public'];
+      $this->access_token_public->setIp($this->client_ip);
+    }
   }
 
   protected function formHelper(): ActionFormHelpers
@@ -194,16 +193,16 @@ class Action
   protected function apiCustomer()
   {
     if (is_null($this->api_customer) && !is_null($this->access_token_customer)) {
-      $this->api_customer = new Api($this->app, $this->request, $this->access_token_customer);
+      $this->api_customer = new Api($this->app, $this->access_token_customer);
     }
-    return $this->api_customer;
+    return $this->api_customer->setIp($this->client_ip);
   }
 
   protected function apiPublic()
   {
     if (is_null($this->api_public) && !is_null($this->access_token_public)) {
-      $this->api_public = new Api($this->app, $this->request, $this->access_token_public);
+      $this->api_public = new Api($this->app, $this->access_token_public);
     }
-    return $this->api_public;
+    return $this->api_public->setIp($this->client_ip);
   }
 }
