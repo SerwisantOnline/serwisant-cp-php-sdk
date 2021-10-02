@@ -35,6 +35,9 @@ class ApplicationExceptionHandlers
           403
         );
 
+      } elseif ($e instanceof SerwisantApi\ExceptionTooManyRequests) {
+        return new HttpFoundation\Response($app['twig']->render('429.html.twig', []), 429);
+
       } else {
         throw $e;
       }

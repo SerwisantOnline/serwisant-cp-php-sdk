@@ -194,15 +194,17 @@ class Action
   {
     if (is_null($this->api_customer) && !is_null($this->access_token_customer)) {
       $this->api_customer = new Api($this->app, $this->access_token_customer);
+      $this->api_customer->setIp($this->client_ip);
     }
-    return $this->api_customer->setIp($this->client_ip);
+    return $this->api_customer;
   }
 
   protected function apiPublic()
   {
     if (is_null($this->api_public) && !is_null($this->access_token_public)) {
       $this->api_public = new Api($this->app, $this->access_token_public);
+      $this->api_public->setIp($this->client_ip);
     }
-    return $this->api_public->setIp($this->client_ip);
+    return $this->api_public;
   }
 }
