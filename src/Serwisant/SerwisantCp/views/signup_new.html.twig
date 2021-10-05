@@ -1,84 +1,89 @@
-<div class="bg-light p-5 rounded mt-3">
+<form method="post" action="{{ path('new_signup') }}">
+  <div class="bg-light p-5 rounded mt-3">
     <h1>{{ t(_self, 'title') }}</h1>
     <p class="lead">{{ t(_self, 'description') }}</p>
 
-    <form method="post" action="{{ path('new_signup') }}">
-        <div class="mb-3">
-            {% set customerTypeOptions = {'PERSONAL': t(_self, 'customer_type.personal'),'BUSINESS': t(_self, 'customer_type.business')} %}
-            {{ form_field({type: 'select', argument: 'customer.type', caption: t(_self, 'type'), options: customerTypeOptions}, form_params, errors) }}
-        </div>
 
-        <div class="mb-3">
-            {{ form_field({type: 'text', argument: 'customer.person', caption: t(_self, 'person')}, form_params, errors) }}
-        </div>
+    <div class="mb-3">
+      {% set customerTypeOptions = {'PERSONAL': t(_self, 'customer_type.personal'),'BUSINESS': t(_self, 'customer_type.business')} %}
+      {{ form_field({type: 'select', argument: 'customer.type', caption: t(_self, 'type'), options: customerTypeOptions}, form_params, errors) }}
+    </div>
 
-        <div class="mb-3 business_container undisplayed">
-            {{ form_field({type: 'text', argument: 'customer.companyName', caption: t(_self, 'company_name')}, form_params, errors) }}
-        </div>
+    <div class="mb-3">
+      {{ form_field({type: 'text', argument: 'customer.person', caption: t(_self, 'person')}, form_params, errors) }}
+    </div>
 
-        <div class="mb-3">
-            {{ form_field({type: 'text', argument: 'customer.email', caption: t(_self, 'email')}, form_params, errors) }}
-        </div>
+    <div class="mb-3 business_container undisplayed">
+      {{ form_field({type: 'text', argument: 'customer.companyName', caption: t(_self, 'company_name')}, form_params, errors) }}
+    </div>
 
-        <div class="mb-3">
-            {{ form_field({type: 'text', argument: 'customer.login', caption: t(_self, 'login')}, form_params, errors) }}
-        </div>
+    <div class="mb-3">
+      {{ form_field({type: 'text', argument: 'customer.email', caption: t(_self, 'email')}, form_params, errors) }}
+    </div>
 
-        <div class="mb-3">
-            {{ form_field({type: 'password', argument: 'customer.password', caption: t(_self, 'password')}, form_params, errors) }}
-            <div class="progress password-progress">
-                <div id="password-strength-indicator" class="progress-bar" role="progressbar" aria-valuenow="0"
-                     aria-valuemin="0" aria-valuemax="100"></div>
+    <div class="mb-3">
+      {{ form_field({type: 'text', argument: 'customer.login', caption: t(_self, 'login')}, form_params, errors) }}
+    </div>
+
+    <div class="mb-3">
+      {{ form_field({type: 'password', argument: 'customer.password', caption: t(_self, 'password')}, form_params, errors) }}
+      <div class="progress password-progress">
+        <div id="password-strength-indicator" class="progress-bar" role="progressbar" aria-valuenow="0"
+             aria-valuemin="0" aria-valuemax="100"></div>
+      </div>
+    </div>
+
+    {% for customField in customFieldsDefinitions %}
+      <div class="mb-3">
+        {{ custom_form_field(customField, {argument: "customer.customFields.#{loop.index0}"}, form_params, errors) }}
+      </div>
+    {% endfor %}
+
+    <table class="table table-borderless">
+      {% for agreement in agreementsDefinitions %}
+        <tr>
+          <td>
+            <div class="{{ customer_agreement_class(agreement) }}">
+              {{ form_field({type: 'hidden', argument: "agreements.#{loop.index0}.customerAgreement", value: agreement.ID}, form_params, errors) }}
+              {{ form_field({type: 'checkbox', argument: "agreements.#{loop.index0}.accepted", caption: agreement.title, value: 1}, form_params, errors) }}
             </div>
-        </div>
-
-        {% for customField in customFieldsDefinitions %}
-            <div class="mb-3">
-                {{ custom_form_field(customField, {argument: "customer.customFields.#{loop.index0}"}, form_params, errors) }}
+          </td>
+          <td>
+            <div class="{{ customer_agreement_class(agreement) }}">
+              <a href="#" data-bs-toggle="modal"
+                 data-bs-target="#agreement_content_{{ agreement.ID }}">{{ t(_self, 'read_agreement') }}</a>
             </div>
-        {% endfor %}
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+  </div>
 
-        <table class="table table-borderless">
-            {% for agreement in agreementsDefinitions %}
-                <tr>
-                    <td>
-                        <div class="{{ customer_agreement_class(agreement) }}">
-                            {{ form_field({type: 'hidden', argument: "agreements.#{loop.index0}.customerAgreement", value: agreement.ID}, form_params, errors) }}
-                            {{ form_field({type: 'checkbox', argument: "agreements.#{loop.index0}.accepted", caption: agreement.title, value: 1}, form_params, errors) }}
-                        </div>
-                    </td>
-                    <td>
-                        <div class="{{ customer_agreement_class(agreement) }}">
-                            <a href="#" data-bs-toggle="modal"
-                               data-bs-target="#agreement_content_{{ agreement.ID }}">{{ t(_self, 'read_agreement') }}</a>
-                        </div>
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
-
-        <a href="{{ path('dashboard') }}" class="btn btn-secondary mb-3">{{ t(_self, 'cancel') }}</a>
-        <button type="submit" class="btn btn-primary mb-3">{{ t(_self, 'submit') }}</button>
-    </form>
-</div>
+  <div class="clearfix">
+    <div class="mb-3 float-end form-buttons">
+      <a href="{{ path('dashboard') }}" class="btn btn-secondary mb-3">{{ t(_self, 'cancel') }}</a>
+      <button type="submit" class="btn btn-primary mb-3">{{ t(_self, 'submit') }}</button>
+    </div>
+  </div>
+</form>
 
 {% for agreement in agreementsDefinitions %}
-    <div class="modal fade" id="agreement_content_{{ agreement.ID }}" data-bs-backdrop="static" data-bs-keyboard="false"
-         tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">{{ agreement.title }}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    {{ agreement.content | raw | nl2br }}
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary"
-                            data-bs-dismiss="modal">{{ t(_self, 'close') }}</button>
-                </div>
-            </div>
+  <div class="modal fade" id="agreement_content_{{ agreement.ID }}" data-bs-backdrop="static" data-bs-keyboard="false"
+       tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">{{ agreement.title }}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+        <div class="modal-body">
+          {{ agreement.content | raw | nl2br }}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary"
+                  data-bs-dismiss="modal">{{ t(_self, 'close') }}</button>
+        </div>
+      </div>
     </div>
+  </div>
 {% endfor %}

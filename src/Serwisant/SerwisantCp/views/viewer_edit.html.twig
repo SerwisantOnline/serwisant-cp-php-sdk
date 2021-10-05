@@ -1,140 +1,142 @@
-<div class="bg-light p-5 rounded mt-3">
+<form method="post" action="{{ path('viewer_update') }}">
+  <div class="bg-light p-5 rounded mt-3">
     <h1>{{ t(_self, 'title') }}</h1>
     <p class="lead">{{ t(_self, 'description') }}</p>
 
-    <form method="post" action="{{ path('viewer_update') }}">
-        <div class="mb-3">
-            {% set customerTypeOptions = {'PERSONAL': t(_self, 'customer_type.personal'),'BUSINESS': t(_self, 'customer_type.business')} %}
-            {{ form_field({type: 'select', argument: 'customer.type', caption: t(_self, 'type'), options: customerTypeOptions, value: customer.type}, form_params, errors) }}
-        </div>
+    <div class="mb-3">
+      {% set customerTypeOptions = {'PERSONAL': t(_self, 'customer_type.personal'),'BUSINESS': t(_self, 'customer_type.business')} %}
+      {{ form_field({type: 'select', argument: 'customer.type', caption: t(_self, 'type'), options: customerTypeOptions, value: customer.type}, form_params, errors) }}
+    </div>
 
-        <div class="mb-3">
-            {{ form_field({type: 'text', argument: 'customer.person', caption: t(_self, 'person'), value: customer.person}, form_params, errors) }}
-        </div>
+    <div class="mb-3">
+      {{ form_field({type: 'text', argument: 'customer.person', caption: t(_self, 'person'), value: customer.person}, form_params, errors) }}
+    </div>
 
-        <div class="mb-3 business_container undisplayed">
-            {{ form_field({type: 'text', argument: 'customer.companyName', caption: t(_self, 'company_name'), value: customer.companyName}, form_params, errors) }}
-        </div>
+    <div class="mb-3 business_container undisplayed">
+      {{ form_field({type: 'text', argument: 'customer.companyName', caption: t(_self, 'company_name'), value: customer.companyName}, form_params, errors) }}
+    </div>
 
-        <div class="mb-3 business_container undisplayed">
-            <div class="input-group">
-                <span class="input-group-text">{{ locale_ISO|upper }}</span>
-                {{ form_field({type: 'hidden', argument: 'customer.taxPrefix', value:locale_ISO | upper}, form_params, errors) }}
-                {{ form_field({type: 'text', argument: 'customer.taxId', caption: t(_self, 'tax_id'), value: customer.taxId}, form_params, errors) }}
-            </div>
-        </div>
+    <div class="mb-3 business_container undisplayed">
+      <div class="input-group">
+        <span class="input-group-text">{{ locale_ISO|upper }}</span>
+        {{ form_field({type: 'hidden', argument: 'customer.taxPrefix', value:locale_ISO | upper}, form_params, errors) }}
+        {{ form_field({type: 'text', argument: 'customer.taxId', caption: t(_self, 'tax_id'), value: customer.taxId}, form_params, errors) }}
+      </div>
+    </div>
 
+    <div class="row">
+      <div class="col-sm-6">
+        {{ form_field({type: 'text', argument: 'customer.email', caption: t(_self, 'email'), value: customer.email}, form_params, errors) }}
+      </div>
+      <div class="col-sm-6">
+        {{ form_field({type: 'hidden', argument: 'customer.phone.countryPrefix', value: customer.phone ? customer.phone.countryPrefix : locale_PhonePrefix}, form_params, errors) }}
+        {{ form_field({type: 'text', argument: 'customer.phone.number', caption: t(_self, 'phone_number'), value: customer.phone ? customer.phone.number : ''}, form_params, errors) }}
+      </div>
+      <div class="mb-3"></div>
+    </div>
+
+    <div class="mb-3">
+      {{ form_field({type: 'password', argument: 'customer.password', caption: t(_self, 'password')}, form_params, errors) }}
+      <div class="progress password-progress">
+        <div id="password-strength-indicator" class="progress-bar" role="progressbar" aria-valuenow="0"
+             aria-valuemin="0" aria-valuemax="100"></div>
+      </div>
+    </div>
+
+    {% if customer.addresses is empty %}
+      {{ form_field({type: 'hidden', argument: 'addresses.0.countryIso', value: locale_ISO | upper}, form_params, errors) }}
+      <div class="row">
+        <label class="form-label">{{ t(_self, 'address') }}</label>
+        <div class="col-sm-4">
+          {{ form_field({type: 'text', argument: 'addresses.0.street', caption: t(_self, 'street')}, form_params, errors) }}
+        </div>
+        <div class="col-sm-2">
+          {{ form_field({type: 'text', argument: 'addresses.0.building', caption: t(_self, 'building')}, form_params, errors) }}
+        </div>
+        <div class="col-sm-2">
+          {{ form_field({type: 'text', argument: 'addresses.0.postalCode', caption: t(_self, 'postalCode')}, form_params, errors) }}
+        </div>
+        <div class="col-sm">
+          {{ form_field({type: 'text', argument: 'addresses.0.city', caption: t(_self, 'city')}, form_params, errors) }}
+        </div>
+      </div>
+      <div class="mb-3"></div>
+    {% else %}
+      {% for address in customer.addresses %}
+        {{ form_field({type: 'hidden', argument: "addresses.#{loop.index0}.ID", value: address.ID}, form_params, errors) }}
+        {{ form_field({type: 'hidden', argument: "addresses.#{loop.index0}.countryIso", value: address.countryIso}, form_params, errors) }}
         <div class="row">
-            <div class="col-sm-6">
-                {{ form_field({type: 'text', argument: 'customer.email', caption: t(_self, 'email'), value: customer.email}, form_params, errors) }}
-            </div>
-            <div class="col-sm-6">
-                {{ form_field({type: 'hidden', argument: 'customer.phone.countryPrefix', value: customer.phone ? customer.phone.countryPrefix : locale_PhonePrefix}, form_params, errors) }}
-                {{ form_field({type: 'text', argument: 'customer.phone.number', caption: t(_self, 'phone_number'), value: customer.phone ? customer.phone.number : ''}, form_params, errors) }}
-            </div>
-            <div class="mb-3"></div>
+          <label class="form-label">{{ t(_self, 'address') }}</label>
+          <div class="col-sm-4">
+            {{ form_field({type: 'text', argument: "addresses.#{loop.index0}.street", caption: t(_self, 'street'), value: address.street}, form_params, errors) }}
+          </div>
+          <div class="col-sm-2">
+            {{ form_field({type: 'text', argument: "addresses.#{loop.index0}.building", caption: t(_self, 'building'), value: address.building}, form_params, errors) }}
+          </div>
+          <div class="col-sm-2">
+            {{ form_field({type: 'text', argument: "addresses.#{loop.index0}.postalCode", caption: t(_self, 'postalCode'), value: address.postalCode}, form_params, errors) }}
+          </div>
+          <div class="col-sm">
+            {{ form_field({type: 'text', argument: "addresses.#{loop.index0}.city", caption: t(_self, 'city'), value: address.city}, form_params, errors) }}
+          </div>
         </div>
+        <div class="mb-3"></div>
+      {% endfor %}
+    {% endif %}
 
-        <div class="mb-3">
-            {{ form_field({type: 'password', argument: 'customer.password', caption: t(_self, 'password')}, form_params, errors) }}
-            <div class="progress password-progress">
-                <div id="password-strength-indicator" class="progress-bar" role="progressbar" aria-valuenow="0"
-                     aria-valuemin="0" aria-valuemax="100"></div>
+    {% for customField in customer.customFields %}
+      <div class="mb-3">
+        {{ custom_form_field(customField.field, {argument: "customer.customFields.#{loop.index0}", value: customField.value, pk: customField.ID}, form_params, errors) }}
+      </div>
+    {% endfor %}
+
+    <table class="table table-borderless">
+      {% for agreement in customer.agreements %}
+        <tr>
+          <td>
+            <div class="{{ customer_agreement_class(agreement.agreement) }}">
+              {{ form_field({type: 'hidden', argument: "agreements.#{loop.index0}.ID", value: agreement.ID}, form_params, errors) }}
+              {{ form_field({type: 'hidden', argument: "agreements.#{loop.index0}.customerAgreement", value: agreement.agreement.ID}, form_params, errors) }}
+              {{ form_field({type: 'checkbox', argument: "agreements.#{loop.index0}.accepted", caption: agreement.agreement.title, value: 1, checked: agreement.accepted}, form_params, errors) }}
             </div>
-        </div>
-
-        {% if customer.addresses is empty %}
-            {{ form_field({type: 'hidden', argument: 'addresses.0.countryIso', value: locale_ISO | upper}, form_params, errors) }}
-            <div class="row">
-                <label class="form-label">{{ t(_self, 'address') }}</label>
-                <div class="col-sm-4">
-                    {{ form_field({type: 'text', argument: 'addresses.0.street', caption: t(_self, 'street')}, form_params, errors) }}
-                </div>
-                <div class="col-sm-2">
-                    {{ form_field({type: 'text', argument: 'addresses.0.building', caption: t(_self, 'building')}, form_params, errors) }}
-                </div>
-                <div class="col-sm-2">
-                    {{ form_field({type: 'text', argument: 'addresses.0.postalCode', caption: t(_self, 'postalCode')}, form_params, errors) }}
-                </div>
-                <div class="col-sm">
-                    {{ form_field({type: 'text', argument: 'addresses.0.city', caption: t(_self, 'city')}, form_params, errors) }}
-                </div>
+          </td>
+          <td>
+            <div class="{{ customer_agreement_class(agreement.agreement) }}">
+              <a href="#" data-bs-toggle="modal"
+                 data-bs-target="#agreement_content_{{ agreement.agreement.ID }}">{{ t(_self, 'read_agreement') }}</a>
             </div>
-            <div class="mb-3"></div>
-        {% else %}
-            {% for address in customer.addresses %}
-                {{ form_field({type: 'hidden', argument: "addresses.#{loop.index0}.ID", value: address.ID}, form_params, errors) }}
-                {{ form_field({type: 'hidden', argument: "addresses.#{loop.index0}.countryIso", value: address.countryIso}, form_params, errors) }}
-                <div class="row">
-                    <label class="form-label">{{ t(_self, 'address') }}</label>
-                    <div class="col-sm-4">
-                        {{ form_field({type: 'text', argument: "addresses.#{loop.index0}.street", caption: t(_self, 'street'), value: address.street}, form_params, errors) }}
-                    </div>
-                    <div class="col-sm-2">
-                        {{ form_field({type: 'text', argument: "addresses.#{loop.index0}.building", caption: t(_self, 'building'), value: address.building}, form_params, errors) }}
-                    </div>
-                    <div class="col-sm-2">
-                        {{ form_field({type: 'text', argument: "addresses.#{loop.index0}.postalCode", caption: t(_self, 'postalCode'), value: address.postalCode}, form_params, errors) }}
-                    </div>
-                    <div class="col-sm">
-                        {{ form_field({type: 'text', argument: "addresses.#{loop.index0}.city", caption: t(_self, 'city'), value: address.city}, form_params, errors) }}
-                    </div>
-                </div>
-                <div class="mb-3"></div>
-            {% endfor %}
-        {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+  </div>
 
-        {% for customField in customer.customFields %}
-            <div class="mb-3">
-                {{ custom_form_field(customField.field, {argument: "customer.customFields.#{loop.index0}", value: customField.value, pk: customField.ID}, form_params, errors) }}
-            </div>
-        {% endfor %}
-
-        <table class="table table-borderless">
-            {% for agreement in customer.agreements %}
-                <tr>
-                    <td>
-                        <div class="{{ customer_agreement_class(agreement.agreement) }}">
-                            {{ form_field({type: 'hidden', argument: "agreements.#{loop.index0}.ID", value: agreement.ID}, form_params, errors) }}
-                            {{ form_field({type: 'hidden', argument: "agreements.#{loop.index0}.customerAgreement", value: agreement.agreement.ID}, form_params, errors) }}
-                            {{ form_field({type: 'checkbox', argument: "agreements.#{loop.index0}.accepted", caption: agreement.agreement.title, value: 1, checked: agreement.accepted}, form_params, errors) }}
-                        </div>
-                    </td>
-                    <td>
-                        <div class="{{ customer_agreement_class(agreement.agreement) }}">
-                            <a href="#" data-bs-toggle="modal"
-                               data-bs-target="#agreement_content_{{ agreement.agreement.ID }}">{{ t(_self, 'read_agreement') }}</a>
-                        </div>
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
-
-        <div class="mb-3 form-buttons">
-            <a href="{{ path('dashboard') }}" class="btn btn-secondary mb-3">{{ t(_self, 'cancel') }}</a>
-            <button type="submit" class="btn btn-primary mb-3">{{ t(_self, 'submit') }}</button>
-        </div>
-    </form>
-</div>
+  <div class="clearfix">
+    <div class="mb-3 float-end form-buttons">
+      <a href="{{ path('dashboard') }}" class="btn btn-secondary mb-3">{{ t(_self, 'cancel') }}</a>
+      <button type="submit" class="btn btn-primary mb-3">{{ t(_self, 'submit') }}</button>
+    </div>
+  </div>
+</form>
 
 {% for agreement in customer.agreements %}
-    <div class="modal fade" id="agreement_content_{{ agreement.agreement.ID }}" data-bs-backdrop="static"
-         data-bs-keyboard="false"
-         tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">{{ agreement.agreement.title }}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    {{ agreement.agreement.content | raw | nl2br }}
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary"
-                            data-bs-dismiss="modal">{{ t(_self, 'close') }}</button>
-                </div>
-            </div>
+  <div class="modal fade" id="agreement_content_{{ agreement.agreement.ID }}" data-bs-backdrop="static"
+       data-bs-keyboard="false"
+       tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">{{ agreement.agreement.title }}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+        <div class="modal-body">
+          {{ agreement.agreement.content | raw | nl2br }}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary"
+                  data-bs-dismiss="modal">{{ t(_self, 'close') }}</button>
+        </div>
+      </div>
     </div>
+  </div>
 {% endfor %}

@@ -1,51 +1,53 @@
-<div class="bg-light p-5 rounded mt-3">
+<form method="post" action="{{ path('create_ticket') }}">
+  <div class="bg-light p-5 rounded mt-3">
     <h1>{{ t(_self, 'title') }}</h1>
     <p class="lead">{{ t(_self, 'description') }}</p>
 
-    <form method="post" action="{{ path('create_ticket') }}">
 
-        <div class="mb-3">
-            {{ form_field({type: 'select', argument: 'ticket.priority', caption: t(_self, 'priority'), options: priorities_select_options, include_blank: true}, form_params, errors) }}
-        </div>
+    <div class="mb-3">
+      {{ form_field({type: 'select', argument: 'ticket.priority', caption: t(_self, 'priority'), options: priorities_select_options, include_blank: true}, form_params, errors) }}
+    </div>
 
-        <div class="mb-3">
-            {{ form_field({type: 'datetime', argument: 'ticket.startAt', caption: t(_self, 'startAt')}, form_params, errors) }}
-        </div>
+    <div class="mb-3">
+      {{ form_field({type: 'datetime', argument: 'ticket.startAt', caption: t(_self, 'startAt')}, form_params, errors) }}
+    </div>
 
-        <div class="mb-3">
-            {{ form_field({type: 'radios', argument: 'ticket.address', caption: t(_self, 'address'), options: addresses_radio_options, value: defaultAddress}, form_params, errors) }}
-        </div>
+    <div class="mb-3">
+      {{ form_field({type: 'radios', argument: 'ticket.address', caption: t(_self, 'address'), options: addresses_radio_options, value: defaultAddress}, form_params, errors) }}
+    </div>
 
-        <div class="mb-3 address-other-container undisplayed">
-            {{ form_field({type: 'textarea', argument: 'ticket.addressOther', caption: t(_self, 'addressOther')}, form_params, errors) }}
-        </div>
+    <div class="mb-3 address-other-container undisplayed">
+      {{ form_field({type: 'textarea', argument: 'ticket.addressOther', caption: t(_self, 'addressOther')}, form_params, errors) }}
+    </div>
 
-        <div class="mb-3">
-            {{ form_field({type: 'textarea', argument: 'ticket.issue', caption: t(_self, 'issue')}, form_params, errors) }}
-        </div>
+    <div class="mb-3">
+      {{ form_field({type: 'textarea', argument: 'ticket.issue', caption: t(_self, 'issue')}, form_params, errors) }}
+    </div>
 
-        <div class="mb-3 clearfix" id="create_repair_file_uploader">
-            {% for temporary_file in temporary_files %}
-                <div class="undisplayed temporary-file-json" data-ID="{{ temporary_file }}"></div>
-            {% endfor %}
-        </div>
+    <div class="mb-3 clearfix" id="create_repair_file_uploader">
+      {% for temporary_file in temporary_files %}
+        <div class="undisplayed temporary-file-json" data-ID="{{ temporary_file }}"></div>
+      {% endfor %}
+    </div>
 
-        {% for customField in customFieldsDefinitions %}
-            {% if customField.concern %}
-                {% set class = 'undisplayed' %}
-                {% set data_type_id = customField.concern.ID %}
-            {% else %}
-                {% set class = '' %}
-                {% set data_type_id = '' %}
-            {% endif %}
-            <div class="mb-3 custom-field {{ class }}" data-type-id="{{ data_type_id }}">
-                {{ custom_form_field(customField, {argument: "ticket.customFields.#{loop.index0}"}, form_params, errors) }}
-            </div>
-        {% endfor %}
+    {% for customField in customFieldsDefinitions %}
+      {% if customField.concern %}
+        {% set class = 'undisplayed' %}
+        {% set data_type_id = customField.concern.ID %}
+      {% else %}
+        {% set class = '' %}
+        {% set data_type_id = '' %}
+      {% endif %}
+      <div class="mb-3 custom-field {{ class }}" data-type-id="{{ data_type_id }}">
+        {{ custom_form_field(customField, {argument: "ticket.customFields.#{loop.index0}"}, form_params, errors) }}
+      </div>
+    {% endfor %}
+  </div>
 
-        <div class="mb-3 form-buttons">
-            <a href="{{ path('tickets') }}" class="btn btn-secondary mb-3">{{ t(_self, 'cancel') }}</a>
-            <button type="submit" class="btn btn-primary mb-3">{{ t(_self, 'submit') }}</button>
-        </div>
-    </form>
-</div>
+  <div class="clearfix">
+    <div class="mb-3 float-end form-buttons">
+      <a href="{{ path('tickets') }}" class="btn btn-secondary mb-3">{{ t(_self, 'cancel') }}</a>
+      <button type="submit" class="btn btn-primary mb-3">{{ t(_self, 'submit') }}</button>
+    </div>
+  </div>
+</form>

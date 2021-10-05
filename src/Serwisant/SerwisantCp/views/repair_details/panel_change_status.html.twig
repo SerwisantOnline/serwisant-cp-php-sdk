@@ -7,7 +7,7 @@ Ten widok pozwala na akceptację jednej z przedstawionych ofert lub diagnozy.
 
 {% if repair.status.requireCustomerAccept %}
     {% if repair.offers %}
-        <div class="card">
+        <div class="card my-2">
             {% for offer in repair.offers %}
                 {% if (offer.accepted is null) or offer.accepted %}
                     <div class="card-header">

@@ -1,33 +1,34 @@
-<a href="{{ path('messages') }}" class="btn btn-secondary btn-lg">{{ t(_self, 'close') }}</a>
-
-<a class="btn btn-primary btn-lg"
-   href="{{ path('new_message_reply', {'id': thread.ID}) }}">{{ t(_self, 'create_message_reply') }}</a>
+<div class="btn-group" role="group">
+  <a href="{{ path('messages') }}" class="btn btn-secondary btn-lg">{{ t(_self, 'close') }}</a>
+  <a class="btn btn-primary btn-lg"
+     href="{{ path('new_message_reply', {'id': thread.ID}) }}">{{ t(_self, 'create_message_reply') }}</a>
+</div>
 
 <div class="bg-light p-5 rounded mt-3">
-    <h4>{{ thread.subject }}</h4>
+  <h4>{{ thread.subject }}</h4>
+
+  <p>
+    {% for recipient in thread.recipients %}
+      <span class="badge bg-secondary">{{ recipient.displayName }}</span>
+    {% endfor %}
+  </p>
+
+  {% for message in thread.messages %}
+    <hr>
 
     <p>
-        {% for recipient in thread.recipients %}
-            <span class="badge bg-secondary">{{ recipient.displayName }}</span>
-        {% endfor %}
+      {{ message.sender.displayName }}
+      {% if message.sender.type == 'CUSTOMER' %}
+        <span class="badge bg-secondary">{{ t(_self, 'you') }}</span>
+      {% elseif message.sender.type == 'SERVICE_SUPPLIER' %}
+        <span class="badge bg-success">{{ t(_self, 'service') }}</span>
+      {% elseif message.sender.type == 'EMPLOYEE' %}
+        <span class="badge bg-success">{{ t(_self, 'employee') }}</span>
+      {% endif %}
     </p>
 
-    {% for message in thread.messages %}
-        <hr>
+    <p>{{ message.createdAt | format_datetime }}</p>
 
-        <p>
-            {{ message.sender.displayName }}
-            {% if message.sender.type == 'CUSTOMER' %}
-                <span class="badge bg-secondary">{{ t(_self, 'you') }}</span>
-            {% elseif message.sender.type == 'SERVICE_SUPPLIER' %}
-                <span class="badge bg-success">{{ t(_self, 'service') }}</span>
-            {% elseif message.sender.type == 'EMPLOYEE' %}
-                <span class="badge bg-success">{{ t(_self, 'employee') }}</span>
-            {% endif %}
-        </p>
-
-        <p>{{ message.createdAt | format_datetime }}</p>
-
-        {{ message.content | raw }}
-    {% endfor %}
+    {{ message.content | raw }}
+  {% endfor %}
 </div>

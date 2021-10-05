@@ -1,60 +1,60 @@
 {% if configuration.welcomeMessage %}
-    <div class="bg-light p-5 rounded mt-3">
-        {{ configuration.welcomeMessage | raw }}
-    </div>
+  <div class="bg-light p-5 rounded mt-3">
+    {{ configuration.welcomeMessage | raw }}
+  </div>
 {% endif %}
 
 <div class="bg-light p-5 rounded mt-3">
-    <h1>{{ t(_self, 'title') }}</h1>
-    <p class="lead">{{ t(_self, 'login_description') }}</p>
+  <h1>{{ t(_self, 'title') }}</h1>
+  <p class="lead">{{ t(_self, 'login_description') }}</p>
 
-    <form method="post" action="{{ path('new_session') }}" id="new-session-form">
-        <div class="row p-1">
-            <div class="col-4">
-                {{ form_field({type: 'text', argument: 'session_credentials.login_credential', caption: t(_self, 'login')}, formParams, []) }}
-            </div>
-        </div>
+  <form method="post" action="{{ path('new_session') }}" id="new-session-form">
+    <div class="row p-1">
+      <div class="col-4">
+        {{ form_field({type: 'text', argument: 'session_credentials.login_credential', caption: t(_self, 'login')}, formParams, []) }}
+      </div>
+    </div>
 
-        <div id="new-session-d-login">
-            <div class="row p-1">
-                <div class="col-4">
-                    <button type="button"
-                            class="btn btn-primary mb-3"
-                            data-url="{{ path('new_session_resolve_login') }}"
-                            data-tr-NOT_FOUND="{{ t(_self, 'login_not_found') }}"
-                            data-tr-DELETED="{{ t(_self, 'subscriber_deleted') }}"
-                            data-tr-NOT_ACTIVATED="{{ t(_self, 'login_not_activated') }}"
-                            data-tr-DISABLED="{{ t(_self, 'login_disabled') }}"
-                            id="new-session-resolve-login-btn">{{ t(_self, 'submit') }}</button>
-                    <br/>
-                    <a href="{{ path('new_password_reset') }}">Zapomniałem hasła.</a>
-                </div>
-            </div>
+    <div id="new-session-d-login">
+      <div class="row p-1">
+        <div class="col-4">
+          <button type="button"
+                  class="btn btn-primary mb-3"
+                  data-url="{{ path('new_session_resolve_login') }}"
+                  data-tr-NOT_FOUND="{{ t(_self, 'login_not_found') }}"
+                  data-tr-DELETED="{{ t(_self, 'subscriber_deleted') }}"
+                  data-tr-NOT_ACTIVATED="{{ t(_self, 'login_not_activated') }}"
+                  data-tr-DISABLED="{{ t(_self, 'login_disabled') }}"
+                  id="new-session-resolve-login-btn">{{ t(_self, 'submit') }}</button>
+          <br/>
+          <a href="{{ path('new_password_reset') }}">Zapomniałem hasła.</a>
         </div>
+      </div>
+    </div>
 
-        <div id="new-session-d-password" class="undisplayed">
-            <div class="row p-1">
-                <div class="col-4">
-                    {{ form_field({type: 'hidden', argument: 'session_credentials.login'}, formParams, []) }}
-                    {{ form_field({type: 'password', argument: 'session_credentials.password', caption: t(_self, 'password')}, formParams, []) }}
-                </div>
-            </div>
-            <div class="row p-1">
-                <div class="col-4">
-                    <button type="submit"
-                            class="btn btn-primary mb-3"
-                            id="new-session-btn">{{ t(_self, 'submit') }}</button>
-                    <br/>
-                    <a href="{{ path('new_password_reset') }}">Zapomniałem hasła.</a>
-                </div>
-            </div>
+    <div id="new-session-d-password" class="undisplayed">
+      <div class="row p-1">
+        <div class="col-4">
+          {{ form_field({type: 'hidden', argument: 'session_credentials.login'}, formParams, []) }}
+          {{ form_field({type: 'password', argument: 'session_credentials.password', caption: t(_self, 'password')}, formParams, []) }}
         </div>
-    </form>
+      </div>
+      <div class="row p-1">
+        <div class="col-4">
+          <button type="submit"
+                  class="btn btn-primary mb-3"
+                  id="new-session-btn">{{ t(_self, 'submit') }}</button>
+          <br/>
+          <a href="{{ path('new_password_reset') }}">Zapomniałem hasła.</a>
+        </div>
+      </div>
+    </div>
+  </form>
 </div>
 
 {% if configuration.panelSignups %}
-    <div class="bg-light p-5 rounded mt-3">
-        <p class="lead">{{ t(_self, 'signup_description') }}</p>
-        <a href="{{ path('new_signup') }}" class="btn btn-primary mb-3">{{ t(_self, 'signup') }}</a>
-    </div>
+  <div class="bg-light p-5 rounded mt-3">
+    <p class="lead">{{ t(_self, 'signup_description') }}</p>
+    <a href="{{ path('new_signup') }}" class="btn btn-primary mb-3">{{ t(_self, 'signup') }}</a>
+  </div>
 {% endif %}

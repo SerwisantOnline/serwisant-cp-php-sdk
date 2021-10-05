@@ -11,6 +11,7 @@ use Serwisant\SerwisantApi\Types\SchemaCustomer\RepairsSort;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\RepairInput;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\AddressUpdateInput;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\PrintType;
+use Serwisant\SerwisantApi\Types\SchemaCustomer\RepairTransportType;
 
 class Repairs extends Action
 {
@@ -88,10 +89,20 @@ class Repairs extends Action
       $addresses_radio_options[$address->ID] = trim("{$address->postalCode} {$address->city}, {$address->street} {$address->building}");
     }
 
+    $transport_radio_options = [RepairTransportType::PARCEL => $this->t('transport_types.PARCEL')];
+
+    if ($this->getLayoutVars()['configuration']->personalTransportEnabled) {
+      $transport_radio_options[RepairTransportType::PERSONAL] = $this->t('transport_types.PERSONAL');
+    }
+    if ($this->getLayoutVars()['configuration']->internalTransportEnabled) {
+      $transport_radio_options[RepairTransportType::INTERNAL] = $this->t('transport_types.INTERNAL');
+    }
+
     $variables = [
       'customFieldsDefinitions' => $result->fetch('orderCustomFields'),
       'dictionary_select_options' => $dictionary_select_options,
       'addresses_radio_options' => $addresses_radio_options,
+      'transport_radio_options' => $transport_radio_options,
       'defaultReturnAddress' => ($result->fetch('viewer')->customer->address ? $result->fetch('viewer')->customer->address->ID : null),
 
       'form_params' => $this->request->request,
@@ -133,6 +144,7 @@ class Repairs extends Action
       $repair['customFields'] = $helper->mapCustomFields($repair['customFields']);
     }
     $repair['warranty'] = (array_key_exists('warranty', $repair) && $repair['warranty'] == '1');
+    $repair['pickUpAddress'] = $repair['returnAddress'];
 
     $repair_input = new RepairInput($repair);
     $result = $this

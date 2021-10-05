@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card my-2">
   <div class="card-header">
     <span class="glyphicon glyphicon-info-sign icon-margin pull-right"></span>
     {{ t(_self, 'title') }}
@@ -53,8 +53,12 @@
       </tr>
     {% endif %}
     <tr>
+      <td class="column-definition">{{ t(_self, 'delivery_type') }}</td>
+      <td>{{ t('transport_types', repair.deliveryType) }}</td>
+    </tr>
+    <tr>
       <td class="column-definition">{{ t(_self, 'collection_type') }}</td>
-      <td>{{ t(_self, 'collections', repair.collectionType) }}</td>
+      <td>{{ t('transport_types', repair.collectionType) }}</td>
     </tr>
     </tbody>
   </table>

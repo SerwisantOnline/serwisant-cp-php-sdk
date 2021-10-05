@@ -73,6 +73,10 @@ pl_PL:
     SUBSCRIPTION_FIXED: "Płatność na koniec miesiąca, za zlecenie"
     SUBSCRIPTION_TIME: "Płatność na koniec miesiąca, stawka godzinowa"
     CONTRACT: "Płatność na koniec miesiąca, abonament"
+  transport_types:
+    PARCEL: "Kurier"
+    PERSONAL: "Osobiście"
+    INTERNAL: "Pracownik serwisu"
 
   login_new:
     title: "Zaloguj się!"
@@ -182,11 +186,8 @@ pl_PL:
       purchase_date: "Data zakupu"
       purchase_doc: "Numer dokumentu zakupu"
       warranty_repair: "Naprawa gwarancyjna"
+      delivery_type: "Sposób doręczenia"
       collection_type: "Sposób odbioru naprawy"
-      collections:
-        PERSONAL: "Odbiór osobisty"
-        PARCEL: "Wysyłka kurierem na twój adres"
-        INTERNAL: "Dostarczenie przez pracownika serwisu"
     panel_custom_fields:
       title: "Dodatkowe informacje"
     panel_issue:
@@ -257,11 +258,13 @@ pl_PL:
     warrantyPurchaseDate: "Data zakupu"
     warrantyPurchaseDocument: "Numer dokumentu zakupu"
     issue: "Opis usterki, problemu"
-    returnAddress: "Adres zwrotu naprawy:"
+    returnAddress: "Adres:"
     street: "Ulica"
     building: "Numer"
     postalCode: "Kod pocztowy"
     city: "Miasto"
+    delivery: "Sposób dostarczenia naprawy"
+    collection: "Sposób odbioru naprawy"
     cancel: "Anuluj"
     submit: "Dodaj naprawę"
   tickets:

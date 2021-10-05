@@ -11,7 +11,7 @@ class Action
   protected $request;
   protected $token;
   protected $decorator;
-  protected $client_ip;
+  protected $api_http_headers = [];
   protected $twig;
   protected $translator;
   protected $debug = false;
@@ -31,24 +31,20 @@ class Action
     if (isset($app['action_decorator'])) {
       $this->decorator = $app['action_decorator'];
     }
-
-    if ($request->headers->has('CF-Connecting-IP')) {
-      $this->client_ip = $request->headers->get('CF-Connecting-IP');
-    } else {
-      $this->client_ip = $request->getClientIp();
+    if (isset($app['access_token_customer'])) {
+      $this->api_http_headers = $app['api_http_headers'];
     }
-
     $this->twig = $app['twig'];
     $this->translator = $app['tr'];
     $this->debug = ($this->app['env'] == 'development');
 
     if (isset($app['access_token_customer'])) {
       $this->access_token_customer = $app['access_token_customer'];
-      $this->access_token_customer->setIp($this->client_ip);
+      $this->access_token_customer->setHttpHeaders($this->api_http_headers);
     }
     if (isset($app['access_token_public'])) {
       $this->access_token_public = $app['access_token_public'];
-      $this->access_token_public->setIp($this->client_ip);
+      $this->access_token_public->setHttpHeaders($this->api_http_headers);
     }
   }
 
@@ -194,7 +190,7 @@ class Action
   {
     if (is_null($this->api_customer) && !is_null($this->access_token_customer)) {
       $this->api_customer = new Api($this->app, $this->access_token_customer);
-      $this->api_customer->setIp($this->client_ip);
+      $this->api_customer->setHttpHeaders($this->api_http_headers);
     }
     return $this->api_customer;
   }
@@ -203,7 +199,7 @@ class Action
   {
     if (is_null($this->api_public) && !is_null($this->access_token_public)) {
       $this->api_public = new Api($this->app, $this->access_token_public);
-      $this->api_public->setIp($this->client_ip);
+      $this->api_public->setHttpHeaders($this->api_http_headers);
     }
     return $this->api_public;
   }

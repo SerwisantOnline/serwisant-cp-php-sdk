@@ -128,9 +128,9 @@ class TwigFormExtensions extends TwigExtensions
         break;
 
       case 'radios':
-        $html .= '<fieldset class="row mb-3"><legend class="col-form-label col-sm-2 pt-0">';
+        $html .= '<fieldset class="row"><legend class="col-form-label col-4 pt-0">';
         $html .= $options->get('caption');
-        $html .= '</legend><div class="col-sm-10">';
+        $html .= '</legend><div class="col-8">';
         foreach ($options->get('options', []) as $v => $t) {
           $checked = ($v == $value) ? "checked='checked'" : "";
           $html .= '<div class="form-check">';

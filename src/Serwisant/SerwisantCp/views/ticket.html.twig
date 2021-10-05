@@ -1,157 +1,159 @@
 <div class="btn-group" role="group">
-    <a href="{{ path('tickets') }}" class="btn btn-secondary btn-lg">{{ t(_self, 'close') }}</a>
-    <a href="{{ path('ticket_print', {id: ticket.ID}) }}" class="btn btn-outline-dark btn-lg">{{ t(_self, 'print') }}</a>
+  <a href="{{ path('tickets') }}" class="btn btn-secondary btn-lg">{{ t(_self, 'close') }}</a>
+  <a href="{{ path('ticket_print', {id: ticket.ID}) }}" class="btn btn-outline-dark btn-lg">{{ t(_self, 'print') }}</a>
 </div>
 
 <div class="bg-light p-5 rounded mt-3">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <span class="pull-right"></span>
-                    {{ t(_self, 'panel_info') }}
-                </div>
-                <table class="table table-bordered">
-                    <tbody>
-                    <tr>
-                        <td class="column-definition">{{ t(_self, 'number') }}</td>
-                        <td>{{ ticket.number }}</td>
-                    </tr>
-                    <tr>
-                        <td class="column-definition">{{ t(_self, 'employee') }}</td>
-                        <td>{{ ticket.employee ? ticket.employee.displayName : '' }}</td>
-                    </tr>
-                    <tr>
-                        <td class="column-definition">{{ t(_self, 'address') }}</td>
-                        <td>
-                            {% if ticket.addressRemarks %}
-                                {{ ticket.addressRemarks }}
-                            {% elseif ticket.address %}
-                                {{ ticket.address.street }} {{ ticket.address.building }},  {{ ticket.address.postalCode }} {{ ticket.address.city }}
-                            {% endif %}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="column-definition">{{ t(_self, 'group') }}</td>
-                        <td>{{ ticket.type ? ticlet.type.name : '' }}</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
+  <div class="row">
+    <div class="col-md-6">
 
-            <div class="card">
-                <div class="card-header">
-                    <span class="pull-right"></span>
-                    {{ t(_self, 'panel_payments') }}
-                </div>
-                <table class="table table-bordered">
-                    <tbody>
-                    <tr>
-                        <td class="column-definition">{{ t(_self, 'payment_type') }}</td>
-                        <td colspan="2">{{ ticket.payment.type ? t('payment_types', ticket.payment.type) : '' }}</td>
-                    </tr>
-                    <tr>
-                        <td class="column-definition">{{ t(_self, 'time') }}</td>
-                        <td colspan="2">{{ ticket.payment.hoursSpend ? ticket.payment.hoursSpend : '' }}</td>
-                    </tr>
-                    <tr>
-                        <td class="column-definition">{{ t(_self, 'payment') }}</td>
-                        <td>
-                            {% if not ticket.payment.paymentNet is null %}
-                                {{ ticket.payment.paymentNet | format_currency }}
-                            {% endif %}
-                        </td>
-                        <td>
-                            {% if not ticket.payment.paymentGross is null %}
-                                {{ ticket.payment.paymentGross | format_currency }}
-                            {% endif %}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="column-definition">{{ t(_self, 'paid') }}</td>
-                        <td colspan="2">
-                            <input type="checkbox" disabled {{ ticket.payment.paid ? 'checked="checked"' : '' }}>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="card">
-                <div class="card-header"><span class="glyphicon glyphicon-info-sign icon-margin pull-right"></span>
-                    {{ t(_self, 'panel_custom_form_fields') }}
-                </div>
-                <table class="table table-bordered">
-                    <tbody>
-                    {% for field in ticket.customFields %}
-                        <tr>
-                            <td class="column-definition">{{ field.field.name }}</td>
-                            <td>{{ custom_form_field_value(field.value, field.field.type) | raw }}</td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+      <div class="card my-2">
+        <div class="card-header">
+          <span class="pull-right"></span>
+          {{ t(_self, 'panel_info') }}
         </div>
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <span class="pull-right"></span>
-                    {{ t(_self, 'panel_status') }}
-                </div>
-                <table class="table table-bordered">
-                    <tbody>
-                    <tr>
-                        <td class="column-definition">{{ t(_self, 'priority') }}</td>
-                        <td>{{ ticket.priority.name }}</td>
-                    </tr>
-                    <tr>
-                        <td class="column-definition">{{ t(_self, 'status') }}</td>
-                        <td>{{ ticket.status.displayName }}</td>
-                    </tr>
-                    <tr>
-                        <td class="column-definition">{{ t(_self, 'created') }}</td>
-                        <td>{{ ticket.status.createdAt | format_datetime }}</td>
-                    </tr>
-                    <tr>
-                        <td class="column-definition">{{ t(_self, 'scheduled_on') }}</td>
-                        <td>{{ ticket.status.scheduledOn | format_datetime }}</td>
-                    </tr>
-                    <tr>
-                        <td class="column-definition">{{ t(_self, 'scheduled_to') }}</td>
-                        <td>{{ ticket.status.scheduledTo ? ticket.status.scheduledTo | format_datetime : '' }}</td>
-                    </tr>
-                    <tr>
-                        <td class="column-definition">{{ t(_self, 'started_on') }}</td>
-                        <td>{{ ticket.status.startedOn ? ticket.status.startedOn | format_datetime : '' }}</td>
-                    </tr>
-                    <tr>
-                        <td class="column-definition">{{ t(_self, 'finished_at') }}</td>
-                        <td>{{ ticket.status.finishedAt ? ticket.status.finishedAt | format_datetime : '' }}</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
+        <table class="table table-bordered card-table">
+          <tbody>
+          <tr>
+            <td class="column-definition">{{ t(_self, 'number') }}</td>
+            <td>{{ ticket.number }}</td>
+          </tr>
+          <tr>
+            <td class="column-definition">{{ t(_self, 'employee') }}</td>
+            <td>{{ ticket.employee ? ticket.employee.displayName : '' }}</td>
+          </tr>
+          <tr>
+            <td class="column-definition">{{ t(_self, 'address') }}</td>
+            <td>
+              {% if ticket.addressRemarks %}
+                {{ ticket.addressRemarks }}
+              {% elseif ticket.address %}
+                {{ ticket.address.street }} {{ ticket.address.building }},  {{ ticket.address.postalCode }} {{ ticket.address.city }}
+              {% endif %}
+            </td>
+          </tr>
+          <tr>
+            <td class="column-definition">{{ t(_self, 'group') }}</td>
+            <td>{{ ticket.type ? ticlet.type.name : '' }}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
 
-            <div class="bd-callout bd-callout-info">
-                {{ ticket.issue }}
-            </div>
-
-            {% if ticket.files %}
-                <div class="card">
-                    <div class="card-body">
-                        {% for file in ticket.files %}
-                            {% if file.image %}
-                                <a href="{{ file.url }}"><img src="{{ file.thumbUrl }}"
-                                                              class="img-thumbnail text-tooltip"></a>
-                            {% else %}
-                                <a href="{{ file.url }}">FILE</a>
-                            {% endif %}
-
-                        {% endfor %}
-                    </div>
-                </div>
-            {% endif %}
+      <div class="card my-2">
+        <div class="card-header">
+          <span class="pull-right"></span>
+          {{ t(_self, 'panel_payments') }}
         </div>
+        <table class="table table-bordered card-table">
+          <tbody>
+          <tr>
+            <td class="column-definition">{{ t(_self, 'payment_type') }}</td>
+            <td colspan="2">{{ ticket.payment.type ? t('payment_types', ticket.payment.type) : '' }}</td>
+          </tr>
+          <tr>
+            <td class="column-definition">{{ t(_self, 'time') }}</td>
+            <td colspan="2">{{ ticket.payment.hoursSpend ? ticket.payment.hoursSpend : '' }}</td>
+          </tr>
+          <tr>
+            <td class="column-definition">{{ t(_self, 'payment') }}</td>
+            <td>
+              {% if not ticket.payment.paymentNet is null %}
+                {{ ticket.payment.paymentNet | format_currency }}
+              {% endif %}
+            </td>
+            <td>
+              {% if not ticket.payment.paymentGross is null %}
+                {{ ticket.payment.paymentGross | format_currency }}
+              {% endif %}
+            </td>
+          </tr>
+          <tr>
+            <td class="column-definition">{{ t(_self, 'paid') }}</td>
+            <td colspan="2">
+              <input type="checkbox" disabled {{ ticket.payment.paid ? 'checked="checked"' : '' }}>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card my-2">
+        <div class="card-header"><span class="glyphicon glyphicon-info-sign icon-margin pull-right"></span>
+          {{ t(_self, 'panel_custom_form_fields') }}
+        </div>
+        <table class="table table-bordered card-table">
+          <tbody>
+          {% for field in ticket.customFields %}
+            <tr>
+              <td class="column-definition">{{ field.field.name }}</td>
+              <td>{{ custom_form_field_value(field.value, field.field.type) | raw }}</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
     </div>
+    <div class="col-md-6">
+
+      <div class="card my-2">
+        <div class="card-header">
+          <span class="pull-right"></span>
+          {{ t(_self, 'panel_status') }}
+        </div>
+        <table class="table table-bordered card-table">
+          <tbody>
+          <tr>
+            <td class="column-definition">{{ t(_self, 'priority') }}</td>
+            <td>{{ ticket.priority.name }}</td>
+          </tr>
+          <tr>
+            <td class="column-definition">{{ t(_self, 'status') }}</td>
+            <td>{{ ticket.status.displayName }}</td>
+          </tr>
+          <tr>
+            <td class="column-definition">{{ t(_self, 'created') }}</td>
+            <td>{{ ticket.status.createdAt | format_datetime }}</td>
+          </tr>
+          <tr>
+            <td class="column-definition">{{ t(_self, 'scheduled_on') }}</td>
+            <td>{{ ticket.status.scheduledOn | format_datetime }}</td>
+          </tr>
+          <tr>
+            <td class="column-definition">{{ t(_self, 'scheduled_to') }}</td>
+            <td>{{ ticket.status.scheduledTo ? ticket.status.scheduledTo | format_datetime : '' }}</td>
+          </tr>
+          <tr>
+            <td class="column-definition">{{ t(_self, 'started_on') }}</td>
+            <td>{{ ticket.status.startedOn ? ticket.status.startedOn | format_datetime : '' }}</td>
+          </tr>
+          <tr>
+            <td class="column-definition">{{ t(_self, 'finished_at') }}</td>
+            <td>{{ ticket.status.finishedAt ? ticket.status.finishedAt | format_datetime : '' }}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="bd-callout bd-callout-info">
+        {{ ticket.issue }}
+      </div>
+
+      {% if ticket.files %}
+        <div class="card my-2">
+          <div class="card-body">
+            {% for file in ticket.files %}
+              {% if file.image %}
+                <a href="{{ file.url }}"><img src="{{ file.thumbUrl }}"
+                                              class="img-thumbnail text-tooltip"></a>
+              {% else %}
+                <a href="{{ file.url }}">FILE</a>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
 </div>
