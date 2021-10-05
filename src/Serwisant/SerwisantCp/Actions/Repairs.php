@@ -144,7 +144,9 @@ class Repairs extends Action
       $repair['customFields'] = $helper->mapCustomFields($repair['customFields']);
     }
     $repair['warranty'] = (array_key_exists('warranty', $repair) && $repair['warranty'] == '1');
-    $repair['pickUpAddress'] = $repair['returnAddress'];
+    if (array_key_exists('returnAddress', $repair)) {
+      $repair['pickUpAddress'] = $repair['returnAddress'];
+    }
 
     $repair_input = new RepairInput($repair);
     $result = $this
