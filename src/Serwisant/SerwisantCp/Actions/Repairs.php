@@ -123,7 +123,6 @@ class Repairs extends Action
 
     $addresses = $this->request->get('addresses', []);
     $address_errors = [];
-
     if ($addresses) {
       $result = $this->apiCustomer()->customerMutation()->updateViewer(
         null,
@@ -154,8 +153,14 @@ class Repairs extends Action
       ->customerMutation()
       ->createRepair($repair_input, [], $helper->mapTemporaryFiles($this->request->get('temporary_files')));
 
-    if ($address_errors || $result->errors) {
-      return $this->new(array_merge($result->errors, $address_errors));
+    if ($result->errors) {
+      $repair_errors = $result->errors;
+    } else {
+      $repair_errors = [];
+    }
+
+    if (count($repair_errors) > 0 || count($address_errors) > 0) {
+      return $this->new(array_merge($repair_errors, $address_errors));
     } else {
       return $this->redirectTo('repairs', 'flashes.repair_creation_successful');
     }
