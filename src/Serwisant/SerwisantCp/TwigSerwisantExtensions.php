@@ -9,6 +9,8 @@ use Serwisant\SerwisantApi\Types\SchemaPublic\CustomFieldType;
 use Serwisant\SerwisantApi\Types\SchemaPublic\OrderTimeStatus;
 use Serwisant\SerwisantApi\Types\SchemaPublic\RepairState;
 
+use Serwisant\SerwisantApi\Types\SchemaCustomer\TicketState;
+
 class TwigSerwisantExtensions extends TwigExtensions
 {
   public function call()
@@ -97,6 +99,30 @@ class TwigSerwisantExtensions extends TwigExtensions
       }
 
       $html = "<span class=\"badge rounded-pill bg-{$color}\">{$repair->status->displayName}</span>";
+      return new \Twig\Markup($html, 'UTF-8');
+    }));
+
+    $this->twig->addFunction(new TwigFunction('ticket_label', function ($ticket) {
+      switch ($ticket->status->status) {
+        case TicketState::NEW:
+          $color = 'danger';
+          break;
+        case TicketState::ASSIGNED:
+          $color = 'warning';
+          break;
+        case TicketState::ON_THE_WAY:
+        case TicketState::IN_PROGRESS:
+          $color = 'info';
+          break;
+        case TicketState::RESOLVED:
+          $color = 'success';
+          break;
+        default:
+          $color = 'secondary';
+          break;
+      }
+
+      $html = "<span class=\"badge rounded-pill bg-{$color}\">{$ticket->status->displayName}</span>";
       return new \Twig\Markup($html, 'UTF-8');
     }));
 
