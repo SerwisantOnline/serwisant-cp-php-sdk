@@ -163,6 +163,34 @@ class RoutesCp extends Routes
       ->assert('type', '[a-z]{5,10}')
       ->bind('repair_print');
 
+    $cp->post('/repair/{id}/accept', function (Request $request, Token $token, $id) {
+      return (new Actions\RepairDecision($this->app, $request, $token))->accept($id);
+    })
+      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
+      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
+      ->assert('id', $this->hashIdAssertion())
+      ->before($this->expectJson())
+      ->bind('repair_accept');
+
+    $cp->post('/repair/{id}/accept/{offer_id}', function (Request $request, Token $token, $id, $offer_id) {
+      return (new Actions\RepairDecision($this->app, $request, $token))->acceptOffer($id, $offer_id);
+    })
+      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
+      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
+      ->assert('id', $this->hashIdAssertion())
+      ->assert('offer_id', '\w+')
+      ->before($this->expectJson())
+      ->bind('repair_accept_offer');
+
+    $cp->post('/repair/{id}/reject', function (Request $request, Token $token, $id) {
+      return (new Actions\RepairDecision($this->app, $request, $token))->reject($id);
+    })
+      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
+      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
+      ->assert('id', $this->hashIdAssertion())
+      ->before($this->expectJson())
+      ->bind('repair_reject');
+
     // TICKETS
 
     $cp->get('/tickets', function (Request $request, Token $token) {

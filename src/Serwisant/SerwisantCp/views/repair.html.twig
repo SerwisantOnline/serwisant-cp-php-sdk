@@ -1,24 +1,27 @@
 <div class="btn-group" role="group">
-    <a href="{{ path('repairs') }}" class="btn btn-secondary btn-lg">{{ t(_self, 'close') }}</a>
-    <a href="{{ path('repair_print', {type: 'intro', id: repair.ID}) }}" class="btn btn-outline-dark btn-lg">{{ t(_self, 'print_intro') }}</a>
-    {% if repair.status.finished %}
-        <a href="{{ path('repair_print', {type: 'summary', id: repair.ID}) }}" class="btn btn-outline-dark btn-lg">{{ t(_self, 'print_summary') }}</a>
-    {% endif %}
+  <a href="{{ path('repairs') }}" class="btn btn-secondary btn-lg">{{ t(_self, 'close') }}</a>
+  <a href="{{ path('repair_print', {type: 'intro', id: repair.ID}) }}"
+     class="btn btn-outline-dark btn-lg">{{ t(_self, 'print_intro') }}</a>
+  {% if repair.status.finished %}
+    <a href="{{ path('repair_print', {type: 'summary', id: repair.ID}) }}"
+       class="btn btn-outline-dark btn-lg">{{ t(_self, 'print_summary') }}</a>
+  {% endif %}
 </div>
 
-{% include 'repair_details/panel_change_status.html.twig' %}
-
 <div class="bg-light p-5 rounded mt-3">
-    <div class="row">
-        <div class="col-md-6">
-            {% include 'repair_details/panel_info.html.twig' %}
-            {% include 'repair_details/panel_custom_fields.html.twig' %}
-            {% include 'repair_details/panel_issue.html.twig' %}
-        </div>
-        <div class="col-md-6">
-            {% include 'repair_details/panel_money.html.twig' %}
-            {% include 'repair_details/panel_status.html.twig' %}
-            {% include 'repair_details/panel_files.html.twig' %}
-        </div>
+
+  {% include 'repair_details/panel_change_status.html.twig' with {'parent': 'cp'} %}
+
+  <div class="row">
+    <div class="col-md-6">
+      {% include 'repair_details/panel_info.html.twig' %}
+      {% include 'repair_details/panel_custom_fields.html.twig' %}
+      {% include 'repair_details/panel_issue.html.twig' %}
     </div>
+    <div class="col-md-6">
+      {% include 'repair_details/panel_money.html.twig' %}
+      {% include 'repair_details/panel_status.html.twig' %}
+      {% include 'repair_details/panel_files.html.twig' %}
+    </div>
+  </div>
 </div>

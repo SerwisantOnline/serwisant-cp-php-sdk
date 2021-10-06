@@ -5,88 +5,102 @@ Ten widok pozwala na akceptację jednej z przedstawionych ofert lub diagnozy.
 - jeśli mam diagnozę i oferty wówczas pokazują tylko oferty - natomiast diagnozę dokładam jako dodatkowy element każdej z ofert
 #}
 
+{% if parent == 'cp' %}
+  {% set accept_path = path('repair_accept', {'id': repair.ID}) %}
+  {% set reject_path = path('repair_reject', {'id': repair.ID}) %}
+{% else %}
+  {% set accept_path = path('token_repair_accept') %}
+  {% set reject_path = path('token_repair_reject') %}
+{% endif %}
+
 {% if repair.status.requireCustomerAccept %}
-    {% if repair.offers %}
-        <div class="card my-2">
-            {% for offer in repair.offers %}
-                {% if (offer.accepted is null) or offer.accepted %}
-                    <div class="card-header">
-                        <h3>
-                            {{ t(_self, 'offer') }} {{ offer.number }} - <small
-                                    class="fw-light">{{ offer.title }}</small>
-                        </h3>
-                    </div>
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th class="col-md-5">{{ t(_self, 'description') }}</th>
-                            <th>{{ t(_self, 'price_net') }} </th>
-                            <th>{{ t(_self, 'price_gross') }}</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for offerItem in offer.items %}
-                            <tr>
-                                <td class="col-md-5">{{ offerItem.description | nl2br }}</td>
-                                <td>{{ offerItem.priceNet | format_currency(currency) }}</td>
-                                <td>{{ offerItem.priceGross | format_currency(currency) }}
-                                </td>
-                            </tr>
-                        {% endfor %}
-                        <tr>
-                            <td class="col-md-5"></td>
-                            <td><strong>{{ offer.priceNet | format_currency(currency) }}</strong></td>
-                            <td class="danger">
-                                <strong>{{ offer.priceGross | format_currency(currency) }}</strong>
-
-                                {% if repair.status.requireCustomerAccept and (offer.accepted is null) %}
-                                    <a href="{{ path('token_repair_accept_offer', {offer_id: offer.ID}) }}"
-                                       class="btn btn-success" data-color="success"
-                                       data-confirm="{{ t(_self, 'accept_confirm_offer', {amount: (offer.priceGross | format_currency(currency)), offer_number: offer.number }) }}"
-                                       data-method="put"
-                                       rel="nofollow">{{ t(_self, 'accept_offer') }}</a>
-                                {% endif %}
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-
-                {% endif %}
+  {% if repair.offers %}
+    <div class="card my-2">
+      {% for offer in repair.offers %}
+        {% if (offer.accepted is null) or offer.accepted %}
+          <div class="card-header">
+            <h3>
+              {{ t(_self, 'offer') }} {{ offer.number }} - <small
+                class="fw-light">{{ offer.title }}</small>
+            </h3>
+          </div>
+          <table class="table table-striped">
+            <thead>
+            <tr>
+              <th class="col-md-5">{{ t(_self, 'description') }}</th>
+              <th>{{ t(_self, 'price_net') }} </th>
+              <th>{{ t(_self, 'price_gross') }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for offerItem in offer.items %}
+              <tr>
+                <td class="col-md-5">{{ offerItem.description | nl2br }}</td>
+                <td>{{ offerItem.priceNet | format_currency(currency) }}</td>
+                <td>{{ offerItem.priceGross | format_currency(currency) }}
+                </td>
+              </tr>
             {% endfor %}
-            <div class="card-footer">
-                {% if repair.status.requireCustomerAccept %}
+            <tr>
+              <td class="col-md-5"></td>
+              <td><strong>{{ offer.priceNet | format_currency(currency) }}</strong></td>
+              <td class="danger">
+                <strong>{{ offer.priceGross | format_currency(currency) }}</strong>
 
-                    <a href="{{ path('token_repair_reject') }}" class="btn btn-danger"
-                       data-color="danger"
-                       data-confirm="{{ t(_self, 'reject_confirm_html') }}"
-                       data-method="put"
-                       rel="nofollow">{{ t(_self, 'reject_all') }}</a>
+                {% if repair.status.requireCustomerAccept and (offer.accepted is null) %}
+                  {% if parent == 'cp' %}
+                    {% set accept_offer_path = path('repair_accept_offer', {'id': repair.ID, 'offer_id': offer.ID}) %}
+                  {% else %}
+                    {% set accept_offer_path = path('token_repair_accept_offer', {offer_id: offer.ID}) %}
+                  {% endif %}
 
+                  <a href="{{ accept_offer_path }}"
+                     class="btn btn-success" data-color="success"
+                     data-confirm="{{ t(_self, 'accept_confirm_offer', {amount: (offer.priceGross | format_currency(currency)), offer_number: offer.number }) }}"
+                     data-method="put"
+                     rel="nofollow">{{ t(_self, 'accept_offer') }}</a>
                 {% endif %}
-            </div>
-        </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
 
-    {% elseif repair.status.diagnosed %}
-        <div class="card {{ repair.status.requireCustomerAccept ? 'danger' : 'success' }}">
-            <div class="card-header">{{ t(_self, 'title') }}</div>
-            <div class="card-body">
-                <p>
-                    <b>{{ t(_self, 'price_estimated') }}</b>
-                    {{ repair.costs.estimatedGross | format_currency(currency) }}
-                <div class="btn-group">
-                    <a href="{{ path('token_repair_reject') }}" class="btn btn-danger"
-                       data-color="danger"
-                       data-confirm="{{ t(_self, 'reject_confirm_html') }}"
-                       data-method="put"
-                       rel="nofollow">{{ t(_self, 'reject') }}</a>
-                    <a href="{{ path('token_repair_accept') }}" class="btn btn-success"
-                       data-color="success"
-                       data-confirm="{{ t(_self, 'accept_confirm', {amount: repair.costs.estimatedGross | format_currency(currency)}) }}"
-                       data-method="put"
-                       rel="nofollow">{{ t(_self, 'accept') }}</a>
-                </div>
-            </div>
-        </div>
+        {% endif %}
+      {% endfor %}
+      <div class="card-footer">
+        {% if repair.status.requireCustomerAccept %}
+          <a href="{{ reject_path }}" class="btn btn-danger"
+             data-color="danger"
+             data-confirm="{{ t(_self, 'reject_confirm_html') }}"
+             data-method="put"
+             rel="nofollow">{{ t(_self, 'reject_all') }}</a>
 
-    {% endif %}
+        {% endif %}
+      </div>
+    </div>
+
+  {% elseif repair.status.diagnosed %}
+    <div class="card mt-2 {{ repair.status.requireCustomerAccept ? 'danger' : 'success' }}">
+      <div class="card-header">{{ t(_self, 'title') }}</div>
+      <div class="card-body">
+        <p>
+          <b>{{ t(_self, 'price_estimated') }}</b>
+          {{ repair.costs.estimatedGross | format_currency(currency) }}
+        </p>
+        <div class="btn-group">
+          <a href="{{ reject_path }}" class="btn btn-danger"
+             data-color="danger"
+             data-confirm="{{ t(_self, 'reject_confirm_html') }}"
+             data-method="put"
+             rel="nofollow">{{ t(_self, 'reject') }}</a>
+          <a href="{{ accept_path }}" class="btn btn-success"
+             data-color="success"
+             data-confirm="{{ t(_self, 'accept_confirm', {amount: repair.costs.estimatedGross | format_currency(currency)}) }}"
+             data-method="put"
+             rel="nofollow">{{ t(_self, 'accept') }}</a>
+        </div>
+      </div>
+    </div>
+
+  {% endif %}
 {% endif %}

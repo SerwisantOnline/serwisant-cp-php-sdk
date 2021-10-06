@@ -5,6 +5,11 @@ schema {
     mutation: CustomerMutation
 }
 
+type AcceptOrRejectRepairResult {
+    errors: [Error!]
+    success: Boolean!
+}
+
 type Address {
     ID: HashID!
     building: String!
@@ -80,6 +85,13 @@ type CustomerAgreementValue {
 }
 
 type CustomerMutation {
+    acceptOrRejectRepair(
+        "Decision about a repair proposition. If any offers present, REJECT decision will reject all offers"
+        decision: AcceptOrRejectRepairDecision!,
+        "If offer ID passed (see RepairOffer entity), decision is made against particular offer"
+        offer: HashID,
+        repair: HashID!
+    ): AcceptOrRejectRepairResult
     createMessage(message: MessageInput!): MessageCreationResult
     createMessageReply(content: String, message: HashID!): MessageReplyCreationResult
     "Create new repair as customer. Field `temporaryFiles` takes IDs of temporary files create via `createTemporaryFile `. Temporary files will be attached to repair and persisted."
@@ -403,6 +415,11 @@ type Viewer {
 type ViewerUpdateResult {
     errors: [Error!]
     viewer: Viewer
+}
+
+enum AcceptOrRejectRepairDecision {
+    ACCEPT
+    REJECT
 }
 
 enum AddressType {

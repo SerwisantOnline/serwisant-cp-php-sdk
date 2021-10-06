@@ -189,7 +189,11 @@ class Action
   protected function apiCustomer()
   {
     if (is_null($this->api_customer) && !is_null($this->access_token_customer)) {
-      $this->api_customer = new Api($this->app, $this->access_token_customer);
+      $this->api_customer = new Api(
+        $this->app,
+        $this->access_token_customer,
+        [$this->app['base_dir'] . '/queries/customer']
+      );
       $this->api_customer->setHttpHeaders($this->api_http_headers);
     }
     return $this->api_customer;
@@ -198,7 +202,11 @@ class Action
   protected function apiPublic()
   {
     if (is_null($this->api_public) && !is_null($this->access_token_public)) {
-      $this->api_public = new Api($this->app, $this->access_token_public);
+      $this->api_public = new Api(
+        $this->app,
+        $this->access_token_public,
+        [$this->app['base_dir'] . '/queries/public']
+      );
       $this->api_public->setHttpHeaders($this->api_http_headers);
     }
     return $this->api_public;

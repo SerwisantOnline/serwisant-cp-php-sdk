@@ -31,9 +31,6 @@ class Application
     // widoki i zapytania dokładane są na koniec, własne pliki mogą nadpisywać te domyślne
     $this->view_paths[] = $this->base_dir . '/views';
 
-    $this->query_paths[] = $this->base_dir . '/queries/customer';
-    $this->query_paths[] = $this->base_dir . '/queries/public';
-
     array_unshift($this->tr_files, $this->base_dir . '/translations/pl.yml');
 
     # wszystkie czasy liczę względem UTC

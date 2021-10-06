@@ -1,0 +1,12 @@
+mutation actionRepairDecisionByToken($repair: HashID!, $decision: AcceptOrRejectRepairDecision!, $offer: HashID) {
+    acceptOrRejectRepair(repair: $repair, decision: $decision, offer: $offer) {
+        __typename
+        success
+        errors {
+            __typename
+            argument
+            message
+            code
+        }
+    }
+}

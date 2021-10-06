@@ -59,14 +59,11 @@ type CustomerCreationResult {
 }
 
 type CustomerPanelConfig {
-    caPanelCommunication: Boolean!
-    caPanelRepairs: Boolean!
-    caPanelTickets: Boolean!
-    caPanelToken: String
     "Service currency, all API prices and other money values are in this currency"
     currency: Currency!
     "Message to be shown after login - only for authorised users"
     dashboardMessage: String
+    internalTransportEnabled: Boolean!
     orderDictModel: Boolean!
     "True when service want to use a messaging system in customer panel"
     panelCommunication: Boolean!
@@ -79,6 +76,7 @@ type CustomerPanelConfig {
     "True if service want to use ticketing module"
     panelTickets: Boolean!
     panelToken: String
+    personalTransportEnabled: Boolean!
     showOrderProgressInfo: Boolean!
     showRepairDelegation: Boolean!
     uploadOnlyImages: Boolean!
