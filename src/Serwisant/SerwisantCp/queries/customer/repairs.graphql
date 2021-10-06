@@ -11,6 +11,7 @@ query repairs($limit: Int, $page: Int, $filter: RepairsFilter, $sort: RepairsSor
             serial
             status {
                 __typename
+                status
                 displayName
             }
             type {

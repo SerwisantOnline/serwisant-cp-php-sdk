@@ -19,7 +19,7 @@
                 <tr>
                     <td>{{ repair.rma }}</td>
                     <td>{{ repair.displayName }}</td>
-                    <td>{{ repair.status.displayName }}</td>
+                    <td>{{ repair_label(repair) }}</td>
                     <td>
                         <a href="{{ path('repair', {'id': repair.ID}) }}">{{ t(_self, 'details') }}</a>
                     </td>

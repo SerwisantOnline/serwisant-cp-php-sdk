@@ -4,8 +4,10 @@ namespace Serwisant\SerwisantCp;
 
 use Twig\Environment;
 use Twig\TwigFunction;
+
 use Serwisant\SerwisantApi\Types\SchemaPublic\CustomFieldType;
 use Serwisant\SerwisantApi\Types\SchemaPublic\OrderTimeStatus;
+use Serwisant\SerwisantApi\Types\SchemaPublic\RepairState;
 
 class TwigSerwisantExtensions extends TwigExtensions
 {
@@ -18,27 +20,35 @@ class TwigSerwisantExtensions extends TwigExtensions
         $css_class = 'progress-bar-info';
       }
       $title = $this->t(['twig_extensions.progressed_about', ['percent' => $percent]]);
-      return "
+      $html = "
 <div class='progress text-tooltip' data-percent='{$percent}' title='{$title}'>
 <div class='progress-bar {$css_class}' role='progressbar' style='width: {$percent}%'>
 <span class='sr-only'>{$percent}</span>
 </div>
 </div>";
+      return new \Twig\Markup($html, 'UTF-8');
     }));
 
     $this->twig->addFunction(new TwigFunction('custom_form_field_value', function (Environment $env, $field_value, $field_type) {
       switch ($field_type) {
         case CustomFieldType::PASSWORD:
-          return '****************';
+          $html = '****************';
+          break;
+
         case CustomFieldType::CHECKBOX:
           if ($field_value === '0') {
-            return '<i class="glyphicon glyphicon-unchecked"></i>';
+            $html = '<i class="glyphicon glyphicon-unchecked"></i>';
           } else {
-            return '<i class="glyphicon glyphicon-check"></i>';
+            $html = '<i class="glyphicon glyphicon-check"></i>';
           }
+          break;
+
         default:
-          return twig_escape_filter($env, $field_value);
+          $html = twig_escape_filter($env, $field_value);
+          break;
       }
+
+      return new \Twig\Markup($html, 'UTF-8');
     }, ['needs_environment' => true]));
 
     $this->twig->addFunction(new TwigFunction('repair_time_pending_badge', function ($days_from_start, $time_status) {
@@ -53,7 +63,8 @@ class TwigSerwisantExtensions extends TwigExtensions
           $class = 'label label-success';
           break;
       }
-      return "<span class='{$class}'>{$days_from_start}</span>";
+      $html = "<span class='{$class}'>{$days_from_start}</span>";
+      return new \Twig\Markup($html, 'UTF-8');
     }));
 
     $this->twig->addFunction(new TwigFunction('customer_agreement_class', function ($customer_agreement) {
@@ -66,6 +77,27 @@ class TwigSerwisantExtensions extends TwigExtensions
       } else {
         return '';
       }
+    }));
+
+    $this->twig->addFunction(new TwigFunction('repair_label', function ($repair) {
+      $map = [
+        'warning' => [RepairState::WAITING_FOR_DELIVERY],
+        'success' => [RepairState::CONFIRMED, RepairState::PASSED_FOR_RETURN, RepairState::CLOSED, RepairState::SCRAPPED],
+        'danger' => [RepairState::NOT_ACCEPTED],
+        'primary' => [RepairState::DIAGNOSIS, RepairState::IN_PROGRESS, RepairState::UNDER_TESTING],
+        'info' => [RepairState::REQ_CUSTOMER_ACCEPT, RepairState::WAITING_FOR_PARTS, RepairState::WAITING_FOR_COLLECTION]
+      ];
+
+      $color = 'secondary';
+      foreach ($map as $c => $s) {
+        if (in_array($repair->status->status, $s)) {
+          $color = $c;
+          break;
+        }
+      }
+
+      $html = "<span class=\"badge rounded-pill bg-{$color}\">{$repair->status->displayName}</span>";
+      return new \Twig\Markup($html, 'UTF-8');
     }));
 
     return $this->twig;

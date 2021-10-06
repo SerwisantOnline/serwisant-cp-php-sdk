@@ -87,7 +87,7 @@
           {% for field in ticket.customFields %}
             <tr>
               <td class="column-definition">{{ field.field.name }}</td>
-              <td>{{ custom_form_field_value(field.value, field.field.type) | raw }}</td>
+              <td>{{ custom_form_field_value(field.value, field.field.type) }}</td>
             </tr>
           {% endfor %}
           </tbody>
