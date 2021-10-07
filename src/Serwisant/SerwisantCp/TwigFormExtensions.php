@@ -45,28 +45,49 @@ class TwigFormExtensions extends TwigExtensions
 
   private function formErrors($template, $errors, $ignores)
   {
+    $errors_aggregated = [];
+
+    foreach ($errors as $error) {
+      if (array_key_exists($error->argument, $errors_aggregated)) {
+        $errors_aggregated[$error->argument][] = $error;
+      } else {
+        $errors_aggregated[$error->argument] = [$error];
+      }
+    }
+
     $field_key = str_replace('', '.html.twig', $template);
 
-    $html = '<div class="card text-white bg-danger mb-3">';
+    $html = '<div class="card text-danger border-danger mb-3">';
     $html .= '<div class="card-header"><strong>';
     $html .= $this->t(['errors_title']);
     $html .= '</strong></div>';
     $html .= '<div class="card-body">';
     $html .= '<ul class="card-text">';
-    foreach ($errors as $error) {
+
+    foreach ($errors_aggregated as $el) {
+      $error = $el[0];
+
       if (in_array($error->argument, $ignores)) {
         continue;
       }
 
-      $argument = explode('.', $error->argument);
-      $argument_name = $argument[count($argument) - 1];
+      $arguments = explode('.', $error->argument);
+      $argument_name = $arguments[count($arguments) - 1];
+      $argument_name_fallback = implode('.', array_filter($arguments, function ($elem) { return !is_numeric($elem); }));
 
       $argument_tr = $this->t_with_fallback(
         [$field_key, $argument_name],
-        ['form_fields', $error->argument]
+        ['entitles', $argument_name_fallback]
       );
-      $html .= "<li>{$argument_tr}: {$this->t(['errors', $error->code])}</li>";
+
+      $html .= "<li class='mb-1'><strong>{$argument_tr}</strong> - ";
+      foreach ($el as $ei) {
+        $code_tr = mb_strtolower($this->t(['errors', $ei->code]));
+        $html .= $code_tr. " ";
+      }
+      $html .= "</li>";
     }
+
     $html .= '</ul>';
     $html .= '</div>';
     $html .= '</div>';

@@ -2,6 +2,7 @@ pl_PL:
   errors_title: "Proszę poprawić następujące problemy"
   errors:
     blank: "Nie podano wymaganej wartości"
+    empty: "Nie podano wymaganej wartości"
     too_short: "Wartość podana w polu jest zbyt krótka"
     invalid: "Wartość podana w polu jest niepoprawna"
     taken: "Taka wartość istnieje już w bazie, wybierz inną"
@@ -23,12 +24,17 @@ pl_PL:
           accepted: "Regulamin płatności musi zostać zaakceptowany"
     not_a_date: "Wartość nie jest poprawną datą"
     confirmation: "Powrórzona wartość jest niepoprawna"
-  form_fields: []
+
+  entitles:
+    ticket:
+      customFields:
+        value: "Pole tekstowe"
 
   twig_extensions:
     progressed_about: "Wykonano w %{percent}%"
     prev_page: "Poprzednia"
     next_page: "Następna"
+
   dp:
     shortDayNames: "Nie, Pon, Wto, Śro, Czw, Pią, Sob"
     fullDayNames: "Niedziela, Poniedziałek, Wtorek, Środa, Czwartek, Piątek, Sobota"
@@ -39,6 +45,7 @@ pl_PL:
     titleContentDateTime: "Wybierz datę i czas"
     setButtonContent: "Wybierz"
     clearButtonContent: "Wyczyść"
+
   flashes:
     login_first: "Zanim rozpoczniesz korzystanie z aplikacji powinieneś się zalogować."
     signup_successful: "Konto zostało zarejestrowane. Musisz je teraz potwierdzić za pomocą linka, który wysłaliśmy na
@@ -62,6 +69,7 @@ pl_PL:
     message_creation_successful: "Pomyślnie wysłano twoją wiadomość"
     ticket_creation_successful: "Twoje zgłoszenie zostało pomyślnie utworzone. W skrzynce email znajdziesz potwierdzenie."
     viewer_data_update_successful: "Twoje dane zostały pomyślnie zaktualizowane"
+
   layout:
     viewer: "Edytuj dane"
     logout: "Wyloguj"
