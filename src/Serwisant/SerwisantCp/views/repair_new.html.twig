@@ -3,6 +3,8 @@
     <h1>{{ t(_self, 'title') }}</h1>
     <p class="lead">{{ t(_self, 'description') }}</p>
 
+    {{ form_errors(_self, errors) }}
+
     <div class="mb-3">
       {{ form_field({type: 'select', argument: 'repair.type', caption: t(_self, 'type'), options: dictionary_select_options, include_blank: true}, form_params, errors) }}
     </div>

@@ -3,6 +3,8 @@
     <h1>{{ t(_self, 'title') }}</h1>
     <p class="lead">{{ t(_self, 'description', {'subject': thread.subject}) }}</p>
 
+    {{ form_errors(_self, errors) }}
+
     <div class="mb-3">
       {{ form_field({type: 'textarea', argument: 'message.content', caption: t(_self, 'content')}, form_params, errors) }}
     </div>

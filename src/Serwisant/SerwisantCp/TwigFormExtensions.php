@@ -32,7 +32,46 @@ class TwigFormExtensions extends TwigExtensions
       return new \Twig\Markup($html, 'UTF-8');
     }));
 
+    $this->twig->addFunction(new TwigFunction('form_errors', function ($template, $errors, $ignores = []) {
+      if (count($errors) == 0) {
+        return '';
+      } else {
+        return new \Twig\Markup($this->formErrors($template, $errors, $ignores), 'UTF-8');
+      }
+    }));
+
     return $this->twig;
+  }
+
+  private function formErrors($template, $errors, $ignores)
+  {
+    $field_key = str_replace('', '.html.twig', $template);
+
+    $html = '<div class="card text-white bg-danger mb-3">';
+    $html .= '<div class="card-header"><strong>';
+    $html .= $this->t(['errors_title']);
+    $html .= '</strong></div>';
+    $html .= '<div class="card-body">';
+    $html .= '<ul class="card-text">';
+    foreach ($errors as $error) {
+      if (in_array($error->argument, $ignores)) {
+        continue;
+      }
+
+      $argument = explode('.', $error->argument);
+      $argument_name = $argument[count($argument) - 1];
+
+      $argument_tr = $this->t_with_fallback(
+        [$field_key, $argument_name],
+        ['form_fields', $error->argument]
+      );
+      $html .= "<li>{$argument_tr}: {$this->t(['errors', $error->code])}</li>";
+    }
+    $html .= '</ul>';
+    $html .= '</div>';
+    $html .= '</div>';
+
+    return $html;
   }
 
   private function formField(array $options, ParameterBag $post_data, $errors)

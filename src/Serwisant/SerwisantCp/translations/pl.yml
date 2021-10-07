@@ -1,4 +1,5 @@
 pl_PL:
+  errors_title: "Proszę poprawić następujące problemy"
   errors:
     blank: "Nie podano wymaganej wartości"
     too_short: "Wartość podana w polu jest zbyt krótka"
@@ -21,6 +22,9 @@ pl_PL:
         payment:
           accepted: "Regulamin płatności musi zostać zaakceptowany"
     not_a_date: "Wartość nie jest poprawną datą"
+    confirmation: "Powrórzona wartość jest niepoprawna"
+  form_fields: []
+
   twig_extensions:
     progressed_about: "Wykonano w %{percent}%"
     prev_page: "Poprzednia"

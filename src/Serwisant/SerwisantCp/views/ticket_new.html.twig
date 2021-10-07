@@ -3,6 +3,7 @@
     <h1>{{ t(_self, 'title') }}</h1>
     <p class="lead">{{ t(_self, 'description') }}</p>
 
+    {{ form_errors(_self, errors) }}
 
     <div class="mb-3">
       {{ form_field({type: 'select', argument: 'ticket.priority', caption: t(_self, 'priority'), options: priorities_select_options, include_blank: true}, form_params, errors) }}

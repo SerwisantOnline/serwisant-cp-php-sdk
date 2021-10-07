@@ -3,6 +3,7 @@
     <h1>{{ t(_self, 'title') }}</h1>
     <p class="lead">{{ t(_self, 'description') }}</p>
 
+    {{ form_errors(_self, errors, ['customer.phone.number']) }}
 
     <div class="mb-3">
       {% set customerTypeOptions = {'PERSONAL': t(_self, 'customer_type.personal'),'BUSINESS': t(_self, 'customer_type.business')} %}
