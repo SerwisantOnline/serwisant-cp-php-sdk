@@ -27,14 +27,13 @@
     </div>
 
     <div class="row">
-      <div class="col-sm-6">
+      <div class="col -md-6 mb-3">
         {{ form_field({type: 'text', argument: 'customer.email', caption: t(_self, 'email'), value: customer.email}, form_params, errors) }}
       </div>
-      <div class="col-sm-6">
+      <div class="col-md-6 mb-3">
         {{ form_field({type: 'hidden', argument: 'customer.phone.countryPrefix', value: customer.phone ? customer.phone.countryPrefix : locale_PhonePrefix}, form_params, errors) }}
         {{ form_field({type: 'text', argument: 'customer.phone.number', caption: t(_self, 'phone_number'), value: customer.phone ? customer.phone.number : ''}, form_params, errors) }}
       </div>
-      <div class="mb-3"></div>
     </div>
 
     <div class="mb-3">
@@ -49,40 +48,39 @@
       {{ form_field({type: 'hidden', argument: 'addresses.0.countryIso', value: locale_ISO | upper}, form_params, errors) }}
       <div class="row">
         <label class="form-label">{{ t(_self, 'address') }}</label>
-        <div class="col-sm-4">
+        <div class="col-md-4 mb-3">
           {{ form_field({type: 'text', argument: 'addresses.0.street', caption: t(_self, 'street')}, form_params, errors) }}
         </div>
-        <div class="col-sm-2">
+        <div class="col-md-2 mb-3">
           {{ form_field({type: 'text', argument: 'addresses.0.building', caption: t(_self, 'building')}, form_params, errors) }}
         </div>
-        <div class="col-sm-2">
+        <div class="col-md-2 mb-3">
           {{ form_field({type: 'text', argument: 'addresses.0.postalCode', caption: t(_self, 'postalCode')}, form_params, errors) }}
         </div>
-        <div class="col-sm">
+        <div class="col-md-4 mb-3">
           {{ form_field({type: 'text', argument: 'addresses.0.city', caption: t(_self, 'city')}, form_params, errors) }}
         </div>
       </div>
-      <div class="mb-3"></div>
     {% else %}
       {% for address in customer.addresses %}
         {{ form_field({type: 'hidden', argument: "addresses.#{loop.index0}.ID", value: address.ID}, form_params, errors) }}
         {{ form_field({type: 'hidden', argument: "addresses.#{loop.index0}.countryIso", value: address.countryIso}, form_params, errors) }}
         <div class="row">
           <label class="form-label">{{ t(_self, 'address') }}</label>
-          <div class="col-sm-4">
+          <div class="col-md-4 mb-3">
             {{ form_field({type: 'text', argument: "addresses.#{loop.index0}.street", caption: t(_self, 'street'), value: address.street}, form_params, errors) }}
           </div>
-          <div class="col-sm-2">
+          <div class="col-md-2 mb-3">
             {{ form_field({type: 'text', argument: "addresses.#{loop.index0}.building", caption: t(_self, 'building'), value: address.building}, form_params, errors) }}
           </div>
-          <div class="col-sm-2">
+          <div class="col-md-2 mb-3">
             {{ form_field({type: 'text', argument: "addresses.#{loop.index0}.postalCode", caption: t(_self, 'postalCode'), value: address.postalCode}, form_params, errors) }}
           </div>
-          <div class="col-sm">
+          <div class="col-md-2 mb-3">
             {{ form_field({type: 'text', argument: "addresses.#{loop.index0}.city", caption: t(_self, 'city'), value: address.city}, form_params, errors) }}
           </div>
         </div>
-        <div class="mb-3"></div>
+
       {% endfor %}
     {% endif %}
 

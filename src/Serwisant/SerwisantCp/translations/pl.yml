@@ -26,6 +26,12 @@ pl_PL:
     confirmation: "Powrórzona wartość jest niepoprawna"
 
   entitles:
+    loginOrEmail: "Login lub adres email"
+    agreements:
+      accepted: "Zgoda"
+    customer:
+      customFields:
+        value: "Pole tekstowe"
     ticket:
       customFields:
         value: "Pole tekstowe"
@@ -184,8 +190,8 @@ pl_PL:
     no_repairs: "Nie dodałeś jeszcze żadnej naprawy. Aby dodać jakąś, kliknij w przycisk znajdujący się w górnej części strony."
   repair:
     close: "Zamknij"
-    print_intro: "Wydruk przyjęcia"
-    print_summary: "Wydruk podsumowania"
+    print_intro: "Przyjęcie"
+    print_summary: "Podsumowanie"
   repair_details:
     panel_service_supplier:
       title: 'Naprawiane przez:'

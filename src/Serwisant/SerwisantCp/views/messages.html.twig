@@ -1,38 +1,73 @@
 <a class="btn btn-primary btn-lg" href="{{ path('new_message') }}">{{ t(_self, 'create_message') }}</a>
 
 <div class="bg-light p-5 rounded mt-3">
-    {% if messages.items is empty %}
-        <p class="lead">{{ t(_self, 'no_messages') }}</p>
-    {% else %}
-        {{ paginator(messages.pages) }}
-        <table class="table">
-            <thead>
-            <tr>
-                <th scope="col">{{ t(_self, 'subject') }}</th>
-                <th scope="col">{{ t(_self, 'date') }}</th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for thread in messages.items %}
-                <tr>
-                    <th scope="row">{{ thread.subject }}</th>
-                    <td>{{ thread.lastMessageAt | format_datetime }}</td>
-                    <td>
-                        {% if thread.unreadMessages > 0 %}
-                            <i class="fas fa-envelope"></i>
-                            <span class="badge bg-danger">{{ thread.unreadMessages }}</span>
-                        {% else %}
-                            <i class="fas fa-envelope-open"></i>
-                            <span class="badge bg-light text-dark">{{ thread.allMessages }}</span>
-                        {% endif %}
-                    </td>
-                    <td><a href="{{ path('message', {'id': thread.ID}) }}">{{ t(_self, 'read') }}</a></td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-        {{ paginator(messages.pages) }}
-    {% endif %}
+  {% if messages.items is empty %}
+    <p class="lead">{{ t(_self, 'no_messages') }}</p>
+  {% else %}
+    {{ paginator(messages.pages) }}
+
+    <!-- desktop -->
+    <div class="d-none d-md-none d-lg-block">
+      <table class="table">
+        <thead>
+        <tr>
+          <th scope="col">{{ t(_self, 'subject') }}</th>
+          <th scope="col">{{ t(_self, 'date') }}</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for thread in messages.items %}
+          <tr>
+            <th scope="row">{{ thread.subject }}</th>
+            <td>{{ thread.lastMessageAt | format_datetime }}</td>
+            <td>
+              {% if thread.unreadMessages > 0 %}
+                <i class="fas fa-envelope"></i>
+                <span class="badge bg-danger">{{ thread.unreadMessages }}</span>
+              {% else %}
+                <i class="fas fa-envelope-open"></i>
+                <span class="badge bg-light text-dark">{{ thread.allMessages }}</span>
+              {% endif %}
+            </td>
+            <td><a href="{{ path('message', {'id': thread.ID}) }}">{{ t(_self, 'read') }}</a></td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- mobile -->
+    <div class="d-lg-none">
+      <table class="table">
+        <thead>
+        <tr>
+          <th scope="col">{{ t(_self, 'subject') }}</th>
+          <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for thread in messages.items %}
+          <tr>
+            <td>
+              <a href="{{ path('message', {'id': thread.ID}) }}">{{ thread.subject }}</a>
+            </td>
+            <td>
+              {% if thread.unreadMessages > 0 %}
+                <i class="fas fa-envelope"></i>
+                <span class="badge bg-danger">{{ thread.unreadMessages }}</span>
+              {% else %}
+                <i class="fas fa-envelope-open"></i>
+                <span class="badge bg-light text-dark">{{ thread.allMessages }}</span>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    {{ paginator(messages.pages) }}
+  {% endif %}
 </div>

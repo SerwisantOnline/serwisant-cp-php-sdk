@@ -45,6 +45,7 @@ class TwigFormExtensions extends TwigExtensions
 
   private function formErrors($template, $errors, $ignores)
   {
+    $errors_duplicates = [];
     $errors_aggregated = [];
 
     foreach ($errors as $error) {
@@ -66,26 +67,32 @@ class TwigFormExtensions extends TwigExtensions
 
     foreach ($errors_aggregated as $el) {
       $error = $el[0];
-
       if (in_array($error->argument, $ignores)) {
         continue;
       }
 
       $arguments = explode('.', $error->argument);
       $argument_name = $arguments[count($arguments) - 1];
-      $argument_name_fallback = implode('.', array_filter($arguments, function ($elem) { return !is_numeric($elem); }));
+      $argument_name_fallback = implode('.', array_filter($arguments, function ($elem) {
+        return !is_numeric($elem);
+      }));
 
       $argument_tr = $this->t_with_fallback(
         [$field_key, $argument_name],
         ['entitles', $argument_name_fallback]
       );
 
-      $html .= "<li class='mb-1'><strong>{$argument_tr}</strong> - ";
-      foreach ($el as $ei) {
-        $code_tr = mb_strtolower($this->t(['errors', $ei->code]));
-        $html .= $code_tr. " ";
+      if (!in_array($argument_name, $errors_duplicates) && !in_array($argument_name_fallback, $errors_duplicates)) {
+        $html .= "<li class='mb-1'><strong>{$argument_tr}</strong> - ";
+        $messages = [];
+        foreach ($el as $ei) {
+          $messages[] = mb_strtolower($this->t(['errors', $ei->code]));
+        }
+        $html .= implode(', ', $messages);
+        $html .= "</li>";
       }
-      $html .= "</li>";
+      $errors_duplicates[] = $argument_name;
+      $errors_duplicates[] = $argument_name_fallback;
     }
 
     $html .= '</ul>';

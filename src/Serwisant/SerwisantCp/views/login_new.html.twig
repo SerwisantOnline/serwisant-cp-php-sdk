@@ -9,15 +9,15 @@
   <p class="lead">{{ t(_self, 'login_description') }}</p>
 
   <form method="post" action="{{ path('new_session') }}" id="new-session-form">
-    <div class="row p-1">
-      <div class="col-4">
+    <div class="row mb-3">
+      <div class="col-sm-12 col-md-4">
         {{ form_field({type: 'text', argument: 'session_credentials.login_credential', caption: t(_self, 'login')}, formParams, []) }}
       </div>
     </div>
 
     <div id="new-session-d-login">
-      <div class="row p-1">
-        <div class="col-4">
+      <div class="row mb-3">
+        <div class="col-sm-12 col-md-4">
           <button type="button"
                   class="btn btn-primary mb-3"
                   data-url="{{ path('new_session_resolve_login') }}"
@@ -34,13 +34,13 @@
 
     <div id="new-session-d-password" class="undisplayed">
       <div class="row p-1">
-        <div class="col-4">
+        <div class="col-sm-12 col-md-4">
           {{ form_field({type: 'hidden', argument: 'session_credentials.login'}, formParams, []) }}
           {{ form_field({type: 'password', argument: 'session_credentials.password', caption: t(_self, 'password')}, formParams, []) }}
         </div>
       </div>
       <div class="row p-1">
-        <div class="col-4">
+        <div class="col-sm-12 col-md-4">
           <button type="submit"
                   class="btn btn-primary mb-3"
                   id="new-session-btn">{{ t(_self, 'submit') }}</button>
@@ -50,6 +50,7 @@
       </div>
     </div>
   </form>
+
 </div>
 
 {% if configuration.panelSignups %}

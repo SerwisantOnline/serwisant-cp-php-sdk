@@ -3,6 +3,7 @@
 namespace Serwisant\SerwisantCp\Actions;
 
 use Serwisant\SerwisantCp\Action;
+use Serwisant\SerwisantCp\Exception;
 use Serwisant\SerwisantCp\ExceptionNotFound;
 
 use Serwisant\SerwisantApi\Types\SchemaCustomer\RepairsFilter;
@@ -70,7 +71,18 @@ class Repairs extends Action
     }
 
     $result = $this->apiCustomer()->customerMutation()->print($print_type, $id);
-    return $this->app->redirect($result->temporaryFile->url);
+
+    if ($result->errors) {
+      $ex_message = array_map(
+        function ($error) {
+          return trim("{$error->argument} {$error->code} {$error->message}");
+        },
+        $result->errors
+      );
+      throw new Exception(implode(',', $ex_message));
+    } else {
+      return $this->app->redirect($result->temporaryFile->url);
+    }
   }
 
   public function new($errors = [])

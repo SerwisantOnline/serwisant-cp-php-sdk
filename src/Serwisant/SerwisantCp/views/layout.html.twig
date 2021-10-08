@@ -1,16 +1,16 @@
 <!doctype html>
 <html lang="{{ locale_ISO | lower }}">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ pageTitle }}</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ pageTitle }}</title>
 
-    <link rel="stylesheet" href="{{ asset('assets-serwisant-cp/bootstrap.min.css') }}"/>
-    <link rel="stylesheet" href="{{ asset('assets-serwisant-cp/filepond.min.css') }}"/>
-    <link rel="stylesheet" href="{{ asset('assets-serwisant-cp/filepond-plugin-image-preview.min.css') }}"/>
-    <link rel="stylesheet" href="{{ asset('assets-serwisant-cp/DateTimePicker.min.css') }}"/>
-    <link rel="stylesheet" href="{{ asset('assets-serwisant-cp/fa-all.min.css') }}"/>
-    <link rel="stylesheet" href="{{ asset('assets-serwisant-cp/layout.css') }}"/>
+  <link rel="stylesheet" href="{{ asset('assets-serwisant-cp/bootstrap.min.css') }}"/>
+  <link rel="stylesheet" href="{{ asset('assets-serwisant-cp/filepond.min.css') }}"/>
+  <link rel="stylesheet" href="{{ asset('assets-serwisant-cp/filepond-plugin-image-preview.min.css') }}"/>
+  <link rel="stylesheet" href="{{ asset('assets-serwisant-cp/DateTimePicker.min.css') }}"/>
+  <link rel="stylesheet" href="{{ asset('assets-serwisant-cp/fa-all.min.css') }}"/>
+  <link rel="stylesheet" href="{{ asset('assets-serwisant-cp/layout.css') }}"/>
 </head>
 <body>
 
@@ -23,127 +23,140 @@
 </script>
 
 {% if isAuthenticated %}
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="{{ path('dashboard') }}">{{ subscriber.serviceSupplier.displayName }}</a>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarsExampleDefault"
-                    aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
+    <div class="container">
+      <a class="navbar-brand" href="{{ path('dashboard') }}">{{ subscriber.serviceSupplier.displayName }}</a>
 
-            <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-                <ul class="navbar-nav me-auto mb-2 mb-md-0">
-                    {% if configuration.panelRepairs %}
-                        <li class="nav-item">
-                            <a class="nav-link {{ currentAction == 'Repairs' ? 'active' : '' }}" aria-current="page"
-                               href="{{ path('repairs') }}">{{ t(_self, 'repairs') }}</a>
-                        </li>
-                    {% endif %}
-                    {% if configuration.panelTickets %}
-                        <li class="nav-item">
-                            <a class="nav-link {{ currentAction == 'Tickets' ? 'active' : '' }}"
-                               href="{{ path('tickets') }}">{{ t(_self, 'tickets') }}</a>
-                        </li>
-                    {% endif %}
-                    {% if configuration.panelCommunication %}
-                        <li class="nav-item">
-                            <a class="nav-link {{ currentAction == 'Messages' ? 'active' : '' }}"
-                               href="{{ path('messages') }}">{{ t(_self, 'messages') }}</a>
-                        </li>
-                    {% endif %}
-                </ul>
-            </div>
-            <ul class="navbar-nav me-auto mb-2 mb-md-0">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown"
-                       aria-expanded="false">{{ me.customer.displayName }} </a>
-                    <ul class="dropdown-menu" aria-labelledby="dropdown01">
-                        <li><a class="dropdown-item" href="{{ path('viewer') }}">{{ t(_self, 'viewer') }}</a></li>
-                        <li><a class="dropdown-item"
-                               href="{{ path('destroy_session') }}">{{ t(_self, 'logout') }}</a>
-                        </li>
-                    </ul>
-                </li>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarsExampleDefault"
+              aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+          {% if configuration.panelRepairs %}
+            <li class="nav-item">
+              <a class="nav-link {{ currentAction == 'Repairs' ? 'active' : '' }}" aria-current="page"
+                 href="{{ path('repairs') }}">{{ t(_self, 'repairs') }}</a>
+            </li>
+          {% endif %}
+          {% if configuration.panelTickets %}
+            <li class="nav-item">
+              <a class="nav-link {{ currentAction == 'Tickets' ? 'active' : '' }}"
+                 href="{{ path('tickets') }}">{{ t(_self, 'tickets') }}</a>
+            </li>
+          {% endif %}
+          {% if configuration.panelCommunication %}
+            <li class="nav-item">
+              <a class="nav-link {{ currentAction == 'Messages' ? 'active' : '' }}"
+                 href="{{ path('messages') }}">{{ t(_self, 'messages') }}</a>
+            </li>
+
+            <li class="nav-item d-lg-none">
+              <a class="nav-link {{ currentAction == 'Messages' ? 'active' : '' }}"
+                 href="{{ path('viewer') }}">{{ t(_self, 'viewer') }}</a>
+            </li>
+            <li class="nav-item d-lg-none">
+              <a class="nav-link {{ currentAction == 'Messages' ? 'active' : '' }}"
+                 href="{{ path('destroy_session') }}">{{ t(_self, 'logout') }}</a>
+            </li>
+
+          {% endif %}
+        </ul>
+
+        <ul class="navbar-nav mb-2 mb-md-0 d-none d-md-none d-lg-block">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown"
+               aria-expanded="false">{{ me.customer.displayName }} </a>
+            <ul class="dropdown-menu" aria-labelledby="dropdown01">
+              <li><a class="dropdown-item" href="{{ path('viewer') }}">{{ t(_self, 'viewer') }}</a></li>
+              <li><a class="dropdown-item"
+                     href="{{ path('destroy_session') }}">{{ t(_self, 'logout') }}</a>
+              </li>
             </ul>
-        </div>
-    </nav>
-    <div class="mb-3"></div>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+  </nav>
+
 {% endif %}
 
 {% if app.flash.anyErrors() %}
-    <div class="container">
-        <div class="alert alert-danger p-3 rounded mt-3 text-center" role="alert">
-            {% for alert in app.flash.getErrors() %}
-                <p class="p_alert">{{ alert }}</p>
-            {% endfor %}
-        </div>
+  <div class="container">
+    <div class="alert alert-danger p-3 rounded mt-3 text-center" role="alert">
+      {% for alert in app.flash.getErrors() %}
+        <p class="p_alert">{{ alert }}</p>
+      {% endfor %}
     </div>
+  </div>
 {% endif %}
 
 {% if app.flash.anyMessages() %}
-    <div class="container">
-        <div class="alert alert-success p-3 rounded mt-3 text-center" role="alert">
-            {% for alert in app.flash.getMessages() %}
-                <p class="p_alert">{{ alert }}</p>
-            {% endfor %}
-        </div>
+  <div class="container">
+    <div class="alert alert-success p-3 rounded mt-3 text-center" role="alert">
+      {% for alert in app.flash.getMessages() %}
+        <p class="p_alert">{{ alert }}</p>
+      {% endfor %}
     </div>
+  </div>
 {% endif %}
 
 <main class="container">
-    {{ innerHTML | raw }}
+  {{ innerHTML | raw }}
 </main>
 
 <hr>
 
 <div class="container">
-    <footer>
-        <p class="pull-left">
-            <small>
-                {{ subscriber.displayName }}
-                {% if subscriber.address %}
-                    <br>
-                    {{ subscriber.address.street }} {{ subscriber.address.building }}, {{ subscriber.address.postalCode }} {{ subscriber.address.city }}
-                {% endif %}
-                {% if subscriber.taxId %}
-                    <br>
-                    NIP {{ subscriber.taxId }}
-                {% endif %}
-            </small>
-        </p>
-        <ul class="list-unstyled pull-right text-right">
-            {% for agreement in agreements %}
-                <li>
-                    <small>
-                        <a href="{{ path('agreement', {id: agreement.ID}) }}"
-                           data-title="{{ agreement.description }}">{{ agreement.description }}</a>
-                    </small>
-                </li>
-            {% endfor %}
-            {% for statement in statements %}
-                <li>
-                    <small>
-                        <a href="{{ path('statement', {id: statement.ID}) }}"
-                           data-title="{{ statement.title }}">{{ statement.title }}</a>
-                    </small>
-                </li>
-            {% endfor %}
-        </ul>
-    </footer>
+  <footer>
+    <p class="pull-left">
+      <small>
+        {{ subscriber.displayName }}
+        {% if subscriber.address %}
+          <br>
+          {{ subscriber.address.street }} {{ subscriber.address.building }}, {{ subscriber.address.postalCode }} {{ subscriber.address.city }}
+        {% endif %}
+        {% if subscriber.taxId %}
+          <br>
+          NIP {{ subscriber.taxId }}
+        {% endif %}
+      </small>
+    </p>
+    <ul class="list-unstyled pull-right text-right">
+      {% for agreement in agreements %}
+        <li>
+          <small>
+            <a href="{{ path('agreement', {id: agreement.ID}) }}"
+               data-title="{{ agreement.description }}">{{ agreement.description }}</a>
+          </small>
+        </li>
+      {% endfor %}
+      {% for statement in statements %}
+        <li>
+          <small>
+            <a href="{{ path('statement', {id: statement.ID}) }}"
+               data-title="{{ statement.title }}">{{ statement.title }}</a>
+          </small>
+        </li>
+      {% endfor %}
+    </ul>
+  </footer>
 </div>
 
 <div class="hidden-print" id="modal-popups-container"></div>
 <div id="dtBox"></div>
 
 <div class="alert text-center cookiealert" role="alert">
-    <h6>
-        {{ t(_self, 'cookie_info_html') }}
-        <button type="button" class="btn btn-success btn-sm acceptcookies">
-            {{ t(_self, 'cookie_accept') }}
-        </button>
-    </h6>
+  <h6>
+    {{ t(_self, 'cookie_info_html') }}
+    <button type="button" class="btn btn-success btn-sm acceptcookies">
+      {{ t(_self, 'cookie_accept') }}
+    </button>
+  </h6>
 </div>
 
 <script src="{{ asset('assets-serwisant-cp/lodash.min.js') }}"></script>
@@ -165,9 +178,9 @@
 <script src="{{ asset('assets-serwisant-cp/layout.js') }}"></script>
 
 {% if js_files is defined %}
-    {%- for js_file in js_files %}
-<script src="{{ asset("assets-serwisant-cp/#{ js_file }") }}"></script>
-    {% endfor %}
+  {%- for js_file in js_files %}
+    <script src="{{ asset("assets-serwisant-cp/#{ js_file }") }}"></script>
+  {% endfor %}
 {% endif %}
 
 </body>
