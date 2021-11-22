@@ -7,7 +7,7 @@ Layout is powered by  [Bootstrap](https://getbootstrap.com/) and like whole appl
 
 ## Requirements:
 
-* PHP 7.2 or higher
+* PHP 7.4 or higher
 * all requirements by `serwisant/serwisant-api` package
 
 ## Word about versioning
