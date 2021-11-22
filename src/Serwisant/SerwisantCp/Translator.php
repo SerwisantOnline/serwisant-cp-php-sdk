@@ -2,32 +2,46 @@
 
 namespace Serwisant\SerwisantCp;
 
+use PragmaRX\Countries\Package\Countries;
+
 class Translator
 {
-  const CURRENCIES = [
-    ['locale' => 'en_US', 'code' => 'USD', 'symbol' => '$'],
-    ['locale' => 'pl_PL', 'code' => 'PLN', 'symbol' => 'zł'],
-  ];
-
-  const PHONE_PREFIXES = [
-    'en_US' => '1',
-    'pl_PL' => '48',
-  ];
-
-  private $translations = [];
-  private $default_locale;
+  private array $translations = [];
+  private string $default_locale;
+  private array $available_languages = [];
+  private array $currencies = [];
 
   /**
-   * Translator constructor.
    * @param array $translations_yaml_files
    * @param string $default_locale
+   * @throws TranslatorException
    */
-  public function __construct(array $translations_yaml_files, $default_locale = 'en_US')
+  public function __construct(array $translations_yaml_files, string $default_locale = 'pl_PL')
   {
     foreach ($translations_yaml_files as $file) {
-      $this->translations[] = new YamlMap($file);
+      $map = new YamlMap($file);
+      $keys = array_keys($map->all());
+      if (count($keys) == 0) {
+        throw new TranslatorException("Translation file {$file} is empty");
+      }
+      $language = explode('.', $keys[0]);
+      if (count($language) < 2) {
+        throw new TranslatorException("Translation file {$file} is malformed");
+      }
+      $this->available_languages[] = $language[0];
+      $this->translations[] = $map;
     }
+
+    if (!in_array($this->language($default_locale), $this->available_languages)) {
+      throw new TranslatorException("There is no translations for default locale: {$default_locale}");
+    }
+
     $this->default_locale = $default_locale;
+
+    $countries = new Countries();
+    foreach ($countries->currencies() as $currency) {
+      $this->currencies[$currency->get('iso.code')] = $currency->get('units.major.symbol');
+    }
   }
 
   /**
@@ -37,41 +51,7 @@ class Translator
    */
   public function codeToCurrencySymbol($code)
   {
-    foreach (self::CURRENCIES as $currency) {
-      if ($currency['code'] == $code) {
-        return $currency['symbol'];
-      }
-    }
-    throw new TranslatorException("Currency code {$code} not supported");
-  }
-
-  /**
-   * @param null $locale
-   * @return string
-   * @throws TranslatorException
-   */
-  public function localeToCurrencySymbol($locale = null)
-  {
-    if (!$locale) {
-      $locale = $this->default_locale;
-    }
-    foreach (self::CURRENCIES as $currency) {
-      if ($currency['locale'] == $locale) {
-        return $currency['symbol'];
-      }
-    }
-    throw new TranslatorException("Locale {$locale} not supported");
-  }
-
-  public function localeToPhonePrefix($locale = null)
-  {
-    if (!$locale) {
-      $locale = $this->default_locale;
-    }
-    if (array_key_exists($locale, self::PHONE_PREFIXES)) {
-      return self::PHONE_PREFIXES[$locale];
-    }
-    throw new TranslatorException("Locale {$locale} not supported");
+    return $this->currencies[$code];
   }
 
   /**
@@ -96,9 +76,6 @@ class Translator
    */
   public function translate($locale = null, ...$args)
   {
-    if (!$locale) {
-      $locale = $this->default_locale;
-    }
     $parts = [];
     $replacements = [];
     foreach ($args as $arg) {
@@ -113,7 +90,7 @@ class Translator
       }
       $parts[] = $part;
     }
-    $key = $locale . '.' . implode('.', $parts);
+    $key = $this->language($locale) . '.' . implode('.', $parts);
 
     $tr = '';
     foreach ($this->translations as $translation) {
@@ -134,5 +111,18 @@ class Translator
       }
     }
     return $tr;
+  }
+
+  private function language($locale)
+  {
+    if ($locale) {
+      $language = explode('_', $locale)[0];
+    } else {
+      $language = explode('_', $this->default_locale)[0];
+    }
+    if (!in_array($language, $this->available_languages)) {
+      $language = explode('_', $this->default_locale)[0];
+    }
+    return $language;
   }
 }

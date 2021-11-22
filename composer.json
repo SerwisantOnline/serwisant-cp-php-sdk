@@ -5,7 +5,7 @@
   "homepage": "https://github.com/SerwisantOnline/serwisant-cp-php-sdk",
   "license": "Apache-2.0",
   "require": {
-    "php": ">=7.2",
+    "php": ">=7.4",
     "ext-json": "*",
     "ext-openssl": "*",
     "composer/package-versions-deprecated": "*",
@@ -16,7 +16,9 @@
     "symfony/twig-bridge": "^3.4",
     "symfony/yaml": "^3.4",
     "twig/twig": "^2.12",
-    "adbario/php-dot-notation": "^2.2"
+    "adbario/php-dot-notation": "^2.2",
+    "codezero/browser-locale": "^3.1",
+    "pragmarx/countries": "^0.7"
   },
   "authors": [
     {

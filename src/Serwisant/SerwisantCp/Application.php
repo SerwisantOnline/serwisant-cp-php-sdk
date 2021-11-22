@@ -13,18 +13,20 @@ class Application
   private $view_paths = [];
   private $query_paths = [];
   private $tr_files = [];
+  private $tr_default_locale;
 
   private $base_dir;
 
   private $app;
   private $router;
 
-  public function __construct($env = 'production', $view_paths = [], $query_paths = [], $tr_files = [])
+  public function __construct($env = 'production', $view_paths = [], $query_paths = [], $tr_files = [], $tr_default_locale = 'pl_PL')
   {
     $this->env = $env;
     $this->view_paths = $view_paths;
     $this->query_paths = $query_paths;
     $this->tr_files = $tr_files;
+    $this->tr_default_locale = $tr_default_locale;
 
     $this->base_dir = __DIR__;
 
@@ -37,6 +39,8 @@ class Application
     date_default_timezone_set('UTC');
 
     $this->app = new Silex\Application(['env' => $this->env, 'debug' => ($this->env === 'development')]);
+
+    $this->app['locale_detector'] = new LocaleDetector();
   }
 
   public function setRouter(Router $router)
@@ -56,7 +60,7 @@ class Application
     $this->app['env'] = $this->env;
     $this->app['base_dir'] = $this->base_dir;
     $this->app['gql_query_paths'] = $this->query_paths;
-    $this->app['tr'] = new Translator($this->tr_files);
+    $this->app['tr'] = new Translator($this->tr_files, $this->tr_default_locale);
     $this->app['flash'] = new Flash();
 
     $this->app->register(new Silex\Provider\TwigServiceProvider(), ['twig.path' => $this->view_paths]);
@@ -142,10 +146,13 @@ class Application
     $app['base_uri'] = $base_url;
     $app['cors.allowOrigin'] = $base_url;
     $app['request'] = $request;
-    $app['locale'] = 'pl_PL';
-    $app['timezone'] = 'Europe/Warsaw';
+
+    $locale_detector = $app['locale_detector']->setRequest($request);
+    $app['locale'] = $locale_detector->locale();
+    $app['timezone'] = $locale_detector->timeZone();
 
     setlocale(LC_ALL, $app['locale']);
+    date_default_timezone_set($app['timezone']);
 
     if ($request->getMethod() != 'OPTIONS') {
       $this->sessionStart();

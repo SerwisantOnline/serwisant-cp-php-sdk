@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ locale_ISO | lower }}">
+<html lang="{{ locale_ISO() }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,8 +16,9 @@
 
 <script>
   var application_js_options = {
-    locale: "{{ locale_ISO | lower }}",
+    locale: "{{ locale_ISO() }}",
     dpTranslations: {{ t('dp') | json_encode() | raw }},
+    fpTranslations: {{ t('fp') | json_encode() | raw }},
     uploadUrl: "{{ path('temporary_file') }}"
   }
 </script>

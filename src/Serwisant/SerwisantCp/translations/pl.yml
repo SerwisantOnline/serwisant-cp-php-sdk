@@ -1,4 +1,4 @@
-pl_PL:
+pl:
   errors_title: "Proszę poprawić następujące problemy"
   errors:
     blank: "Nie podano wymaganej wartości"
@@ -52,6 +52,45 @@ pl_PL:
     setButtonContent: "Wybierz"
     clearButtonContent: "Wyczyść"
 
+  fp:
+    labelIdle: 'Przeciągnij i upuść lub <span class="filepond--label-action">wybierz</span> pliki'
+    labelInvalidField: 'Nieprawidłowe pliki'
+    labelFileWaitingForSize: 'Pobieranie rozmiaru'
+    labelFileSizeNotAvailable: 'Nieznany rozmiar'
+    labelFileLoading: 'Wczytywanie'
+    labelFileLoadError: 'Błąd wczytywania'
+    labelFileProcessing: 'Przesyłanie'
+    labelFileProcessingComplete: 'Przesłano'
+    labelFileProcessingAborted: 'Przerwano'
+    labelFileProcessingError: 'Przesyłanie nie powiodło się'
+    labelFileProcessingRevertError: 'Coś poszło nie tak'
+    labelFileRemoveError: 'Nieudane usunięcie'
+    labelTapToCancel: 'Anuluj'
+    labelTapToRetry: 'Ponów'
+    labelTapToUndo: 'Cofnij'
+    labelButtonRemoveItem: 'Usuń'
+    labelButtonAbortItemLoad: 'Przerwij'
+    labelButtonRetryItemLoad: 'Ponów'
+    labelButtonAbortItemProcessing: 'Anuluj'
+    labelButtonUndoItemProcessing: 'Cofnij'
+    labelButtonRetryItemProcessing: 'Ponów'
+    labelButtonProcessItem: 'Prześlij'
+    labelMaxFileSizeExceeded: 'Plik jest zbyt duży'
+    labelMaxFileSize: 'Dopuszczalna wielkość pliku to {filesize}'
+    labelMaxTotalFileSizeExceeded: 'Przekroczono łączny rozmiar plików'
+    labelMaxTotalFileSize: 'Łączny rozmiar plików nie może przekroczyć {filesize}'
+    labelFileTypeNotAllowed: 'Niedozwolony rodzaj pliku'
+    fileValidateTypeLabelExpectedTypes: 'Oczekiwano {allButLastType} lub {lastType}'
+    imageValidateSizeLabelFormatError: 'Nieobsługiwany format obrazu'
+    imageValidateSizeLabelImageSizeTooSmall: 'Obraz jest zbyt mały'
+    imageValidateSizeLabelImageSizeTooBig: 'Obraz jest zbyt duży'
+    imageValidateSizeLabelExpectedMinSize: 'Minimalne wymiary obrazu to {minWidth}×{minHeight}'
+    imageValidateSizeLabelExpectedMaxSize: 'Maksymalna wymiary obrazu to {maxWidth}×{maxHeight}'
+    imageValidateSizeLabelImageResolutionTooLow: 'Rozdzielczość jest zbyt niska'
+    imageValidateSizeLabelImageResolutionTooHigh: 'Rozdzielczość jest zbyt wysoka'
+    imageValidateSizeLabelExpectedMinResolution: 'Minimalna rozdzielczość to {minResolution}'
+    imageValidateSizeLabelExpectedMaxResolution: 'Maksymalna rozdzielczość to {maxResolution}'
+
   flashes:
     login_first: "Zanim rozpoczniesz korzystanie z aplikacji powinieneś się zalogować."
     signup_successful: "Konto zostało zarejestrowane. Musisz je teraz potwierdzić za pomocą linka, który wysłaliśmy na
@@ -85,16 +124,46 @@ pl_PL:
     repairs: "Naprawy"
     tickets: "Zgłoszenia"
     messages: "Wiadomości"
+
   payment_types:
     INSTANT_FIXED: "Płatność po zakończeniu, za zlecenie"
     INSTANT_TIME: "Płatność po zakończeniu, stawka godzinowa"
     SUBSCRIPTION_FIXED: "Płatność na koniec miesiąca, za zlecenie"
     SUBSCRIPTION_TIME: "Płatność na koniec miesiąca, stawka godzinowa"
     CONTRACT: "Płatność na koniec miesiąca, abonament"
+
   transport_types:
     PARCEL: "Kurier"
     PERSONAL: "Osobiście"
     INTERNAL: "Pracownik serwisu"
+
+  order_status:
+    UNSAVED: "Niezapisane"
+    WAITING_FOR_DELIVERY: "Oczekuje na dostarczenie"
+    WAITING_FOR_DIAGNOSIS: "Oczekuje na diagnozę"
+    DIAGNOSIS: "W trakcie diagnozy"
+    REQ_CUSTOMER_ACCEPT: "Wymaga potwierdzenia kosztów u klienta"
+    CONFIRMED: "Potwierdzone"
+    IN_PROGRESS: "W trakcie naprawy"
+    WAITING_FOR_PARTS: "Oczekuje na podzespoły"
+    UNDER_TESTING: "W trakcie testów"
+    REQ_SUMMARY: "Podsumowanie naprawy"
+    NOT_ACCEPTED: "Nie zaakceptowane"
+    CANCELED: "Anulowane"
+    NOT_PROCESSABLE: "Naprawa nie jest możliwa"
+    WAITING_FOR_COLLECTION: "Do odbioru"
+    PASSED_FOR_RETURN: "Przekazano do wysyłki"
+    CLOSED: "Odebrane"
+    SCRAPPED: "Zezłomowane"
+
+  ticket_status:
+    UNSAVED: "Niezapisane"
+    NEW: "Nowe"
+    ASSIGNED: "Przypisane"
+    ON_THE_WAY: "Wyjazd"
+    IN_PROGRESS: "W trakcie realizacji"
+    RESOLVED: "Rozwiązany"
+    CANCELED: "Anulowany"
 
   login_new:
     title: "Zaloguj się!"
@@ -110,6 +179,7 @@ pl_PL:
       sytuacji"
     password: "Hasło"
     submit: "Rozpocznij"
+    forgot_password: "Zapomniałem hasła."
   signup_new:
     title: "Rejestracja nowego konta"
     description: "Zacznij od rejestracji własnego konta. Wypełnij formularz."

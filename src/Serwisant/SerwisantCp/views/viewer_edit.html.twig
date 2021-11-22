@@ -20,8 +20,8 @@
 
     <div class="mb-3 business_container undisplayed">
       <div class="input-group">
-        <span class="input-group-text">{{ locale_ISO|upper }}</span>
-        {{ form_field({type: 'hidden', argument: 'customer.taxPrefix', value:locale_ISO | upper}, form_params, errors) }}
+        <span class="input-group-text">{{ locale_VatPrefix() }}</span>
+        {{ form_field({type: 'hidden', argument: 'customer.taxPrefix', value: locale_ISO()}, form_params, errors) }}
         {{ form_field({type: 'text', argument: 'customer.taxId', caption: t(_self, 'tax_id'), value: customer.taxId}, form_params, errors) }}
       </div>
     </div>
@@ -31,8 +31,11 @@
         {{ form_field({type: 'text', argument: 'customer.email', caption: t(_self, 'email'), value: customer.email}, form_params, errors) }}
       </div>
       <div class="col-md-6 mb-3">
-        {{ form_field({type: 'hidden', argument: 'customer.phone.countryPrefix', value: customer.phone ? customer.phone.countryPrefix : locale_PhonePrefix}, form_params, errors) }}
-        {{ form_field({type: 'text', argument: 'customer.phone.number', caption: t(_self, 'phone_number'), value: customer.phone ? customer.phone.number : ''}, form_params, errors) }}
+        {{ form_field({type: 'hidden', argument: 'customer.phone.countryPrefix', value: customer.phone ? customer.phone.countryPrefix : locale_PhonePrefix()}, form_params, errors) }}
+        <div class="input-group">
+          <span class="input-group-text">{{ locale_PhonePrefix() }}</span>
+          {{ form_field({type: 'text', argument: 'customer.phone.number', caption: t(_self, 'phone_number'), value: customer.phone ? customer.phone.number : ''}, form_params, errors) }}
+        </div>
       </div>
     </div>
 
@@ -45,13 +48,13 @@
     </div>
 
     {% if customer.addresses is empty %}
-      {{ form_field({type: 'hidden', argument: 'addresses.0.countryIso', value: locale_ISO | upper}, form_params, errors) }}
+      {{ form_field({type: 'hidden', argument: 'addresses.0.countryIso', value: locale_ISO()}, form_params, errors) }}
       <div class="row">
         <label class="form-label">{{ t(_self, 'address') }}</label>
         <div class="col-md-4 mb-3">
           {{ form_field({type: 'text', argument: 'addresses.0.street', caption: t(_self, 'street')}, form_params, errors) }}
         </div>
-        <div class="col-md-2 mb-3">
+        <div class="col-md-1 mb-3">
           {{ form_field({type: 'text', argument: 'addresses.0.building', caption: t(_self, 'building')}, form_params, errors) }}
         </div>
         <div class="col-md-2 mb-3">
@@ -59,6 +62,9 @@
         </div>
         <div class="col-md-4 mb-3">
           {{ form_field({type: 'text', argument: 'addresses.0.city', caption: t(_self, 'city')}, form_params, errors) }}
+        </div>
+        <div class="col-md-1 mb-1">
+          <img src="{{ locale_flag() }}" height="45" style="margin-top: 5px;">
         </div>
       </div>
     {% else %}
@@ -70,14 +76,17 @@
           <div class="col-md-4 mb-3">
             {{ form_field({type: 'text', argument: "addresses.#{loop.index0}.street", caption: t(_self, 'street'), value: address.street}, form_params, errors) }}
           </div>
-          <div class="col-md-2 mb-3">
+          <div class="col-md-1 mb-3">
             {{ form_field({type: 'text', argument: "addresses.#{loop.index0}.building", caption: t(_self, 'building'), value: address.building}, form_params, errors) }}
           </div>
           <div class="col-md-2 mb-3">
             {{ form_field({type: 'text', argument: "addresses.#{loop.index0}.postalCode", caption: t(_self, 'postalCode'), value: address.postalCode}, form_params, errors) }}
           </div>
-          <div class="col-md-2 mb-3">
+          <div class="col-md-4 mb-3">
             {{ form_field({type: 'text', argument: "addresses.#{loop.index0}.city", caption: t(_self, 'city'), value: address.city}, form_params, errors) }}
+          </div>
+          <div class="col-md-1 mb-1">
+            <img src="{{ locale_flag() }}" height="45" style="margin-top: 5px;">
           </div>
         </div>
 

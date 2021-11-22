@@ -24,4 +24,9 @@ class YamlMap
     }
     return $this->config->get($key);
   }
+
+  public function all()
+  {
+    return $this->config->flatten();
+  }
 }

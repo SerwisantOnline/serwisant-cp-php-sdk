@@ -31,7 +31,7 @@ class Action
     if (isset($app['action_decorator'])) {
       $this->decorator = $app['action_decorator'];
     }
-    if (isset($app['access_token_customer'])) {
+    if (isset($app['access_token_customer']) && isset($app['api_http_headers'])) {
       $this->api_http_headers = $app['api_http_headers'];
     }
     $this->twig = $app['twig'];
@@ -63,10 +63,8 @@ class Action
       'pageTitle' => '',
       'token' => (string)$this->token,
       'currentAction' => array_slice(explode("\\", get_class($this)), -1)[0],
-      'locale' => $this->app['locale'],
-      'locale_ISO' => strtoupper(explode('_', $this->app['locale'])[1]),
-      'locale_PhonePrefix' => $this->translator->localeToPhonePrefix($this->app['locale']),
       'isAuthenticated' => (!is_null($this->access_token_customer) && $this->access_token_customer->isAuthenticated()),
+      'locale' => $this->app['locale'],
     ];
 
     $inner_vars = array_merge($inner_vars, $this->getLayoutVars());

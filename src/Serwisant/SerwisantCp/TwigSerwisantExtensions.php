@@ -98,7 +98,8 @@ class TwigSerwisantExtensions extends TwigExtensions
         }
       }
 
-      $html = "<span class=\"badge rounded-pill bg-{$color}\">{$repair->status->displayName}</span>";
+      $status_name = $this->t(['order_status', $repair->status->status]);
+      $html = "<span class=\"badge rounded-pill bg-{$color}\">{$status_name}</span>";
       return new \Twig\Markup($html, 'UTF-8');
     }));
 
@@ -122,7 +123,8 @@ class TwigSerwisantExtensions extends TwigExtensions
           break;
       }
 
-      $html = "<span class=\"badge rounded-pill bg-{$color}\">{$ticket->status->displayName}</span>";
+      $status_name = $this->t(['ticket_status', $ticket->status->status]);
+      $html = "<span class=\"badge rounded-pill bg-{$color}\">{$status_name}</span>";
       return new \Twig\Markup($html, 'UTF-8');
     }));
 

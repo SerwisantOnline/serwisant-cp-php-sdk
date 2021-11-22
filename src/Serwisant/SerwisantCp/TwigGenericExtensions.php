@@ -55,12 +55,8 @@ class TwigGenericExtensions extends TwigExtensions
       return $this->t($keys);
     }));
 
-    $this->twig->addFilter(new TwigFilter('format_currency', function ($number, $currency_code = null) {
-      if (!$currency_code) {
-        $symbol = $this->translator->localeToCurrencySymbol($this->app['locale']);
-      } else {
-        $symbol = $this->translator->codeToCurrencySymbol($currency_code);
-      }
+    $this->twig->addFilter(new TwigFilter('format_currency', function ($number, $currency_code) {
+      $symbol = $this->translator->codeToCurrencySymbol($currency_code);
       return number_format($number, 2, ',', '') . ' ' . $symbol;
     }));
 
@@ -69,6 +65,22 @@ class TwigGenericExtensions extends TwigExtensions
       $tz = $this->app['timezone'];
       $date->setTimezone(new \DateTimeZone($tz));
       return $date->format('Y-m-d H:i');
+    }));
+
+    $this->twig->addFunction(new TwigFunction('locale_ISO', function (...$keys) {
+      return $this->app['locale_detector']->countryISO();
+    }));
+
+    $this->twig->addFunction(new TwigFunction('locale_flag', function (...$keys) {
+      return $this->app['locale_detector']->flagSVG();
+    }));
+
+    $this->twig->addFunction(new TwigFunction('locale_VatPrefix', function (...$keys) {
+      return $this->app['locale_detector']->vatPrefix();
+    }));
+
+    $this->twig->addFunction(new TwigFunction('locale_PhonePrefix', function (...$keys) {
+      return $this->app['locale_detector']->phonePrefix();
     }));
 
     return $this->twig;
