@@ -4,7 +4,6 @@ namespace Serwisant\SerwisantCp;
 
 use Silex;
 use Symfony\Component\HttpFoundation;
-use Serwisant\SerwisantApi;
 use JDesrosiers\Silex\Provider\CorsServiceProvider;
 
 class Application
@@ -43,19 +42,19 @@ class Application
     $this->app['locale_detector'] = new LocaleDetector();
   }
 
-  public function setRouter(Router $router)
+  public function setRouter(Router $router): Application
   {
     $this->router = $router;
     return $this;
   }
 
-  public function set($key, $obj)
+  public function set($key, $obj): Application
   {
     $this->app[$key] = $obj;
     return $this;
   }
 
-  public function run()
+  public function run(): Application
   {
     $this->app['env'] = $this->env;
     $this->app['base_dir'] = $this->base_dir;

@@ -102,6 +102,4 @@ class LocaleDetector
   {
     return explode('_', $this->locale)[1];
   }
-
-
 }
