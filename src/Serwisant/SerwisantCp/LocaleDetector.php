@@ -8,21 +8,41 @@ use PragmaRX\Countries\Package\Countries;
 
 class LocaleDetector
 {
+  private string $default_locale;
   private string $locale;
+
   private $country;
+
+  public function __construct(string $default_locale = 'pl_PL')
+  {
+    $this->default_locale = $default_locale;
+  }
 
   public function setRequest(HttpFoundation\Request $request)
   {
     $locale = $this->getLocaleString($request);
-    $countries = new Countries();
-
+    if (is_null($locale)) {
+      return $this->setDefaults();
+    }
     $this->locale = $locale;
-    $this->country = $countries->where('cca2', $this->countryISO())->first();
+
+    $country = (new Countries())->where('cca2', $this->countryISO())->first();
+    if (count($country) <= 0) {
+      return $this->setDefaults();
+    }
+    $this->country = $country;
 
     return $this;
   }
 
-  protected function getLocaleString(HttpFoundation\Request $request): string
+  private function setDefaults(): LocaleDetector
+  {
+    $this->locale = $this->default_locale;
+    $this->country = (new Countries())->where('cca2', explode('_', $this->default_locale)[1])->first();
+    return $this;
+  }
+
+  protected function getLocaleString(HttpFoundation\Request $request): ?string
   {
     $locale = (new BrowserLocale($request->headers->get("accept-language")))->getLocale();
     if ($locale) {
@@ -31,12 +51,9 @@ class LocaleDetector
       if (!$country) {
         $country = strtoupper($language);
       }
-    } else {
-      $language = 'pl';
-      $country = 'PL';
+      return "{$language}_{$country}";
     }
-
-    return "{$language}_{$country}";
+    return null;
   }
 
   public function locale(): string
@@ -46,7 +63,11 @@ class LocaleDetector
 
   public function timeZone(): string
   {
-    return $this->country->hydrate('timezones')->timezones->first()->zone_name;
+    try {
+      return $this->country->hydrate('timezones')->timezones->first()->zone_name;
+    } catch (\Exception $e) {
+
+    }
   }
 
   public function flagSVG(): string

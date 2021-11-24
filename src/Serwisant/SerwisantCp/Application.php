@@ -12,20 +12,20 @@ class Application
   private $view_paths = [];
   private $query_paths = [];
   private $tr_files = [];
-  private $tr_default_locale;
+  private $default_locale;
 
   private $base_dir;
 
   private $app;
   private $router;
 
-  public function __construct($env = 'production', $view_paths = [], $query_paths = [], $tr_files = [], $tr_default_locale = 'pl_PL')
+  public function __construct($env = 'production', $view_paths = [], $query_paths = [], $tr_files = [], $default_locale = 'pl_PL')
   {
     $this->env = $env;
     $this->view_paths = $view_paths;
     $this->query_paths = $query_paths;
     $this->tr_files = $tr_files;
-    $this->tr_default_locale = $tr_default_locale;
+    $this->default_locale = $default_locale;
 
     $this->base_dir = __DIR__;
 
@@ -39,7 +39,7 @@ class Application
 
     $this->app = new Silex\Application(['env' => $this->env, 'debug' => ($this->env === 'development')]);
 
-    $this->app['locale_detector'] = new LocaleDetector();
+    $this->app['locale_detector'] = new LocaleDetector($default_locale);
   }
 
   public function setRouter(Router $router): Application
@@ -59,7 +59,7 @@ class Application
     $this->app['env'] = $this->env;
     $this->app['base_dir'] = $this->base_dir;
     $this->app['gql_query_paths'] = $this->query_paths;
-    $this->app['tr'] = new Translator($this->tr_files, $this->tr_default_locale);
+    $this->app['tr'] = new Translator($this->tr_files, $this->default_locale);
     $this->app['flash'] = new Flash();
 
     $this->app->register(new Silex\Provider\TwigServiceProvider(), ['twig.path' => $this->view_paths]);
