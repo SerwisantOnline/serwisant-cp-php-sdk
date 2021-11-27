@@ -64,5 +64,6 @@ query {
         welcomeMessage
         personalTransportEnabled
         internalTransportEnabled
+        requirePhoneNumber
     }
 }

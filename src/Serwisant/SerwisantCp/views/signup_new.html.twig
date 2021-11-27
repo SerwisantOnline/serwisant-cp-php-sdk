@@ -3,7 +3,11 @@
     <h1>{{ t(_self, 'title') }}</h1>
     <p class="lead">{{ t(_self, 'description') }}</p>
 
-    {{ form_errors(_self, errors, ['customer.phone.number']) }}
+    {% if configuration.requirePhoneNumber %}
+      {{ form_errors(_self, errors) }}
+    {% else %}
+      {{ form_errors(_self, errors, ['customer.phone.number']) }}
+    {% endif %}
 
     <div class="mb-3">
       {% set customerTypeOptions = {'PERSONAL': t(_self, 'customer_type.personal'),'BUSINESS': t(_self, 'customer_type.business')} %}
@@ -18,19 +22,32 @@
       {{ form_field({type: 'text', argument: 'customer.companyName', caption: t(_self, 'company_name')}, form_params, errors) }}
     </div>
 
-    <div class="mb-3">
-      {{ form_field({type: 'text', argument: 'customer.email', caption: t(_self, 'email')}, form_params, errors) }}
+    <div class="row">
+      <div class="col -md-6 mb-3">
+        {{ form_field({type: 'text', argument: 'customer.email', caption: t(_self, 'email')}, form_params, errors) }}
+      </div>
+      {% if configuration.requirePhoneNumber %}
+        <div class="col-md-6 mb-3">
+          {{ form_field({type: 'hidden', argument: 'customer.phone.countryPrefix', value: locale_PhonePrefix()}, form_params, errors) }}
+          <div class="input-group">
+            <span class="input-group-text">{{ locale_PhonePrefix() }}</span>
+            {{ form_field({type: 'text', argument: 'customer.phone.number', caption: t(_self, 'phone_number')}, form_params, errors) }}
+          </div>
+        </div>
+      {% endif %}
     </div>
 
-    <div class="mb-3">
-      {{ form_field({type: 'text', argument: 'customer.login', caption: t(_self, 'login')}, form_params, errors) }}
-    </div>
+    <div class="row">
+      <div class="col-6 mb-3">
+        {{ form_field({type: 'text', argument: 'customer.login', caption: t(_self, 'login')}, form_params, errors) }}
+      </div>
 
-    <div class="mb-3">
-      {{ form_field({type: 'password', argument: 'customer.password', caption: t(_self, 'password')}, form_params, errors) }}
-      <div class="progress password-progress">
-        <div id="password-strength-indicator" class="progress-bar" role="progressbar" aria-valuenow="0"
-             aria-valuemin="0" aria-valuemax="100"></div>
+      <div class="col-6 mb-3">
+        {{ form_field({type: 'password', argument: 'customer.password', caption: t(_self, 'password')}, form_params, errors) }}
+        <div class="progress password-progress">
+          <div id="password-strength-indicator" class="progress-bar" role="progressbar" aria-valuenow="0"
+               aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
       </div>
     </div>
 

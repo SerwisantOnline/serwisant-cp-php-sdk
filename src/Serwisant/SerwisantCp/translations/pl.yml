@@ -24,12 +24,16 @@ pl:
           accepted: "Regulamin płatności musi zostać zaakceptowany"
     not_a_date: "Wartość nie jest poprawną datą"
     confirmation: "Powrórzona wartość jest niepoprawna"
+    wrong_length: "Nipoprawna długość"
+    not_gsm: "Wymagany jest numer telefonu komórkowego"
 
   entitles:
     loginOrEmail: "Login lub adres email"
     agreements:
       accepted: "Zgoda"
     customer:
+      phone:
+        number: 'Numer telefonu'
       customFields:
         value: "Pole tekstowe"
     ticket:
@@ -190,6 +194,7 @@ pl:
     person: "Imię i nazwisko"
     company_name: "Nazwa firmy"
     email: "Adres email"
+    phone_number: "Numer telefonu"
     login: "Login do konta"
     password: "Hasło"
     submit: "Zarejestruj własne konto"
