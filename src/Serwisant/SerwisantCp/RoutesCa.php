@@ -7,13 +7,27 @@ use Symfony\Component\HttpFoundation\Request;
 
 class RoutesCa extends Routes
 {
+  private $api;
+
+  protected function api()
+  {
+    if (is_null($this->api) && isset($this->app['access_token_public'])) {
+      $this->api = new Api($this->app, $this->app['access_token_public'], [$this->app['base_dir'] . '/queries/public']);
+    }
+    return $this->api;
+  }
+
   protected function tokenConverter(): callable
   {
     return function (string $token, Request $request) {
-      $result = (new Api($this->app, $request, $this->app['access_token_public']))->publicQuery()->secretToken($token);
-      $t = new Token($result->token, $result->subjectType);
-      $this->app['token'] = $t;
-      return $t;
+      if ($this->api()) {
+        $result = $this->api()->publicQuery()->secretToken($token);
+        $t = new Token($result->token, $result->subjectType);
+        $this->app['token'] = $t;
+        return $t;
+      } else {
+        throw new ExceptionNotFound(__CLASS__, __LINE__);
+      }
     };
   }
 
@@ -107,6 +121,16 @@ class RoutesCa extends Routes
       ->before($this->expectPublicAccessToken())
       ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
       ->bind('token');
+
+    $ca->get('/', function (Request $request) {
+      if ($this->api()) {
+        $result = $this->api()->publicQuery()->configuration();
+        $t = new Token($result->panelToken, SecretTokenSubject::LICENCE);
+        return (new Actions\SubscriberByToken($this->app, $request, $t))->call();
+      } else {
+        throw new ExceptionNotFound(__CLASS__, __LINE__);
+      }
+    });
 
     return $ca;
   }

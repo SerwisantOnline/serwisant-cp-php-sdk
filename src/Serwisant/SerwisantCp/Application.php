@@ -21,7 +21,11 @@ class Application
 
   public function __construct($env = 'production', $view_paths = [], $query_paths = [], $tr_files = [], $default_locale = 'pl_PL')
   {
-    $this->env = $env;
+    if ($env) {
+      $this->env = $env;
+    } else {
+      $this->env = 'production';
+    }
     $this->view_paths = $view_paths;
     $this->query_paths = $query_paths;
     $this->tr_files = $tr_files;

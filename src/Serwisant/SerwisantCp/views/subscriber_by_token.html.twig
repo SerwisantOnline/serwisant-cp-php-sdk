@@ -1,37 +1,38 @@
 <div class="bg-light p-5 rounded mt-3 text-center">
+  {% if subscriber.serviceSupplier.avatar %}
     <img src="{{ subscriber.serviceSupplier.avatar.url }}">
-
-    <address>
-        <strong>{{ subscriber.serviceSupplier.displayName }}</strong>
-        <br>
-        {% if subscriber.serviceSupplier.address %}
-            {{ subscriber.serviceSupplier.address.street }} {{ subscriber.serviceSupplier.address.postalCode }} {{ subscriber.serviceSupplier.address.city }}
-            <br>
-        {% endif %}
-        {% if subscriber.serviceSupplier.phone %}
-            tel.: {{ subscriber.serviceSupplier.phone.formatted }}
-            <br>
-        {% endif %}
-        {% if subscriber.serviceSupplier.email %}
-            <a href="mailto:{{ subscriber.serviceSupplier.email }}">{{ subscriber.serviceSupplier.email }}</a>
-        {% endif %}
-    </address>
-
-    <div class="row justify-content-center">
-        <div class="col-sm-3">
-            <input id="token-input" type="text" class="form-control input-lg">
-            <br>
-            <input class="form-control input-lg btn btn-lg btn-primary"
-                   type="button"
-                   id="token-button"
-                   value="{{ t(_self, 'search') }}"
-                   data-url="{{ path('token', {token: 'ExampleToken'}) }}">
-        </div>
-    </div>
-    
-    {% if configuration.panelEnabled %}
-        <h2 class="text-muted text-lowercase">{{ t(_self, 'or') }}</h2>
-
-        <a href="{{ path('dashboard') }}" class="btn btn-lg btn-secondary col-sm-3">{{ t(_self, 'customer_panel') }}</a>
+  {% endif %}
+  <address>
+    <strong>{{ subscriber.serviceSupplier.displayName }}</strong>
+    <br>
+    {% if subscriber.serviceSupplier.address %}
+      {{ subscriber.serviceSupplier.address.street }} {{ subscriber.serviceSupplier.address.postalCode }} {{ subscriber.serviceSupplier.address.city }}
+      <br>
     {% endif %}
+    {% if subscriber.serviceSupplier.phone %}
+      tel.: {{ subscriber.serviceSupplier.phone.formatted }}
+      <br>
+    {% endif %}
+    {% if subscriber.serviceSupplier.email %}
+      <a href="mailto:{{ subscriber.serviceSupplier.email }}">{{ subscriber.serviceSupplier.email }}</a>
+    {% endif %}
+  </address>
+
+  <div class="row justify-content-center">
+    <div class="col-sm-3">
+      <input id="token-input" type="text" class="form-control input-lg">
+      <br>
+      <input class="form-control input-lg btn btn-lg btn-primary"
+             type="button"
+             id="token-button"
+             value="{{ t(_self, 'search') }}"
+             data-url="{{ path('token', {token: 'ExampleToken'}) }}">
+    </div>
+  </div>
+
+  {% if configuration.panelEnabled %}
+    <h2 class="text-muted text-lowercase">{{ t(_self, 'or') }}</h2>
+
+    <a href="{{ path('dashboard') }}" class="btn btn-lg btn-secondary col-sm-3">{{ t(_self, 'customer_panel') }}</a>
+  {% endif %}
 </div>

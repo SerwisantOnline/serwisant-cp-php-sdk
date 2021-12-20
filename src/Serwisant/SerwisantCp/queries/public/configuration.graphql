@@ -1,0 +1,6 @@
+query {
+    configuration {
+        __typename
+        panelToken
+    }
+}
