@@ -49,6 +49,9 @@ Application.Repairs.Form = function () {
   pond.on('processfile', function () {
     $('.form-buttons > button').removeClass('disabled');
   })
+  pond.on('error', function () {
+    $('.form-buttons > button').removeClass('disabled');
+  })
 
   Application.Ui.Autocomplete($('#repair_vendor'));
   Application.Ui.Autocomplete($('#repair_model'));

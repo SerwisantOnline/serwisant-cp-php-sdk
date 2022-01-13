@@ -182,6 +182,8 @@ Application.Ui.FileUploadConfigure = function () {
   var translations = Application.Options.Get('fpTranslations');
 
   FilePond.registerPlugin(FilePondPluginImagePreview);
+  FilePond.registerPlugin(FilePondPluginFileValidateType);
+
   FilePond.setOptions(_.merge(translations, {
     server: {
       url: Application.Options.Get('uploadUrl')
@@ -190,7 +192,9 @@ Application.Ui.FileUploadConfigure = function () {
     allowMultiple: true,
     stylePanelLayout: 'compact',
     name: 'temporary_files[]',
-    credits: []
+    credits: [],
+    allowFileTypeValidation: (Application.Options.Get('uploadOnlyImages') === 1),
+    acceptedFileTypes: (Application.Options.Get('uploadOnlyImages') === 1 ? ['image/*'] : [])
   }));
 }
 

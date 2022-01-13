@@ -19,7 +19,8 @@
     locale: "{{ locale_ISO() }}",
     dpTranslations: {{ t('dp') | json_encode() | raw }},
     fpTranslations: {{ t('fp') | json_encode() | raw }},
-    uploadUrl: "{{ path('temporary_file') }}"
+    uploadUrl: "{{ path('temporary_file') }}",
+    uploadOnlyImages: {{ configuration.uploadOnlyImages ? 1 : 0 }}
   }
 </script>
 
@@ -168,6 +169,7 @@
 <script src="{{ asset('assets-serwisant-cp/purl.js') }}"></script>
 <script src="{{ asset('assets-serwisant-cp/filepond.min.js') }}"></script>
 <script src="{{ asset('assets-serwisant-cp/filepond-plugin-image-preview.min.js') }}"></script>
+<script src="{{ asset('assets-serwisant-cp/filepond-plugin-file-validate-type.min.js') }}"></script>
 <script src="{{ asset('assets-serwisant-cp/DateTimePicker.min.js') }}"></script>
 
 <script src="{{ asset('assets-serwisant-cp/password_strength.js') }}"></script>

@@ -65,5 +65,7 @@ query {
         personalTransportEnabled
         internalTransportEnabled
         requirePhoneNumber
+        uploadFiles
+        uploadOnlyImages
     }
 }

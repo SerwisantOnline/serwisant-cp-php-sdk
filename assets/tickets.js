@@ -35,6 +35,9 @@ Application.Tickets.Form = function () {
   pond.on('processfile', function () {
     $('.form-buttons > button').removeClass('disabled');
   })
+  pond.on('error', function () {
+    $('.form-buttons > button').removeClass('disabled');
+  })
 
   var otherAddressFunc = function () {
     var addressRadio = $('input[name="ticket[address]"]:checked');

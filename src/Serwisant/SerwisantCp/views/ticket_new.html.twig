@@ -25,11 +25,13 @@
       {{ form_field({type: 'textarea', argument: 'ticket.issue', caption: t(_self, 'issue')}, form_params, errors) }}
     </div>
 
-    <div class="mb-3 clearfix" id="create_repair_file_uploader">
-      {% for temporary_file in temporary_files %}
-        <div class="undisplayed temporary-file-json" data-ID="{{ temporary_file }}"></div>
-      {% endfor %}
-    </div>
+    {% if configuration.uploadFiles %}
+      <div class="mb-3 clearfix" id="create_repair_file_uploader">
+        {% for temporary_file in temporary_files %}
+          <div class="undisplayed temporary-file-json" data-ID="{{ temporary_file }}"></div>
+        {% endfor %}
+      </div>
+    {% endif %}
 
     {% for customField in customFieldsDefinitions %}
       {% if customField.concern %}

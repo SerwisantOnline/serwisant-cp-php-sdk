@@ -68,6 +68,7 @@ copy('node_modules/datetimepicker/dist/DateTimePicker.min.css')
 
 copy('node_modules/filepond/dist/filepond.min.js')
 copy('node_modules/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.js')
+copy('node_modules/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.min.js')
 copy('node_modules/filepond/dist/filepond.min.css')
 copy('node_modules/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css')
 

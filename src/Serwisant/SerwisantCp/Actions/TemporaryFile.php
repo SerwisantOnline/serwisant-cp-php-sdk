@@ -2,6 +2,7 @@
 
 namespace Serwisant\SerwisantCp\Actions;
 
+use Serwisant\SerwisantCp\ExceptionNotFound;
 use Symfony\Component\HttpFoundation;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\FileInput;
 use Serwisant\SerwisantCp\Action;
@@ -10,6 +11,8 @@ class TemporaryFile extends Action
 {
   public function create()
   {
+    $this->checkModuleActive();
+
     $files = $this->request->files->get('temporary_files');
 
     if (is_array($files) && count($files) == 1 && $files[0]->isValid()) {
@@ -30,6 +33,8 @@ class TemporaryFile extends Action
 
   public function show()
   {
+    $this->checkModuleActive();
+
     $result = $this->apiCustomer()->customerQuery()->temporaryFiles([$this->request->get('load')]);
 
     if (is_array($result) && count($result) == 1) {
@@ -47,5 +52,12 @@ class TemporaryFile extends Action
     }
 
     return new HttpFoundation\Response('', 404);
+  }
+
+  private function checkModuleActive()
+  {
+    if (!$this->getLayoutVars()['configuration']->uploadFiles) {
+      throw new ExceptionNotFound(__CLASS__, __LINE__);
+    }
   }
 }

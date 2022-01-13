@@ -80,6 +80,7 @@ type CustomerPanelConfig {
     requirePhoneNumber: Boolean!
     showOrderProgressInfo: Boolean!
     showRepairDelegation: Boolean!
+    uploadFiles: Boolean!
     uploadOnlyImages: Boolean!
     "Message to be shown before login - for every user"
     welcomeMessage: String
@@ -975,6 +976,18 @@ enum TaxPrefix {
     SK
 }
 
+"An ISO 8601-encoded date, eg. 2000-01-01, YYYY-MM-DD"
+scalar Date
+
+"An ISO 8601-encoded datetime"
+scalar DateTime
+
+"A reference to other, related entity or primary key of updated entity. 8 or more chars, uniq in scope of particular entity."
+scalar HashID
+
+"A decimal number represents amount of money."
+scalar Money
+
 input AddressInput {
     building: String
     city: String
@@ -1038,16 +1051,3 @@ input PhoneInput {
     countryPrefix: String!
     number: String!
 }
-
-
-"An ISO 8601-encoded date, eg. 2000-01-01, YYYY-MM-DD"
-scalar Date
-
-"An ISO 8601-encoded datetime"
-scalar DateTime
-
-"A reference to other, related entity or primary key of updated entity. 8 or more chars, uniq in scope of particular entity."
-scalar HashID
-
-"A decimal number represents amount of money."
-scalar Money
