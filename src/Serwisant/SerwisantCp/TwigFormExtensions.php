@@ -175,9 +175,24 @@ class TwigFormExtensions extends TwigExtensions
 
       case 'datalist':
         $class = "{$options->get('class', 'form-control')}{$class_error}";
-        $html .= "<input list='{$id}_datalist' data-url='{$options->get('data_url', '')}'  id='{$id}' class='{$class}' name='{$name}' data-bs-content='{$error_title}' value='{$value}' placeholder='{$caption}' title='{$caption}'>";
+        if ($options->get('data_url', '') !== '') {
+          $html .= "<input list='{$id}_datalist' data-url='{$options->get('data_url', '')}' id='{$id}' class='{$class}' name='{$name}' data-bs-content='{$error_title}' value='{$value}' placeholder='{$caption}' title='{$caption}'>";
+        } else {
+          $html .= "<input list='{$id}_datalist' id='{$id}' class='{$class}' name='{$name}' data-bs-content='{$error_title}' value='{$value}' placeholder='{$caption}' title='{$caption}'>";
+        }
         $html .= $label;
         $html .= "<datalist id='{$id}_datalist'>";
+        $rows = $options->get('options', []);
+        if (count($rows) > 0) {
+          foreach ($rows as $v => $t) {
+            if ($v == $value) {
+              $selected = 'selected';
+            } else {
+              $selected = '';
+            }
+            $html .= "<option {$selected} data-value='{$v}' value='{$t}'></option>";
+          }
+        }
         $html .= "</datalist>";
         break;
 

@@ -38,6 +38,10 @@ type CustomFieldValue {
     value: String
 }
 
+type CustomerAccessCreationResult {
+    errors: [Error!]
+}
+
 type CustomerActivationResult {
     errors: [Error!]
 }
@@ -110,8 +114,9 @@ type File {
 }
 
 type LoginResult {
+    ID: HashID!
     "Valid username"
-    login: String!
+    login: String
     "Empty if credential can log in, otherwise list reasons prevent from log in"
     unavailabilityReasons: [LoginUnavailabilityReason!]!
 }
@@ -187,29 +192,17 @@ type PublicMutation {
         "Repair token, the same was used to find repair."
         token: String!
     ): AcceptOrRejectRepairResult
-    """
-
-    Once customer is created via `createCustomer` he gets an email with activation URL contains a token.
-    Token must be used against this mutation to activate an accoint and allo customer to log-in.
-    """
+    "Once customer is created via `createCustomer` he gets an email with activation URL contains a token. Token must be used against this mutation to activate an account and also customer to log-in."
     activateCustomer(activationToken: String!): CustomerActivationResult
-    """
-
-    Creates a customer account usable in `Customer` schema. Account is self-created account.
-    Don't use it for purposes other than customer Panel sign-up.
-    """
+    "Creates a customer account usable in `Customer` schema. Account is self-created account. Don't use it for purposes other than customer Panel sign-up."
     createCustomer(addresses: [AddressInput!], agreements: [CustomerAgreementInput!], customer: CustomerInput!): CustomerCreationResult
-    """
-
-    Pay for `OnlinePayment` using any available `type` of payment. Depending on result status, payment may be
-    queued: in that case pool for result, may be asked to redirect user to other site to complete a payment.
-    """
+    "Activate customer panel access for existing customer - set a login and password"
+    createCustomerAccess(activationToken: String!, agreements: [CustomerAgreementInput!], login: String!, password: String!): CustomerAccessCreationResult
+    "Pay for `OnlinePayment` using any available `type` of payment. Depending on result status, payment may be queued: in that case pool for result, may be asked to redirect user to other site to complete a payment."
     pay(errorUrl: String!, onlineTransaction: OnlineTransactionInput!, successUrl: String!, token: String!): OnlinePaymentResult
-    """
-
-    Give a login or email to get an email with password reset link. Email will contain a reset token to use with `setPassword` mutation.
-    Token is valid for limited time.
-    """
+    "If customer already exists (`login` query will return data, or `create_customer` ends up with email exists validation error) this mutation can be used to send a secret link points to panel access activation (set up a login and password)."
+    requestCustomerAccess(customer: HashID!): Boolean
+    "Give a login or email to get an email with password reset link. Email will contain a reset token to use with `setPassword` mutation. Token is valid for limited time."
     resetPassword(loginOrEmail: String!, subject: PasswordResetSubject!): PasswordResetResult
     "Use a token sent by `resetPassword` to set a new password."
     setPassword(password: String!, passwordConfirmation: String!, resetToken: String!): PasswordSetResult
@@ -223,7 +216,7 @@ type PublicQuery {
     "Will return a list of custom fields for customer signup form - for generic list see customFields in other schemas"
     customerCustomFields: [CustomField!]!
     customerStatements: [CustomerStatement!]!
-    "This query map given login credential, ie. email, or login itself to username valid for OAuth password login. Please note: given credential can point to more than one login, so thus must be handled on frontend side."
+    "This query map given login credential, ie. email, or username itself to OAuth login. Please note: given credential can point to more than one login, so thus must be handled on frontend side. This will also return unavailability reasons if customer has no internet access enabled or account is not activated with confirmation link."
     login(loginCredential: String!): [LoginResult!]!
     "If token belongs to online payment, use this query to get details"
     paymentByToken(token: String!): OnlinePayment!
@@ -848,6 +841,7 @@ enum ImageSize {
 enum LoginUnavailabilityReason {
     DELETED
     DISABLED
+    INTERNET_ACCESS_NOT_ENABLED
     NOT_ACTIVATED
 }
 
@@ -940,9 +934,11 @@ enum SubscriberBusinessActivity {
     BIKES
     CELL_PHONE
     ELECTRONIC
+    GARDEN
     HOUSEHOLD_EQUIPMENT
     OTHER
     PC
+    PHOTO
 }
 
 enum TaxPrefix {

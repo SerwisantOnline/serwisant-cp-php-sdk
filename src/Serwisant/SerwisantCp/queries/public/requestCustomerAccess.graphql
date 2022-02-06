@@ -1,0 +1,3 @@
+mutation requestCustomerAccess($customer: HashID!) {
+    requestCustomerAccess(customer: $customer)
+}

@@ -1,0 +1,10 @@
+mutation createCustomerAccess($activationToken: String!, $login: String!, $password: String!, $agreements: [CustomerAgreementInput!]) {
+    createCustomerAccess(activationToken: $activationToken, login: $login, password: $password, agreements: $agreements) {
+        __typename
+        errors {
+            __typename
+            argument
+            code
+        }
+    }
+}

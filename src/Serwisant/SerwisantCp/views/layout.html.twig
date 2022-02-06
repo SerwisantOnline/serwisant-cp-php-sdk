@@ -20,7 +20,8 @@
     dpTranslations: {{ t('dp') | json_encode() | raw }},
     fpTranslations: {{ t('fp') | json_encode() | raw }},
     uploadUrl: "{{ path('temporary_file') }}",
-    uploadOnlyImages: {{ configuration.uploadOnlyImages ? 1 : 0 }}
+    uploadOnlyImages: {{ configuration.uploadOnlyImages ? 1 : 0 }},
+    createCustomerAccessUrl: "{{ path('new_access_request', {customer: 'ID'}) }}"
   }
 </script>
 

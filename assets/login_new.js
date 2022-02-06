@@ -13,9 +13,12 @@ Application.Login.Resolve = function () {
     } else {
       var
         login = _.get(_.head(data), 'login'),
-        unavailabilityReasons = _.get(_.head(data), 'unavailabilityReasons');
+        unavailabilityReasons = _.get(_.head(data), 'unavailabilityReasons'),
+        id = _.get(_.head(data), 'ID');
 
-      if (_.size(unavailabilityReasons) > 0) {
+      if (_.indexOf(unavailabilityReasons, 'INTERNET_ACCESS_NOT_ENABLED') >= 0) {
+        Application.Url.Go(_.replace(Application.Options.Get('createCustomerAccessUrl'), '/ID', '/' + id));
+      } else if (_.size(unavailabilityReasons) > 0) {
         unavailabilityReasons = _.map(unavailabilityReasons, function (reason) {
           return btn.attr('data-tr-' + reason);
         });

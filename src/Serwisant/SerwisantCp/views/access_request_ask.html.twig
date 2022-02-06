@@ -1,0 +1,14 @@
+<form method="post" action="{{ path('new_access_request', {customer: customer}) }}">
+  <div class="bg-light p-5 rounded mt-3">
+    <h1>{{ t(_self, 'title') }}</h1>
+    <p class="lead">{{ t(_self, 'description') }}</p>
+
+    <div class="clearfix">
+      <div class="mb-3 float-end form-buttons">
+        <a href="{{ path('dashboard') }}" class="btn btn-secondary mb-3">{{ t(_self, 'cancel') }}</a>
+        <button type="submit" class="btn btn-primary mb-3">{{ t(_self, 'submit') }}</button>
+      </div>
+    </div>
+
+  </div>
+</form>

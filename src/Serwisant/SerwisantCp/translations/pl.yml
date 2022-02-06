@@ -97,7 +97,7 @@ pl:
 
   flashes:
     login_first: "Zanim rozpoczniesz korzystanie z aplikacji powinieneś się zalogować."
-    signup_successful: "Konto zostało zarejestrowane. Musisz je teraz potwierdzić za pomocą linka, który wysłaliśmy na
+    signup_successful: "Konto zostało zarejestrowane. Musisz je teraz potwierdzić za pomocą linku, który wysłaliśmy na
       adres email, który podałeś/podałaś podczas rejestracji. Odczekaj minutę, a następnie sprawdź skrzynkę.
       Jeśli nie nie widzisz w skrzynce maila z linkiem aktywacyjnym sprawdź w pierwszej kolejności skrzynki 'Spam',
       'Niechciana poczta', etc."
@@ -118,6 +118,9 @@ pl:
     message_creation_successful: "Pomyślnie wysłano twoją wiadomość"
     ticket_creation_successful: "Twoje zgłoszenie zostało pomyślnie utworzone. W skrzynce email znajdziesz potwierdzenie."
     viewer_data_update_successful: "Twoje dane zostały pomyślnie zaktualizowane"
+    access_request_successful: "Wysłaliśmy na twój adres email link, którym możesz ustawić dane logowania i tym samym uzyskać
+      dostęp do panelu klienckiego. Sprawdź proszę skrzynkę pocztową."
+    access_request_complete: "Utworzyliśmy twoje konto, możesz się teraz zalogować."
 
   layout:
     viewer: "Edytuj dane"
@@ -181,6 +184,7 @@ pl:
     login_not_activated: "Aktywuj twoje konto linkiem, który otrzymałeś zaraz po rejestracji."
     login_disabled: "Twoje konto zostało usunięte lub zablokowane. Skontaktuj się z serwisem w celu wyjaśnienia
       sytuacji"
+    internet_access_not_enabled: "Przed zalogowaniem musisz potwierdzić adres email oraz ustawić hasło logowania."
     password: "Hasło"
     submit: "Rozpocznij"
     forgot_password: "Zapomniałem hasła."
@@ -200,6 +204,29 @@ pl:
     submit: "Zarejestruj własne konto"
     cancel: "Anuluj"
     read_agreement: "Czytaj"
+    close: "Zamknij"
+  access_request_ask:
+    title: "Aktywacja dostępu do panelu klienta"
+    description: "Wykryliśmy, że serwis utworzył już twoje konto. Prawdopodobnie zlecałeś już w jakąś 
+      naprawę, lub zgłoszenie stacjonarnie, telefonicznie, etc. Kliknij przycisk Wyślij link aby otrzymać na twój
+      adres email link, do strony na której będzie można ustawić login i hasło do panelu."
+    submit: "Wyślij link"
+    cancel: "Anuluj"
+  access_request_new:
+    title: "Aktywacja dostępu do panelu klienta"
+    description: "Dokończ aktywację dostępu do panelu klienckiego. W tym celu wybierz swój login i hasło oraz zaakceptuj
+      niezbedne zgody."
+    login_pass_info_html: "Loginem może być twoje imie i nazwisko. Możesz wybrać cokolwiek, pamiętaj że do panelu możesz także 
+      <strong>logować się adresem email</strong>.
+      <br>
+      <br>
+      Używaj różnych haseł, w różnych serwisach. Zamiast zapamiętywać je, zapisz w przeglądarce. Nie martw się o utratę 
+      dostepu. <strong>Jeśli zapomnisz hasła</strong> będziesz mógł je z dowolnym momencie zresetować."
+    login: "Login do konta"
+    password: "Hasło"
+    read_agreement: "Czytaj"
+    submit: "Aktywuj konto"
+    cancel: "Anuluj"
     close: "Zamknij"
   viewer_edit:
     title: "Aktualizacja danych"
