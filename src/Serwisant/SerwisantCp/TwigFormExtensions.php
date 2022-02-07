@@ -117,7 +117,7 @@ class TwigFormExtensions extends TwigExtensions
       return "[{$el}]";
     }, $arguments));
 
-    $id = $options->get('id', "{$name_container}_" . join('_', $arguments));
+    $id = $options->get('id', "{$name_container}" . (count($arguments) > 0 ? '_' : '') . join('_', $arguments));
     $name = $options->get('name', "{$name_container}{$name_arr}");
 
     // Priorytet ma to, co zejdzie z POST, później wartość przekazana z konfiguracji
@@ -159,7 +159,8 @@ class TwigFormExtensions extends TwigExtensions
 
     switch ($type) {
       case 'hidden':
-        $html .= "<input type='{$options->get('type')}' id='{$id}' name='{$name}' value='{$value}'>";
+        $class = "{$options->get('class', 'form-control')}{$class_error}";
+        $html .= "<input type='{$options->get('type')}' id='{$id}' class='{$class}' name='{$name}' data-bs-content='{$error_title}' value='{$value}'>";
         break;
 
       case 'text':

@@ -13,9 +13,6 @@ Application.Repairs.Form = function () {
     })
   };
 
-  $('#repair_type').change(function () {
-    customFields($(this).val());
-  });
   customFields($('#repair_type').val());
 
   $('#repair_warranty').change(function () {
@@ -32,26 +29,38 @@ Application.Repairs.Form = function () {
     $('#create_repair_warranty_attributes').removeClass('undisplayed');
   }
 
-  var pond = FilePond.create({
-    files: _.map($('.temporary-file-json'), function (div) {
-      return {
-        source: $(div).attr('data-ID'),
-        options: {
-          type: 'local'
+  if ($('#create_repair_file_uploader').length > 0) {
+    var pond = FilePond.create({
+      files: _.map($('.temporary-file-json'), function (div) {
+        return {
+          source: $(div).attr('data-ID'),
+          options: {
+            type: 'local'
+          }
         }
-      }
+      })
+    });
+    pond.appendTo(document.getElementById('create_repair_file_uploader'));
+    pond.on('addfilestart', function () {
+      $('.form-buttons > button').addClass('disabled');
     })
-  });
-  pond.appendTo(document.getElementById('create_repair_file_uploader'));
-  pond.on('addfilestart', function () {
-    $('.form-buttons > button').addClass('disabled');
+    pond.on('processfile', function () {
+      $('.form-buttons > button').removeClass('disabled');
+    })
+    pond.on('error', function () {
+      $('.form-buttons > button').removeClass('disabled');
+    })
+  }
+
+  $('#repairSubject').on('change', function () {
+    var value = $('#repairSubject_datalist [value="' + $(this).val() + '"]').attr('data-value');
+    $('#repair_type').val(value);
+    customFields(value);
   })
-  pond.on('processfile', function () {
-    $('.form-buttons > button').removeClass('disabled');
-  })
-  pond.on('error', function () {
-    $('.form-buttons > button').removeClass('disabled');
-  })
+  if ($('#repair_type').hasClass('is-invalid')) {
+    $('#repairSubject').addClass('is-invalid').attr('data-bs-content', $('#repair_type').attr('data-bs-content'));
+    Application.Ui.FormErrorsToPopover();
+  }
 
   Application.Ui.Autocomplete($('#repair_vendor'));
   Application.Ui.Autocomplete($('#repair_model'));

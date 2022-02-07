@@ -39,6 +39,9 @@ pl:
     ticket:
       customFields:
         value: "Pole tekstowe"
+    repair:
+      customFields:
+        value: "Pole tekstowe"
 
   twig_extensions:
     progressed_about: "Wykonano w %{percent}%"
