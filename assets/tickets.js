@@ -18,26 +18,28 @@ Application.Tickets.Form = function () {
   });
   customFields($('#repair_type').val());
 
-  var pond = FilePond.create({
-    files: _.map($('.temporary-file-json'), function (div) {
-      return {
-        source: $(div).attr('data-ID'),
-        options: {
-          type: 'local'
+  if ($('#create_ticket_file_uploader').length > 0) {
+    var pond = FilePond.create({
+      files: _.map($('.temporary-file-json'), function (div) {
+        return {
+          source: $(div).attr('data-ID'),
+          options: {
+            type: 'local'
+          }
         }
-      }
+      })
+    });
+    pond.appendTo(document.getElementById('create_ticket_file_uploader'));
+    pond.on('addfilestart', function () {
+      $('.form-buttons > button').addClass('disabled');
     })
-  });
-  pond.appendTo(document.getElementById('create_repair_file_uploader'));
-  pond.on('addfilestart', function () {
-    $('.form-buttons > button').addClass('disabled');
-  })
-  pond.on('processfile', function () {
-    $('.form-buttons > button').removeClass('disabled');
-  })
-  pond.on('error', function () {
-    $('.form-buttons > button').removeClass('disabled');
-  })
+    pond.on('processfile', function () {
+      $('.form-buttons > button').removeClass('disabled');
+    })
+    pond.on('error', function () {
+      $('.form-buttons > button').removeClass('disabled');
+    })
+  }
 
   var otherAddressFunc = function () {
     var addressRadio = $('input[name="ticket[address]"]:checked');
