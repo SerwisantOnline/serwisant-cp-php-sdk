@@ -22,8 +22,6 @@ class AccessRequest extends Action
 
   public function new($errors = [])
   {
-    $this->checkModuleActive();
-
     $result = $this->apiPublic()->publicQuery()->newRequest()->setFile('newSignup.graphql')->execute();
     $vars = [
       'agreementsDefinitions' => $result->fetch('customerAgreements'),
@@ -39,7 +37,6 @@ class AccessRequest extends Action
 
   public function create()
   {
-    $this->checkModuleActive();
     $agreements_input = $this->formHelper()->mapAgreements($this->request->get('agreements', []));
     $result = $this
       ->apiPublic()

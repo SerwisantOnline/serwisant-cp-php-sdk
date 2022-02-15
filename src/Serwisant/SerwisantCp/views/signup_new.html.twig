@@ -104,3 +104,28 @@
     </div>
   </div>
 {% endfor %}
+
+{% for error in errors %}
+  {% if error.argument == 'customer.email' and error.code == 'taken' %}
+    <div class="modal fade" id="pleaseLoginModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="pleaseLoginModalLabel" aria-hidden="false">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="pleaseLoginModalLabel">{{ t(_self, 'please_login_modal.title') }}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            {{ t(_self, 'please_login_modal.content_html') }}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ t(_self, 'please_login_modal.close') }}</button>
+            <button type="button"
+                    data-url="{{ path('dashboard') }}"
+                    class="btn btn-primary"
+                    id="pleaseLoginModalConfirm">{{ t(_self, 'please_login_modal.ok') }}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+{% endfor %}

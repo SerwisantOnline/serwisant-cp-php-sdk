@@ -21,6 +21,15 @@ Application.Signup.Form = function () {
   Application.Ui.GenerateLogin($('#customer_login'), [customer_person, customer_name], [customer_person, customer_name]);
 
   Application.Ui.PasswordStrength('#customer_login', '#customer_password');
+
+  var pleaseLoginModal = $('#pleaseLoginModal');
+  if (pleaseLoginModal.length > 0) {
+    $('#pleaseLoginModalConfirm').on('click', function () {
+      Application.Url.Go($(this).attr('data-url'));
+    });
+    var modal = new bootstrap.Modal(pleaseLoginModal, {});
+    modal.show();
+  }
 }
 
 

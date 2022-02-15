@@ -26,6 +26,7 @@ pl:
     confirmation: "Powrórzona wartość jest niepoprawna"
     wrong_length: "Nipoprawna długość"
     not_gsm: "Wymagany jest numer telefonu komórkowego"
+    not_found: "Nie znaleziono"
 
   entitles:
     loginOrEmail: "Login lub adres email"
@@ -187,10 +188,10 @@ pl:
     login_not_activated: "Aktywuj twoje konto linkiem, który otrzymałeś zaraz po rejestracji."
     login_disabled: "Twoje konto zostało usunięte lub zablokowane. Skontaktuj się z serwisem w celu wyjaśnienia
       sytuacji"
-    internet_access_not_enabled: "Przed zalogowaniem musisz potwierdzić adres email oraz ustawić hasło logowania."
+    internet_access_not_enabled: "Twój dostęp do panelu klienckiego musi zostać aktywowany. Skontaktuj się z serwisem."
     password: "Hasło"
     submit: "Rozpocznij"
-    forgot_password: "Zapomniałem hasła."
+    forgot_password: "Przypomnij moje hasło"
   signup_new:
     title: "Rejestracja nowego konta"
     description: "Zacznij od rejestracji własnego konta. Wypełnij formularz."
@@ -208,6 +209,15 @@ pl:
     cancel: "Anuluj"
     read_agreement: "Czytaj"
     close: "Zamknij"
+    please_login_modal:
+      title: "Informacja"
+      content_html: "Wykryliśmy, że w bazie danych serwisu istnieje już konto klienta powiązane z podanym adresem email. 
+        Prosimy o przerwanie rejestracji i przejście do strony logowania.<br><br>
+        Proszę użyć podanego tutaj adresu email do logowania.<br><br> 
+        Jeśli  nie pamiętasz lub nie masz jeszcze swojego hasła, użyj opcji 'Przypomnij hasło' aby je zresetować, lub 
+        ustawić nowe."
+      close: "Anuluj"
+      ok: "Rozumiem, przechodzę do logowania"
   access_request_ask:
     title: "Aktywacja dostępu do panelu klienta"
     description: "Wykryliśmy, że serwis utworzył już twoje konto. Prawdopodobnie zlecałeś już w jakąś 
@@ -264,7 +274,7 @@ pl:
       already_activated: "konto jest już aktywne - aktywacja jest operacją jednorazową - możesz przejść na stronę
         logowania"
     button_caption: "Przejdź na stronę logowania"
-  password_reset:
+  password_reset_new:
     title: "Resetowanie hasła"
     description: "To narzędzie umożliwia zresetowanie zapomnianego hasła. Najpierw podaj login lub email Twojego konta
       w Panelu Klienta. Jeśli uda się je odnaleźć, wyślemy na adres email powiązany z Twoim kontem
@@ -274,7 +284,7 @@ pl:
     cancel: "Anuluj"
     errors:
       not_found: "Nie znaleziono użytkownika pasującego do podanego loginu lub adresu email"
-  password_set:
+  password_reset_new_password:
     title: "Resetowanie hasła"
     description: "Podaj nowe hasło dla Twojego konta."
     password: "Hasło"

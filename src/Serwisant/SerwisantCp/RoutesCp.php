@@ -56,8 +56,6 @@ class RoutesCp extends Routes
       ->before($this->expectAccessTokens())
       ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter());
 
-    /////
-
     $cp->get('/access_request/ask/{customer}', function (Request $request, Token $token, string $customer) {
       return (new Actions\AccessRequest($this->app, $request, $token))->ask($customer);
     })
@@ -83,8 +81,6 @@ class RoutesCp extends Routes
       ->before($this->expectAccessTokens())
       ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
       ->bind('create_access_request');
-
-    /////
 
     $cp->get('/signup/{signup_token}', function (Request $request, Token $token, string $signup_token) {
       return (new Actions\Signup($this->app, $request, $token))->confirm($signup_token);
