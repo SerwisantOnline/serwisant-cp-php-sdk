@@ -27,7 +27,7 @@ pl:
     wrong_length: "Nipoprawna długość"
     not_gsm: "Wymagany jest numer telefonu komórkowego"
     not_found: "Nie znaleziono"
-
+    too_long: "Tekst jest zbyt długi. Ogranicz ilość znaków."
   entitles:
     loginOrEmail: "Login lub adres email"
     agreements:

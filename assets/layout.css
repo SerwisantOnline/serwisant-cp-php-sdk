@@ -107,6 +107,10 @@ textarea {
     margin-top: 3px;
 }
 
+.btn-outline-form {
+    border-color: #ced4da !important;
+}
+
 /* online payments */
 
 .loading {

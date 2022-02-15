@@ -225,8 +225,27 @@ class TwigFormExtensions extends TwigExtensions
         break;
 
       case 'select':
-        $class = "{$options->get('class', 'form-select')}{$class_error}";
-        $html .= "<select id='{$id}' class='{$class}' name='{$name}' data-bs-content='{$error_title}' title='{$caption}'>";
+      case 'selectpicker':
+        if ($type === 'select') {
+          $default_class = 'form-select';
+        } elseif ($type === 'selectpicker') {
+          $default_class = 'selectpicker';
+        } else {
+          $default_class = '';
+        }
+        $class = "{$options->get('class', $default_class)}{$class_error}";
+        $html .= "<select id='{$id}' class='{$class}' name='{$name}' data-bs-content='{$error_title}'";
+        if ($type === 'selectpicker') {
+          if ($error_title) {
+            $data_style = 'btn-lg';
+          } else {
+            $data_style = 'btn-lg btn-outline-form';
+          }
+          $html .= " title='{$options->get('selectpicker_caption', '')}' data-live-search='true' data-style='{$data_style}' data-width='50%' ";
+        } else {
+          $html .= " title='{$caption}'";
+        }
+        $html .= ">";
         $rows = $options->get('options', []);
         if ($options->get('include_blank', false)) {
           $rows = ['' => ''] + $rows;

@@ -6,8 +6,7 @@
     {{ form_errors(_self, errors) }}
 
     <div class="mb-3">
-      {{ form_field({type: 'datalist', argument: 'repairSubject', caption: t(_self, 'type'), options: dictionary_select_options, include_blank: true}, form_params, errors) }}
-      {{ form_field({type: 'hidden', argument: 'repair.type'}, form_params, errors) }}
+      {{ form_field({type: 'selectpicker', argument: 'repair.type', selectpicker_caption: t(_self, 'type'), options: dictionary_select_options, include_blank: true}, form_params, errors) }}
     </div>
 
     {% if not configuration.orderDictModel %}

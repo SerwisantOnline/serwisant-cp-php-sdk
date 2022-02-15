@@ -52,16 +52,6 @@ Application.Repairs.Form = function () {
     })
   }
 
-  $('#repairSubject').on('change', function () {
-    var value = $('#repairSubject_datalist [value="' + $(this).val() + '"]').attr('data-value');
-    $('#repair_type').val(value);
-    customFields(value);
-  })
-  if ($('#repair_type').hasClass('is-invalid')) {
-    $('#repairSubject').addClass('is-invalid').attr('data-bs-content', $('#repair_type').attr('data-bs-content'));
-    Application.Ui.FormErrorsToPopover();
-  }
-
   Application.Ui.Autocomplete($('#repair_vendor'));
   Application.Ui.Autocomplete($('#repair_model'));
 }
