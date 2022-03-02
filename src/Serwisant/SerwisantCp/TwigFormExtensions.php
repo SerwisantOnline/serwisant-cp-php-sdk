@@ -58,7 +58,7 @@ class TwigFormExtensions extends TwigExtensions
 
     $field_key = str_replace('', '.html.twig', $template);
 
-    $html = '<div class="card text-danger border-danger mb-3">';
+    $html = '<div class="card text-danger border-danger mt-3 mb-3">';
     $html .= '<div class="card-header"><strong>';
     $html .= $this->t(['errors_title']);
     $html .= '</strong></div>';

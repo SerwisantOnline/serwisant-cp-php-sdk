@@ -51,25 +51,32 @@
           <tbody>
           <tr>
             <td class="column-definition">{{ t(_self, 'payment_type') }}</td>
-            <td colspan="2">{{ ticket.payment.type ? t('payment_types', ticket.payment.type) : '' }}</td>
+            <td
+              colspan="2">{{ ticket.payment.type ? t('payment_types', ticket.payment.type) : t(_self, 'not_defined') }}</td>
           </tr>
-          <tr>
-            <td class="column-definition">{{ t(_self, 'time') }}</td>
-            <td colspan="2">{{ ticket.payment.hoursSpend ? ticket.payment.hoursSpend : '' }}</td>
-          </tr>
-          <tr>
-            <td class="column-definition">{{ t(_self, 'payment') }}</td>
-            <td>
-              {% if not ticket.payment.paymentNet is null %}
-                {{ ticket.payment.paymentNet | format_currency }}
-              {% endif %}
-            </td>
-            <td>
-              {% if not ticket.payment.paymentGross is null %}
-                {{ ticket.payment.paymentGross | format_currency }}
-              {% endif %}
-            </td>
-          </tr>
+          {% if ticket.payment.hoursSpend %}
+            <tr>
+              <td class="column-definition">{{ t(_self, 'time') }}</td>
+              <td colspan="2">
+                {{ ticket.payment.hoursSpend | number_format(0) }} {{ t(_self, 'hour') }}
+              </td>
+            </tr>
+          {% endif %}
+          {% if not ticket.payment.paymentNet is null or not ticket.payment.paymentGross is null %}
+            <tr>
+              <td class="column-definition">{{ t(_self, 'payment') }}</td>
+              <td>
+                {% if not ticket.payment.paymentNet is null %}
+                  {{ ticket.payment.paymentNet | format_currency(currency) }}
+                {% endif %}
+              </td>
+              <td>
+                {% if not ticket.payment.paymentGross is null %}
+                  {{ ticket.payment.paymentGross | format_currency(currency) }}
+                {% endif %}
+              </td>
+            </tr>
+          {% endif %}
           <tr>
             <td class="column-definition">{{ t(_self, 'paid') }}</td>
             <td colspan="2">

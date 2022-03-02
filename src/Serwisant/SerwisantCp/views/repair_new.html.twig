@@ -2,10 +2,13 @@
   <div class="bg-light p-5 rounded mt-3">
     <h1>{{ t(_self, 'title') }}</h1>
     <p class="lead">{{ t(_self, 'description') }}</p>
+  </div>
 
-    {{ form_errors(_self, errors) }}
+  {{ form_errors(_self, errors) }}
 
+  <div class="bg-light p-5 rounded mt-3">
     <div class="mb-3">
+      <label>{{ t(_self, 'type') }}</label>
       {{ form_field({type: 'selectpicker', argument: 'repair.type', selectpicker_caption: t(_self, 'type'), options: dictionary_select_options, include_blank: true}, form_params, errors) }}
     </div>
 

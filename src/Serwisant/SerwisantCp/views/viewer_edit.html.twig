@@ -2,9 +2,11 @@
   <div class="bg-light p-5 rounded mt-3">
     <h1>{{ t(_self, 'title') }}</h1>
     <p class="lead">{{ t(_self, 'description') }}</p>
+  </div>
 
-    {{ form_errors(_self, errors) }}
+  {{ form_errors(_self, errors) }}
 
+  <div class="bg-light p-5 rounded mt-3">
     <div class="mb-3">
       {% set customerTypeOptions = {'PERSONAL': t(_self, 'customer_type.personal'),'BUSINESS': t(_self, 'customer_type.business')} %}
       {{ form_field({type: 'select', argument: 'customer.type', caption: t(_self, 'type'), options: customerTypeOptions, value: customer.type}, form_params, errors) }}

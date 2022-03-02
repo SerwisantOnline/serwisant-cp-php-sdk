@@ -2,13 +2,15 @@
   <div class="bg-light p-5 rounded mt-3">
     <h1>{{ t(_self, 'title') }}</h1>
     <p class="lead">{{ t(_self, 'description') }}</p>
+  </div>
 
-    {% if configuration.requirePhoneNumber %}
-      {{ form_errors(_self, errors) }}
-    {% else %}
-      {{ form_errors(_self, errors, ['customer.phone.number']) }}
-    {% endif %}
+  {% if configuration.requirePhoneNumber %}
+    {{ form_errors(_self, errors) }}
+  {% else %}
+    {{ form_errors(_self, errors, ['customer.phone.number']) }}
+  {% endif %}
 
+  <div class="bg-light p-5 rounded mt-3">
     <div class="mb-3">
       {% set customerTypeOptions = {'PERSONAL': t(_self, 'customer_type.personal'),'BUSINESS': t(_self, 'customer_type.business')} %}
       {{ form_field({type: 'select', argument: 'customer.type', caption: t(_self, 'type'), options: customerTypeOptions}, form_params, errors) }}
@@ -107,7 +109,8 @@
 
 {% for error in errors %}
   {% if error.argument == 'customer.email' and error.code == 'taken' %}
-    <div class="modal fade" id="pleaseLoginModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="pleaseLoginModalLabel" aria-hidden="false">
+    <div class="modal fade" id="pleaseLoginModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="pleaseLoginModalLabel" aria-hidden="false">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -118,7 +121,8 @@
             {{ t(_self, 'please_login_modal.content_html') }}
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ t(_self, 'please_login_modal.close') }}</button>
+            <button type="button" class="btn btn-secondary"
+                    data-bs-dismiss="modal">{{ t(_self, 'please_login_modal.close') }}</button>
             <button type="button"
                     data-url="{{ path('dashboard') }}"
                     class="btn btn-primary"

@@ -13,7 +13,11 @@ Application.Repairs.Form = function () {
     })
   };
 
-  customFields($('#repair_type').val());
+  var repairTypeInput = $('#repair_type');
+  repairTypeInput.on('change', function () {
+    customFields($(this).val());
+  })
+  customFields(repairTypeInput.val());
 
   $('#repair_warranty').change(function () {
     if ($(this).is(":checked")) {
@@ -25,6 +29,7 @@ Application.Repairs.Form = function () {
 
     }
   })
+
   if ($('#repair_warranty').is(":checked")) {
     $('#create_repair_warranty_attributes').removeClass('undisplayed');
   }

@@ -2,9 +2,11 @@
   <div class="bg-light p-5 rounded mt-3">
     <h1>{{ t(_self, 'title') }}</h1>
     <p class="lead">{{ t(_self, 'description') }}</p>
+  </div>
 
-    {{ form_errors(_self, errors) }}
+  {{ form_errors(_self, errors) }}
 
+  <div class="bg-light p-5 rounded mt-3">
     <div class="mb-3">
       {{ form_field({type: 'text', argument: 'message.subject', caption: t(_self, 'subject')}, form_params, errors) }}
     </div>
