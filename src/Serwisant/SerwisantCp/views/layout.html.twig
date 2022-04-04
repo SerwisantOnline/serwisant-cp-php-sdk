@@ -77,6 +77,7 @@
                aria-expanded="false">{{ me.customer.displayName }} </a>
             <ul class="dropdown-menu" aria-labelledby="dropdown01">
               <li><a class="dropdown-item" href="{{ path('viewer') }}">{{ t(_self, 'viewer') }}</a></li>
+              <li><a class="dropdown-item" href="{{ path('viewer_password') }}">{{ t(_self, 'viewer_password') }}</a></li>
               <li><a class="dropdown-item"
                      href="{{ path('destroy_session') }}">{{ t(_self, 'logout') }}</a>
               </li>

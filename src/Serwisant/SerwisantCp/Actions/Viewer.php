@@ -11,7 +11,6 @@ class Viewer extends Action
 {
   public function edit($errors = [])
   {
-
     $vars = [
       'customer' => $this->apiCustomer()->customerQuery()->viewer(['complete' => true])->customer,
       'form_params' => $this->request->request,

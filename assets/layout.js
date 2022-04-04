@@ -15,10 +15,10 @@ $(document).ready(function () {
   Application.Ui.DatePickerAttach();
   Application.Ui.FormErrorsToPopover();
   Application.Ui.FileUploadConfigure();
+  Application.Ui.FormCommitButtonLock();
 
   var bsToasts = $('.toast');
   if (bsToasts.length > 0) {
     (new bootstrap.Toast($('.toast'))).show();
   }
-
 });

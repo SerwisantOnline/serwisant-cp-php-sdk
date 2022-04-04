@@ -101,8 +101,8 @@ class RoutesCp extends Routes
       ->before($this->expectAccessTokens())
       ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter());
 
-    $cp->get('/set_password/{password_token}', function (Request $request, Token $token, $password_token) {
-      return (new Actions\PasswordReset($this->app, $request, $token))->newPassword($password_token);
+    $cp->get('/set_password', function (Request $request, Token $token) {
+      return (new Actions\PasswordReset($this->app, $request, $token))->newPassword();
     })
       ->before($this->expectAccessTokens())
       ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter());
@@ -127,6 +127,19 @@ class RoutesCp extends Routes
       ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
       ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
       ->bind('viewer_update');
+
+    $cp->get('/viewer/set_password', function (Request $request, Token $token) {
+      return (new Actions\ViewerPassword($this->app, $request, $token))->edit();
+    })
+      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
+      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
+      ->bind('viewer_password');
+
+    $cp->post('/viewer/set_password', function (Request $request, Token $token) {
+      return (new Actions\ViewerPassword($this->app, $request, $token))->update();
+    })
+      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
+      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter());
 
     // TEMPORARY FILES
 

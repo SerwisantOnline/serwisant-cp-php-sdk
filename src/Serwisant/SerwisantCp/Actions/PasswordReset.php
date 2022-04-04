@@ -27,12 +27,13 @@ class PasswordReset extends Action
     }
   }
 
-  public function newPassword($token, array $errors = [])
+  public function newPassword(array $errors = [])
   {
     $vars = [
-      'token' => $token,
+      'token' => $this->request->get('jwt_token'),
       'formParams' => $this->request->request,
-      'errors' => $errors
+      'errors' => $errors,
+      'js_files' => ['password_reset_new_password.js']
     ];
     return $this->renderPage('password_reset_new_password.html.twig', $vars);
   }
@@ -41,7 +42,7 @@ class PasswordReset extends Action
   {
     $result = $this->apiPublic()->publicMutation()->setPassword($this->request->get('resetToken'), $this->request->get('password'), $this->request->get('passwordConfirmation'));
     if ($result->errors) {
-      return $this->newPassword($this->request->get('resetToken'), $result->errors);
+      return $this->newPassword($result->errors);
     } else {
       return $this->redirectTo('new_session', 'flashes.password_set');
     }

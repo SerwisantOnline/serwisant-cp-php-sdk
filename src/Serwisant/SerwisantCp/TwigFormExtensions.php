@@ -86,7 +86,7 @@ class TwigFormExtensions extends TwigExtensions
         $html .= "<li class='mb-1'><strong>{$argument_tr}</strong> - ";
         $messages = [];
         foreach ($el as $ei) {
-          $messages[] = mb_strtolower($this->t(['errors', $ei->code]));
+          $messages[] = mb_strtolower($this->t_with_fallback(['errors', $ei->argument, $ei->code], ['errors', $ei->code]));
         }
         $html .= implode(', ', $messages);
         $html .= "</li>";
@@ -133,7 +133,7 @@ class TwigFormExtensions extends TwigExtensions
     foreach ($errors as $error) {
       if ($error->argument === $argument || in_array($error->argument, $capture_argument_errors)) {
         if (is_null($tr_errors)) {
-          $argument_errors[] = $this->t(['errors', $error->code]);
+          $argument_errors[] = $this->t_with_fallback(['errors', $error->argument, $error->code], ['errors', $error->code]);
         } else {
           $argument_errors[] = $this->t_with_fallback([$tr_errors, $error->code], ['errors', $error->code]);
         }

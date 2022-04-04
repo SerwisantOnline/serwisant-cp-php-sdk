@@ -28,8 +28,18 @@ pl:
     not_gsm: "Wymagany jest numer telefonu komórkowego"
     not_found: "Nie znaleziono"
     too_long: "Tekst jest zbyt długi. Ogranicz ilość znaków."
+    password:
+      too_weak: "Podane hasło jest zbyt proste. Użyj małych i dużych znaków, znaków specjalnych, cyfr."
+    resetToken:
+      invalid: "Link resetowania hasła jest niepoprawny lub stracił ważność. Możesz naprawić ten problem poprzez
+        ponowne wysłanie linku do resetowania hasła."
+      not_found: "Link resetowania hasła jest niepoprawny lub stracił ważność. Możesz naprawić ten problem poprzez
+        ponowne wysłanie linku do resetowania hasła."
+
   entitles:
     loginOrEmail: "Login lub adres email"
+    resetToken: "Link resetowania hasła"
+    passwordConfirmation: "Potwierdzenie hasła"
     agreements:
       accepted: "Zgoda"
     customer:
@@ -125,7 +135,7 @@ pl:
     access_request_successful: "Wysłaliśmy na twój adres email link, którym możesz ustawić dane logowania i tym samym uzyskać
       dostęp do panelu klienckiego. Sprawdź proszę skrzynkę pocztową."
     access_request_complete: "Utworzyliśmy twoje konto, możesz się teraz zalogować."
-
+    viewer_password_update_successful: "Zaktuaizowano hasło. Zaloguj się za pomocą hasła, które ustawiłeś."
   layout:
     viewer: "Edytuj dane"
     logout: "Wyloguj"
@@ -135,6 +145,7 @@ pl:
     repairs: "Naprawy"
     tickets: "Zgłoszenia"
     messages: "Wiadomości"
+    viewer_password: "Zmień hasło"
 
   payment_types:
     INSTANT_FIXED: "Płatność po zakończeniu, za zlecenie"
@@ -291,10 +302,6 @@ pl:
     password_confirmation: "Powtórz hasło"
     cancel: "Anuluj"
     submit: "Zmień hasło"
-    errors:
-      too_weak: "Podane hasło jest zbyt proste. Użyj małych i dużych znaków, znaków specjalnych, cyfr."
-      not_found: "Link resetowania hasła jest niepoprawny lub stracił ważność. Możesz naprawić ten problem poprzez
-        ponowne wysłanie linku do resetowania hasła."
   repairs:
     title: "Naprawy"
     create_repair: "Utwórz nową naprawę"
@@ -526,3 +533,13 @@ pl:
     search: "sprawdź kod"
     or: "lub"
     customer_panel: "przejdź do panelu klienckiego"
+  viewer_password_edit:
+    title: "Aktualizacja hasła"
+    description: "Aby zaktualizować hasło musisz znać hasło aktualne. Jeśli go nie pamiętasz wyloguj się i skorzystaj ze
+      ścieżki resetowania hasła podczas logowania. Wybierając nowe hasło użyj małych i wielkich znaków, cyfr lub znaków 
+      specjalnych takich jak kropka lub pytajnik. Zwróć uwagę na to, że po zmianie hasła zostaniesz wylogowany."
+    currentPassword: "Aktualne hasło"
+    password: "Nowe hasło"
+    passwordConfirmation: "Potwierdzenie hasła"
+    cancel: "Anuluj"
+    submit: "Zmień hasło"
