@@ -43,7 +43,7 @@ class Repairs extends Action
     $this->checkModuleActive();
 
     $filter = new RepairsFilter(['type' => RepairsFilterType::ID, 'ID' => $id]);
-    $result = $this->apiCustomer()->customerQuery()->repairs(null, null, $filter, null, ['single' => true]);
+    $result = $this->apiCustomer()->customerQuery()->repairs(1, null, $filter, null, ['single' => true]);
     if (count($result->items) !== 1) {
       throw new ExceptionNotFound(__CLASS__, __LINE__);
     }

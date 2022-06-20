@@ -40,7 +40,7 @@ class Tickets extends Action
     $this->checkModuleActive();
 
     $filter = new TicketsFilter(['type' => RepairsFilterType::ID, 'ID' => $id]);
-    $result = $this->apiCustomer()->customerQuery()->tickets(null, null, $filter, null, ['single' => true]);
+    $result = $this->apiCustomer()->customerQuery()->tickets(1, null, $filter, null, ['single' => true]);
     if (count($result->items) !== 1) {
       throw new ExceptionNotFound(__CLASS__, __LINE__);
     }

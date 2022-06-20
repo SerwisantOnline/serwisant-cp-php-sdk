@@ -114,7 +114,7 @@ class Messages extends Action
   private function getThread($id)
   {
     $filter = new MessagesFilter(['type' => MessagesFilterType::ID, 'ID' => $id]);
-    $result = $this->apiCustomer()->customerQuery()->messages(null, null, $filter, null, ['single' => true]);
+    $result = $this->apiCustomer()->customerQuery()->messages(1, null, $filter, null, ['single' => true]);
 
     if (count($result->items) !== 1) {
       throw new ExceptionNotFound(__CLASS__, __LINE__);

@@ -33,7 +33,7 @@ class RoutesCa extends Routes
 
   protected function tokenAssertion(): string
   {
-    return '[a-zA-Z0-9]{6,32}';
+    return '[a-zA-Z0-9]{4,32}';
   }
 
   public function getRoutes()

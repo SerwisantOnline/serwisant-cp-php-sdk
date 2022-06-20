@@ -5,7 +5,8 @@ namespace Serwisant\SerwisantCp\Traits;
 use Serwisant\SerwisantCp\Token;
 use Symfony\Component\HttpFoundation\Request;
 
-trait RoutesNoToken {
+trait RoutesNoToken
+{
   protected function tokenConverter(): callable
   {
     return function ($token, Request $request) {
@@ -15,7 +16,6 @@ trait RoutesNoToken {
 
   protected function tokenAssertion(): string
   {
-    return '\w+';
+    return '[a-zA-Z0-9]{4,32}';
   }
-
 }
