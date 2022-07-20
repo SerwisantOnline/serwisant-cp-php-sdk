@@ -102,6 +102,7 @@ type CustomerMutation {
     markMessageRead(message: HashID!): Boolean
     print(ID: HashID!, type: PrintType!): TemporaryFileCreationResult
     updateViewer(addresses: [AddressUpdateInput!], agreements: [CustomerAgreementUpdateInput!], customer: CustomerUpdateInput): ViewerUpdateResult
+    updateViewerPassword(currentPassword: String!, password: String!, passwordConfirmation: String!): ViewerPasswordUpdateResult
 }
 
 type CustomerQuery {
@@ -119,6 +120,7 @@ type CustomerQuery {
 
 type Dictionary {
     ID: HashID!
+    auxiliaryId: String
     name: String!
     type: DictionaryType!
 }
@@ -185,6 +187,23 @@ type MessagesResult {
     pages: Int!
 }
 
+type Parcel {
+    courierName: String
+    deliverTo: ParcelEdge!
+    "This is a status obtained from external courier service and represent a parcel delivery state."
+    deliveryStatus: ParcelDeliveryStatus!
+    pickupFrom: ParcelEdge!
+    "Internal parcel's state."
+    status: ParcelStatus!
+    "Parcel's number ad courier tracking service. In general tracking services age public available and number can be used to get current delivery status. Please note: delivery status is tracked, so more-less it should match a `deliveryStatus` field."
+    trackingNumber: String
+}
+
+type ParcelEdge {
+    company: String
+    name: String
+}
+
 type Phone {
     "Country prefix, eg. +48"
     countryPrefix: String
@@ -204,11 +223,17 @@ type Priority {
 
 type Repair {
     ID: HashID!
-    advanceAmount: Float!
+    advanceAmount: Decimal!
+    "Address where service should pick up a repair item. Empty if `collectionType` type is `PERSONAL`"
+    collectionAddress: Address
+    "Defines how repair item will be collected from customer."
     collectionType: RepairTransportType!
     costs: RepairCosts!
     "Will return a list of values for custom fields"
     customFields: [CustomFieldValue!]!
+    "Address where repaired item should be returned. Empty if `deliveryType` type is `PERSONAL`"
+    deliveryAddress: Address
+    "Defines how repaired item should be returned to customer."
     deliveryType: RepairTransportType!
     diagnosis: RepairDiagnosis
     displayName: String!
@@ -217,8 +242,9 @@ type Repair {
     issue: String
     model: String
     offers: [RepairOffer!]
-    priceEstimated: Float
-    priceEstimatedTaxRate: Float
+    parcels: [Parcel!]
+    priceEstimated: Decimal
+    priceEstimatedTaxRate: Decimal
     rma: String!
     secretToken: SecretToken!
     serial: String
@@ -267,18 +293,18 @@ type RepairOffer {
     description: String
     items: [RepairOfferItem!]!
     number: String!
-    priceGross: Float!
+    priceGross: Decimal!
     "Summary net price for this offer. If offered repair was diagnosed, diagnosis price is included here."
-    priceNet: Float!
+    priceNet: Decimal!
     title: String!
 }
 
 type RepairOfferItem {
     description: String!
-    priceGross: Float!
-    priceNet: Float!
+    priceGross: Decimal!
+    priceNet: Decimal!
     type: RepairOfferItemType!
-    vat: Float!
+    vat: Decimal!
 }
 
 type RepairStatus {
@@ -332,6 +358,7 @@ type ServiceSupplier {
     displayName: String!
     email: String
     phone: Phone
+    type: ServiceSupplierType!
 }
 
 type TemporaryFile {
@@ -410,6 +437,10 @@ type Viewer {
     repairsServiceSupplier: ServiceSupplier
     "Service supplier dedicated for handling ticketing - it can be differ from main service supplier"
     ticketsServiceSupplier: ServiceSupplier
+}
+
+type ViewerPasswordUpdateResult {
+    errors: [Error!]
 }
 
 type ViewerUpdateResult {
@@ -688,6 +719,7 @@ enum CountryCode {
 
 enum CustomFieldForm {
     CUSTOMER
+    DEVICE
     REPAIR
     TICKET
 }
@@ -772,7 +804,28 @@ enum OrderTimeStatus {
     WARNING
 }
 
+enum ParcelDeliveryStatus {
+    CANCELED
+    COLLECTED
+    DELIVERED
+    DELIVERY
+    NOT_COLLECTED
+    NOT_DELIVERED
+    NOT_ORDERED
+    ORDERED
+    RETURNED
+    TRANSIT
+}
+
+enum ParcelStatus {
+    CLOSED
+    NEW
+    READY_FOR_SUBMISSION
+    SUBMITTED
+}
+
 enum PrintType {
+    PARCEL
     REPAIR_INTRO
     REPAIR_SUMMARY
     TICKET
@@ -850,6 +903,14 @@ enum SecretTokenSubject {
     ONLINEPAYMENT
     PARCEL
     REPAIR
+}
+
+enum ServiceSupplierType {
+    BRANCH
+    EXCHANGE_SOURCE
+    EXCHANGE_TARGET
+    MAIN
+    SERVICE_SUPPLIER
 }
 
 enum TaxPrefix {
@@ -972,6 +1033,7 @@ input CustomerUpdateInput {
 }
 
 input DictionaryEntriesFilter {
+    auxiliaryId: String
     type: DictionaryType
 }
 

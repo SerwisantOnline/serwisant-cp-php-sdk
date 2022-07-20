@@ -187,6 +187,18 @@ pl:
     RESOLVED: "Rozwiązany"
     CANCELED: "Anulowany"
 
+  parcel_delivery_status:
+    NOT_ORDERED: "Oczekuje na zamówienie"
+    ORDERED: "Zamówiona"
+    COLLECTED: "Odebrana od nadawcy"
+    NOT_COLLECTED: "Nie udało się odebrać przesyłki od nadawcy"
+    TRANSIT: "W drodze"
+    DELIVERY: "Wydano do doręczenia"
+    DELIVERED: "Doręczono"
+    NOT_DELIVERED: "Nie udało się doręczyć przesłyki"
+    CANCELED: "Anulowana"
+    RETURNED: "Zwrócona"
+
   login_new:
     title: "Zaloguj się!"
     login_description: "Zanim rozpoczniesz korzystanie z aplikacji powinieneś się zalogować."
@@ -315,6 +327,13 @@ pl:
     print_intro: "Przyjęcie"
     print_summary: "Podsumowanie"
   repair_details:
+    panel_parcels:
+      title: "Przesyłki kurierskie powiązane z naprawą"
+      sender: "Nadawca"
+      recipient: "Odbiorca"
+      courier: "Kurier"
+      status: "Stan przesyłki"
+      tracking: "Numer listu przewozowego"
     panel_service_supplier:
       title: 'Naprawiane przez:'
     panel_info:

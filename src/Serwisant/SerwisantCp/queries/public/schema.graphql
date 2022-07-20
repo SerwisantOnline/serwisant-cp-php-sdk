@@ -200,7 +200,7 @@ type PublicMutation {
     createCustomerAccess(activationToken: String!, agreements: [CustomerAgreementInput!], login: String!, password: String!): CustomerAccessCreationResult
     "Pay for `OnlinePayment` using any available `type` of payment. Depending on result status, payment may be queued: in that case pool for result, may be asked to redirect user to other site to complete a payment."
     pay(errorUrl: String!, onlineTransaction: OnlineTransactionInput!, successUrl: String!, token: String!): OnlinePaymentResult
-    "If customer already exists (`login` query will return data, or `create_customer` ends up with email exists validation error) this mutation can be used to send a secret link points to panel access activation (set up a login and password)."
+    "If customer already exists (`login` query will return `INTERNET_ACCESS_NOT_ENABLED`, or `create_customer` ends up with email exists validation error) this mutation can be used to send a secret link points to panel access activation (set up a login and password)."
     requestCustomerAccess(customer: HashID!): Boolean
     "Give a login or email to get an email with password reset link. Email will contain a reset token to use with `setPassword` mutation. Token is valid for limited time."
     resetPassword(loginOrEmail: String!, subject: PasswordResetSubject!): PasswordResetResult
@@ -236,11 +236,17 @@ type PublicQuery {
 }
 
 type Repair {
-    advanceAmount: Float!
+    advanceAmount: Decimal!
+    "Address where service should pick up a repair item. Empty if `collectionType` type is `PERSONAL`"
+    collectionAddress: Address
+    "Defines how repair item will be collected from customer."
     collectionType: RepairTransportType!
     costs: RepairCosts!
     "Will return a list of values for custom fields"
     customFields: [CustomFieldValue!]!
+    "Address where repaired item should be returned. Empty if `deliveryType` type is `PERSONAL`"
+    deliveryAddress: Address
+    "Defines how repaired item should be returned to customer."
     deliveryType: RepairTransportType!
     diagnosis: RepairDiagnosis
     displayName: String!
@@ -249,8 +255,8 @@ type Repair {
     issue: String
     model: String
     offers: [RepairOffer!]
-    priceEstimated: Float
-    priceEstimatedTaxRate: Float
+    priceEstimated: Decimal
+    priceEstimatedTaxRate: Decimal
     rma: String!
     secretToken: SecretToken!
     serial: String
@@ -294,18 +300,18 @@ type RepairOffer {
     description: String
     items: [RepairOfferItem!]!
     number: String!
-    priceGross: Float!
+    priceGross: Decimal!
     "Summary net price for this offer. If offered repair was diagnosed, diagnosis price is included here."
-    priceNet: Float!
+    priceNet: Decimal!
     title: String!
 }
 
 type RepairOfferItem {
     description: String!
-    priceGross: Float!
-    priceNet: Float!
+    priceGross: Decimal!
+    priceNet: Decimal!
     type: RepairOfferItemType!
-    vat: Float!
+    vat: Decimal!
 }
 
 type RepairStatus {
@@ -337,7 +343,11 @@ type RepairStatus {
 }
 
 type RepairSummary {
+    priceGross: Decimal
+    priceNet: Decimal
     publicRemarks: String
+    vat: Decimal!
+    warrantyPeriod: Int!
 }
 
 type SecretToken {
@@ -354,6 +364,7 @@ type ServiceSupplier {
     displayName: String!
     email: String
     phone: Phone
+    type: ServiceSupplierType!
 }
 
 type Subscriber {
@@ -930,15 +941,25 @@ enum SecretTokenSubject {
     REPAIR
 }
 
+enum ServiceSupplierType {
+    BRANCH
+    EXCHANGE_SOURCE
+    EXCHANGE_TARGET
+    MAIN
+    SERVICE_SUPPLIER
+}
+
 enum SubscriberBusinessActivity {
     BIKES
     CELL_PHONE
     ELECTRONIC
     GARDEN
     HOUSEHOLD_EQUIPMENT
+    INDUSTRY
     OTHER
     PC
     PHOTO
+    UNDEFINED
 }
 
 enum TaxPrefix {
@@ -977,6 +998,9 @@ scalar Date
 
 "An ISO 8601-encoded datetime"
 scalar DateTime
+
+"Represents decimal."
+scalar Decimal
 
 "A reference to other, related entity or primary key of updated entity. 8 or more chars, uniq in scope of particular entity."
 scalar HashID

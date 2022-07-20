@@ -137,6 +137,23 @@ query repairs($limit: Int, $page: Int, $filter: RepairsFilter, $sort: RepairsSor
                 thumbUrl: url(size: THUMBNAIL)
                 __typename
             }
+            parcels {
+                courierName
+                deliveryStatus
+                status
+                trackingNumber
+                pickupFrom {
+                    company
+                    name
+                    __typename
+                }
+                deliverTo {
+                    company
+                    name
+                    __typename
+                }
+                __typename
+            }
             __typename
         }
     }

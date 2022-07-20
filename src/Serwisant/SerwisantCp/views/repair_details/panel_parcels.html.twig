@@ -1,0 +1,29 @@
+{% if repair.parcels %}
+  <div class="card my-2">
+    <div class="card-header">
+      {{ t(_self, 'title') }}
+    </div>
+    <table class="table table-bordered card-table">
+      <thead>
+      <tr>
+        <th>{{ t(_self, 'sender') }}</th>
+        <th>{{ t(_self, 'recipient') }}</th>
+        <th>{{ t(_self, 'courier') }}</th>
+        <th>{{ t(_self, 'status') }}</th>
+        <th>{{ t(_self, 'tracking') }}</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for parcel in repair.parcels %}
+        <tr>
+          <td>{{ parcel.pickupFrom.company }} {{ parcel.pickupFrom.name }}</td>
+          <td>{{ parcel.deliverTo.company }} {{ parcel.deliverTo.name }}</td>
+          <td>{{ parcel.courierName }}</td>
+          <td>{{ t('parcel_delivery_status', parcel.deliveryStatus) }}</td>
+          <td>{{ parcel.trackingNumber }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endif %}
