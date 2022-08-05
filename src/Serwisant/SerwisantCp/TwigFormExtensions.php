@@ -79,6 +79,7 @@ class TwigFormExtensions extends TwigExtensions
 
       $argument_tr = $this->t_with_fallback(
         [$field_key, $argument_name],
+        ['entity', $argument_name_fallback],
         ['entitles', $argument_name_fallback]
       );
 

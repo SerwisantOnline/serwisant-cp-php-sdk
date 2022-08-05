@@ -29,12 +29,22 @@ class TwigExtensions
     }
   }
 
-  protected function t_with_fallback(array $keys, array $keys_fallback)
+  protected function t_with_fallback(...$trs)
   {
-    try {
-      return $this->translator->translate($this->app['locale'], ...$keys);
-    } catch (TranslatorException $ex) {
-      return $this->translator->t($this->app['locale'], ...$keys_fallback);
+    foreach ($trs as $keys) {
+      try {
+        $tr = $this->translator->translate($this->app['locale'], ...$keys);
+        if (is_string($tr)) {
+          return $tr;
+        }
+      } catch (TranslatorException $ex) {
+        # nic, następna pętla
+      }
     }
+
+    # nie znaleziono żadnych tłumaczeń, wyświetl jakiś informacyjny komunikat
+    return implode(' / ', array_map(function ($keys) {
+      return implode('.', $keys);
+    }, $trs));
   }
 }

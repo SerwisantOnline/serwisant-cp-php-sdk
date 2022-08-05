@@ -35,6 +35,14 @@ pl:
         ponowne wysłanie linku do resetowania hasła."
       not_found: "Link resetowania hasła jest niepoprawny lub stracił ważność. Możesz naprawić ten problem poprzez
         ponowne wysłanie linku do resetowania hasła."
+    ticket:
+      customer_rate_limit: "Nie możesz teraz dodać nowego zgłoszenia. Przed dodaniem kolejnego odczekaj chwilę."
+    repair:
+      customer_rate_limit: "Nie możesz teraz dodać nowej naprawy. Przed dodaniem kolejnej odczekaj chwilę."
+
+  entity:
+    repair: "Naprawa"
+    ticket: "Zgłoszenie"
 
   entitles:
     loginOrEmail: "Login lub adres email"

@@ -1,6 +1,6 @@
 {
   "name": "serwisant/serwisant-cp",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "description": "Customer Panel SDK for https://serwisant.online service",
   "type": "library",
   "homepage": "https://github.com/SerwisantOnline/serwisant-cp-php-sdk",
