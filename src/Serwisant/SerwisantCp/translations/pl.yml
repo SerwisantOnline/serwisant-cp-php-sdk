@@ -36,13 +36,11 @@ pl:
       not_found: "Link resetowania hasła jest niepoprawny lub stracił ważność. Możesz naprawić ten problem poprzez
         ponowne wysłanie linku do resetowania hasła."
     ticket:
-      customer_rate_limit: "Nie możesz teraz dodać nowego zgłoszenia. Przed dodaniem kolejnego odczekaj chwilę."
+      self:
+        customer_rate_limit: "Nie możesz teraz dodać nowego zgłoszenia. Przed dodaniem kolejnego odczekaj chwilę."
     repair:
-      customer_rate_limit: "Nie możesz teraz dodać nowej naprawy. Przed dodaniem kolejnej odczekaj chwilę."
-
-  entity:
-    repair: "Naprawa"
-    ticket: "Zgłoszenie"
+      self:
+        customer_rate_limit: "Nie możesz teraz dodać nowej naprawy. Przed dodaniem kolejnej odczekaj chwilę."
 
   entitles:
     loginOrEmail: "Login lub adres email"
@@ -56,9 +54,11 @@ pl:
       customFields:
         value: "Pole tekstowe"
     ticket:
+      self: "Zgłoszenie"
       customFields:
         value: "Pole tekstowe"
     repair:
+      self: "Naprawa"
       customFields:
         value: "Pole tekstowe"
 
