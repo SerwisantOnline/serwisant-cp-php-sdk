@@ -108,6 +108,7 @@ query($token: String!) {
             image
             url
             thumbUrl: url(size: THUMBNAIL)
+            publicRemarks
             __typename
         }
         __typename

@@ -1,0 +1,23 @@
+{% if repair.additionalItems %}
+  <div class="card my-2">
+    <div class="card-header">
+      {{ t(_self, 'title') }}
+    </div>
+    <table class="table table-bordered card-table">
+      <thead>
+      <tr>
+        <th>{{ t(_self, 'type') }}</th>
+        <th>{{ t(_self, 'description') }}</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for additionalItem in repair.additionalItems %}
+        <tr>
+          <td>{{ additionalItem.type.name }}</td>
+          <td>{{ additionalItem.description }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endif %}

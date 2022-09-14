@@ -27,6 +27,14 @@ query repairs($limit: Int, $page: Int, $filter: RepairsFilter, $sort: RepairsSor
         __typename
         items {
             ID
+            additionalItems {
+                type {
+                    name
+                    __typename
+                }
+                description
+                __typename
+            }
             serviceSupplier {
                 displayName
                 address {
@@ -135,6 +143,7 @@ query repairs($limit: Int, $page: Int, $filter: RepairsFilter, $sort: RepairsSor
                 image
                 url
                 thumbUrl: url(size: THUMBNAIL)
+                publicRemarks
                 __typename
             }
             parcels {

@@ -140,6 +140,7 @@ type Error {
 type File {
     contentType: String!
     image: Boolean!
+    publicRemarks: String
     url(size: ImageSize = ORIGINAL): String
 }
 
@@ -223,6 +224,7 @@ type Priority {
 
 type Repair {
     ID: HashID!
+    additionalItems: [RepairItem!]!
     advanceAmount: Decimal!
     "Address where service should pick up a repair item. Empty if `collectionType` type is `PERSONAL`"
     collectionAddress: Address
@@ -284,6 +286,12 @@ type RepairCreationResult {
 
 type RepairDiagnosis {
     publicRemarks: String
+}
+
+type RepairItem {
+    description: String
+    serial: String
+    type: Dictionary!
 }
 
 type RepairOffer {

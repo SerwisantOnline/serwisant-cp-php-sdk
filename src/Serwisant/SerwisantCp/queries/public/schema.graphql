@@ -110,6 +110,7 @@ type Error {
 type File {
     contentType: String!
     image: Boolean!
+    publicRemarks: String
     url(size: ImageSize = ORIGINAL): String
 }
 
@@ -343,11 +344,7 @@ type RepairStatus {
 }
 
 type RepairSummary {
-    priceGross: Decimal
-    priceNet: Decimal
     publicRemarks: String
-    vat: Decimal!
-    warrantyPeriod: Int!
 }
 
 type SecretToken {

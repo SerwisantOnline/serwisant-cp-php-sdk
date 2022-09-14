@@ -44,9 +44,16 @@ class Tickets extends Action
     if (count($result->items) !== 1) {
       throw new ExceptionNotFound(__CLASS__, __LINE__);
     }
+
+    $ticket = $result->items[0];
+    $files = array_map(function ($a) {
+      return array_pad($a, 3, null);
+    }, array_chunk($ticket->files, 3));
+
     $variables = [
-      'ticket' => $result->items[0],
-      'pageTitle' => $result->items[0]->number,
+      'ticket' => $ticket,
+      'files' => $files,
+      'pageTitle' => $ticket->number,
     ];
 
     return $this->renderPage('ticket.html.twig', $variables);

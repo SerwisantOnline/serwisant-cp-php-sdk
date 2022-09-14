@@ -390,6 +390,11 @@ pl:
       time_status: "Sytuacja czasowa"
     panel_files:
       title: "Załączone pliki"
+      download: "Pobierz załączony plik"
+    additional_items:
+      title: "Elementy dodatkowe naprawy"
+      type: "Rodzaj"
+      description: "Opis"
     panel_change_status:
       price_estimated: "Szacowany koszt naprawy"
       price_final: "Do zapłaty"
@@ -479,6 +484,7 @@ pl:
     started_on: "Data rozpoczęcia pracy"
     finished_at: "Data zakończenia pracy"
     panel_custom_form_fields: "Dodatkowe informacje"
+    panel_files: "Załączone pliki"
   online_payment_by_token:
     payment: "Płatność"
     method: "Wybierz metodę płatności"

@@ -17,6 +17,7 @@ class RepairByToken extends Action
 
     $vars = [
       'repair' => $result->fetch('repair'),
+      'files' => array_chunk($result->fetch('repair')->files, 3),
       'configuration' => $result->fetch('configuration'),
       'currency' => $result->fetch('configuration')->currency,
     ];

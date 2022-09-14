@@ -5,12 +5,21 @@
       {{ t(_self, 'title') }}
     </div>
     <div class="card-body">
-      {% for file in repair.files %}
-        {% if file.image %}
-          <a href="{{ file.url }}"><img src="{{ file.thumbUrl }}" class="img-thumbnail text-tooltip"></a>
-        {% else %}
-          <a href="{{ file.url }}">PNG</a>
-        {% endif %}
+      {% for files_group in files %}
+        <div class="card-group">
+          {% for file in files_group %}
+            <div class="card">
+              {% if file %}
+                {% if file.image %}
+                  <a href="{{ file.url }}"><img src="{{ file.thumbUrl }}" class="card-img-top img-thumbnail"></a>
+                {% else %}
+                  <a href="{{ file.url }}" class="text-sm-center">{{ t(_self, 'download') }}</a>
+                {% endif %}
+                <div class="card-body"><p class="card-text">{{ file.publicRemarks }}</p></div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
       {% endfor %}
     </div>
   </div>
