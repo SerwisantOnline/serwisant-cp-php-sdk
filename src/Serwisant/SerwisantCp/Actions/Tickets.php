@@ -45,15 +45,9 @@ class Tickets extends Action
       throw new ExceptionNotFound(__CLASS__, __LINE__);
     }
 
-    $ticket = $result->items[0];
-    $files = array_map(function ($a) {
-      return array_pad($a, 3, null);
-    }, array_chunk($ticket->files, 3));
-
     $variables = [
-      'ticket' => $ticket,
-      'files' => $files,
-      'pageTitle' => $ticket->number,
+      'ticket' => $result->items[0],
+      'pageTitle' => $result->items[0]->number,
     ];
 
     return $this->renderPage('ticket.html.twig', $variables);

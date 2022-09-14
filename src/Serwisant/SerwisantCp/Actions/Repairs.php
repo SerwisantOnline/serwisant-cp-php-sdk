@@ -48,16 +48,9 @@ class Repairs extends Action
       throw new ExceptionNotFound(__CLASS__, __LINE__);
     }
 
-    $repair = $result->items[0];
-
-    $files = array_map(function ($a) {
-      return array_pad($a, 3, null);
-    }, array_chunk($repair->files, 3));
-
     $variables = [
-      'repair' => $repair,
-      'files' => $files,
-      'pageTitle' => $repair->rma,
+      'repair' => $result->items[0],
+      'pageTitle' => $result->items[0]->rma,
     ];
 
     return $this->renderPage('repair.html.twig', $variables);

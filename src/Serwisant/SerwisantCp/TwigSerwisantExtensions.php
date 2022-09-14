@@ -3,6 +3,7 @@
 namespace Serwisant\SerwisantCp;
 
 use Twig\Environment;
+use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 use Serwisant\SerwisantApi\Types\SchemaPublic\CustomFieldType;
@@ -15,6 +16,12 @@ class TwigSerwisantExtensions extends TwigExtensions
 {
   public function call()
   {
+    $this->twig->addFilter(new TwigFilter('group_files', function ($files) {
+      return array_map(function ($a) {
+        return array_pad($a, 3, null);
+      }, array_chunk($files, 3));
+    }));
+
     $this->twig->addFunction(new TwigFunction('repair_progress_bar', function ($percent) {
       if (100 === $percent) {
         $css_class = 'progress-bar-success';
