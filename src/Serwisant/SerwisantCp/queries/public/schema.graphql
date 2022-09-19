@@ -86,6 +86,7 @@ type CustomerPanelConfig {
     showRepairDelegation: Boolean!
     uploadFiles: Boolean!
     uploadOnlyImages: Boolean!
+    useCustomStatusNames: Boolean!
     "Message to be shown before login - for every user"
     welcomeMessage: String
 }

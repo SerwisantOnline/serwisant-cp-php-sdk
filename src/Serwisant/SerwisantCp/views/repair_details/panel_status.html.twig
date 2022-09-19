@@ -9,7 +9,7 @@
         {{ t(_self, 'status_name') }}
       </td>
       <td class="col-md-6">
-        {{ repair_label(repair) }}
+        {{ repair_label(repair, configuration.useCustomStatusNames) }}
       </td>
     </tr>
     {% if configuration.showOrderProgressInfo %}

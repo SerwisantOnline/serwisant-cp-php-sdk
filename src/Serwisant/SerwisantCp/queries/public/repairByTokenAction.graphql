@@ -116,6 +116,7 @@ query($token: String!) {
     configuration: configuration {
         showOrderProgressInfo
         currency
+        useCustomStatusNames
         __typename
     }
 }

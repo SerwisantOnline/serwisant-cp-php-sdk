@@ -88,7 +88,7 @@ class TwigSerwisantExtensions extends TwigExtensions
       }
     }));
 
-    $this->twig->addFunction(new TwigFunction('repair_label', function ($repair) {
+    $this->twig->addFunction(new TwigFunction('repair_label', function ($repair, $use_custom_status_names = true) {
       $map = [
         'warning' => [RepairState::WAITING_FOR_DELIVERY],
         'success' => [RepairState::CONFIRMED, RepairState::PASSED_FOR_RETURN, RepairState::CLOSED, RepairState::SCRAPPED],
@@ -104,13 +104,16 @@ class TwigSerwisantExtensions extends TwigExtensions
           break;
         }
       }
-
-      $status_name = $this->t(['order_status', $repair->status->status]);
+      if ($use_custom_status_names) {
+        $status_name = $repair->status->displayName;
+      } else {
+        $status_name = $this->t(['order_status', $repair->status->status]);
+      }
       $html = "<span class=\"badge rounded-pill bg-{$color}\">{$status_name}</span>";
       return new \Twig\Markup($html, 'UTF-8');
     }));
 
-    $this->twig->addFunction(new TwigFunction('ticket_label', function ($ticket) {
+    $this->twig->addFunction(new TwigFunction('ticket_label', function ($ticket, $use_custom_status_names = true) {
       switch ($ticket->status->status) {
         case TicketState::NEW:
           $color = 'danger';
@@ -130,7 +133,11 @@ class TwigSerwisantExtensions extends TwigExtensions
           break;
       }
 
-      $status_name = $this->t(['ticket_status', $ticket->status->status]);
+      if ($use_custom_status_names) {
+        $status_name = $ticket->status->displayName;
+      } else {
+        $status_name = $this->t(['ticket_status', $ticket->status->status]);
+      }
       $html = "<span class=\"badge rounded-pill bg-{$color}\">{$status_name}</span>";
       return new \Twig\Markup($html, 'UTF-8');
     }));
