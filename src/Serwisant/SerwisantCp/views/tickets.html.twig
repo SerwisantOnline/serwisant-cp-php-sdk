@@ -28,7 +28,7 @@
               {% endif %}
             </td>
             <td>{{ ticket.priority.name }}</td>
-            <td>{{ ticket_label(ticket) }}</td>
+            <td>{{ ticket_label(ticket, configuration.useCustomStatusNames) }}</td>
             <td>
               <a href="{{ path('ticket', {'id': ticket.ID}) }}">{{ t(_self, 'details') }}</a>
             </td>
@@ -53,7 +53,7 @@
             <td>
               <a href="{{ path('ticket', {'id': ticket.ID}) }}">{{ ticket.number }}</a>
             </td>
-            <td>{{ ticket_label(ticket) }}</td>
+            <td>{{ ticket_label(ticket, configuration.useCustomStatusNames) }}</td>
           </tr>
         {% endfor %}
         </tbody>

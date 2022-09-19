@@ -119,7 +119,7 @@
           </tr>
           <tr>
             <td class="column-definition">{{ t(_self, 'status') }}</td>
-            <td>{{ ticket_label(ticket) }}</td>
+            <td>{{ ticket_label(ticket, configuration.useCustomStatusNames) }}</td>
           </tr>
           <tr>
             <td class="column-definition">{{ t(_self, 'created') }}</td>
