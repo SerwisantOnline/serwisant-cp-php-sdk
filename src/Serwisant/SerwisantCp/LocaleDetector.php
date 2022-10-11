@@ -24,12 +24,14 @@ class LocaleDetector
     if (is_null($locale)) {
       return $this->setDefaults();
     }
+
     $this->locale = $locale;
 
     $country = (new Countries())->where('cca2', $this->countryISO())->first();
     if (count($country) <= 0) {
       return $this->setDefaults();
     }
+
     $this->country = $country;
 
     return $this;
@@ -44,15 +46,18 @@ class LocaleDetector
 
   protected function getLocaleString(HttpFoundation\Request $request): ?string
   {
-    $locale = (new BrowserLocale($request->headers->get("accept-language")))->getLocale();
-    if ($locale) {
-      $language = $locale->language;
-      $country = $locale->country;
-      if (!$country) {
-        $country = strtoupper($language);
+    if ($request->headers->has('Accept-Language')) {
+      $locale = (new BrowserLocale($request->headers->get("Accept-Language")))->getLocale();
+      if ($locale) {
+        $language = $locale->language;
+        $country = $locale->country;
+        if (!$country) {
+          $country = strtoupper($language);
+        }
+        return "{$language}_{$country}";
       }
-      return "{$language}_{$country}";
     }
+
     return null;
   }
 
@@ -77,7 +82,11 @@ class LocaleDetector
 
   public function phonePrefix()
   {
-    return $this->country->get('calling_codes')->first();
+    $prefix = $this->country->get('calling_codes')->first();
+    if (strlen($prefix) >= 5) {
+      $prefix = substr($prefix, 0, 2);
+    }
+    return $prefix;
   }
 
   public function vatPrefix(): ?string

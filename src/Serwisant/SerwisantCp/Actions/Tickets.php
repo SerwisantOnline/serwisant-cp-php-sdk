@@ -5,6 +5,7 @@ namespace Serwisant\SerwisantCp\Actions;
 use Serwisant\SerwisantCp\Action;
 use Serwisant\SerwisantCp\ExceptionNotFound;
 
+use Serwisant\SerwisantApi\Types\SchemaCustomer\AddressUpdateInput;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\RepairsFilterType;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\TicketsFilter;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\TicketsFilterType;
@@ -74,7 +75,9 @@ class Tickets extends Action
     foreach ($result->fetch('viewer')->customer->addresses as $address) {
       $addresses_radio_options[$address->ID] = trim("{$address->postalCode} {$address->city}, {$address->street} {$address->building}");
     }
-    $addresses_radio_options[''] = $this->t('ticket_new', 'other_address');
+    if (count($addresses_radio_options) > 0) {
+      $addresses_radio_options[''] = $this->t('ticket_new', 'other_address');
+    }
 
     $variables = [
       'customFieldsDefinitions' => $result->fetch('orderCustomFields'),
@@ -99,6 +102,24 @@ class Tickets extends Action
     $helper = $this->formHelper();
 
     $ticket = $this->request->get('ticket', []);
+    $addresses = $this->request->get('addresses', []);
+
+    $address_errors = [];
+    if ($addresses) {
+      $result = $this->apiCustomer()->customerMutation()->updateViewer(
+        null,
+        [],
+        array_map(function ($a) {
+          return new AddressUpdateInput($a);
+        }, $addresses)
+      );
+      if ($result->errors) {
+        $address_errors = $result->errors;
+      } else {
+        $ticket['address'] = $result->viewer->customer->address->ID;
+      }
+    }
+
     if (array_key_exists('customFields', $ticket)) {
       $ticket['customFields'] = $helper->mapCustomFields($ticket['customFields']);
     }
@@ -111,7 +132,13 @@ class Tickets extends Action
       ->createTIcket($ticket_input, $helper->mapTemporaryFiles($this->request->get('temporary_files')));
 
     if ($result->errors) {
-      return $this->new($result->errors);
+      $ticket_errors = $result->errors;
+    } else {
+      $ticket_errors = [];
+    }
+
+    if (count($ticket_errors) > 0 || count($address_errors) > 0) {
+      return $this->new(array_merge($ticket_errors, $address_errors));
     } else {
       return $this->redirectTo('tickets', 'flashes.ticket_creation_successful');
     }

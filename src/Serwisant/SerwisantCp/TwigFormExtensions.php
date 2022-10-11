@@ -157,6 +157,7 @@ class TwigFormExtensions extends TwigExtensions
 
     $html = '';
     $type = $options->get('type', '');
+    $style = $options->get('style', '');
 
     switch ($type) {
       case 'hidden':
@@ -167,7 +168,7 @@ class TwigFormExtensions extends TwigExtensions
       case 'text':
       case 'password':
         $class = "{$options->get('class', 'form-control')}{$class_error}";
-        $html .= "<input type='{$options->get('type')}' id='{$id}' class='{$class}' name='{$name}' data-bs-content='{$error_title}' value='{$value}' placeholder='{$caption}' title='{$caption}'";
+        $html .= "<input type='{$options->get('type')}' id='{$id}' class='{$class}' style='{$style}' name='{$name}' data-bs-content='{$error_title}' value='{$value}' placeholder='{$caption}' title='{$caption}'";
         if ($type == 'password') {
           $html .= " autocomplete='off' ";
         }
@@ -201,13 +202,13 @@ class TwigFormExtensions extends TwigExtensions
       case 'datetime':
       case 'date':
         $class = "{$options->get('class', 'form-control')}{$class_error}";
-        $html .= "<input type='text' id='{$id}' class='{$class}' name='{$name}' data-bs-content='{$error_title}' value='{$value}' placeholder='{$caption}' title='{$caption}' readonly='readonly' data-field='{$options->get('type', '')}'>";
+        $html .= "<input type='text' id='{$id}' class='{$class}' style='{$style}' name='{$name}' data-bs-content='{$error_title}' value='{$value}' placeholder='{$caption}' title='{$caption}' readonly='readonly' data-field='{$options->get('type', '')}'>";
         $html .= $label;
         break;
 
       case 'textarea':
         $class = "{$options->get('class', 'form-control')}{$class_error}";
-        $html .= "<textarea id='{$id}' class='{$class}' name='{$name}' data-bs-content='{$error_title}' title='{$caption}' rows='100'>{$value}</textarea>";
+        $html .= "<textarea id='{$id}' class='{$class}' style='{$style}' name='{$name}' data-bs-content='{$error_title}' title='{$caption}' rows='100'>{$value}</textarea>";
         $html .= $label;
         break;
 
@@ -235,7 +236,7 @@ class TwigFormExtensions extends TwigExtensions
           $default_class = '';
         }
         $class = "{$options->get('class', $default_class)}{$class_error}";
-        $html .= "<select id='{$id}' class='{$class}' name='{$name}' data-bs-content='{$error_title}'";
+        $html .= "<select id='{$id}' class='{$class}' style='{$style}' name='{$name}' data-bs-content='{$error_title}'";
         if ($type === 'selectpicker') {
           if ($error_title) {
             $data_style = 'btn-lg';

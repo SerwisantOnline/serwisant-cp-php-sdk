@@ -134,7 +134,9 @@ class Repairs extends Action
 
     $helper = $this->formHelper();
 
+    $repair = $this->request->get('repair', []);
     $addresses = $this->request->get('addresses', []);
+
     $address_errors = [];
     if ($addresses) {
       $result = $this->apiCustomer()->customerMutation()->updateViewer(
@@ -151,7 +153,6 @@ class Repairs extends Action
       }
     }
 
-    $repair = $this->request->get('repair', []);
     if (array_key_exists('customFields', $repair)) {
       $repair['customFields'] = $helper->mapCustomFields($repair['customFields']);
     }

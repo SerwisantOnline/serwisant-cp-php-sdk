@@ -28,6 +28,7 @@ pl:
     not_gsm: "Wymagany jest numer telefonu komórkowego"
     not_found: "Nie znaleziono"
     too_long: "Tekst jest zbyt długi. Ogranicz ilość znaków."
+    one_time_email: "Nie akceptujemy adresów email z tymczasowych skrzynek"
     password:
       too_weak: "Podane hasło jest zbyt proste. Użyj małych i dużych znaków, znaków specjalnych, cyfr."
     resetToken:
@@ -234,6 +235,7 @@ pl:
     company_name: "Nazwa firmy"
     email: "Adres email"
     phone_number: "Numer telefonu"
+    phone_prefix: "Prefix kraju"
     login: "Login do konta"
     password: "Hasło"
     submit: "Zarejestruj własne konto"
@@ -460,6 +462,10 @@ pl:
     other_address: "Podaj inny adres"
     cancel: "Anuluj"
     submit: "Dodaj zgłoszenie"
+    street: "Ulica"
+    building: "Numer"
+    postalCode: "Kod pocztowy"
+    city: "Miasto"
   ticket:
     close: "Zamknij"
     print: "Wydruk"
