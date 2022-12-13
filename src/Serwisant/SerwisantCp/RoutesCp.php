@@ -269,6 +269,23 @@ class RoutesCp extends Routes
       ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
       ->bind('create_ticket');
 
+    // DEVICES
+
+    $cp->get('/devices', function (Request $request, Token $token) {
+      return (new Actions\Devices($this->app, $request, $token))->index();
+    })
+      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
+      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
+      ->bind('devices');
+
+    $cp->get('/device/{id}', function (Request $request, Token $token, $id) {
+      return (new Actions\Devices($this->app, $request, $token))->show($id);
+    })
+      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
+      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
+      ->assert('id', $this->hashIdAssertion())
+      ->bind('device');
+
     // MESSAGES
 
     $cp->get('/messages', function (Request $request, Token $token) {

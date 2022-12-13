@@ -1,0 +1,87 @@
+query devices($limit: Int, $page: Int, $filter: DevicesFilter, $sort: DevicesSort, $list: Boolean = false, $single: Boolean = false) {
+    devices(limit: $limit, page: $page, filter: $filter, sort: $sort) @include(if: $list) {
+        __typename
+        pages
+        items {
+            __typename
+            ID
+            number
+            model
+            vendor
+            type {
+                __typename
+                name
+            }
+        }
+    }
+    devices(limit: $limit, page: $page, filter: $filter, sort: $sort) @include(if: $single) {
+        __typename
+        items {
+            __typename
+            ID
+            additionalItems {
+                __typename
+                type {
+                    __typename
+                    name
+                }
+                serial
+                description
+            }
+            address {
+                __typename
+                building
+                city
+                countryIso
+                postalCode
+                street
+            }
+            customFields {
+                __typename
+                field {
+                    __typename
+                    name
+                    type
+                }
+                value
+            }
+            files {
+                __typename
+                contentType
+                url
+                image
+            }
+            model
+            number
+            orders {
+                __typename
+                ID
+                rma
+                displayName
+                status {
+                    __typename
+                    displayName
+                }
+            }
+            serial
+            serviceSupplier {
+                __typename
+                displayName
+            }
+            tickets {
+                __typename
+                number
+                ID
+                status {
+                    __typename
+                    displayName
+                }
+            }
+            type {
+                __typename
+                name
+            }
+            vendor
+        }
+    }
+}

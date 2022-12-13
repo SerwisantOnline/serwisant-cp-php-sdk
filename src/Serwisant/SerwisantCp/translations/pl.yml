@@ -154,6 +154,7 @@ pl:
     repairs: "Naprawy"
     tickets: "Zgłoszenia"
     messages: "Wiadomości"
+    devices: "Urządzenia"
     viewer_password: "Zmień hasło"
 
   payment_types:
@@ -170,6 +171,7 @@ pl:
 
   order_status:
     UNSAVED: "Niezapisane"
+    APPROVAL: "Oczekuje na zatwierdzenie"
     WAITING_FOR_DELIVERY: "Oczekuje na dostarczenie"
     WAITING_FOR_DIAGNOSIS: "Oczekuje na diagnozę"
     DIAGNOSIS: "W trakcie diagnozy"
@@ -582,3 +584,11 @@ pl:
     passwordConfirmation: "Potwierdzenie hasła"
     cancel: "Anuluj"
     submit: "Zmień hasło"
+  devices:
+    title: "Urządzenia"
+    number: "ID"
+    type: "Rodzaj"
+    vendor: "Producent"
+    model: "Model"
+    serial: "Numer seryjny"
+    details: "Szczegóły"

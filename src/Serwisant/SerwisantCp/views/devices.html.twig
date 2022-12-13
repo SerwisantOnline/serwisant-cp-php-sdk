@@ -1,0 +1,41 @@
+<div class="bg-light p-5 rounded mt-3">
+  {% if devices.items is empty %}
+    <p class="lead">{{ t(_self, 'no_devices') }}</p>
+  {% else %}
+    {{ paginator(devices.pages) }}
+
+    <!-- desktop -->
+    <div class="d-none d-md-none d-lg-block">
+      <table class="table">
+        <thead>
+        <tr>
+          <th scope="col">{{ t(_self, 'number') }}</th>
+          <th scope="col">{{ t(_self, 'type') }}</th>
+          <th scope="col">{{ t(_self, 'vendor') }}</th>
+          <th scope="col">{{ t(_self, 'model') }}</th>
+          <th scope="col">{{ t(_self, 'serial') }}</th>
+          <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for device in devices.items %}
+          <tr>
+            <th scope="row">{{ device.number }}</th>
+            <td>{{ device.type.name }}</td>
+            <td>{{ device.vendor }}</td>
+            <td>{{ device.model }}</td>
+            <td>{{ device.serial }}</td>
+            <td>
+              <a href="{{ path('device', {'id': device.ID}) }}">{{ t(_self, 'details') }}</a>
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+
+
+    {{ paginator(devices.pages) }}
+  {% endif %}
+</div>

@@ -15,8 +15,11 @@ class RepairByToken extends Action
       ->setFile('repairByTokenAction.graphql', ['token' => (string)$this->token])
       ->execute();
 
+    $repair = $result->fetch('repair');
+
     $vars = [
-      'repair' => $result->fetch('repair'),
+      'pageTitle' => $repair->rma,
+      'repair' => $repair,
       'configuration' => $result->fetch('configuration'),
       'currency' => $result->fetch('configuration')->currency,
     ];

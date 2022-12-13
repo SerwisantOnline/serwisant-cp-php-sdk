@@ -53,33 +53,32 @@ class Action
     return new ActionFormHelpers();
   }
 
-  protected function renderPage(string $template, array $vars = [])
+  protected function renderPage(string $template, array $controller_vars = [])
   {
     if ($this->debug) {
       error_log("Rendering $template");
     }
 
-    $inner_vars = [
+    $vars = [
       'pageTitle' => '',
       'token' => (string)$this->token,
       'currentAction' => array_slice(explode("\\", get_class($this)), -1)[0],
       'isAuthenticated' => (!is_null($this->access_token_customer) && $this->access_token_customer->isAuthenticated()),
       'locale' => $this->app['locale'],
+      'innerTemplate' => $template,
     ];
 
-    $inner_vars = array_merge($inner_vars, $this->getLayoutVars());
+    $vars = array_merge($vars, $this->getLayoutVars());
 
     if ($this->decorator instanceof ActionDecorator) {
-      $inner_vars = array_merge($inner_vars, $this->decorator->getLayoutVars($template));
+      $vars = array_merge($vars, $this->decorator->getLayoutVars($template));
     }
 
     if (!is_null($this->access_token_customer) && $this->access_token_customer->isAuthenticated()) {
-      $inner_vars['me'] = $this->apiCustomer()->customerQuery()->viewer(['basic' => true]);
+      $vars['me'] = $this->apiCustomer()->customerQuery()->viewer(['basic' => true]);
     }
 
-    $inner_vars['innerHTML'] = $this->twig->render($template, array_merge($inner_vars, $vars));
-
-    return $this->twig->render($this->getLayoutName($template), array_merge($inner_vars, $vars));
+    return $this->twig->render($this->getLayoutName($template), array_merge($vars, $controller_vars));
   }
 
   private function getLayoutName($template)
@@ -190,7 +189,8 @@ class Action
       $this->api_customer = new Api(
         $this->app,
         $this->access_token_customer,
-        [$this->app['base_dir'] . '/queries/customer']
+        [$this->app['base_dir'] . '/queries/customer'],
+        ($this->debug ? 2 : 0)
       );
       $this->api_customer->setHttpHeaders($this->api_http_headers);
     }
@@ -203,7 +203,8 @@ class Action
       $this->api_public = new Api(
         $this->app,
         $this->access_token_public,
-        [$this->app['base_dir'] . '/queries/public']
+        [$this->app['base_dir'] . '/queries/public'],
+        ($this->debug ? 2 : 0)
       );
       $this->api_public->setHttpHeaders($this->api_http_headers);
     }

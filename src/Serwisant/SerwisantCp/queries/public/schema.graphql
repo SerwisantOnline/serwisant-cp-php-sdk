@@ -71,6 +71,7 @@ type CustomerPanelConfig {
     orderDictModel: Boolean!
     "True when service want to use a messaging system in customer panel"
     panelCommunication: Boolean!
+    panelDevices: Boolean!
     "Is access to customer panel enables"
     panelEnabled: Boolean!
     "True if service want to use repairs module"
@@ -126,9 +127,9 @@ type LoginResult {
 type OnlinePayment {
     ID: HashID!
     "Full transacion amount, sum of items"
-    amount: Money!
+    amount: Decimal!
     "Amount to pay, amount reduced by already paid amounts"
-    amountToPay: Money!
+    amountToPay: Decimal!
     currency: Currency!
     description: String
     items: [OnlinePaymentItem!]!
@@ -145,7 +146,7 @@ type OnlinePaymentChannel {
 }
 
 type OnlinePaymentItem {
-    amount: Money!
+    amount: Decimal!
     description: String!
     secretToken: SecretToken
 }
@@ -274,21 +275,21 @@ type Repair {
 }
 
 type RepairCosts {
-    estimatedGross: Money
+    estimatedGross: Decimal
     """
 
     Net price given in repair diagnosis, this is a price customer must confirm. If null, diagnosis wan't performed,
     no price given durring diagnosis or sepatate offers for this repair exists - see offer field
     """
-    estimatedNet: Money
-    finalGross: Money
+    estimatedNet: Decimal
+    finalGross: Decimal
     "Net price to be paid for repair"
-    finalNet: Money
+    finalNet: Decimal
     "Full price (incl. tax) to be paid for whole service, decucted by advance, incremented by other possibe costs like shipping, etc."
-    payment: Money
-    proposedGross: Money
+    payment: Decimal
+    proposedGross: Decimal
     "Net price proposed durring repair aquisition, nil if nothing was proposed, it's not a real price, rather a guess"
-    proposedNet: Money
+    proposedNet: Decimal
 }
 
 type RepairDiagnosis {
@@ -1002,9 +1003,6 @@ scalar Decimal
 
 "A reference to other, related entity or primary key of updated entity. 8 or more chars, uniq in scope of particular entity."
 scalar HashID
-
-"A decimal number represents amount of money."
-scalar Money
 
 input AddressInput {
     building: String
