@@ -2,14 +2,11 @@
 
 namespace Serwisant\SerwisantCp\Actions;
 
-
 use Serwisant\SerwisantCp\Action;
 use Serwisant\SerwisantCp\ExceptionNotFound;
 
 use Serwisant\SerwisantApi\Types\SchemaCustomer\DevicesFilter;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\DevicesFilterType;
-use Serwisant\SerwisantApi\Types\SchemaCustomer\DevicesSort;
-
 
 class Devices extends Action
 {

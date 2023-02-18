@@ -286,6 +286,22 @@ class RoutesCp extends Routes
       ->assert('id', $this->hashIdAssertion())
       ->bind('device');
 
+    // CALENDAR
+
+    $cp->get('/calendar/schedule_dates', function (Request $request, Token $token) {
+      return (new Actions\Calendar($this->app, $request, $token))->scheduleDates();
+    })
+      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
+      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
+      ->bind('calendar_schedule_dates');
+
+    $cp->get('/calendar/ticket_dates', function (Request $request, Token $token) {
+      return (new Actions\Calendar($this->app, $request, $token))->ticketDates();
+    })
+      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
+      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
+      ->bind('calendar_ticket_dates');
+
     // MESSAGES
 
     $cp->get('/messages', function (Request $request, Token $token) {

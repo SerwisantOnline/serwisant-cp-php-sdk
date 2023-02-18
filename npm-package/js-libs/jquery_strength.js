@@ -2,7 +2,7 @@
   if (typeof(module) === "object" && module.exports) {
     module.exports = initializer;
   } else if (typeof(require) === "function" && require.amd) {
-    require(["password_strength", "jquery"], initializer);
+    require(["vendor/serwisant/serwisant-cp/npm-package/js-libs/password_strength", "jquery"], initializer);
   } else {
     initializer(window.PasswordStrength, window.jQuery);
   }

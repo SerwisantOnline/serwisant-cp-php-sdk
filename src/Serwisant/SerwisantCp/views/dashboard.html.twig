@@ -1,11 +1,15 @@
 <div class="row">
+
   <div class="col col-lg-8">
     {% if configuration.dashboardMessage %}
       <div class="bg-light p-5 rounded mt-3">
         {{ configuration.dashboardMessage | raw }}
       </div>
     {% endif %}
+    <div class="p-3"></div>
+    <div id='calendar' data-schedules-url="{{ path('calendar_schedule_dates') }}" data-tickets-url="{{ path('calendar_ticket_dates') }}"></div>
   </div>
+
   <div class="col col-lg-3">
     <div class="d-grid gap-2 mt-3">
       {% if configuration.panelRepairs %}

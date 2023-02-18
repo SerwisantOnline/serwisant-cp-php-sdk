@@ -9,29 +9,100 @@ Layout is powered by [Bootstrap](https://getbootstrap.com/) and like whole appli
 ## Requirements:
 
 * PHP 7.4 or higher
-* all requirements by [serwisant/serwisant-api](https://packagist.org/packages/serwisant/serwisant-cp) package
+* composer (only locally, to install dependencies)
+* node 10.x or higher (only locally, to build assets - not required on production)
 
 ## Word about versioning
 
-This is special package. Because it contains complex application we can't provide long term backward compatibility. There is high
-risk of implementing breaking changes once new features will be added. So when you're building own application, with custom
-modifications of templates, assets, logic ***please specify explicite version*** in your `composer.json` i.e.:
-
-```
-"require": {
-    "serwisant/serwisant-cp": "1.0.0"
-},
-```
-
-If you installing it as-is, and no modification will be made, you can include major version (`^1.1`), to get upgrades.
+This is special package. Because it contains complex application we can't provide long term backward compatibility.
+There is high risk of implementing breaking changes once new features will be added. So when you're building own
+application, with custom modifications of templates, assets, logic ***please specify explicite version*** in
+your `composer.json` i.e.: `"1.0.0"`. If you installing it as-is, and no modification will be made, you can include
+major version (`1.*`), to get upgrades.
 
 ***YOU HAVE BEING WARNED.***
 
 ## Usage
 
-Require package in `composer.json`, next create `index.php` including composer autoload and application bootstrap. Don't
-forget to override apache/nginx config to point every single request, except `/assets-serwisant-cp` and `/webfonts` to
-your `index.php`. It can be done with a `.htaccess` file:
+### Typical files layout
+
+You shold create basic directory and files tree.
+
+```
+|--/public
+|  /public/.htaccess
+|  /public/index.php
+|
+|--/composer.json
+|--/package.json
+```
+
+`public` must be root of your webserver. In this directory yoy must create two other files: `index.php` (see Bootstrap
+section) and `.htaccess` (see Webserver configuration section). Please note: two otger directories will be created there
+when you will build assets.
+
+`composer.json` is a PHP depencency configuration. You need a `composer` tool to install it.
+`package.json` is a frontend dependency configuration. Tou need a `npm` tool to install it. See Assets section.
+
+### PHP depeldencies
+
+To install all required depenednecies for your web application you must to create a file `composer.json`:
+
+```json
+{
+  "name": "my_application",
+  "require": {
+    "serwisant/serwisant-cp": "1.*"
+  },
+  "autoload": {
+    "psr-0": {
+      "Serwisant": "src"
+    }
+  }
+}
+```
+
+Once file is created run `composer install`. It will produce a `vendor` directory with many sub-directorues and files
+inside.
+
+### Assets (JS, CSS, images)
+
+Application contains complex assets to provide a frontend layout via CSS and functionality via JS. Also, those assets
+have some dependencies from other JS libraries.
+
+To get frontend working you must to create `package.json`:
+
+```json
+{
+  "name": "My Application",
+  "private": true,
+  "scripts": {
+    "postinstall": "node vendor/serwisant/serwisant-cp/npm-package/build.js"
+  },
+  "dependencies": {
+    "serwisant-cp": "file:vendor/serwisant/serwisant-cp/npm-package"
+  }
+}
+```
+
+and run `npm install`. Once all JS dependencies are installed additional script will run, and will generate a files
+in `public/assets-serwisant-cp` and `public/webfonts`.
+
+Please note: JS dependencies must be insaled after PHP dependencies.
+
+Please note: once you'll install all JS dependencies, you can remove whole `node_modules` directory before you start
+upload files to webserver.
+
+### Server configuration
+
+All dependencies can be installed locally, on your terminal, and then FTP/SFTP/SCP can be used tu send all files to your
+webserver. If you have access to shell on webserver and `composer`/`npm` tools are installed there you can send a basic
+files and run instalaction directly on webserver.
+
+Most important thong is to set your webserver to `public` sub-directory, not to root directory.
+
+Don't forget to override apache/nginx config to point every single request to your `index.php`. It can be done with
+a `.htaccess` file:
 
 ```
 <IfModule mod_rewrite.c>
@@ -43,11 +114,6 @@ your `index.php`. It can be done with a `.htaccess` file:
     RewriteRule . /index.php [L]
 </IfModule>
 ```
-
-Typical directory structure looks like
-in [reference implementation repository](https://github.com/SerwisantOnline/serwisant-cp-php).
-
-Of course you can attach this module to existing application.
 
 ### Bootstrap
 
@@ -113,40 +179,6 @@ database in bootstrap file. See section with advanced topics.
 
 This is default path/routes set. If you want to create own pages or change prefix paths create a new router by
 extending `Router`. By default you need to mount
-
-### Assets
-
-Application contains complex assets to provide a frontend layout via CSS and functionality via JS. Also, those assets
-have some dependencies from other JS libraries.
-
-To get frontend working you must to:
-
-- install those dependencies:
-
-```json
-{
-  "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.15.3",
-    "bootstrap": "^5.1.0",
-    "bootstrap-cookie-alert": "^1.2.1",
-    "bootstrap-select": "1.14.0-beta2",
-    "datetimepicker": "^0.1.39",
-    "filepond": "^4.27.2",
-    "filepond-plugin-file-validate-type": "^1.2.6",
-    "filepond-plugin-image-preview": "^4.6.6",
-    "jquery": "^3.6.0",
-    "lodash": "^4.17.21"
-  }
-}
-```
-
-- copy all files from package's asset directory to your public directory.
-
-It's strongly recommended to use `npm` tool for that. In `package.json` define all required dependencies and call
-post-install script provided with this package (`npm-postinstall.js copy`).
-
-Sample  `package.json` file can be found
-in [reference implementation repository](https://github.com/SerwisantOnline/serwisant-cp-php/blob/main/package.json).
 
 ## Advanced topics, modyfying application
 

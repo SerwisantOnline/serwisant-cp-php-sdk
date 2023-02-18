@@ -6,13 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ pageTitle }}</title>
 
-  <link rel="stylesheet" href="{{ asset('assets-serwisant-cp/bootstrap.min.css') }}"/>
-  <link rel="stylesheet" href="{{ asset('assets-serwisant-cp/filepond.min.css') }}"/>
-  <link rel="stylesheet" href="{{ asset('assets-serwisant-cp/filepond-plugin-image-preview.min.css') }}"/>
-  <link rel="stylesheet" href="{{ asset('assets-serwisant-cp/DateTimePicker.min.css') }}"/>
-  <link rel="stylesheet" href="{{ asset('assets-serwisant-cp/bootstrap-select.min.css') }}"/>
-  <link rel="stylesheet" href="{{ asset('assets-serwisant-cp/fa-all.min.css') }}"/>
-  <link rel="stylesheet" href="{{ asset('assets-serwisant-cp/layout.css') }}"/>
+  <link rel="stylesheet" href="{{ asset('assets-serwisant-cp/serwisant-cp-vendor.css') }}"/>
+  <link rel="stylesheet" href="{{ asset('assets-serwisant-cp/serwisant-cp.css') }}"/>
 
   <script>
     var application_js_options = {
@@ -63,16 +58,16 @@
                  href="{{ path('tickets') }}">{{ t(_self, 'tickets') }}</a>
             </li>
           {% endif %}
-          {% if configuration.panelCommunication %}
-            <li class="nav-item">
-              <a class="nav-link {{ currentAction == 'Messages' ? 'active' : '' }}"
-                 href="{{ path('messages') }}">{{ t(_self, 'messages') }}</a>
-            </li>
-          {% endif %}
           {% if configuration.panelDevices %}
             <li class="nav-item">
               <a class="nav-link {{ currentAction == 'Devices' ? 'active' : '' }}"
                  href="{{ path('devices') }}">{{ t(_self, 'devices') }}</a>
+            </li>
+          {% endif %}
+          {% if configuration.panelCommunication %}
+            <li class="nav-item">
+              <a class="nav-link {{ currentAction == 'Messages' ? 'active' : '' }}"
+                 href="{{ path('messages') }}">{{ t(_self, 'messages') }}</a>
             </li>
           {% endif %}
         </ul>
@@ -141,25 +136,8 @@
   </h6>
 </div>
 
-<script src="{{ asset('assets-serwisant-cp/lodash.min.js') }}"></script>
-<script src="{{ asset('assets-serwisant-cp/jquery.min.js') }}"></script>
-<script src="{{ asset('assets-serwisant-cp/bootstrap.bundle.min.js') }}"></script>
-
-<script src="{{ asset('assets-serwisant-cp/cookiealert.js') }}"></script>
-<script src="{{ asset('assets-serwisant-cp/purl.js') }}"></script>
-<script src="{{ asset('assets-serwisant-cp/filepond.min.js') }}"></script>
-<script src="{{ asset('assets-serwisant-cp/filepond-plugin-image-preview.min.js') }}"></script>
-<script src="{{ asset('assets-serwisant-cp/filepond-plugin-file-validate-type.min.js') }}"></script>
-<script src="{{ asset('assets-serwisant-cp/DateTimePicker.min.js') }}"></script>
-<script src="{{ asset('assets-serwisant-cp/bootstrap-select.min.js') }}"></script>
-
-<script src="{{ asset('assets-serwisant-cp/password_strength.js') }}"></script>
-<script src="{{ asset('assets-serwisant-cp/jquery_strength.js') }}"></script>
-
-<script src="{{ asset('assets-serwisant-cp/application.js') }}"></script>
-<script src="{{ asset('assets-serwisant-cp/application_ui.js') }}"></script>
-
-<script src="{{ asset('assets-serwisant-cp/layout.js') }}"></script>
+<script src="{{ asset('assets-serwisant-cp/serwisant-cp-vendor.js') }}"></script>
+<script src="{{ asset('assets-serwisant-cp/serwisant-cp.js') }}"></script>
 
 {% if js_files is defined %}
   {%- for js_file in js_files %}

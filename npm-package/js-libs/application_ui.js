@@ -282,7 +282,6 @@ Application.Ui.FormCommitButtonLock = function () {
   $('form').find('button[type=submit]').click(function (e) {
     var submit = $(this);
     if (parseInt(submit.attr('data-skip-locking')) !== 1) {
-      console.log('Lock');
       setTimeout(function () {
         submit.attr("disabled", true);
       }, 0);

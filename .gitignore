@@ -1,4 +1,10 @@
 .idea/
+
 vendor/
 composer.lock
+
+node_modules/
+package-lock.json
+
 .graphqlconfig
+.DS_Store

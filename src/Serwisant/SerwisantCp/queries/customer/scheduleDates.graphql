@@ -1,0 +1,26 @@
+query scheduleDates($filter: ScheduleDatesFilter!) {
+    scheduleDates(filter: $filter) {
+        __typename
+        date
+        schedule {
+            __typename
+            title
+            description
+            concern
+            device {
+                __typename
+                ID
+                displayName
+            }
+            customer {
+                __typename
+                displayName
+            }
+        }
+        ticket {
+            __typename
+            ID
+            number
+        }
+    }
+}

@@ -114,6 +114,7 @@ type CustomerQuery {
     messages(filter: MessagesFilter = {type: ALL}, limit: Int = 20, page: Int = 1, sort: MessagesSort): MessagesResult!
     priorities(filter: PrioritiesFilter): [Priority!]!
     repairs(filter: RepairsFilter = {type: OPEN}, limit: Int = 20, page: Int = 1, sort: RepairsSort): RepairsResult!
+    scheduleDates(filter: ScheduleDatesFilter!): [ScheduleDate!]!
     "Return details of temporary files identified by ID passed in arguments."
     temporaryFiles(ID: [HashID!]!): [TemporaryFile!]!
     tickets(filter: TicketsFilter = {type: OPEN}, limit: Int = 20, page: Int = 1, sort: TicketsSort = ID): TicketsResult!
@@ -126,13 +127,14 @@ type Device {
     address: Address
     "Will return a list of values for custom fields"
     customFields: [CustomFieldValue!]!
+    displayName: String!
     files: [File!]!
     model: String!
     number: String!
-    orders: [Repair!]!
+    orders(limit: Int = 20, page: Int = 1): [Repair!]!
     serial: String!
     serviceSupplier: ServiceSupplier!
-    tickets: [Ticket!]!
+    tickets(limit: Int = 20, page: Int = 1): [Ticket!]!
     type: Dictionary!
     vendor: String!
 }
@@ -380,6 +382,20 @@ type RepairSummary {
 type RepairsResult {
     items: [Repair!]!
     pages: Int!
+}
+
+type Schedule {
+    concern: ScheduleConcern!
+    customer: Customer
+    description: String
+    device: Device
+    title: String!
+}
+
+type ScheduleDate {
+    date: Date!
+    schedule: Schedule!
+    ticket: Ticket
 }
 
 type SecretToken {
@@ -944,6 +960,11 @@ enum RepairsSort {
     STATUS
 }
 
+enum ScheduleConcern {
+    CUSTOMER
+    DEVICE
+}
+
 enum SecretTokenSubject {
     LICENCE
     ONLINEPAYMENT
@@ -1149,6 +1170,11 @@ input RepairsFilter {
     q: String
     status: RepairState
     type: RepairsFilterType!
+}
+
+input ScheduleDatesFilter {
+    from: Date!
+    to: Date!
 }
 
 input TicketCreationOptions {
