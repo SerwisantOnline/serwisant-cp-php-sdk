@@ -109,7 +109,7 @@ type CustomerMutation {
 type CustomerQuery {
     autocomplete(query: String!, scope: AutocompleteScope!): [String!]!
     customFields(form: CustomFieldForm!): [CustomField!]!
-    devices(filter: DevicesFilter, limit: Int = 20, page: Int = 1, sort: DevicesSort = ID): DevicesResult!
+    devices(filter: DevicesFilter = {type: ALL}, limit: Int = 20, page: Int = 1, sort: DevicesSort = ID): DevicesResult!
     dictionaryEntries(filter: DictionaryEntriesFilter): [Dictionary!]!
     messages(filter: MessagesFilter = {type: ALL}, limit: Int = 20, page: Int = 1, sort: MessagesSort): MessagesResult!
     priorities(filter: PrioritiesFilter): [Priority!]!
@@ -812,6 +812,7 @@ enum CustomerType {
 }
 
 enum DevicesFilterType {
+    ALL
     ID
 }
 
