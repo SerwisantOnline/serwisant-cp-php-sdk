@@ -1,4 +1,4 @@
-# This file was generated based on ".graphqlconfig". Do not edit manually.
+# This file was generated. Do not edit manually.
 
 schema {
     query: PublicQuery
@@ -38,6 +38,10 @@ type CustomFieldValue {
     value: String
 }
 
+type Customer {
+    ID: HashID!
+}
+
 type CustomerAccessCreationResult {
     errors: [Error!]
 }
@@ -59,6 +63,7 @@ type CustomerAgreement {
 }
 
 type CustomerCreationResult {
+    customer: Customer
     errors: [Error!]
 }
 

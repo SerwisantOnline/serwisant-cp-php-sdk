@@ -1,5 +1,7 @@
 <?php
 
+// @todo: this requires implementation on API and panel sides.
+
 namespace Serwisant\SerwisantCp\Actions;
 
 use Serwisant\SerwisantApi\Types\SchemaCustomer\DateRangeInput;

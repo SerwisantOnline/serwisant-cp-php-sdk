@@ -163,6 +163,11 @@ query repairs($limit: Int, $page: Int, $filter: RepairsFilter, $sort: RepairsSor
                 }
                 __typename
             }
+            device {
+                ID
+                displayName
+                __typename
+            }
             __typename
         }
     }

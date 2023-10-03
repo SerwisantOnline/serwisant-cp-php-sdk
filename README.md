@@ -9,12 +9,16 @@ Layout is powered by [Bootstrap](https://getbootstrap.com/) and like whole appli
 ## Requirements:
 
 * PHP 7.4 or higher
-* composer (only locally, to install dependencies)
-* node 10.x or higher (only locally, to build assets - not required on production)
+
+### development/deploy requirements
+
+* composer (to install PHP dependencies)
+* node 10.x or higher and NPM (to build assets)
 
 ## Word about versioning
 
 This is special package. Because it contains complex application we can't provide long term backward compatibility.
+
 There is high risk of implementing breaking changes once new features will be added. So when you're building own
 application, with custom modifications of templates, assets, logic ***please specify explicite version*** in
 your `composer.json` i.e.: `"1.0.0"`. If you installing it as-is, and no modification will be made, you can include
@@ -88,7 +92,7 @@ To get frontend working you must to create `package.json`:
 and run `npm install`. Once all JS dependencies are installed additional script will run, and will generate a files
 in `public/assets-serwisant-cp` and `public/webfonts`.
 
-Please note: JS dependencies must be insaled after PHP dependencies.
+***Please note: JS dependencies must be insaled after PHP dependencies.***
 
 Please note: once you'll install all JS dependencies, you can remove whole `node_modules` directory before you start
 upload files to webserver.
@@ -99,7 +103,8 @@ All dependencies can be installed locally, on your terminal, and then FTP/SFTP/S
 webserver. If you have access to shell on webserver and `composer`/`npm` tools are installed there you can send a basic
 files and run instalaction directly on webserver.
 
-Most important thong is to set your webserver to `public` sub-directory, not to root directory.
+Most important thing is to set your webserver to `public` sub-directory, not to root directory. It's for security
+reasons.
 
 Don't forget to override apache/nginx config to point every single request to your `index.php`. It can be done with
 a `.htaccess` file:
@@ -120,8 +125,8 @@ a `.htaccess` file:
 Typical, minimal bootstrap looks like below.
 
 ```php
-$oauth_key = getenv('OAUTH_KEY');
-$oauth_secret = getenv('OAUTH_SECRET');
+$oauth_key = 'YOUR_OAUTH_KEY';
+$oauth_secret = 'YOUR_OAUTH_SECRET';
 
 require_once('./vendor/autoload.php');
 
@@ -228,3 +233,8 @@ database credentials.
 ```php
 $application->set('session_handler', new \Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler(...))
 ```
+
+## Major changes
+
+- 1.0 - initial release
+- 1.1.0 - changed way how assets are built, new approach is not compatibile with previous one

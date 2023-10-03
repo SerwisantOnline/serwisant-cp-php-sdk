@@ -14,25 +14,25 @@
 
 <div class="bg-light p-5 rounded mt-3">
 
-  {% include 'repair_details/panel_change_status.html.twig' with {'parent': 'cp'} %}
+  {% include 'repair/panel_change_status.html.twig' with {'parent': 'cp'} %}
 
   <div class="row">
     <div class="col-md-6">
-      {% include 'repair_details/panel_info.html.twig' %}
-      {% include 'repair_details/additional_items.html.twig' %}
-      {% include 'repair_details/panel_custom_fields.html.twig' %}
-      {% include 'repair_details/panel_issue.html.twig' %}
+      {% include 'repair/panel_info.html.twig' %}
+      {% include 'repair/additional_items.html.twig' %}
+      {% include 'repair/panel_custom_fields.html.twig' %}
+      {% include 'repair/panel_issue.html.twig' %}
     </div>
     <div class="col-md-6">
-      {% include 'repair_details/panel_money.html.twig' %}
-      {% include 'repair_details/panel_status.html.twig' %}
-      {% include 'repair_details/panel_files.html.twig' %}
+      {% include 'repair/panel_money.html.twig' %}
+      {% include 'repair/panel_status.html.twig' %}
+      {% include 'repair/panel_files.html.twig' %}
     </div>
   </div>
 
   <div class="row">
     <div class="col-md-12">
-      {% include 'repair_details/panel_parcels.html.twig' %}
+      {% include 'repair/panel_parcels.html.twig' %}
     </div>
   </div>
 

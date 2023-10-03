@@ -16,7 +16,7 @@ class TwigGenericExtensions extends TwigExtensions
       return $this->app['url_generator']->generate($binding, $variables);
     }));
 
-    $this->twig->addFunction(new TwigFunction('paginator', function ($pages) {
+    $this->twig->addFunction(new TwigFunction('paginator', function ($pages, $param_name = 'page') {
       $current_uri = parse_url($this->app['request']->getUri());
 
       $get_args = [];
@@ -24,9 +24,9 @@ class TwigGenericExtensions extends TwigExtensions
         parse_str($current_uri['query'], $get_args);
       }
 
-      $current_page = array_key_exists('page', $get_args) ? $get_args['page'] : 1;
+      $current_page = array_key_exists($param_name, $get_args) ? $get_args[$param_name] : 1;
 
-      $get_args['page'] = '__page__';
+      $get_args[$param_name] = '__page__';
       $placeholder_path = $current_uri['path'] . '?' . http_build_query($get_args);
 
       $html = '';

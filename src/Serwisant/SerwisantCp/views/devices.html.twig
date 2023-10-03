@@ -11,9 +11,9 @@
         <tr>
           <th scope="col">{{ t(_self, 'number') }}</th>
           <th scope="col">{{ t(_self, 'type') }}</th>
-          <th scope="col">{{ t(_self, 'vendor') }}</th>
-          <th scope="col">{{ t(_self, 'model') }}</th>
+          <th scope="col">{{ t(_self, 'vendor_model') }}</th>
           <th scope="col">{{ t(_self, 'serial') }}</th>
+          <th scope="col">{{ t(_self, 'address') }}</th>
           <th scope="col"></th>
         </tr>
         </thead>
@@ -22,9 +22,9 @@
           <tr>
             <th scope="row">{{ device.number }}</th>
             <td>{{ device.type.name }}</td>
-            <td>{{ device.vendor }}</td>
-            <td>{{ device.model }}</td>
+            <td>{{ device.vendor }} {{ device.model }}</td>
             <td>{{ device.serial }}</td>
+            <td> {{ device.address.street }} {{ device.address.building }}, {{ device.address.postalCode }} {{ device.address.city }}</td>
             <td>
               <a href="{{ path('device', {'id': device.ID}) }}">{{ t(_self, 'details') }}</a>
             </td>

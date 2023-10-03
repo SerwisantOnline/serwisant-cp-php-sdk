@@ -1,0 +1,153 @@
+<div class="btn-group" role="group">
+  <a href="{{ path('devices') }}" class="btn btn-secondary btn-lg">{{ t(_self, 'close') }}</a>
+  {% if configuration.panelTickets %}
+  <a href="{{ path('new_ticket', {device: device.ID}) }}" class="btn btn-primary btn-lg">{{ t(_self, 'new_ticket') }}</a>
+  {% endif %}
+</div>
+
+<div class="bg-light p-5 rounded mt-3">
+  <div class="row">
+    <div class="col-md-6">
+
+      <div class="card my-2">
+        <div class="card-header">
+          <span class="glyphicon glyphicon-info-sign icon-margin pull-right"></span>
+          {{ t(_self, 'panel_info.title') }}
+        </div>
+        <table class="table table-bordered card-table">
+          <tbody>
+          <tr>
+            <td class="column-definition">{{ t(_self, 'address') }}</td>
+            <td>
+              {{ device.address.street }} {{ device.address.building }},
+              {{ device.address.postalCode }} {{ device.address.city }}
+            </td>
+          </tr>
+
+          <tr>
+            <td class="column-definition">{{ t(_self, 'number') }}</td>
+            <td>{{ device.number }}</td>
+          </tr>
+          <tr>
+            <td class="column-definition">Rodzaj</td>
+            <td>{{ device.type.name }}</td>
+          </tr>
+
+          <tr>
+            <td class="column-definition">{{ t(_self, 'vendor') }}</td>
+            <td>{{ device.vendor }}</td>
+          </tr>
+
+          <tr>
+            <td class="column-definition">{{ t(_self, 'model') }}</td>
+            <td>{{ device.model }}</td>
+          </tr>
+
+          <tr>
+            <td class="column-definition">{{ t(_self, 'serial') }}</td>
+            <td>{{ device.serial }}</td>
+          </tr>
+
+          </tbody>
+        </table>
+      </div>
+
+
+      <div class="card my-2">
+        <div class="card-header">
+          <span class="glyphicon glyphicon-info-sign icon-margin pull-right"></span>
+          {{ t(_self, 'panel_custom_fields.title') }}
+        </div>
+        <table class="table table-bordered card-table">
+          <tbody>
+          {% for field in device.customFields %}
+            <tr>
+              <td class="column-definition">{{ field.field.name }}</td>
+              <td>{{ custom_form_field_value(field.value, field.field.type) }}</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      {% if device.files %}
+        <div class="card my-2">
+          <div class="card-header">
+            <span class="glyphicon glyphicon-file icon-margin pull-right"></span>
+            {{ t(_self, 'panel_files.title') }}
+          </div>
+          <div class="card-body">
+            {% for files_group in (device.files | group_files) %}
+              <div class="card-group">
+                {% for file in files_group %}
+                  <div class="card">
+                    {% if file %}
+                      {% if file.image %}
+                        <a href="{{ file.url }}"><img src="{{ file.thumbUrl }}" class="card-img-top img-thumbnail"></a>
+                      {% else %}
+                        <a href="{{ file.url }}" class="text-sm-center">{{ t(_self, 'download') }}</a>
+                      {% endif %}
+                      <div class="card-body"><p class="card-text">{{ file.publicRemarks }}</p></div>
+                    {% endif %}
+                  </div>
+                {% endfor %}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+
+    </div>
+    <div class="col-md-6">
+
+      <div class="card my-2">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <h4>{{ t(_self, 'panel_service_supplier.title') }}</h4>
+              <address>
+                <strong>{{ device.serviceSupplier.displayName }}</strong></br>
+                {% if device.serviceSupplier.address %}
+                  {{ device.serviceSupplier.address.street }} {{ device.serviceSupplier.address.postalCode }} {{ device.serviceSupplier.address.city }}
+                  <br>
+                {% endif %}
+                {% if device.serviceSupplier.phone %}
+                  tel.:
+                  +{{ device.serviceSupplier.phone.countryPrefix }} {{ device.serviceSupplier.phone.number }}
+                  <br>
+                {% endif %}
+                {% if device.serviceSupplier.email %}
+                  <a href="mailto:{{ device.serviceSupplier.email }}">{{ device.serviceSupplier.email }}</a>
+                {% endif %}
+              </address>
+            </div>
+            <div class="col-md-6">
+              {% if device.serviceSupplier.avatar %}
+                <img class="pull-right" src="{{ device.serviceSupplier.avatar.url }}"
+                     alt="{{ device.serviceSupplier.displayName }}">
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+{% if repairs.items is not empty %}
+  <div class="bg-light p-5 rounded mt-3">
+    {{ paginator(repairs.pages, 'repairs_page') }}
+    {% include 'repairs/list.html.twig' %}
+    {{ paginator(repairs.pages, 'repairs_page') }}
+  </div>
+{% endif %}
+
+{% if tickets.items is not empty %}
+  <div class="bg-light p-5 rounded mt-3">
+    {{ paginator(tickets.pages, 'tickets_page') }}
+    {% include 'tickets/list.html.twig' %}
+    {{ paginator(tickets.pages, 'tickets_page') }}
+  </div>
+{% endif %}

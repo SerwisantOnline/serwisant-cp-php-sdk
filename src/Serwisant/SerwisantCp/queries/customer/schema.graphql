@@ -1,4 +1,4 @@
-# This file was generated based on ".graphqlconfig". Do not edit manually.
+# This file was generated. Do not edit manually.
 
 schema {
     query: CustomerQuery
@@ -96,10 +96,10 @@ type CustomerMutation {
     createMessage(message: MessageInput!): MessageCreationResult
     createMessageReply(content: String, message: HashID!): MessageReplyCreationResult
     "Create new repair as customer. Field `temporaryFiles` takes IDs of temporary files create via `createTemporaryFile `. Temporary files will be attached to repair and persisted."
-    createRepair(additionalItems: [RepairItemInput!], options: RepairCreationOptions, repair: RepairInput!, temporaryFiles: [HashID!]): RepairCreationResult
+    createRepair(additionalItems: [RepairItemInput!], device: HashID, options: RepairCreationOptions, repair: RepairInput!, temporaryFiles: [HashID!]): RepairCreationResult
     "Create a temporary file - file can be attached to created repair and will be persisted. It's useful to scenarios, where files must be uploaded before creation of eg. repair - and persisted with repair."
     createTemporaryFile(file: FileInput!): TemporaryFileCreationResult
-    createTicket(options: TicketCreationOptions, temporaryFiles: [HashID!], ticket: TicketInput!): TicketCreationResult
+    createTicket(devices: [HashID!], options: TicketCreationOptions, temporaryFiles: [HashID!], ticket: TicketInput!): TicketCreationResult
     markMessageRead(message: HashID!): Boolean
     print(ID: HashID!, type: PrintType!): TemporaryFileCreationResult
     updateViewer(addresses: [AddressUpdateInput!], agreements: [CustomerAgreementUpdateInput!], customer: CustomerUpdateInput): ViewerUpdateResult
@@ -131,10 +131,8 @@ type Device {
     files: [File!]!
     model: String!
     number: String!
-    orders(limit: Int = 20, page: Int = 1): [Repair!]!
     serial: String!
     serviceSupplier: ServiceSupplier!
-    tickets(limit: Int = 20, page: Int = 1): [Ticket!]!
     type: Dictionary!
     vendor: String!
 }
@@ -269,6 +267,7 @@ type Repair {
     deliveryAddress: Address
     "Defines how repaired item should be returned to customer."
     deliveryType: RepairTransportType!
+    device: Device
     diagnosis: RepairDiagnosis
     displayName: String!
     "Files attached to repair. For :service schema it includes private and public files, for otcher schemas only public files are included"
@@ -434,6 +433,7 @@ type Ticket {
     addressRemarks: String
     "Will return a list of values for custom fields"
     customFields: [CustomFieldValue!]!
+    devices: [Device!]!
     employee: Employee
     files: [File!]!
     issue: String!
@@ -881,6 +881,7 @@ enum ParcelDeliveryStatus {
 
 enum ParcelStatus {
     CLOSED
+    FAILED
     NEW
     READY_FOR_SUBMISSION
     SUBMITTED
@@ -936,6 +937,7 @@ enum RepairTransportType {
 enum RepairsFilterType {
     "All repairs"
     ALL
+    DEVICE
     "Only expired repairs"
     EXPIRED
     "Repair with particular ID, ID argument required"
@@ -1031,8 +1033,10 @@ enum TicketState {
 
 enum TicketsFilterType {
     ALL
+    DEVICE
     ID
     OPEN
+    SCHEDULED_ON
     SEARCH
     STATUS
 }
@@ -1094,6 +1098,12 @@ input CustomerUpdateInput {
     taxId: String
     taxPrefix: TaxPrefix
     type: CustomerType
+}
+
+"Time window between two dates - time starts on 00:00:00 and ends on 23:59:59"
+input DateRangeInput {
+    from: Date!
+    to: Date!
 }
 
 input DevicesFilter {
@@ -1173,8 +1183,7 @@ input RepairsFilter {
 }
 
 input ScheduleDatesFilter {
-    from: Date!
-    to: Date!
+    dateRange: DateRangeInput!
 }
 
 input TicketCreationOptions {
@@ -1193,6 +1202,7 @@ input TicketInput {
 
 input TicketsFilter {
     ID: HashID
+    dateRange: DateRangeInput
     q: String
     status: TicketState
     type: TicketsFilterType!

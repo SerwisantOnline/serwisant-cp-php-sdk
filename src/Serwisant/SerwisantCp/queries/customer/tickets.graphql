@@ -104,6 +104,24 @@ query tickets($limit: Int, $page: Int, $filter: TicketsFilter, $sort: TicketsSor
                 }
                 value
             }
+            devices {
+                __typename
+                ID
+                type {
+                    __typename
+                    name
+                }
+                vendor
+                model
+                address {
+                    __typename
+                    building
+                    city
+                    countryIso
+                    postalCode
+                    street
+                }
+            }
         }
     }
 }

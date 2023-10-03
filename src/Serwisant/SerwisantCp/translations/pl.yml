@@ -145,6 +145,7 @@ pl:
       dostęp do panelu klienckiego. Sprawdź proszę skrzynkę pocztową."
     access_request_complete: "Utworzyliśmy twoje konto, możesz się teraz zalogować."
     viewer_password_update_successful: "Zaktuaizowano hasło. Zaloguj się za pomocą hasła, które ustawiłeś."
+
   layout:
     viewer: "Edytuj dane"
     logout: "Wyloguj"
@@ -226,6 +227,7 @@ pl:
     password: "Hasło"
     submit: "Rozpocznij"
     forgot_password: "Przypomnij moje hasło"
+
   signup_new:
     title: "Rejestracja nowego konta"
     description: "Zacznij od rejestracji własnego konta. Wypełnij formularz."
@@ -253,6 +255,7 @@ pl:
         ustawić nowe."
       close: "Anuluj"
       ok: "Rozumiem, przechodzę do logowania"
+
   access_request_ask:
     title: "Aktywacja dostępu do panelu klienta"
     description: "Wykryliśmy, że serwis utworzył już twoje konto. Prawdopodobnie zlecałeś już w jakąś 
@@ -260,6 +263,7 @@ pl:
       adres email link, do strony na której będzie można ustawić login i hasło do panelu."
     submit: "Wyślij link"
     cancel: "Anuluj"
+
   access_request_new:
     title: "Aktywacja dostępu do panelu klienta"
     description: "Dokończ aktywację dostępu do panelu klienckiego. W tym celu wybierz swój login i hasło oraz zaakceptuj
@@ -276,6 +280,7 @@ pl:
     submit: "Aktywuj konto"
     cancel: "Anuluj"
     close: "Zamknij"
+
   viewer_edit:
     title: "Aktualizacja danych"
     description: "Zaktualizuj odpowiednie pola formularza, aby uaktualnić twoje dane."
@@ -299,6 +304,7 @@ pl:
     building: "Numer"
     postalCode: "Kod pocztowy"
     city: "Miasto"
+
   signup_confirmation_failure:
     title: "Aktywacja konta nie powiodła się"
     description: 'Aktywacja wcześniej założonego konta nie powiodła się powodów wymienionych poniżej:'
@@ -309,6 +315,7 @@ pl:
       already_activated: "konto jest już aktywne - aktywacja jest operacją jednorazową - możesz przejść na stronę
         logowania"
     button_caption: "Przejdź na stronę logowania"
+
   password_reset_new:
     title: "Resetowanie hasła"
     description: "To narzędzie umożliwia zresetowanie zapomnianego hasła. Najpierw podaj login lub email Twojego konta
@@ -319,6 +326,7 @@ pl:
     cancel: "Anuluj"
     errors:
       not_found: "Nie znaleziono użytkownika pasującego do podanego loginu lub adresu email"
+
   password_reset_new_password:
     title: "Resetowanie hasła"
     description: "Podaj nowe hasło dla Twojego konta."
@@ -326,19 +334,21 @@ pl:
     password_confirmation: "Powtórz hasło"
     cancel: "Anuluj"
     submit: "Zmień hasło"
+
   repairs:
     title: "Naprawy"
     create_repair: "Utwórz nową naprawę"
-    details: "Szczegóły"
-    rma: "Numer naprawy"
-    description: "Przedmiot naprawy"
-    status: "Stan"
     no_repairs: "Nie dodałeś jeszcze żadnej naprawy. Aby dodać jakąś, kliknij w przycisk znajdujący się w górnej części strony."
+    list:
+      rma: "Numer naprawy"
+      description: "Przedmiot naprawy"
+      status: "Stan"
+      details: "Szczegóły"
+
   repair:
     close: "Zamknij"
     print_intro: "Przyjęcie"
     print_summary: "Podsumowanie"
-  repair_details:
     panel_parcels:
       title: "Przesyłki kurierskie powiązane z naprawą"
       sender: "Nadawca"
@@ -349,7 +359,8 @@ pl:
     panel_service_supplier:
       title: 'Naprawiane przez:'
     panel_info:
-      title: 'Informacje o naprawie:'
+      device: 'Urządzenie, którego dotyczy naprawa'
+      title: 'Informacje o naprawie'
       number: "Numer"
       vendor: "Producent"
       model: "Model"
@@ -423,6 +434,7 @@ pl:
       repair: "Naprawa"
       confirmation: "Potwierdzenie"
       confirm: "Potwierdzam"
+
   repair_new:
     title: "Dodaj nową naprawę"
     description: "Aby zarejestrować nową naprawę w bazie serwisu uzupełnij poniższy formularz."
@@ -443,15 +455,18 @@ pl:
     collection: "Sposób odbioru naprawy"
     cancel: "Anuluj"
     submit: "Dodaj naprawę"
+
   tickets:
     title: "Zgłoszenia"
     create_ticket: "Dodaj zgłoszenie awarii"
-    number: "Numer zgłoszenia"
-    employee: "Odpowiedzialny pracownik"
-    type: "Rodzaj"
-    status: "Stan"
-    details: "Szczegóły"
     no_tickets: "Nie utworzyłeś jeszcze żadnego zgłoszenia. Aby dodać jakieś, kliknij w przycisk znajdujący się w górnej części strony."
+    list:
+      number: "Numer zgłoszenia"
+      employee: "Odpowiedzialny pracownik"
+      type: "Rodzaj"
+      status: "Stan"
+      details: "Szczegóły"
+
   ticket_new:
     title: "Dodaj zgłoszenie awarii"
     description: "Aby zgłosić nową usterkę, awarię lub inny problem wymagający ingerencji serwisu u ciebie uzupełnij
@@ -468,11 +483,14 @@ pl:
     building: "Numer"
     postalCode: "Kod pocztowy"
     city: "Miasto"
+    device:   "Urządzenie, którego dotyczy zgłoszenie"
+
   ticket:
     close: "Zamknij"
     print: "Wydruk"
     panel_info: "Ogólne informacje"
     number: "Numer zgłoszenia"
+    devices: "Urządzenia, których dotyczy zgłoszenie"
     employee: "Odpowiedzialny pracownik"
     address: "Adres realizacji zgłoszenia"
     group: "Grupa"
@@ -493,9 +511,11 @@ pl:
     finished_at: "Data zakończenia pracy"
     panel_custom_form_fields: "Dodatkowe informacje"
     panel_files: "Załączone pliki"
+
   online_payment_by_token:
     payment: "Płatność"
     method: "Wybierz metodę płatności"
+
   online_payment:
     popus:
       code_modal:
@@ -539,6 +559,7 @@ pl:
         WAITING_FOR_PAYMENT: "Oczekuje na płatność"
         PAID: "Zapłacono"
         UNPAID: "Nie zapłacono"
+
   messages:
     title: "Wiadomości"
     no_messages: "Nie wysłałeś, ani nie otrzymałeś żadnej wiadomości od serwisu. Jeśli chcesz skontaktować się z serwisem poprzez
@@ -547,6 +568,7 @@ pl:
     subject: "Temat"
     date: "Data"
     read: "Czytaj wątek"
+
   message:
     title: "Czytaj wiadomość"
     close: "Zamknij"
@@ -554,6 +576,7 @@ pl:
     service: "Serwis"
     employee: "Pracownik serwisu"
     you: "Ty"
+
   message_new:
     title: "Napisz nową wiadomość"
     description: "Za pomocą tego formularza możesz utworzyć wiadomość, która trafi do serwisu. W treści wiadomości
@@ -562,18 +585,23 @@ pl:
     content: "Treść wiadomości"
     cancel: "Anuluj"
     submit: "Wyślij wiadomość"
+
   message_new_reply:
     title: "Odpowiedź na wiadomość"
     description: "Odpowiadasz na wiadomość o tytule %{subject}"
     content: "Treść odpowiedzi"
     cancel: "Anuluj"
     submit: "Wyślij odpowiedź"
+
   dashboard:
     title: "Strona początkowa"
+    calendar: "Kalendarz zaplanowanych zadań i zgłoszeń"
+
   subscriber_by_token:
     search: "sprawdź kod"
     or: "lub"
     customer_panel: "przejdź do panelu klienckiego"
+
   viewer_password_edit:
     title: "Aktualizacja hasła"
     description: "Aby zaktualizować hasło musisz znać hasło aktualne. Jeśli go nie pamiętasz wyloguj się i skorzystaj ze
@@ -584,11 +612,29 @@ pl:
     passwordConfirmation: "Potwierdzenie hasła"
     cancel: "Anuluj"
     submit: "Zmień hasło"
+
   devices:
     title: "Urządzenia"
     number: "ID"
     type: "Rodzaj"
+    vendor_model: "Producent i model"
+    address: "Adres"
+    serial: "Numer seryjny"
+    details: "Szczegóły"
+
+  device:
+    close: "Zamknij"
+    new_ticket: "Zgłoś awarię tego urządzenia"
+    panel_info:
+      title: "Informacje o urządzeniu"
+    address: "Adres"
+    number: "Numer"
     vendor: "Producent"
     model: "Model"
     serial: "Numer seryjny"
-    details: "Szczegóły"
+    panel_custom_fields:
+      title: "Dodatkowe informacje"
+    panel_files:
+      title: "Pliki"
+    panel_service_supplier:
+      title: "Serwis obsługujący urządzenie"

@@ -24,12 +24,7 @@ const BuildFunctions = {
     let file_parts = file.split('/');
     let file_name = file_parts[file_parts.length - 1]
 
-    let prefix = '';
-    if (file.includes('fontawesome')) {
-      prefix = 'fa-';
-    }
-
-    let target = path.join(app_dir, target_dir, prefix + file_name);
+    let target = path.join(app_dir, target_dir, file_name);
 
     try {
       fs.unlinkSync(target)
@@ -41,12 +36,12 @@ const BuildFunctions = {
     if (action == 'symlink') {
       fs.symlink(path.join(app_dir, file), target, (err) => {
         if (err) throw err;
-        console.log('ln ' + prefix + file_name);
+        console.log('ln ' + file_name);
       });
     } else {
       fs.copyFile(path.join(app_dir, file), target, (err) => {
         if (err) throw err;
-        console.log('cp ' + prefix + file_name);
+        console.log('cp ' + file_name);
       });
     }
   },

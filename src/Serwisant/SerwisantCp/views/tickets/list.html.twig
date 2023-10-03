@@ -1,0 +1,53 @@
+<!-- desktop -->
+<div class="d-none d-md-none d-lg-block">
+  <table class="table">
+    <thead>
+    <tr>
+      <th scope="col">{{ t(_self, 'number') }}</th>
+      <th scope="col">{{ t(_self, 'employee') }}</th>
+      <th scope="col">{{ t(_self, 'type') }}</th>
+      <th scope="col">{{ t(_self, 'status') }}</th>
+      <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for ticket in tickets.items %}
+      <tr>
+        <th scope="row">{{ ticket.number }}</th>
+        <td>
+          {% if ticket.employee %}
+            {{ ticket.employee.displayName }}
+          {% endif %}
+        </td>
+        <td>{{ ticket.priority.name }}</td>
+        <td>{{ ticket_label(ticket, configuration.useCustomStatusNames) }}</td>
+        <td>
+          <a href="{{ path('ticket', {'id': ticket.ID}) }}">{{ t(_self, 'details') }}</a>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- mobile -->
+<div class="d-lg-none">
+  <table class="table">
+    <thead>
+    <tr>
+      <th scope="col">{{ t(_self, 'number') }}</th>
+      <th scope="col">{{ t(_self, 'status') }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for ticket in tickets.items %}
+      <tr>
+        <td>
+          <a href="{{ path('ticket', {'id': ticket.ID}) }}">{{ ticket.number }}</a>
+        </td>
+        <td>{{ ticket_label(ticket, configuration.useCustomStatusNames) }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>

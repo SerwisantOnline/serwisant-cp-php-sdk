@@ -1,8 +1,11 @@
+console.log("Running postinstall for Serwisant Online customer panel SDK...\n");
+
 var args = process.argv.slice(2);
 var action = (args[0] || '');
 
 var cssFiles = [
   'node_modules/bootstrap/dist/css/bootstrap.css',
+  'node_modules/bootstrap-icons/font/bootstrap-icons.css',
   'node_modules/datetimepicker/dist/DateTimePicker.css',
   'node_modules/bootstrap-select/dist/css/bootstrap-select.css',
   'node_modules/filepond/dist/filepond.css',
@@ -37,16 +40,19 @@ var jsAppFiles = [
 
 const BuildFunctions = require('./build-functions');
 
-// font-awesome
+BuildFunctions.mkdir('public/assets-serwisant-cp')
+BuildFunctions.mkdir('public/assets-serwisant-cp/fonts')
 BuildFunctions.mkdir('public/webfonts')
 
+// fonty
 if (action == '') {
+  BuildFunctions.withFiles('node_modules/bootstrap-icons/font/fonts', function (file) {
+    BuildFunctions.copy(file, 'public/assets-serwisant-cp/fonts')
+  })
   BuildFunctions.withFiles('node_modules/@fortawesome/fontawesome-free/webfonts', function (file) {
     BuildFunctions.copy(file, 'public/webfonts')
   })
 }
-
-BuildFunctions.mkdir('public/assets-serwisant-cp')
 
 // pliki css
 if (action == '') {

@@ -8,9 +8,18 @@ query devices($limit: Int, $page: Int, $filter: DevicesFilter, $sort: DevicesSor
             number
             model
             vendor
+            serial
             type {
                 __typename
                 name
+            }
+            address {
+                __typename
+                building
+                city
+                countryIso
+                postalCode
+                street
             }
         }
     }
@@ -30,6 +39,7 @@ query devices($limit: Int, $page: Int, $filter: DevicesFilter, $sort: DevicesSor
             }
             address {
                 __typename
+                ID
                 building
                 city
                 countryIso
@@ -46,36 +56,37 @@ query devices($limit: Int, $page: Int, $filter: DevicesFilter, $sort: DevicesSor
                 value
             }
             files {
-                __typename
                 contentType
-                url
                 image
+                url
+                thumbUrl: url(size: THUMBNAIL)
+                publicRemarks
+                __typename
             }
             model
             number
-            orders {
-                __typename
-                ID
-                rma
-                displayName
-                status {
-                    __typename
-                    displayName
-                }
-            }
             serial
             serviceSupplier {
-                __typename
                 displayName
-            }
-            tickets {
-                __typename
-                number
-                ID
-                status {
+                address {
+                    street
+                    building
+                    city
+                    postalCode
+                    countryIso
                     __typename
-                    displayName
                 }
+                phone {
+                    number
+                    countryPrefix
+                    __typename
+                }
+                email
+                avatar {
+                    url
+                    __typename
+                }
+                __typename
             }
             type {
                 __typename
