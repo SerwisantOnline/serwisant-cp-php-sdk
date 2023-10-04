@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/SerwisantOnline/serwisant-cp-php-sdk#readme",
   "dependencies": {
+    "uglify-js": "^3.17.4",
+    "uglifycss": "^0.0.29",
     "fullcalendar": "^6.0.0",
     "@fullcalendar/bootstrap5": "^6.0.0",
     "@fortawesome/fontawesome-free": "^5.15.3",
@@ -31,9 +33,5 @@
     "filepond-plugin-image-preview": "^4.6.6",
     "jquery": "^3.6.0",
     "lodash": "^4.17.21"
-  },
-  "devDependencies": {
-    "uglify-js": "^3.17.4",
-    "uglifycss": "^0.0.29"
   }
 }
