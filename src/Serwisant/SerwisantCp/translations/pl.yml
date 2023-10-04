@@ -614,6 +614,7 @@ pl:
     submit: "Zmień hasło"
 
   devices:
+    no_devices: "Brak przypisanych urządzeń. Jeśli obsługujący cię serwis doda w przyszłości jakieś urządzenia pojawią się na tej liście."
     title: "Urządzenia"
     number: "ID"
     type: "Rodzaj"
