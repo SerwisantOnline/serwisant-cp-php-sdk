@@ -1,5 +1,5 @@
-mutation createTicket($ticket: TicketInput!, $temporaryFiles: [HashID!]) {
-    createTicket(ticket: $ticket, temporaryFiles: $temporaryFiles) {
+mutation createTicket($ticket: TicketInput!, $temporaryFiles: [HashID!], $devices: [HashID!]) {
+    createTicket(ticket: $ticket, temporaryFiles: $temporaryFiles, devices: $devices) {
         __typename
         errors {
             __typename

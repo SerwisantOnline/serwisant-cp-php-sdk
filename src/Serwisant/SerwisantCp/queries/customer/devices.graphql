@@ -1,0 +1,98 @@
+query devices($limit: Int, $page: Int, $filter: DevicesFilter, $sort: DevicesSort, $list: Boolean = false, $single: Boolean = false) {
+    devices(limit: $limit, page: $page, filter: $filter, sort: $sort) @include(if: $list) {
+        __typename
+        pages
+        items {
+            __typename
+            ID
+            number
+            model
+            vendor
+            serial
+            type {
+                __typename
+                name
+            }
+            address {
+                __typename
+                building
+                city
+                countryIso
+                postalCode
+                street
+            }
+        }
+    }
+    devices(limit: $limit, page: $page, filter: $filter, sort: $sort) @include(if: $single) {
+        __typename
+        items {
+            __typename
+            ID
+            additionalItems {
+                __typename
+                type {
+                    __typename
+                    name
+                }
+                serial
+                description
+            }
+            address {
+                __typename
+                ID
+                building
+                city
+                countryIso
+                postalCode
+                street
+            }
+            customFields {
+                __typename
+                field {
+                    __typename
+                    name
+                    type
+                }
+                value
+            }
+            files {
+                contentType
+                image
+                url
+                thumbUrl: url(size: THUMBNAIL)
+                publicRemarks
+                __typename
+            }
+            model
+            number
+            serial
+            serviceSupplier {
+                displayName
+                address {
+                    street
+                    building
+                    city
+                    postalCode
+                    countryIso
+                    __typename
+                }
+                phone {
+                    number
+                    countryPrefix
+                    __typename
+                }
+                email
+                avatar {
+                    url
+                    __typename
+                }
+                __typename
+            }
+            type {
+                __typename
+                name
+            }
+            vendor
+        }
+    }
+}

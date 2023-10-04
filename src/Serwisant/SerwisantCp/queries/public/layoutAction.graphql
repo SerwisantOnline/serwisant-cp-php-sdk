@@ -57,6 +57,7 @@ query {
         panelRepairs
         panelTickets
         panelCommunication
+        panelDevices
         panelSignups
         dashboardMessage
         orderDictModel

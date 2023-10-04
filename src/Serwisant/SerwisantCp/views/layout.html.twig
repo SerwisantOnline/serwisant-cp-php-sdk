@@ -1,37 +1,42 @@
 <!doctype html>
 <html lang="{{ locale_ISO() }}">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ pageTitle }}</title>
 
-  <link rel="stylesheet" href="{{ asset('assets-serwisant-cp/bootstrap.min.css') }}"/>
-  <link rel="stylesheet" href="{{ asset('assets-serwisant-cp/filepond.min.css') }}"/>
-  <link rel="stylesheet" href="{{ asset('assets-serwisant-cp/filepond-plugin-image-preview.min.css') }}"/>
-  <link rel="stylesheet" href="{{ asset('assets-serwisant-cp/DateTimePicker.min.css') }}"/>
-  <link rel="stylesheet" href="{{ asset('assets-serwisant-cp/bootstrap-select.min.css') }}"/>
-  <link rel="stylesheet" href="{{ asset('assets-serwisant-cp/fa-all.min.css') }}"/>
-  <link rel="stylesheet" href="{{ asset('assets-serwisant-cp/layout.css') }}"/>
-</head>
-<body>
+  <link rel="stylesheet" href="{{ asset('assets-serwisant-cp/serwisant-cp-vendor.css') }}"/>
+  <link rel="stylesheet" href="{{ asset('assets-serwisant-cp/serwisant-cp.css') }}"/>
 
-<script>
-  var application_js_options = {
-    locale: "{{ locale_ISO() }}",
-    dpTranslations: {{ t('dp') | json_encode() | raw }},
-    fpTranslations: {{ t('fp') | json_encode() | raw }},
-    uploadUrl: "{{ path('temporary_file') }}",
-    uploadOnlyImages: {{ configuration.uploadOnlyImages ? 1 : 0 }},
-    panelSignups: {{ configuration.panelSignups ? 1 : 0 }},
-    createCustomerAccessUrl: "{{ path('new_access_request', {customer: 'ID'}) }}"
-  }
-</script>
+  <script>
+    var application_js_options = {
+      locale: "{{ locale_ISO() }}",
+      dpTranslations: {{ t('dp') | json_encode() | raw }},
+      fpTranslations: {{ t('fp') | json_encode() | raw }},
+      uploadUrl: "{{ path('temporary_file') }}",
+      uploadOnlyImages: {{ (configuration is defined and configuration.uploadOnlyImages) ? 1 : 0 }},
+      panelSignups: {{ (configuration is defined and configuration.panelSignups) ? 1 : 0 }},
+      createCustomerAccessUrl: "{{ path('new_access_request', {customer: 'ID'}) }}"
+    }
+  </script>
+
+  {% if decoratorLayoutHead is defined and decoratorLayoutHead %}{% include decoratorLayoutHead %}{% endif %}
+
+</head>
+
+<body class="body-{{ currentAction }}">
 
 {% if isAuthenticated %}
-
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
     <div class="container">
-      <a class="navbar-brand" href="{{ path('dashboard') }}">{{ subscriber.serviceSupplier.displayName }}</a>
+
+      <a class="navbar-brand" href="{{ path('dashboard') }}">
+        {% if subscriber.serviceSupplier.avatar %}
+          <img src="{{ subscriber.serviceSupplier.avatar.url }}" alt="Bootstrap" height="24">
+        {% endif %}
+        {{ subscriber.serviceSupplier.displayName }}
+      </a>
 
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
               data-bs-target="#navbarsExampleDefault"
@@ -53,21 +58,17 @@
                  href="{{ path('tickets') }}">{{ t(_self, 'tickets') }}</a>
             </li>
           {% endif %}
+          {% if configuration.panelDevices %}
+            <li class="nav-item">
+              <a class="nav-link {{ currentAction == 'Devices' ? 'active' : '' }}"
+                 href="{{ path('devices') }}">{{ t(_self, 'devices') }}</a>
+            </li>
+          {% endif %}
           {% if configuration.panelCommunication %}
             <li class="nav-item">
               <a class="nav-link {{ currentAction == 'Messages' ? 'active' : '' }}"
                  href="{{ path('messages') }}">{{ t(_self, 'messages') }}</a>
             </li>
-
-            <li class="nav-item d-lg-none">
-              <a class="nav-link {{ currentAction == 'Messages' ? 'active' : '' }}"
-                 href="{{ path('viewer') }}">{{ t(_self, 'viewer') }}</a>
-            </li>
-            <li class="nav-item d-lg-none">
-              <a class="nav-link {{ currentAction == 'Messages' ? 'active' : '' }}"
-                 href="{{ path('destroy_session') }}">{{ t(_self, 'logout') }}</a>
-            </li>
-
           {% endif %}
         </ul>
 
@@ -77,7 +78,8 @@
                aria-expanded="false">{{ me.customer.displayName }} </a>
             <ul class="dropdown-menu" aria-labelledby="dropdown01">
               <li><a class="dropdown-item" href="{{ path('viewer') }}">{{ t(_self, 'viewer') }}</a></li>
-              <li><a class="dropdown-item" href="{{ path('viewer_password') }}">{{ t(_self, 'viewer_password') }}</a></li>
+              <li><a class="dropdown-item" href="{{ path('viewer_password') }}">{{ t(_self, 'viewer_password') }}</a>
+              </li>
               <li><a class="dropdown-item"
                      href="{{ path('destroy_session') }}">{{ t(_self, 'logout') }}</a>
               </li>
@@ -88,7 +90,6 @@
       </div>
     </div>
   </nav>
-
 {% endif %}
 
 {% if app.flash.anyErrors() %}
@@ -111,47 +112,17 @@
   </div>
 {% endif %}
 
-<main class="container">
-  {{ innerHTML | raw }}
-</main>
-
-<hr>
-
-<div class="container">
-  <footer>
-    <p class="pull-left">
-      <small>
-        {{ subscriber.displayName }}
-        {% if subscriber.address %}
-          <br>
-          {{ subscriber.address.street }} {{ subscriber.address.building }}, {{ subscriber.address.postalCode }} {{ subscriber.address.city }}
-        {% endif %}
-        {% if subscriber.taxId %}
-          <br>
-          NIP {{ subscriber.taxId }}
-        {% endif %}
-      </small>
-    </p>
-    <ul class="list-unstyled pull-right text-right">
-      {% for agreement in agreements %}
-        <li>
-          <small>
-            <a href="{{ path('agreement', {id: agreement.ID}) }}"
-               data-title="{{ agreement.description }}">{{ agreement.description }}</a>
-          </small>
-        </li>
-      {% endfor %}
-      {% for statement in statements %}
-        <li>
-          <small>
-            <a href="{{ path('statement', {id: statement.ID}) }}"
-               data-title="{{ statement.title }}">{{ statement.title }}</a>
-          </small>
-        </li>
-      {% endfor %}
-    </ul>
+{% if decoratorLayoutInner is defined and decoratorLayoutInner %}
+  {% include decoratorLayoutInner %}
+{% else %}
+  <main class="container">
+    {% include innerTemplate %}
+  </main>
+  <hr>
+  <footer class="container">
+    {% include 'layout/footer.html.twig' %}
   </footer>
-</div>
+{% endif %}
 
 <div class="hidden-print" id="modal-popups-container"></div>
 <div id="dtBox"></div>
@@ -165,31 +136,16 @@
   </h6>
 </div>
 
-<script src="{{ asset('assets-serwisant-cp/lodash.min.js') }}"></script>
-<script src="{{ asset('assets-serwisant-cp/jquery.min.js') }}"></script>
-<script src="{{ asset('assets-serwisant-cp/bootstrap.bundle.min.js') }}"></script>
-
-<script src="{{ asset('assets-serwisant-cp/cookiealert.js') }}"></script>
-<script src="{{ asset('assets-serwisant-cp/purl.js') }}"></script>
-<script src="{{ asset('assets-serwisant-cp/filepond.min.js') }}"></script>
-<script src="{{ asset('assets-serwisant-cp/filepond-plugin-image-preview.min.js') }}"></script>
-<script src="{{ asset('assets-serwisant-cp/filepond-plugin-file-validate-type.min.js') }}"></script>
-<script src="{{ asset('assets-serwisant-cp/DateTimePicker.min.js') }}"></script>
-<script src="{{ asset('assets-serwisant-cp/bootstrap-select.min.js') }}"></script>
-
-<script src="{{ asset('assets-serwisant-cp/password_strength.js') }}"></script>
-<script src="{{ asset('assets-serwisant-cp/jquery_strength.js') }}"></script>
-
-<script src="{{ asset('assets-serwisant-cp/application.js') }}"></script>
-<script src="{{ asset('assets-serwisant-cp/application_ui.js') }}"></script>
-
-<script src="{{ asset('assets-serwisant-cp/layout.js') }}"></script>
+<script src="{{ asset('assets-serwisant-cp/serwisant-cp-vendor.js') }}"></script>
+<script src="{{ asset('assets-serwisant-cp/serwisant-cp.js') }}"></script>
 
 {% if js_files is defined %}
   {%- for js_file in js_files %}
     <script src="{{ asset("assets-serwisant-cp/#{ js_file }") }}"></script>
   {% endfor %}
 {% endif %}
+
+{% if decoratorLayoutScript is defined %}{% include decoratorLayoutScript %}{% endif %}
 
 </body>
 </html>

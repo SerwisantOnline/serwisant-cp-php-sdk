@@ -20,10 +20,17 @@
             <td class="column-definition">{{ t(_self, 'number') }}</td>
             <td>{{ ticket.number }}</td>
           </tr>
-          <tr>
-            <td class="column-definition">{{ t(_self, 'employee') }}</td>
-            <td>{{ ticket.employee ? ticket.employee.displayName : '' }}</td>
-          </tr>
+          {% if  ticket.devices %}
+            <tr>
+              <td class="column-definition">{{ t(_self, 'devices') }}</td>
+              <td>
+                {% for device in ticket.devices %}
+                  <a
+                    href="{{ path('device', {'id': device.ID}) }}">{{ device.type.name }} {{ device.vendor }} {{ device.model }}</a>
+                {% endfor %}
+              </td>
+            </tr>
+          {% endif %}
           <tr>
             <td class="column-definition">{{ t(_self, 'address') }}</td>
             <td>
@@ -33,6 +40,10 @@
                 {{ ticket.address.street }} {{ ticket.address.building }},  {{ ticket.address.postalCode }} {{ ticket.address.city }}
               {% endif %}
             </td>
+          </tr>
+          <tr>
+            <td class="column-definition">{{ t(_self, 'employee') }}</td>
+            <td>{{ ticket.employee ? ticket.employee.displayName : '' }}</td>
           </tr>
           <tr>
             <td class="column-definition">{{ t(_self, 'group') }}</td>

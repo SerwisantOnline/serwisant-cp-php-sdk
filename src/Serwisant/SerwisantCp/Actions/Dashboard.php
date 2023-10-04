@@ -10,7 +10,10 @@ class Dashboard extends Action
   {
     $this->checkModuleActive();
 
-    $vars = ['pageTitle' => $this->t('dashboard.title')];
+    $vars = [
+      'js_files' => ['dashboard.js'],
+      'pageTitle' => $this->t('dashboard.title')
+    ];
     return $this->renderPage('dashboard.html.twig', $vars);
   }
 

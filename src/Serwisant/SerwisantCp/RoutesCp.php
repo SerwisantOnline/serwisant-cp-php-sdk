@@ -12,8 +12,295 @@ class RoutesCp extends Routes
   {
     $cp = $this->app['controllers_factory'];
 
-    // USER
+    $this->userRoutes($cp);
+    $this->temporaryFilesRoutes($cp);
+    $this->repairsRoutes($cp);
+    $this->ticketsRoutes($cp);
+    $this->devicesRoutes($cp);
+    $this->calendarRoutes($cp);
+    $this->messagesRoutes($cp);
+    $this->miscRoutes($cp);
 
+    return $cp;
+  }
+
+  /**
+   * @param $cp
+   * @return void
+   */
+  private function calendarRoutes($cp): void
+  {
+    $cp->get('/calendar/schedule_dates', function (Request $request, Token $token) {
+      return (new Actions\Calendar($this->app, $request, $token))->scheduleDates();
+    })
+      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
+      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
+      ->bind('calendar_schedule_dates');
+
+    $cp->get('/calendar/ticket_dates', function (Request $request, Token $token) {
+      return (new Actions\Calendar($this->app, $request, $token))->ticketDates();
+    })
+      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
+      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
+      ->bind('calendar_ticket_dates');
+  }
+
+  /**
+   * @param $cp
+   * @return void
+   * @throws ExceptionNotFound
+   */
+  private function devicesRoutes($cp): void
+  {
+    $cp->get('/devices', function (Request $request, Token $token) {
+      return (new Actions\Devices($this->app, $request, $token))->index();
+    })
+      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
+      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
+      ->bind('devices');
+
+    $cp->get('/device/{id}', function (Request $request, Token $token, $id) {
+      return (new Actions\Devices($this->app, $request, $token))->show($id);
+    })
+      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
+      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
+      ->assert('id', $this->hashIdAssertion())
+      ->bind('device');
+  }
+
+  /**
+   * @param $cp
+   * @return void
+   */
+  private function messagesRoutes($cp): void
+  {
+    $cp->get('/messages', function (Request $request, Token $token) {
+      return (new Actions\Messages($this->app, $request, $token))->index();
+    })
+      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
+      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
+      ->bind('messages');
+
+    $cp->get('/message/{id}', function (Request $request, Token $token, $id) {
+      return (new Actions\Messages($this->app, $request, $token))->show($id);
+    })
+      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
+      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
+      ->assert('id', $this->hashIdAssertion())
+      ->bind('message');
+
+    $cp->get('/messages/create', function (Request $request, Token $token) {
+      return (new Actions\Messages($this->app, $request, $token))->new();
+    })
+      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
+      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
+      ->bind('new_message');
+
+    $cp->post('/messages/create', function (Request $request, Token $token) {
+      return (new Actions\Messages($this->app, $request, $token))->create();
+    })
+      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
+      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
+      ->bind('create_message');
+
+    $cp->get('/message/{id}/create', function (Request $request, Token $token, $id) {
+      return (new Actions\Messages($this->app, $request, $token))->newReply($id);
+    })
+      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
+      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
+      ->assert('id', $this->hashIdAssertion())
+      ->bind('new_message_reply');
+
+    $cp->post('/message/{id}/create', function (Request $request, Token $token, $id) {
+      return (new Actions\Messages($this->app, $request, $token))->createReply($id);
+    })
+      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
+      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
+      ->assert('id', $this->hashIdAssertion())
+      ->bind('create_message_reply');
+  }
+
+  /**
+   * @param $cp
+   * @return void
+   */
+  private function miscRoutes($cp): void
+  {
+    $cp->get('/', function (Request $request, Token $token) {
+      return (new Actions\Dashboard($this->app, $request, $token))->index();
+    })
+      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
+      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
+      ->bind('dashboard');
+
+    $cp->get('/ac/vendor', function (Request $request, Token $token) {
+      return (new Actions\Autocomplete($this->app, $request, $token))->vendor();
+    })
+      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
+      ->assert('token', $this->tokenAssertion())
+      ->convert('token', $this->tokenConverter())
+      ->bind('autocomplete_vendor');
+
+    $cp->get('/ac/model', function (Request $request, Token $token) {
+      return (new Actions\Autocomplete($this->app, $request, $token))->model();
+    })
+      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
+      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
+      ->bind('autocomplete_model');
+  }
+
+  /**
+   * @param $cp
+   * @return void
+   * @throws ExceptionNotFound
+   */
+  private function ticketsRoutes($cp): void
+  {
+    $cp->get('/tickets', function (Request $request, Token $token) {
+      return (new Actions\Tickets($this->app, $request, $token))->index();
+    })
+      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
+      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
+      ->bind('tickets');
+
+    $cp->get('/ticket/{id}', function (Request $request, Token $token, $id) {
+      return (new Actions\Tickets($this->app, $request, $token))->show($id);
+    })
+      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
+      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
+      ->assert('id', $this->hashIdAssertion())
+      ->bind('ticket');
+
+    $cp->get('/ticket/{id}/print', function (Request $request, Token $token, $id) {
+      return (new Actions\Tickets($this->app, $request, $token))->print($id);
+    })
+      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
+      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
+      ->assert('id', $this->hashIdAssertion())
+      ->bind('ticket_print');
+
+    $cp->get('/tickets/create', function (Request $request, Token $token) {
+      return (new Actions\Tickets($this->app, $request, $token))->new();
+    })
+      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
+      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
+      ->bind('new_ticket');
+
+    $cp->post('/tickets/create', function (Request $request, Token $token) {
+      return (new Actions\Tickets($this->app, $request, $token))->create();
+    })
+      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
+      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
+      ->bind('create_ticket');
+  }
+
+  /**
+   * @param $cp
+   * @return void
+   * @throws Exception
+   * @throws ExceptionNotFound
+   */
+  private function repairsRoutes($cp): void
+  {
+    $cp->get('/repairs', function (Request $request, Token $token) {
+      return (new Actions\Repairs($this->app, $request, $token))->index();
+    })
+      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
+      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
+      ->bind('repairs');
+
+    $cp->get('/repairs/create', function (Request $request, Token $token) {
+      return (new Actions\Repairs($this->app, $request, $token))->new();
+    })
+      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
+      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
+      ->bind('new_repair');
+
+    $cp->post('/repairs/create', function (Request $request, Token $token) {
+      return (new Actions\Repairs($this->app, $request, $token))->create();
+    })
+      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
+      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
+      ->bind('create_repair');
+
+    $cp->get('/repair/{id}', function (Request $request, Token $token, $id) {
+      return (new Actions\Repairs($this->app, $request, $token))->show($id);
+    })
+      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
+      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
+      ->assert('id', $this->hashIdAssertion())
+      ->bind('repair');
+
+    $cp->get('/repair/{id}/print/{type}', function (Request $request, Token $token, $id, $type) {
+      return (new Actions\Repairs($this->app, $request, $token))->print($id, $type);
+    })
+      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
+      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
+      ->assert('id', $this->hashIdAssertion())
+      ->assert('type', '[a-z]{5,10}')
+      ->bind('repair_print');
+
+    $cp->post('/repair/{id}/accept', function (Request $request, Token $token, $id) {
+      return (new Actions\RepairDecision($this->app, $request, $token))->accept($id);
+    })
+      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
+      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
+      ->assert('id', $this->hashIdAssertion())
+      ->before($this->expectJson())
+      ->bind('repair_accept');
+
+    $cp->post('/repair/{id}/accept/{offer_id}', function (Request $request, Token $token, $id, $offer_id) {
+      return (new Actions\RepairDecision($this->app, $request, $token))->acceptOffer($id, $offer_id);
+    })
+      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
+      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
+      ->assert('id', $this->hashIdAssertion())
+      ->assert('offer_id', '\w+')
+      ->before($this->expectJson())
+      ->bind('repair_accept_offer');
+
+    $cp->post('/repair/{id}/reject', function (Request $request, Token $token, $id) {
+      return (new Actions\RepairDecision($this->app, $request, $token))->reject($id);
+    })
+      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
+      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
+      ->assert('id', $this->hashIdAssertion())
+      ->before($this->expectJson())
+      ->bind('repair_reject');
+  }
+
+  /**
+   * @param $cp
+   * @return void
+   */
+  private function temporaryFilesRoutes($cp): void
+  {
+    $cp->post('/temporary_file', function (Request $request, Token $token) {
+      return (new Actions\TemporaryFile($this->app, $request, $token))->create();
+    })
+      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
+      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter());
+
+    $cp->delete('/temporary_file', function (Request $request, Token $token) {
+      return 'OK';
+    })
+      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
+      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter());
+
+    $cp->get('/temporary_file', function (Request $request, Token $token) {
+      return (new Actions\TemporaryFile($this->app, $request, $token))->show();
+    })
+      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
+      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
+      ->bind('temporary_file');
+  }
+
+  /**
+   * @param $cp
+   * @return void
+   */
+  private function userRoutes($cp): void
+  {
     $cp->get('/login', function (Request $request, Token $token) {
       return (new Actions\Login($this->app, $request, $token))->new();
     })
@@ -140,206 +427,5 @@ class RoutesCp extends Routes
     })
       ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
       ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter());
-
-    // TEMPORARY FILES
-
-    $cp->post('/temporary_file', function (Request $request, Token $token) {
-      return (new Actions\TemporaryFile($this->app, $request, $token))->create();
-    })
-      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
-      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter());
-
-    $cp->delete('/temporary_file', function (Request $request, Token $token) {
-      return 'OK';
-    })
-      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
-      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter());
-
-    $cp->get('/temporary_file', function (Request $request, Token $token) {
-      return (new Actions\TemporaryFile($this->app, $request, $token))->show();
-    })
-      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
-      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
-      ->bind('temporary_file');
-
-    // REPAIRS
-
-    $cp->get('/repairs', function (Request $request, Token $token) {
-      return (new Actions\Repairs($this->app, $request, $token))->index();
-    })
-      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
-      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
-      ->bind('repairs');
-
-    $cp->get('/repairs/create', function (Request $request, Token $token) {
-      return (new Actions\Repairs($this->app, $request, $token))->new();
-    })
-      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
-      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
-      ->bind('new_repair');
-
-    $cp->post('/repairs/create', function (Request $request, Token $token) {
-      return (new Actions\Repairs($this->app, $request, $token))->create();
-    })
-      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
-      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
-      ->bind('create_repair');
-
-    $cp->get('/repair/{id}', function (Request $request, Token $token, $id) {
-      return (new Actions\Repairs($this->app, $request, $token))->show($id);
-    })
-      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
-      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
-      ->assert('id', $this->hashIdAssertion())
-      ->bind('repair');
-
-    $cp->get('/repair/{id}/print/{type}', function (Request $request, Token $token, $id, $type) {
-      return (new Actions\Repairs($this->app, $request, $token))->print($id, $type);
-    })
-      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
-      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
-      ->assert('id', $this->hashIdAssertion())
-      ->assert('type', '[a-z]{5,10}')
-      ->bind('repair_print');
-
-    $cp->post('/repair/{id}/accept', function (Request $request, Token $token, $id) {
-      return (new Actions\RepairDecision($this->app, $request, $token))->accept($id);
-    })
-      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
-      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
-      ->assert('id', $this->hashIdAssertion())
-      ->before($this->expectJson())
-      ->bind('repair_accept');
-
-    $cp->post('/repair/{id}/accept/{offer_id}', function (Request $request, Token $token, $id, $offer_id) {
-      return (new Actions\RepairDecision($this->app, $request, $token))->acceptOffer($id, $offer_id);
-    })
-      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
-      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
-      ->assert('id', $this->hashIdAssertion())
-      ->assert('offer_id', '\w+')
-      ->before($this->expectJson())
-      ->bind('repair_accept_offer');
-
-    $cp->post('/repair/{id}/reject', function (Request $request, Token $token, $id) {
-      return (new Actions\RepairDecision($this->app, $request, $token))->reject($id);
-    })
-      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
-      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
-      ->assert('id', $this->hashIdAssertion())
-      ->before($this->expectJson())
-      ->bind('repair_reject');
-
-    // TICKETS
-
-    $cp->get('/tickets', function (Request $request, Token $token) {
-      return (new Actions\Tickets($this->app, $request, $token))->index();
-    })
-      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
-      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
-      ->bind('tickets');
-
-    $cp->get('/ticket/{id}', function (Request $request, Token $token, $id) {
-      return (new Actions\Tickets($this->app, $request, $token))->show($id);
-    })
-      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
-      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
-      ->assert('id', $this->hashIdAssertion())
-      ->bind('ticket');
-
-    $cp->get('/ticket/{id}/print', function (Request $request, Token $token, $id) {
-      return (new Actions\Tickets($this->app, $request, $token))->print($id);
-    })
-      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
-      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
-      ->assert('id', $this->hashIdAssertion())
-      ->bind('ticket_print');
-
-    $cp->get('/tickets/create', function (Request $request, Token $token) {
-      return (new Actions\Tickets($this->app, $request, $token))->new();
-    })
-      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
-      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
-      ->bind('new_ticket');
-
-    $cp->post('/tickets/create', function (Request $request, Token $token) {
-      return (new Actions\Tickets($this->app, $request, $token))->create();
-    })
-      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
-      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
-      ->bind('create_ticket');
-
-    // MESSAGES
-
-    $cp->get('/messages', function (Request $request, Token $token) {
-      return (new Actions\Messages($this->app, $request, $token))->index();
-    })
-      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
-      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
-      ->bind('messages');
-
-    $cp->get('/message/{id}', function (Request $request, Token $token, $id) {
-      return (new Actions\Messages($this->app, $request, $token))->show($id);
-    })
-      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
-      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
-      ->assert('id', $this->hashIdAssertion())
-      ->bind('message');
-
-    $cp->get('/messages/create', function (Request $request, Token $token) {
-      return (new Actions\Messages($this->app, $request, $token))->new();
-    })
-      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
-      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
-      ->bind('new_message');
-
-    $cp->post('/messages/create', function (Request $request, Token $token) {
-      return (new Actions\Messages($this->app, $request, $token))->create();
-    })
-      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
-      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
-      ->bind('create_message');
-
-    $cp->get('/message/{id}/create', function (Request $request, Token $token, $id) {
-      return (new Actions\Messages($this->app, $request, $token))->newReply($id);
-    })
-      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
-      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
-      ->assert('id', $this->hashIdAssertion())
-      ->bind('new_message_reply');
-
-    $cp->post('/message/{id}/create', function (Request $request, Token $token, $id) {
-      return (new Actions\Messages($this->app, $request, $token))->createReply($id);
-    })
-      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
-      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
-      ->assert('id', $this->hashIdAssertion())
-      ->bind('create_message_reply');
-
-    // MISC
-
-    $cp->get('/', function (Request $request, Token $token) {
-      return (new Actions\Dashboard($this->app, $request, $token))->index();
-    })
-      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
-      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
-      ->bind('dashboard');
-
-    $cp->get('/ac/vendor', function (Request $request, Token $token) {
-      return (new Actions\Autocomplete($this->app, $request, $token))->vendor();
-    })
-      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
-      ->assert('token', $this->tokenAssertion())
-      ->convert('token', $this->tokenConverter())
-      ->bind('autocomplete_vendor');
-
-    $cp->get('/ac/model', function (Request $request, Token $token) {
-      return (new Actions\Autocomplete($this->app, $request, $token))->model();
-    })
-      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
-      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
-      ->bind('autocomplete_model');
-
-    return $cp;
   }
 }

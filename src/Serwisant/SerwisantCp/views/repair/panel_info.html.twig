@@ -5,6 +5,12 @@
   </div>
   <table class="table table-bordered card-table">
     <tbody>
+    {% if configuration.panelDevices and repair.device %}
+      <tr>
+        <td class="column-definition">{{ t(_self, 'device') }}</td>
+        <td><a href="{{ path('device', {'id': repair.device.ID}) }}">{{ repair.device.displayName }}</a></td>
+      </tr>
+    {% endif %}
     <tr>
       <td class="column-definition">{{ t(_self, 'number') }}</td>
       <td>{{ repair.rma }}</td>

@@ -7,9 +7,26 @@
   {{ form_errors(_self, errors) }}
 
   <div class="bg-light p-5 rounded mt-3">
-    <div class="mb-3">
-      {{ form_field({type: 'select', argument: 'ticket.priority', caption: t(_self, 'priority'), options: priorities_select_options, include_blank: true}, form_params, errors) }}
-    </div>
+
+    {% if device %}
+      {{ form_field({type: 'hidden', argument: 'device', value: device.ID}, form_params, errors) }}
+      <div class="mb-3">
+        <div class="form-floating">
+          <input type="text" class="form-control" placeholder="{{ t(_self, 'device') }}"
+                 title="{{ t(_self, 'device') }}" disabled
+                 value="{{ device.type.name }} {{ device.vendor }} {{ device.model }}">
+          <label for="ticket_customFields_1_value" class="form-label">{{ t(_self, 'device') }}</label>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if priorities_select_options|length > 1 %}
+      <div class="mb-3">
+        {{ form_field({type: 'select', argument: 'ticket.priority', caption: t(_self, 'priority'), options: priorities_select_options, include_blank: true}, form_params, errors) }}
+      </div>
+    {% else %}
+      {{ form_field({type: 'hidden', argument: 'ticket.priority', value: priorities_select_options|keys|first}, form_params, errors) }}
+    {% endif %}
 
     <div class="mb-3">
       {{ form_field({type: 'datetime', argument: 'ticket.startAt', caption: t(_self, 'startAt')}, form_params, errors) }}

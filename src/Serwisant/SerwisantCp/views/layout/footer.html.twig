@@ -1,0 +1,36 @@
+{% if subscriber is defined %}
+  <p class="pull-left">
+    <small>
+      {{ subscriber.displayName }}
+      {% if subscriber.address %}
+        <br>
+        {{ subscriber.address.street }} {{ subscriber.address.building }}, {{ subscriber.address.postalCode }} {{ subscriber.address.city }}
+      {% endif %}
+      {% if subscriber.taxId %}
+        <br>
+        NIP {{ subscriber.taxId }}
+      {% endif %}
+    </small>
+  </p>
+{% endif %}
+
+{% if agreements is defined %}
+  <ul class="list-unstyled pull-right text-right">
+    {% for agreement in agreements %}
+      <li>
+        <small>
+          <a href="{{ path('agreement', {id: agreement.ID}) }}"
+             data-title="{{ agreement.description }}">{{ agreement.description }}</a>
+        </small>
+      </li>
+    {% endfor %}
+    {% for statement in statements %}
+      <li>
+        <small>
+          <a href="{{ path('statement', {id: statement.ID}) }}"
+             data-title="{{ statement.title }}">{{ statement.title }}</a>
+        </small>
+      </li>
+    {% endfor %}
+  </ul>
+{% endif %}

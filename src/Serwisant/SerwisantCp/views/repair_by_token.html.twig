@@ -1,32 +1,30 @@
-<div class="pb-2">
-    {% include 'repair_details/panel_change_status.html.twig' with {'parent': 'ca'} %}
-</div>
+{% include 'repair' with {'parent': 'ca'} %}
 
 <div class="bg-light p-5 rounded mt-3">
     <div class="row">
         <div class="col-md-6">
             <div class="pb-2">
-                {% include 'repair_details/panel_service_supplier.html.twig' %}
+                {% include 'repair/panel_service_supplier.html.twig' %}
             </div>
             <div class="pb-2">
-                {% include 'repair_details/panel_info.html.twig' %}
+                {% include 'repair/panel_info.html.twig' %}
             </div>
             <div class="pb-2">
-                {% include 'repair_details/panel_custom_fields.html.twig' %}
+                {% include 'repair/panel_custom_fields.html.twig' %}
             </div>
             <div class="pb-2">
-                {% include 'repair_details/panel_issue.html.twig' %}
+                {% include 'repair/panel_issue.html.twig' %}
             </div>
         </div>
         <div class="col-md-6">
             <div class="pb-2">
-                {% include 'repair_details/panel_money.html.twig' %}
+                {% include 'repair/panel_money.html.twig' %}
             </div>
             <div class="pb-2">
-                {% include 'repair_details/panel_status.html.twig' %}
+                {% include 'repair/panel_status.html.twig' %}
             </div>
             <div class="pb-2">
-                {% include 'repair_details/panel_files.html.twig' %}
+                {% include 'repair/panel_files.html.twig' %}
             </div>
         </div>
     </div>

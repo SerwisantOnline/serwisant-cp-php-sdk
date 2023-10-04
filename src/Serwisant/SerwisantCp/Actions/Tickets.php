@@ -12,6 +12,9 @@ use Serwisant\SerwisantApi\Types\SchemaCustomer\TicketsFilterType;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\TicketsSort;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\TicketInput;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\PrintType;
+use Serwisant\SerwisantApi\Types\SchemaCustomer\Device;
+use Serwisant\SerwisantApi\Types\SchemaCustomer\DevicesFilter;
+use Serwisant\SerwisantApi\Types\SchemaCustomer\DevicesFilterType;
 
 class Tickets extends Action
 {
@@ -64,7 +67,12 @@ class Tickets extends Action
   {
     $this->checkModuleActive();
 
-    $result = $this->apiCustomer()->customerQuery()->newRequest()->setFile('newTicket.graphql')->execute();
+    $result = $this
+      ->apiCustomer()
+      ->customerQuery()
+      ->newRequest()
+      ->setFile('newTicket.graphql')
+      ->execute();
 
     $priorities_select_options = [];
     foreach ($result->fetch('priorities') as $entry) {
@@ -75,6 +83,15 @@ class Tickets extends Action
     foreach ($result->fetch('viewer')->customer->addresses as $address) {
       $addresses_radio_options[$address->ID] = trim("{$address->postalCode} {$address->city}, {$address->street} {$address->building}");
     }
+    $default_address = ($result->fetch('viewer')->customer->address ? $result->fetch('viewer')->customer->address->ID : null);
+
+    if ($device = $this->getDevice()) {
+      if ($device->address) {
+        $addresses_radio_options[$device->address->ID] = trim("{$device->address->postalCode} {$device->address->city}, {$device->address->street} {$device->address->building}");
+        $default_address = $device->address->ID;
+      }
+    }
+
     if (count($addresses_radio_options) > 0) {
       $addresses_radio_options[''] = $this->t('ticket_new', 'other_address');
     }
@@ -83,7 +100,8 @@ class Tickets extends Action
       'customFieldsDefinitions' => $result->fetch('orderCustomFields'),
       'priorities_select_options' => $priorities_select_options,
       'addresses_radio_options' => $addresses_radio_options,
-      'defaultAddress' => ($result->fetch('viewer')->customer->address ? $result->fetch('viewer')->customer->address->ID : null),
+      'defaultAddress' => $default_address,
+      'device' => $device,
 
       'form_params' => $this->request->request,
       'temporary_files' => $this->formHelper()->mapTemporaryFiles($this->request->get('temporary_files')),
@@ -103,6 +121,11 @@ class Tickets extends Action
 
     $ticket = $this->request->get('ticket', []);
     $addresses = $this->request->get('addresses', []);
+
+    $devices = [];
+    if ($device = $this->getDevice()) {
+      $devices[] = $device->ID;
+    }
 
     $address_errors = [];
     if ($addresses) {
@@ -129,7 +152,7 @@ class Tickets extends Action
     $result = $this
       ->apiCustomer()
       ->customerMutation()
-      ->createTIcket($ticket_input, $helper->mapTemporaryFiles($this->request->get('temporary_files')));
+      ->createTicket($ticket_input, $helper->mapTemporaryFiles($this->request->get('temporary_files')), $devices);
 
     if ($result->errors) {
       $ticket_errors = $result->errors;
@@ -150,5 +173,18 @@ class Tickets extends Action
     if (false === $this->getLayoutVars()['configuration']->panelTickets) {
       throw new ExceptionNotFound(__CLASS__, __LINE__);
     }
+  }
+
+  /**
+   * @return Device
+   */
+  private function getDevice(): ?Device
+  {
+    if ($device_id = $this->request->get('device')) {
+      $devices_filter = new DevicesFilter(['type' => DevicesFilterType::ID, 'ID' => $device_id]);
+      $devices = $this->apiCustomer()->customerQuery()->devices(1, null, $devices_filter, null, ['single' => true]);
+      return $devices->items[0];
+    }
+    return null;
   }
 }
