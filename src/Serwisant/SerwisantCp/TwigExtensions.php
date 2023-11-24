@@ -20,12 +20,12 @@ class TwigExtensions
 
   protected function t(array $keys)
   {
-    $translated = $this->translator->t($this->app['locale'], ...$keys);
+    $translated = $this->translator->t(...$keys);
     $last = $keys[count($keys) - 1];
     if (!is_array($last) && strpos($last, '_html') !== false) {
       return new \Twig\Markup($translated, 'UTF-8');
     } else {
-      return twig_escape_filter($this->twig, $translated);
+      return $translated;
     }
   }
 
@@ -33,7 +33,7 @@ class TwigExtensions
   {
     foreach ($trs as $keys) {
       try {
-        $tr = $this->translator->translate($this->app['locale'], ...$keys);
+        $tr = $this->translator->translate(...$keys);
         if (is_string($tr)) {
           return $tr;
         }

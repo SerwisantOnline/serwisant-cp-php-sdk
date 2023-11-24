@@ -1,5 +1,39 @@
 Application.Ui = {};
 
+Application.Ui.Select2 = function () {
+  $('.select2-ctl').each(function () {
+    var el = $(this);
+    el.select2({
+      theme: "bootstrap-5",
+      width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+      placeholder: $(this).data('placeholder'),
+      dropdownParent: el.parent(),
+      dropdownCssClass: "select2-ctl-dropdown"
+    });
+  })
+
+  // https://stackoverflow.com/questions/43046840/how-to-apply-floating-label-to-select2-dropdown
+  $('.select2-ctl')
+    .parent('div')
+    .children('span')
+    .children('span')
+    .children('span')
+    .css('height', ' calc(3.4rem + 2px)');
+  $('.select2-ctl')
+    .parent('div')
+    .children('span')
+    .children('span')
+    .children('span')
+    .children('span')
+    .css('margin-top', '14px')
+    .css('font-size', '.8em');
+
+  $('.select2-ctl')
+    .parent('div')
+    .find('label')
+    .css('z-index', '1');
+}
+
 Application.Ui.Autocomplete = function (input) {
   var
     eventSource = null,
@@ -31,26 +65,49 @@ Application.Ui.Autocomplete = function (input) {
 }
 
 Application.Ui.DatePickerAttach = function () {
-  var translations = Application.Options.Get('dpTranslations')
-  $("#dtBox").DateTimePicker({
-    dateFormat: 'yyyy-MM-dd',
-    dateTimeFormat: 'yyyy-MM-dd hh:mm',
-    minuteInterval: 5,
-    animationDuration: 600,
-    shortDayNames: _.map(_.split(translations.shortDayNames, ','), _.trim),
-    fullDayNames: _.map(_.split(translations.fullDayNames, ','), _.trim),
-    shortMonthNames: _.map(_.split(translations.shortMonthNames, ','), _.trim),
-    fullMonthNames: _.map(_.split(translations.fullMonthNames, ','), _.trim),
-    titleContentDate: translations.titleContentDate,
-    titleContentTime: translations.titleContentTime,
-    titleContentDateTime: translations.titleContentDateTime,
-    setButtonContent: translations.setButtonContent,
-    clearButtonContent: translations.clearButtonContent,
-    afterShow: function () {
-      $('.dtpicker-content').addClass('rounded-3');
-      $('.dtpicker-button').addClass('rounded-1');
+  var sharedOptions = {
+    localization: {
+      dayViewHeaderFormat: {
+        month: 'long',
+        year: 'numeric'
+      }
+    },
+    allowInputToggle: true,
+    display: {
+      icons: {
+        type: 'icons',
+        time: 'fas fa-clock',
+        date: 'fas fa-calendar',
+        up: 'fas fa-arrow-up',
+        down: 'fas fa-arrow-down',
+        previous: 'fas fa-chevron-left',
+        next: 'fas fa-chevron-right',
+        today: 'fas fa-calendar-check',
+        clear: 'fas fa-trash',
+        close: 'fas fa-xmark'
+      },
     }
-  });
+  };
+
+  $('.tempus-datetime').tempusDominus(_.merge({
+    localization: {
+      format: 'yyyy-MM-dd HH:mm',
+      hourCycle: 'h24'
+    },
+    stepping: 15,
+    promptTimeOnDateChange: true
+  }, sharedOptions));
+
+  $('.tempus-date').tempusDominus(_.merge({
+    localization: {
+      format: 'yyyy-MM-dd'
+    },
+    display: {
+      components: {
+        clock: false
+      }
+    }
+  }, sharedOptions));
 };
 
 Application.Ui.Popup = {};

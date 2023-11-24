@@ -37,13 +37,12 @@ class Application
     $this->view_paths[] = $this->base_dir . '/views';
 
     array_unshift($this->tr_files, $this->base_dir . '/translations/pl.yml');
+    array_unshift($this->tr_files, $this->base_dir . '/translations/en.yml');
 
     # wszystkie czasy liczę względem UTC
     date_default_timezone_set('UTC');
 
     $this->app = new Silex\Application(['env' => $this->env, 'debug' => ($this->env === 'development')]);
-
-    $this->app['locale_detector'] = new LocaleDetector($default_locale);
   }
 
   public function setRouter(Router $router): Application
@@ -63,12 +62,13 @@ class Application
     $this->app['env'] = $this->env;
     $this->app['base_dir'] = $this->base_dir;
     $this->app['gql_query_paths'] = $this->query_paths;
-    $this->app['tr'] = new Translator($this->tr_files, $this->default_locale);
+
+    $this->app['tr'] = new Translator($this->tr_files, explode('_', $this->default_locale)[0]);
     $this->app['flash'] = new Flash();
 
     $this->app->register(new Silex\Provider\TwigServiceProvider(), ['twig.path' => $this->view_paths]);
     $this->app->register(new Silex\Provider\RoutingServiceProvider());
-
+    $this->app->register(new \Devim\Provider\CorsServiceProvider\CorsServiceProvider());
     $this->app->register(
       new Silex\Provider\AssetServiceProvider(),
       [
@@ -77,8 +77,6 @@ class Application
         'assets.base_path' => '/',
       ]
     );
-
-    $this->app->register(new \Devim\Provider\CorsServiceProvider\CorsServiceProvider());
 
     $this->app->extend(
       'twig',
@@ -98,6 +96,7 @@ class Application
         return (new TwigSerwisantExtensions($twig, $this->app))->call();
       }
     );
+
     if (isset($this->app['action_decorator'])) {
       $decorator_twig_extension = $this->app['action_decorator']->getTwigExtension($this->app);
       if (is_callable($decorator_twig_extension)) {
@@ -116,6 +115,40 @@ class Application
     $this->app->run();
 
     return $this;
+  }
+
+  protected function beforeRequest(HttpFoundation\Request $request, Silex\Application $app)
+  {
+    $base_url = $request->getScheme() . '://' . $request->getHost() . (!in_array($request->getPort(), [80, 443]) ? ":{$request->getPort()}" : '');
+
+    $app['base_uri'] = $base_url;
+    $app['cors.allowOrigin'] = $base_url;
+    $app['request'] = $request;
+
+    if (!isset($app['locale_detector'])) {
+      $app['locale_detector'] = new LocaleDetector($request, $this->default_locale);
+    }
+    $app['locale'] = $app['locale_detector']->locale();
+    $app['timezone'] = $app['locale_detector']->timeZone();
+
+    setlocale(LC_ALL, $app['locale']);
+    date_default_timezone_set($app['timezone']);
+
+    if ($request->getMethod() != 'OPTIONS') {
+      $this->sessionStart();
+    }
+
+    // język może być wskazany w sesji, jeśli nie, próbujemy wykrywać
+    $app['tr']->setLanguage(array_key_exists('lang', $_SESSION) ? $_SESSION['lang'] : $app['locale_detector']->language());
+
+    if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
+      $data = json_decode($request->getContent(), true);
+      $request->request->replace(is_array($data) ? $data : array());
+    }
+
+    if (!isset($app['api_http_headers'])) {
+      $app['api_http_headers'] = (new ApiHttpHeaders($request))->get();
+    }
   }
 
   protected function sessionStart()
@@ -140,30 +173,5 @@ class Application
     }
 
     session_start($session_options);
-  }
-
-  protected function beforeRequest(HttpFoundation\Request $request, Silex\Application $app)
-  {
-    $base_url = $request->getScheme() . '://' . $request->getHost() . (!in_array($request->getPort(), [80, 443]) ? ":{$request->getPort()}" : '');
-
-    $app['base_uri'] = $base_url;
-    $app['cors.allowOrigin'] = $base_url;
-    $app['request'] = $request;
-
-    $locale_detector = $app['locale_detector']->setRequest($request);
-    $app['locale'] = $locale_detector->locale();
-    $app['timezone'] = $locale_detector->timeZone();
-
-    setlocale(LC_ALL, $app['locale']);
-    date_default_timezone_set($app['timezone']);
-
-    if ($request->getMethod() != 'OPTIONS') {
-      $this->sessionStart();
-    }
-
-    if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
-      $data = json_decode($request->getContent(), true);
-      $request->request->replace(is_array($data) ? $data : array());
-    }
   }
 }

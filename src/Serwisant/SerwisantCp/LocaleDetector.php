@@ -8,43 +8,40 @@ use PragmaRX\Countries\Package\Countries;
 
 class LocaleDetector
 {
-  private string $default_locale;
-  private string $locale;
+  protected string $default_locale;
+  protected string $locale;
+  protected $country;
 
-  private $country;
-
-  public function __construct(string $default_locale = 'pl_PL')
+  public function __construct(HttpFoundation\Request $request, string $default_locale = 'pl_PL')
   {
+    $this->setRequest($request);
     $this->default_locale = $default_locale;
   }
 
-  public function setRequest(HttpFoundation\Request $request)
+  private function setRequest(HttpFoundation\Request $request)
   {
     $locale = $this->getLocaleString($request);
     if (is_null($locale)) {
-      return $this->setDefaults();
+      $locale = $this->default_locale;
+    }
+
+    $countries = new Countries();
+    $country = $countries->where('cca2', explode('_', $locale)[1])->first();
+    if (count($country) <= 0) {
+      $country = $countries->where('cca2', explode('_', $this->default_locale)[1])->first();
+      if (count($country) <= 0) {
+        throw new Exception("There is no country for default locale: {$this->default_locale}");
+      }
+      $locale = explode('_', $locale)[0] . "_" . explode('_', $this->default_locale)[1];
     }
 
     $this->locale = $locale;
-
-    $country = (new Countries())->where('cca2', $this->countryISO())->first();
-    if (count($country) <= 0) {
-      return $this->setDefaults();
-    }
-
     $this->country = $country;
 
     return $this;
   }
 
-  private function setDefaults(): LocaleDetector
-  {
-    $this->locale = $this->default_locale;
-    $this->country = (new Countries())->where('cca2', explode('_', $this->default_locale)[1])->first();
-    return $this;
-  }
-
-  protected function getLocaleString(HttpFoundation\Request $request): ?string
+  private function getLocaleString(HttpFoundation\Request $request): ?string
   {
     if ($request->headers->has('Accept-Language')) {
       $locale = (new BrowserLocale($request->headers->get("Accept-Language")))->getLocale();
@@ -57,29 +54,52 @@ class LocaleDetector
         return "{$language}_{$country}";
       }
     }
-
     return null;
   }
 
+  /**
+   * @return string
+   */
   public function locale(): string
   {
     return $this->locale;
   }
 
-  public function timeZone(): string
+  /**
+   * @return string
+   */
+  public function language(): string
   {
-    try {
-      return $this->country->hydrate('timezones')->timezones->first()->zone_name;
-    } catch (\Exception $e) {
-
-    }
+    return explode('_', $this->locale)[0];
   }
 
+  /**
+   * @return string
+   */
+  public function countryISO(): string
+  {
+    return explode('_', $this->locale)[1];
+  }
+
+  /**
+   * @return string
+   */
+  public function timeZone(): string
+  {
+    return $this->country->hydrate('timezones')->timezones->first()->zone_name;
+  }
+
+  /**
+   * @return string
+   */
   public function flagSVG(): string
   {
     return 'data:image/svg+xml;base64, ' . base64_encode($this->country->get('flag.svg'));
   }
 
+  /**
+   * @return false|string
+   */
   public function phonePrefix()
   {
     $prefix = $this->country->get('calling_codes')->first();
@@ -89,6 +109,9 @@ class LocaleDetector
     return $prefix;
   }
 
+  /**
+   * @return string|null
+   */
   public function vatPrefix(): ?string
   {
     switch ($this->countryISO()) {
@@ -126,10 +149,5 @@ class LocaleDetector
       default:
         return null;
     }
-  }
-
-  public function countryISO(): string
-  {
-    return explode('_', $this->locale)[1];
   }
 }

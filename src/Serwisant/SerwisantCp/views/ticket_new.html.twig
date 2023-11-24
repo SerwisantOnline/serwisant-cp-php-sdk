@@ -22,18 +22,19 @@
 
     {% if priorities_select_options|length > 1 %}
       <div class="mb-3">
-        {{ form_field({type: 'select', argument: 'ticket.priority', caption: t(_self, 'priority'), options: priorities_select_options, include_blank: true}, form_params, errors) }}
+        {{ form_field({type: 'selectpicker', argument: 'ticket.priority', caption: t(_self, 'priority'), options: priorities_select_options, include_blank: true}, form_params, errors) }}
       </div>
     {% else %}
       {{ form_field({type: 'hidden', argument: 'ticket.priority', value: priorities_select_options|keys|first}, form_params, errors) }}
     {% endif %}
 
-    <div class="mb-3">
+    <div class="row">
+    <div class="col-md-5 mb-3">
       {{ form_field({type: 'datetime', argument: 'ticket.startAt', caption: t(_self, 'startAt')}, form_params, errors) }}
+    </div>
     </div>
 
     {% if addresses_radio_options is empty %}
-      {{ form_field({type: 'hidden', argument: 'addresses.0.countryIso', value: locale_ISO()}, form_params, errors) }}
       <div class="row">
         <label class="form-label">{{ t(_self, 'address') }}</label>
         <div class="col-md-4 mb-3">
@@ -45,11 +46,11 @@
         <div class="col-md-2 mb-3">
           {{ form_field({type: 'text', argument: 'addresses.0.postalCode', caption: t(_self, 'postalCode')}, form_params, errors) }}
         </div>
-        <div class="col-md-4 mb-3">
+        <div class="col-md-3 mb-3">
           {{ form_field({type: 'text', argument: 'addresses.0.city', caption: t(_self, 'city'), postfix: locale_flag()}, form_params, errors) }}
         </div>
-        <div class="col-md-1 mb-1">
-          <img src="{{ locale_flag() }}" height="45" style="margin-top: 5px;">
+        <div class="col-md-2 mb-3">
+          {{ form_field({type: 'countrypicker', argument: 'addresses.0.countryIso', caption: t(_self, 'country'), value: locale_ISO()}, form_params, errors) }}
         </div>
       </div>
     {% else %}

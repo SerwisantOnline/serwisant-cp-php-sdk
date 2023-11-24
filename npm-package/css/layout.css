@@ -46,26 +46,6 @@ textarea {
 
 /* pluginy */
 
-.dtpicker-button, .dtpicker-compButton, .dtpicker-close {
-    text-decoration: none;
-}
-
-.dtpicker-buttonSet {
-    background-color: var(--bs-primary) !important;
-}
-
-.dtpicker-buttonClear {
-    background-color: var(--bs-secondary) !important;
-}
-
-.dtpicker-value, .dtpicker-title, .dtpicker-compValue, .dtpicker-compButton, .dtpicker-close {
-    color: var(--bs-dark) !important;
-}
-
-.dtpicker-bg {
-    font: 0.9rem var(--bs-font-sans-serif);
-}
-
 .filepond--item {
     width: calc(20% - .5em);
     margin-left: 10px !important;
@@ -192,3 +172,7 @@ textarea {
 }
 
 /* online payments */
+
+.select2-ctl-dropdown li {
+    font-size: .9rem !important;
+}

@@ -30,9 +30,13 @@
       </div>
       {% if configuration.requirePhoneNumber %}
         <div class="col-6 mb-3">
-          <div class="input-group">
-            {{ form_field({type: 'text', argument: 'customer.phone.countryPrefix', caption: t(_self, 'phone_prefix'), value: locale_PhonePrefix(), style: 'width: 7em;'}, form_params, errors) }}
-            {{ form_field({type: 'text', argument: 'customer.phone.number', caption: t(_self, 'phone_number')}, form_params, errors) }}
+          <div class="row g-2">
+            <div class="col-3">
+              {{ form_field({type: 'phoneprefixpicker', argument: 'customer.phone.countryPrefix', caption: t(_self, 'phone_prefix'), value: locale_PhonePrefix()}, form_params, errors) }}
+            </div>
+            <div class="col-9">
+              {{ form_field({type: 'text', argument: 'customer.phone.number', caption: t(_self, 'phone_number')}, form_params, errors) }}
+            </div>
           </div>
         </div>
       {% endif %}

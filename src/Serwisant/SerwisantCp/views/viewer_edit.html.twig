@@ -33,16 +33,18 @@
         {{ form_field({type: 'text', argument: 'customer.email', caption: t(_self, 'email'), value: customer.email}, form_params, errors) }}
       </div>
       <div class="col-md-6 mb-3">
-        {{ form_field({type: 'hidden', argument: 'customer.phone.countryPrefix', value: customer.phone ? customer.phone.countryPrefix : locale_PhonePrefix()}, form_params, errors) }}
-        <div class="input-group">
-          <span class="input-group-text">{{ locale_PhonePrefix() }}</span>
-          {{ form_field({type: 'text', argument: 'customer.phone.number', caption: t(_self, 'phone_number'), value: customer.phone ? customer.phone.number : ''}, form_params, errors) }}
+        <div class="row g-2">
+          <div class="col-3">
+            {{ form_field({type: 'phoneprefixpicker', argument: 'customer.phone.countryPrefix', caption: t(_self, 'phone_prefix'), value: (customer.phone ? customer.phone.countryPrefix : locale_PhonePrefix())}, form_params, errors) }}
+          </div>
+          <div class="col-9">
+            {{ form_field({type: 'text', argument: 'customer.phone.number', caption: t(_self, 'phone_number'), value: customer.phone ? customer.phone.number : ''}, form_params, errors) }}
+          </div>
         </div>
       </div>
     </div>
 
     {% if customer.addresses is empty %}
-      {{ form_field({type: 'hidden', argument: 'addresses.0.countryIso', value: locale_ISO()}, form_params, errors) }}
       <div class="row">
         <label class="form-label">{{ t(_self, 'address') }}</label>
         <div class="col-md-4 mb-3">
@@ -54,17 +56,16 @@
         <div class="col-md-2 mb-3">
           {{ form_field({type: 'text', argument: 'addresses.0.postalCode', caption: t(_self, 'postalCode')}, form_params, errors) }}
         </div>
-        <div class="col-md-4 mb-3">
+        <div class="col-md-3 mb-3">
           {{ form_field({type: 'text', argument: 'addresses.0.city', caption: t(_self, 'city')}, form_params, errors) }}
         </div>
-        <div class="col-md-1 mb-1">
-          <img src="{{ locale_flag() }}" height="45" style="margin-top: 5px;">
+        <div class="col-md-2 mb-3">
+          {{ form_field({type: 'countrypicker', argument: 'addresses.0.countryIso', caption: t(_self, 'country'), value: locale_ISO()}, form_params, errors) }}
         </div>
       </div>
     {% else %}
       {% for address in customer.addresses %}
         {{ form_field({type: 'hidden', argument: "addresses.#{loop.index0}.ID", value: address.ID}, form_params, errors) }}
-        {{ form_field({type: 'hidden', argument: "addresses.#{loop.index0}.countryIso", value: address.countryIso}, form_params, errors) }}
         <div class="row">
           <label class="form-label">{{ t(_self, 'address') }}</label>
           <div class="col-md-4 mb-3">
@@ -76,11 +77,11 @@
           <div class="col-md-2 mb-3">
             {{ form_field({type: 'text', argument: "addresses.#{loop.index0}.postalCode", caption: t(_self, 'postalCode'), value: address.postalCode}, form_params, errors) }}
           </div>
-          <div class="col-md-4 mb-3">
+          <div class="col-md-3 mb-3">
             {{ form_field({type: 'text', argument: "addresses.#{loop.index0}.city", caption: t(_self, 'city'), value: address.city}, form_params, errors) }}
           </div>
-          <div class="col-md-1 mb-1">
-            <img src="{{ locale_flag() }}" height="45" style="margin-top: 5px;">
+          <div class="col-md-2 mb-3">
+            {{ form_field({type: 'countrypicker', argument: 'addresses.#{loop.index0}.countryIso', caption: t(_self, 'country'), value: address.countryIso}, form_params, errors) }}
           </div>
         </div>
 

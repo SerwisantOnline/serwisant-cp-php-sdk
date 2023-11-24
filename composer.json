@@ -19,7 +19,7 @@
     "twig/twig": "^2.12",
     "adbario/php-dot-notation": "^2.2",
     "codezero/browser-locale": "^3.1",
-    "pragmarx/countries": "^0.7"
+    "pragmarx/countries": "^v0.8.2"
   },
   "authors": [
     {

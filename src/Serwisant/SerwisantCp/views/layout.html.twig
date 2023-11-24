@@ -12,7 +12,6 @@
   <script>
     var application_js_options = {
       locale: "{{ locale_ISO() }}",
-      dpTranslations: {{ t('dp') | json_encode() | raw }},
       fpTranslations: {{ t('fp') | json_encode() | raw }},
       uploadUrl: "{{ path('temporary_file') }}",
       uploadOnlyImages: {{ (configuration is defined and configuration.uploadOnlyImages) ? 1 : 0 }},
@@ -120,12 +119,64 @@
   </main>
   <hr>
   <footer class="container">
-    {% include 'layout/footer.html.twig' %}
+
+    <div class="row align-items-start">
+      <div class="col">
+        {% if subscriber is defined %}
+          <p class="pull-left">
+            <small>
+              {{ subscriber.displayName }}
+              {% if subscriber.address %}
+                <br>
+                {{ subscriber.address.street }} {{ subscriber.address.building }}, {{ subscriber.address.postalCode }} {{ subscriber.address.city }}
+              {% endif %}
+              {% if subscriber.taxId %}
+                <br>
+                NIP {{ subscriber.taxId }}
+              {% endif %}
+            </small>
+          </p>
+        {% endif %}
+      </div>
+      <div class="col">
+        {% if agreements is defined %}
+          <ul class="list-unstyled pull-right text-right">
+            {% for agreement in agreements %}
+              <li>
+                <small>
+                  <a href="{{ path('agreement', {id: agreement.ID}) }}"
+                     data-title="{{ agreement.description }}">{{ agreement.description }}</a>
+                </small>
+              </li>
+            {% endfor %}
+            {% for statement in statements %}
+              <li>
+                <small>
+                  <a href="{{ path('statement', {id: statement.ID}) }}"
+                     data-title="{{ statement.title }}">{{ statement.title }}</a>
+                </small>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+      <div class="col">
+        <div class="float-end">
+        <a href="{{ path('lang_update', {lang: 'pl'}) }}">
+          <img src="{{ asset('assets-serwisant-cp/pol.svg') }}" width="50" class="img-thumbnail">
+        </a>
+
+        <a href="{{ path('lang_update', {lang: 'en'}) }}">
+          <img src="{{ asset('assets-serwisant-cp/gbr.svg') }}" width="50" class="img-thumbnail">
+        </a>
+        </div>
+      </div>
+    </div>
+
   </footer>
 {% endif %}
 
 <div class="hidden-print" id="modal-popups-container"></div>
-<div id="dtBox"></div>
 
 <div class="alert text-center cookiealert" role="alert">
   <h6>

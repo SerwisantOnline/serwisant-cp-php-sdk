@@ -220,11 +220,20 @@ Arguments:
 
 ### Custom modifiers
 
-Overwrite logic related to location detection, including translations, timezones, etc. Extend oryginal class and use it
-`set` method.
+Overwrite logic related to location/translation detection, including translations, timezones, etc. Extend oryginal class
+to use static language and use it with `set` method.
 
 ```php
-$application->set('locale_detector', new \Serwisant\SerwisantCp\LocaleDetector($default_locale))
+class LocaleDetector extends \Serwisant\SerwisantCp\LocaleDetector
+{
+    public function __construct()
+  {
+    $this->default_locale = 'pl_PL';
+    $this->locale = 'pl_PL';
+    $this->country = (new \PragmaRX\Countries\Package\Countries())->where('cca2', explode('PL')->first();
+  }
+}
+$application->set('locale_detector', new LocaleDetector());
 ```
 
 You can use database session-store - pass new instance of PdoSessionHandler suplied with proper arguments with

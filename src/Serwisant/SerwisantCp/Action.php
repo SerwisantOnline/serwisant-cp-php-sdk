@@ -31,7 +31,7 @@ class Action
     if (isset($app['action_decorator'])) {
       $this->decorator = $app['action_decorator'];
     }
-    if (isset($app['access_token_customer']) && isset($app['api_http_headers'])) {
+    if (isset($app['api_http_headers'])) {
       $this->api_http_headers = $app['api_http_headers'];
     }
     $this->twig = $app['twig'];
@@ -144,6 +144,14 @@ class Action
     return $errors_translated;
   }
 
+  protected function redirectBack($flash_tr = null)
+  {
+    if ($flash_tr) {
+      $this->flashMessage($this->t($flash_tr));
+    }
+    return $this->app->redirect($_SERVER['HTTP_REFERER']);
+  }
+
   protected function redirectTo($binding, $flash_tr = null)
   {
     $redirect_variables = [];
@@ -174,8 +182,7 @@ class Action
 
   protected function t(...$keys)
   {
-    $args = array_merge([$this->app['locale']], $keys);
-    return call_user_func_array([$this->translator, 't'], $args);
+    return $this->translator->t(...$keys);
   }
 
   protected function accessTokenCustomer()

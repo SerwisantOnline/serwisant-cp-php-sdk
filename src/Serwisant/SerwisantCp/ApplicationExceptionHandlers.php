@@ -23,7 +23,7 @@ class ApplicationExceptionHandlers
         );
 
       } elseif ($this->requireAuthentication($e)) {
-        $app['flash']->addMessage($app['tr']->t($app['locale'], 'flashes.login_first'));
+        $app['flash']->addMessage($app['tr']->t('flashes.login_first'));
         return $app->redirect($app['url_generator']->generate('new_session', $redirect_variables));
 
       } elseif ($e instanceof SerwisantApi\ExceptionAccessDenied) {

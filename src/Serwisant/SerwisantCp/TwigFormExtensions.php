@@ -7,6 +7,7 @@ use Twig\Environment;
 use Twig\Error\Error;
 use Twig\TwigFunction;
 use Symfony\Component\HttpFoundation\ParameterBag;
+use PragmaRX\Countries\Package\Countries;
 use Serwisant\SerwisantApi\Types\SchemaPublic;
 
 class TwigFormExtensions extends TwigExtensions
@@ -17,18 +18,12 @@ class TwigFormExtensions extends TwigExtensions
   public function call()
   {
     $this->twig->addFunction(new TwigFunction('form_field', function (array $options, ParameterBag $post_data, $errors) {
-      $html = '';
-      $html .= "<div class='form-floating'>\n";
-      $html .= $this->formField($options, $post_data, $errors) . "\n";
-      $html .= "</div>\n";
+      $html = $this->formField($options, $post_data, $errors) . "\n";
       return new \Twig\Markup($html, 'UTF-8');
     }));
 
     $this->twig->addFunction(new TwigFunction('custom_form_field', function ($field, $argument, ParameterBag $post_data, $errors) {
-      $html = '';
-      $html .= "<div class='form-floating'>\n";
-      $html .= $this->customFormField($field, $argument, $post_data, $errors) . "\n";
-      $html .= "</div>\n";
+      $html = $this->customFormField($field, $argument, $post_data, $errors) . "\n";
       return new \Twig\Markup($html, 'UTF-8');
     }));
 
@@ -155,9 +150,15 @@ class TwigFormExtensions extends TwigExtensions
       $label = '';
     }
 
-    $html = '';
     $type = $options->get('type', '');
     $style = $options->get('style', '');
+
+    $custom_floats = ['datetime', 'date', 'hidden'];
+
+    $html = '';
+    if (!in_array($type, $custom_floats)) {
+      $html = "<div class='form-floating'>\n";
+    }
 
     switch ($type) {
       case 'hidden':
@@ -202,8 +203,19 @@ class TwigFormExtensions extends TwigExtensions
       case 'datetime':
       case 'date':
         $class = "{$options->get('class', 'form-control')}{$class_error}";
-        $html .= "<input type='text' id='{$id}' class='{$class}' style='{$style}' name='{$name}' data-bs-content='{$error_title}' value='{$value}' placeholder='{$caption}' title='{$caption}' readonly='readonly' data-field='{$options->get('type', '')}'>";
+
+        $html .= "<div class='input-group input-group-lg log-event tempus-{$options->get('type', '')}' id='{$id}' data-td-target-input='nearest' data-td-target-toggle='nearest'>";
+
+        $html .= "<div class='form-floating'>\n";
+        $html .= "<input type='text' id='{$id}_input' data-td-target='#{$id}' class='{$class}' style='{$style}' name='{$name}' data-bs-content='{$error_title}' value='{$value}' readonly='readonly'>";
         $html .= $label;
+        $html .= "</div>";
+
+        $html .= "<span class='input-group-text' data-td-target='#{$id}' data-td-toggle='datetimepicker'>";
+        $html .= "<i class='fas fa-calendar'></i>";
+        $html .= "</span>";
+        $html .= "</div>";
+
         break;
 
       case 'textarea':
@@ -228,27 +240,24 @@ class TwigFormExtensions extends TwigExtensions
 
       case 'select':
       case 'selectpicker':
+      case 'countrypicker':
+      case 'phoneprefixpicker':
         if ($type === 'select') {
           $default_class = 'form-select';
-        } elseif ($type === 'selectpicker') {
-          $default_class = 'selectpicker';
+        } elseif ($type === 'selectpicker' || $type === 'countrypicker' || $type === 'phoneprefixpicker') {
+          $default_class = 'form-select form-select-lg select2-ctl';
         } else {
           $default_class = '';
         }
         $class = "{$options->get('class', $default_class)}{$class_error}";
-        $html .= "<select id='{$id}' class='{$class}' style='{$style}' name='{$name}' data-bs-content='{$error_title}'";
-        if ($type === 'selectpicker') {
-          if ($error_title) {
-            $data_style = 'btn-lg';
-          } else {
-            $data_style = 'btn-lg btn-outline-form';
-          }
-          $html .= " title='{$options->get('selectpicker_caption', '')}' data-live-search='true' data-style='{$data_style}' data-width='50%' ";
+        $html .= "<select id='{$id}' class='{$class}' style='{$style}' name='{$name}' data-bs-content='{$error_title}'>";
+        if ($type === 'countrypicker') {
+          $rows = $this->countries();
+        } elseif ($type === 'phoneprefixpicker') {
+          $rows = $this->phonePrefixes();
         } else {
-          $html .= " title='{$caption}'";
+          $rows = $options->get('options', []);
         }
-        $html .= ">";
-        $rows = $options->get('options', []);
         if ($options->get('include_blank', false)) {
           $rows = ['' => ''] + $rows;
         }
@@ -286,6 +295,10 @@ class TwigFormExtensions extends TwigExtensions
 
       default:
         throw new Error("unsupported type {$options->get('type')}");
+    }
+
+    if (!in_array($type, $custom_floats)) {
+      $html .= "</div>\n";
     }
 
     return $html;
@@ -350,7 +363,7 @@ class TwigFormExtensions extends TwigExtensions
         return '';
     }
 
-    $html = '';
+    $html = "<div class='form-floating'>\n";
 
     $options_hidden_cf = [
       'type' => 'hidden',
@@ -371,7 +384,41 @@ class TwigFormExtensions extends TwigExtensions
     $html .= $html_prepend . "\n";
     $html .= (string)$form_field . "\n";
     $html .= $html_append . "\n";
+    $html .= "</div>\n";
 
     return $html;
+  }
+
+  private function phonePrefixes()
+  {
+    $country_select_options = [];
+    $countries = new Countries();
+    foreach ($countries->all()->pluck('cca2')->toArray() as $country_iso2) {
+      $country = $countries->where('cca2', $country_iso2)->first();
+      $languages = array_keys($country->get('languages', [])->toArray());
+      $calling_codes = $country->get('calling_codes');
+      if (count($languages) > 0 && $calling_codes) {
+        $name = $country->get("name.native.{$languages[0]}.common");
+        foreach ($country->get('calling_codes')->toArray() as $calling_code) {
+          $country_select_options[$calling_code] = "{$name} {$calling_code}";
+        }
+      }
+    }
+    return $country_select_options;
+  }
+
+  private function countries()
+  {
+    $country_select_options = [];
+    $countries = new Countries();
+    foreach ($countries->all()->pluck('cca2')->toArray() as $country_iso2) {
+      $country = $countries->where('cca2', $country_iso2)->first();
+      $languages = array_keys($country->get('languages', [])->toArray());
+      if (count($languages) > 0) {
+        $name = $country->get("name.native.{$languages[0]}.common");
+        $country_select_options[$country_iso2] = $name;
+      }
+    }
+    return $country_select_options;
   }
 }

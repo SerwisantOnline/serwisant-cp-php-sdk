@@ -8,8 +8,7 @@
 
   <div class="bg-light p-5 rounded mt-3">
     <div class="mb-3">
-      <label>{{ t(_self, 'type') }}</label>
-      {{ form_field({type: 'selectpicker', argument: 'repair.type', selectpicker_caption: t(_self, 'type'), options: dictionary_select_options, include_blank: true}, form_params, errors) }}
+      {{ form_field({type: 'selectpicker', argument: 'repair.type', caption: t(_self, 'type'), options: dictionary_select_options, include_blank: true}, form_params, errors) }}
     </div>
 
     {% if not configuration.orderDictModel %}
@@ -67,7 +66,6 @@
     {% endif %}
 
     {% if addresses_radio_options is empty %}
-      {{ form_field({type: 'hidden', argument: 'addresses.0.countryIso', value: locale_ISO()}, form_params, errors) }}
       <div class="row">
         <label class="form-label">{{ t(_self, 'returnAddress') }}</label>
         <div class="col-md-4 mb-3">
@@ -79,11 +77,11 @@
         <div class="col-md-2 mb-3">
           {{ form_field({type: 'text', argument: 'addresses.0.postalCode', caption: t(_self, 'postalCode')}, form_params, errors) }}
         </div>
-        <div class="col-md-4 mb-3">
+        <div class="col-md-3 mb-3">
           {{ form_field({type: 'text', argument: 'addresses.0.city', caption: t(_self, 'city'), postfix: locale_flag()}, form_params, errors) }}
         </div>
-        <div class="col-md-1 mb-1">
-          <img src="{{ locale_flag() }}" height="45" style="margin-top: 5px;">
+        <div class="col-md-2 mb-3">
+          {{ form_field({type: 'countrypicker', argument: 'addresses.0.countryIso', caption: t(_self, 'country'), value: locale_ISO()}, form_params, errors) }}
         </div>
       </div>
     {% else %}

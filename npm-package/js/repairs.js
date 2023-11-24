@@ -26,7 +26,6 @@ Application.Repairs.Form = function () {
       $('#create_repair_warranty_attributes').slideUp();
       $('#repair_warrantyPurchaseDate').val('');
       $('#repair_warrantyPurchaseDocument').val('');
-
     }
   })
 

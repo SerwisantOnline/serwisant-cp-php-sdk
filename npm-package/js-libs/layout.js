@@ -16,6 +16,7 @@ $(document).ready(function () {
   Application.Ui.FormErrorsToPopover();
   Application.Ui.FileUploadConfigure();
   Application.Ui.FormCommitButtonLock();
+  Application.Ui.Select2();
 
   var bsToasts = $('.toast');
   if (bsToasts.length > 0) {

@@ -7,16 +7,17 @@ use PragmaRX\Countries\Package\Countries;
 class Translator
 {
   private array $translations = [];
-  private string $default_locale;
+  private string $default_language;
+  private string $language = '';
   private array $available_languages = [];
   private array $currencies = [];
 
   /**
    * @param array $translations_yaml_files
-   * @param string $default_locale
+   * @param string $default_language
    * @throws TranslatorException
    */
-  public function __construct(array $translations_yaml_files, string $default_locale = 'pl_PL')
+  public function __construct(array $translations_yaml_files, string $default_language = 'pl')
   {
     foreach ($translations_yaml_files as $file) {
       $map = new YamlMap($file);
@@ -32,49 +33,66 @@ class Translator
       $this->translations[] = $map;
     }
 
-    if (!in_array($this->language($default_locale), $this->available_languages)) {
-      throw new TranslatorException("There is no translations for default locale: {$default_locale}");
+    if (!in_array($default_language, $this->available_languages)) {
+      throw new TranslatorException("There is no translations for default locale: {$default_language}");
     }
 
-    $this->default_locale = $default_locale;
-
-    $countries = new Countries();
-    foreach ($countries->currencies() as $currency) {
-      $this->currencies[$currency->get('iso.code')] = $currency->get('units.major.symbol');
-    }
+    $this->default_language = $default_language;
   }
 
   /**
-   * @param $code
-   * @return string
-   * @throws TranslatorException
+   * @param string $language
+   * @return bool
    */
-  public function codeToCurrencySymbol($code)
+  public function isSupported(string $language): bool
   {
+    return in_array(strtolower($language), $this->available_languages);
+  }
+
+  /**
+   * @param string $language
+   * @return $this
+   */
+  public function setLanguage(string $language): Translator
+  {
+    $this->language = strtolower($language);
+    return $this;
+  }
+
+  /**
+   * @param string $code
+   * @return string
+   */
+  public function codeToCurrencySymbol(string $code): string
+  {
+    if (empty($this->currencies)) {
+      $countries = new Countries();
+      foreach ($countries->currencies() as $currency) {
+        $this->currencies[$currency->get('iso.code')] = $currency->get('units.major.symbol');
+      }
+    }
     return $this->currencies[$code];
   }
 
   /**
-   * @param null $locale
    * @param mixed ...$args
    * @return string|string[]
    */
-  public function t($locale = null, ...$args)
+  public function t(...$args)
   {
     try {
-      return $this->translate($locale, ...$args);
+      return $this->translate(...$args);
     } catch (TranslatorException $ex) {
       return $ex->getMessage();
     }
   }
 
   /**
-   * @param null $locale
    * @param mixed ...$args
    * @return string|string[]
    * @throws TranslatorException
    */
-  public function translate($locale = null, ...$args)
+  public function translate(...$args)
   {
     $parts = [];
     $replacements = [];
@@ -90,7 +108,7 @@ class Translator
       }
       $parts[] = $part;
     }
-    $key = $this->language($locale) . '.' . implode('.', $parts);
+    $key = $this->language() . '.' . implode('.', $parts);
 
     $tr = '';
     foreach ($this->translations as $translation) {
@@ -113,16 +131,13 @@ class Translator
     return $tr;
   }
 
-  private function language($locale)
+  public function language()
   {
-    if ($locale) {
-      $language = explode('_', $locale)[0];
-    } else {
-      $language = explode('_', $this->default_locale)[0];
-    }
+    $language = $this->language;
     if (!in_array($language, $this->available_languages)) {
-      $language = explode('_', $this->default_locale)[0];
+      $language = $this->default_language; // musi istnieć tłumaczenie z tego języka, sprawdzamy to w konstruktorze
     }
+
     return $language;
   }
 }

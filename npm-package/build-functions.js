@@ -10,12 +10,16 @@ const BuildFunctions = {
 
   mkdir: function (dir) {
     let app_dir = BuildFunctions.currentDir();
-    fs.mkdir(path.join(app_dir, dir), (err) => {
-      if (err && err.code !== 'EEXIST') {
-        throw err;
-      }
+    try {
+      fs.mkdirSync(path.join(app_dir, dir));
       console.log('mkdir ' + dir);
-    });
+    } catch (err) {
+      if (err.code !== 'EEXIST') {
+        throw err;
+      } else {
+        console.log('mkdir ' + dir);
+      }
+    }
   },
 
   copy: function (file, target_dir, action) {

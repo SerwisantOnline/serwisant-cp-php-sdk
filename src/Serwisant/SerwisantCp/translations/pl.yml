@@ -68,17 +68,6 @@ pl:
     prev_page: "Poprzednia"
     next_page: "Następna"
 
-  dp:
-    shortDayNames: "Nie, Pon, Wto, Śro, Czw, Pią, Sob"
-    fullDayNames: "Niedziela, Poniedziałek, Wtorek, Środa, Czwartek, Piątek, Sobota"
-    shortMonthNames: "Sty, Lut, Marz, Kwi, Maj, Cze, Lip, Sie, Wrz, Paź, List, Gru"
-    fullMonthNames: "Styczeń, Luty, Marzec, Kwiecień, Maj, Czerwiec, Lipiec, Sierpień, Wrzesień, Październik, Listopad, Grudzień"
-    titleContentDate: "Wybierz datę"
-    titleContentTime: "Wybierz czas"
-    titleContentDateTime: "Wybierz datę i czas"
-    setButtonContent: "Wybierz"
-    clearButtonContent: "Wyczyść"
-
   fp:
     labelIdle: 'Przeciągnij i upuść lub <span class="filepond--label-action">wybierz</span> pliki'
     labelInvalidField: 'Nieprawidłowe pliki'
@@ -293,6 +282,7 @@ pl:
     tax_id: "NIP"
     email: "Adres email"
     phone_number: "Numer telefonu"
+    phone_prefix: "Prefix kraju"
     login: "Login do konta"
     password: "Hasło"
     submit: "Aktualizuj dane"
@@ -304,6 +294,7 @@ pl:
     building: "Numer"
     postalCode: "Kod pocztowy"
     city: "Miasto"
+    country: "Kraj"
 
   signup_confirmation_failure:
     title: "Aktywacja konta nie powiodła się"
@@ -451,6 +442,7 @@ pl:
     building: "Numer"
     postalCode: "Kod pocztowy"
     city: "Miasto"
+    country: "Kraj"
     delivery: "Sposób dostarczenia naprawy"
     collection: "Sposób odbioru naprawy"
     cancel: "Anuluj"
@@ -483,6 +475,7 @@ pl:
     building: "Numer"
     postalCode: "Kod pocztowy"
     city: "Miasto"
+    country: "Kraj"
     device:   "Urządzenie, którego dotyczy zgłoszenie"
 
   ticket:
