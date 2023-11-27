@@ -1,634 +1,685 @@
 pl:
-  errors_title: "Proszę poprawić następujące problemy"
+  errors_title: Proszę poprawić następujące problemy
   errors:
-    blank: "Nie podano wymaganej wartości"
-    empty: "Nie podano wymaganej wartości"
-    too_short: "Wartość podana w polu jest zbyt krótka"
-    invalid: "Wartość podana w polu jest niepoprawna"
-    taken: "Taka wartość istnieje już w bazie, wybierz inną"
-    required: "Uzupełnienie lub zaznaczenie tego pola jest wymagane"
+    blank: Nie podano wymaganej wartości
+    empty: Nie podano wymaganej wartości
+    too_short: Wartość podana w polu jest zbyt krótka
+    invalid: Wartość podana w polu jest niepoprawna
+    taken: 'Taka wartość istnieje już w bazie, wybierz inną'
+    required: Uzupełnienie lub zaznaczenie tego pola jest wymagane
     onlineTransaction:
       onlinePayment:
-        already_paid: "Ta płatność jest już sfinalizowana, odśwież stronę aby sprawdzić stan"
+        already_paid: 'Ta płatność jest już sfinalizowana, odśwież stronę aby sprawdzić stan'
       amountRequested:
-        greater_than: "Kwota do zapłaty musi być większa od zera"
+        greater_than: Kwota do zapłaty musi być większa od zera
       code:
-        wrong_length: "Kod BLIK nie jest prawidłowy. Prawidłowy kod powinien mieć 6 cyfr."
+        wrong_length: Kod BLIK nie jest prawidłowy. Prawidłowy kod powinien mieć 6 cyfr.
       channel:
-        blank: "Nie wybrano banku"
-        invalid: "Wybrany bank nie jest w tym momencie obsługiwany"
+        blank: Nie wybrano banku
+        invalid: Wybrany bank nie jest w tym momencie obsługiwany
       agreements:
         dataProcessing:
-          accepted: "Zgoda na przetwarzanie danych osobowych musi zostać zaakceptowana"
+          accepted: Zgoda na przetwarzanie danych osobowych musi zostać zaakceptowana
         payment:
-          accepted: "Regulamin płatności musi zostać zaakceptowany"
-    not_a_date: "Wartość nie jest poprawną datą"
-    confirmation: "Powrórzona wartość jest niepoprawna"
-    wrong_length: "Nipoprawna długość"
-    not_gsm: "Wymagany jest numer telefonu komórkowego"
-    not_found: "Nie znaleziono"
-    too_long: "Tekst jest zbyt długi. Ogranicz ilość znaków."
-    one_time_email: "Nie akceptujemy adresów email z tymczasowych skrzynek"
+          accepted: Regulamin płatności musi zostać zaakceptowany
+    not_a_date: Wartość nie jest poprawną datą
+    confirmation: Powrórzona wartość jest niepoprawna
+    wrong_length: Nipoprawna długość
+    not_gsm: Wymagany jest numer telefonu komórkowego
+    not_found: Nie znaleziono
+    too_long: Tekst jest zbyt długi. Ogranicz ilość znaków.
+    one_time_email: Nie akceptujemy adresów email z tymczasowych skrzynek
     password:
-      too_weak: "Podane hasło jest zbyt proste. Użyj małych i dużych znaków, znaków specjalnych, cyfr."
+      too_weak: >-
+        Podane hasło jest zbyt proste. Użyj małych i dużych znaków, znaków
+        specjalnych, cyfr.
     resetToken:
-      invalid: "Link resetowania hasła jest niepoprawny lub stracił ważność. Możesz naprawić ten problem poprzez
-        ponowne wysłanie linku do resetowania hasła."
-      not_found: "Link resetowania hasła jest niepoprawny lub stracił ważność. Możesz naprawić ten problem poprzez
-        ponowne wysłanie linku do resetowania hasła."
+      invalid: >-
+        Link resetowania hasła jest niepoprawny lub stracił ważność. Możesz
+        naprawić ten problem poprzez ponowne wysłanie linku do resetowania
+        hasła.
+      not_found: >-
+        Link resetowania hasła jest niepoprawny lub stracił ważność. Możesz
+        naprawić ten problem poprzez ponowne wysłanie linku do resetowania
+        hasła.
     ticket:
       self:
-        customer_rate_limit: "Nie możesz teraz dodać nowego zgłoszenia. Przed dodaniem kolejnego odczekaj chwilę."
+        customer_rate_limit: >-
+          Nie możesz teraz dodać nowego zgłoszenia. Przed dodaniem kolejnego
+          odczekaj chwilę.
     repair:
       self:
-        customer_rate_limit: "Nie możesz teraz dodać nowej naprawy. Przed dodaniem kolejnej odczekaj chwilę."
-
+        customer_rate_limit: >-
+          Nie możesz teraz dodać nowej naprawy. Przed dodaniem kolejnej odczekaj
+          chwilę.
   entitles:
-    loginOrEmail: "Login lub adres email"
-    resetToken: "Link resetowania hasła"
-    passwordConfirmation: "Potwierdzenie hasła"
+    loginOrEmail: Login lub adres email
+    resetToken: Link resetowania hasła
+    passwordConfirmation: Potwierdzenie hasła
     agreements:
-      accepted: "Zgoda"
+      accepted: Zgoda
     customer:
       phone:
-        number: 'Numer telefonu'
+        number: Numer telefonu
       customFields:
-        value: "Pole tekstowe"
+        value: Pole tekstowe
     ticket:
-      self: "Zgłoszenie"
+      self: Zgłoszenie
       customFields:
-        value: "Pole tekstowe"
+        value: Pole tekstowe
     repair:
-      self: "Naprawa"
+      self: Naprawa
       customFields:
-        value: "Pole tekstowe"
-
+        value: Pole tekstowe
   twig_extensions:
-    progressed_about: "Wykonano w %{percent}%"
-    prev_page: "Poprzednia"
-    next_page: "Następna"
-
+    progressed_about: 'Wykonano w %{percent}%'
+    prev_page: Poprzednia
+    next_page: Następna
   fp:
-    labelIdle: 'Przeciągnij i upuść lub <span class="filepond--label-action">wybierz</span> pliki'
-    labelInvalidField: 'Nieprawidłowe pliki'
-    labelFileWaitingForSize: 'Pobieranie rozmiaru'
-    labelFileSizeNotAvailable: 'Nieznany rozmiar'
-    labelFileLoading: 'Wczytywanie'
-    labelFileLoadError: 'Błąd wczytywania'
-    labelFileProcessing: 'Przesyłanie'
-    labelFileProcessingComplete: 'Przesłano'
-    labelFileProcessingAborted: 'Przerwano'
-    labelFileProcessingError: 'Przesyłanie nie powiodło się'
-    labelFileProcessingRevertError: 'Coś poszło nie tak'
-    labelFileRemoveError: 'Nieudane usunięcie'
-    labelTapToCancel: 'Anuluj'
-    labelTapToRetry: 'Ponów'
-    labelTapToUndo: 'Cofnij'
-    labelButtonRemoveItem: 'Usuń'
-    labelButtonAbortItemLoad: 'Przerwij'
-    labelButtonRetryItemLoad: 'Ponów'
-    labelButtonAbortItemProcessing: 'Anuluj'
-    labelButtonUndoItemProcessing: 'Cofnij'
-    labelButtonRetryItemProcessing: 'Ponów'
-    labelButtonProcessItem: 'Prześlij'
-    labelMaxFileSizeExceeded: 'Plik jest zbyt duży'
+    labelIdle: >-
+      Przeciągnij i upuść lub <span
+      class="filepond--label-action">wybierz</span> pliki
+    labelInvalidField: Nieprawidłowe pliki
+    labelFileWaitingForSize: Pobieranie rozmiaru
+    labelFileSizeNotAvailable: Nieznany rozmiar
+    labelFileLoading: Wczytywanie
+    labelFileLoadError: Błąd wczytywania
+    labelFileProcessing: Przesyłanie
+    labelFileProcessingComplete: Przesłano
+    labelFileProcessingAborted: Przerwano
+    labelFileProcessingError: Przesyłanie nie powiodło się
+    labelFileProcessingRevertError: Coś poszło nie tak
+    labelFileRemoveError: Nieudane usunięcie
+    labelTapToCancel: Anuluj
+    labelTapToRetry: Ponów
+    labelTapToUndo: Cofnij
+    labelButtonRemoveItem: Usuń
+    labelButtonAbortItemLoad: Przerwij
+    labelButtonRetryItemLoad: Ponów
+    labelButtonAbortItemProcessing: Anuluj
+    labelButtonUndoItemProcessing: Cofnij
+    labelButtonRetryItemProcessing: Ponów
+    labelButtonProcessItem: Prześlij
+    labelMaxFileSizeExceeded: Plik jest zbyt duży
     labelMaxFileSize: 'Dopuszczalna wielkość pliku to {filesize}'
-    labelMaxTotalFileSizeExceeded: 'Przekroczono łączny rozmiar plików'
+    labelMaxTotalFileSizeExceeded: Przekroczono łączny rozmiar plików
     labelMaxTotalFileSize: 'Łączny rozmiar plików nie może przekroczyć {filesize}'
-    labelFileTypeNotAllowed: 'Niedozwolony rodzaj pliku'
+    labelFileTypeNotAllowed: Niedozwolony rodzaj pliku
     fileValidateTypeLabelExpectedTypes: 'Oczekiwano {allButLastType} lub {lastType}'
-    imageValidateSizeLabelFormatError: 'Nieobsługiwany format obrazu'
-    imageValidateSizeLabelImageSizeTooSmall: 'Obraz jest zbyt mały'
-    imageValidateSizeLabelImageSizeTooBig: 'Obraz jest zbyt duży'
+    imageValidateSizeLabelFormatError: Nieobsługiwany format obrazu
+    imageValidateSizeLabelImageSizeTooSmall: Obraz jest zbyt mały
+    imageValidateSizeLabelImageSizeTooBig: Obraz jest zbyt duży
     imageValidateSizeLabelExpectedMinSize: 'Minimalne wymiary obrazu to {minWidth}×{minHeight}'
     imageValidateSizeLabelExpectedMaxSize: 'Maksymalna wymiary obrazu to {maxWidth}×{maxHeight}'
-    imageValidateSizeLabelImageResolutionTooLow: 'Rozdzielczość jest zbyt niska'
-    imageValidateSizeLabelImageResolutionTooHigh: 'Rozdzielczość jest zbyt wysoka'
+    imageValidateSizeLabelImageResolutionTooLow: Rozdzielczość jest zbyt niska
+    imageValidateSizeLabelImageResolutionTooHigh: Rozdzielczość jest zbyt wysoka
     imageValidateSizeLabelExpectedMinResolution: 'Minimalna rozdzielczość to {minResolution}'
     imageValidateSizeLabelExpectedMaxResolution: 'Maksymalna rozdzielczość to {maxResolution}'
-
   flashes:
-    login_first: "Zanim rozpoczniesz korzystanie z aplikacji powinieneś się zalogować."
-    signup_successful: "Konto zostało zarejestrowane. Musisz je teraz potwierdzić za pomocą linku, który wysłaliśmy na
-      adres email, który podałeś/podałaś podczas rejestracji. Odczekaj minutę, a następnie sprawdź skrzynkę.
-      Jeśli nie nie widzisz w skrzynce maila z linkiem aktywacyjnym sprawdź w pierwszej kolejności skrzynki 'Spam',
-      'Niechciana poczta', etc."
-    signup_activated: "Zarejestrowane konto zostało poprawnie aktywowane. Możesz się teraz zalogować."
+    login_first: Zanim rozpoczniesz korzystanie z aplikacji powinieneś się zalogować.
+    signup_successful: >-
+      Konto zostało zarejestrowane. Musisz je teraz potwierdzić za pomocą linku,
+      który wysłaliśmy na adres email, który podałeś/podałaś podczas
+      rejestracji. Odczekaj minutę, a następnie sprawdź skrzynkę. Jeśli nie nie
+      widzisz w skrzynce maila z linkiem aktywacyjnym sprawdź w pierwszej
+      kolejności skrzynki 'Spam', 'Niechciana poczta', etc.
+    signup_activated: >-
+      Zarejestrowane konto zostało poprawnie aktywowane. Możesz się teraz
+      zalogować.
     login_error:
-      invalid_client: "Administrator tego panel nie skonfigurował poprawnych danych dostępowych OAUTH_KEY i OAUTH_SECRET."
-      invalid_grant: "Nie udało się zalogować. Sprawdź czy podałeś poprawny login i hasło. Jeśli nie pamiętasz hasła, skorzystaj z opcji resetowania."
-    login_successful: "Pomyślnie zalogowano"
-    logout_successful: "Pomyślnie wylogowano z panelu klienta"
-    password_reset_sent: "Wysłaliśmy na Twoją skrzynkę pocztową wiadomość z linkiem do resetowania hasła. Odczekaj
-      minutę i sprawdź pocztę. Jeśli nie nie widzisz w skrzynce maila z linkiem aktywacyjnym sprawdź w pierwszej
-      kolejności skrzynki 'Spam', 'Niechciana poczta', etc."
-    password_set: "Hasło zostało zmienione. Zaloguj się używając nowego hasła."
-    order_diagnosis_rejected: "Odrzucono koszty naprawy. W osobnej wiadomości mailowej orzymasz informację o możliwości
-      odbioru przedmiotu naprawy lub o jego wysyłce."
-    order_diagnosis_accepted: "Zaakceptowano koszty naprawy, serwis niebawem rozpocznie pracę nad twoim zgłoszeniem."
-    repair_creation_successful: "Utworzono naprawę."
-    message_creation_successful: "Pomyślnie wysłano twoją wiadomość"
-    ticket_creation_successful: "Twoje zgłoszenie zostało pomyślnie utworzone. W skrzynce email znajdziesz potwierdzenie."
-    viewer_data_update_successful: "Twoje dane zostały pomyślnie zaktualizowane"
-    access_request_successful: "Wysłaliśmy na twój adres email link, którym możesz ustawić dane logowania i tym samym uzyskać
-      dostęp do panelu klienckiego. Sprawdź proszę skrzynkę pocztową."
-    access_request_complete: "Utworzyliśmy twoje konto, możesz się teraz zalogować."
-    viewer_password_update_successful: "Zaktuaizowano hasło. Zaloguj się za pomocą hasła, które ustawiłeś."
-
+      invalid_client: >-
+        Administrator tego panel nie skonfigurował poprawnych danych dostępowych
+        OAUTH_KEY i OAUTH_SECRET.
+      invalid_grant: >-
+        Nie udało się zalogować. Sprawdź czy podałeś poprawny login i hasło.
+        Jeśli nie pamiętasz hasła, skorzystaj z opcji resetowania.
+    login_successful: Pomyślnie zalogowano
+    logout_successful: Pomyślnie wylogowano z panelu klienta
+    password_reset_sent: >-
+      Wysłaliśmy na Twoją skrzynkę pocztową wiadomość z linkiem do resetowania
+      hasła. Odczekaj minutę i sprawdź pocztę. Jeśli nie nie widzisz w skrzynce
+      maila z linkiem aktywacyjnym sprawdź w pierwszej kolejności skrzynki
+      'Spam', 'Niechciana poczta', etc.
+    password_set: Hasło zostało zmienione. Zaloguj się używając nowego hasła.
+    order_diagnosis_rejected: >-
+      Odrzucono koszty naprawy. W osobnej wiadomości mailowej orzymasz
+      informację o możliwości odbioru przedmiotu naprawy lub o jego wysyłce.
+    order_diagnosis_accepted: >-
+      Zaakceptowano koszty naprawy, serwis niebawem rozpocznie pracę nad twoim
+      zgłoszeniem.
+    repair_creation_successful: Utworzono naprawę.
+    message_creation_successful: Pomyślnie wysłano twoją wiadomość
+    ticket_creation_successful: >-
+      Twoje zgłoszenie zostało pomyślnie utworzone. W skrzynce email znajdziesz
+      potwierdzenie.
+    viewer_data_update_successful: Twoje dane zostały pomyślnie zaktualizowane
+    access_request_successful: >-
+      Wysłaliśmy na twój adres email link, którym możesz ustawić dane logowania
+      i tym samym uzyskać dostęp do panelu klienckiego. Sprawdź proszę skrzynkę
+      pocztową.
+    access_request_complete: 'Utworzyliśmy twoje konto, możesz się teraz zalogować.'
+    viewer_password_update_successful: 'Zaktuaizowano hasło. Zaloguj się za pomocą hasła, które ustawiłeś.'
   layout:
-    viewer: "Edytuj dane"
-    logout: "Wyloguj"
-    cookie_info_html: "Nasza strona internetowa używa plików cookies &#x1F36A;&nbsp; w celach statystycznych oraz funkcjonalnych.
-      Dowiedz się <a target='_blank' href='https://bit.ly/3ryVxWL'>jak je wyłączyć.</a>"
-    cookie_accept: "Zgadzam się"
-    repairs: "Naprawy"
-    tickets: "Zgłoszenia"
-    messages: "Wiadomości"
-    devices: "Urządzenia"
-    viewer_password: "Zmień hasło"
-
+    viewer: Edytuj dane
+    logout: Wyloguj
+    cookie_info_html: >-
+      Nasza strona internetowa używa plików cookies &#x1F36A;&nbsp; w celach
+      statystycznych oraz funkcjonalnych. Dowiedz się <a target='_blank'
+      href='https://bit.ly/3ryVxWL'>jak je wyłączyć.</a>
+    cookie_accept: Zgadzam się
+    repairs: Naprawy
+    tickets: Zgłoszenia
+    messages: Wiadomości
+    devices: Urządzenia
+    viewer_password: Zmień hasło
   payment_types:
-    INSTANT_FIXED: "Płatność po zakończeniu, za zlecenie"
-    INSTANT_TIME: "Płatność po zakończeniu, stawka godzinowa"
-    SUBSCRIPTION_FIXED: "Płatność na koniec miesiąca, za zlecenie"
-    SUBSCRIPTION_TIME: "Płatność na koniec miesiąca, stawka godzinowa"
-    CONTRACT: "Płatność na koniec miesiąca, abonament"
-
+    INSTANT_FIXED: 'Płatność po zakończeniu, za zlecenie'
+    INSTANT_TIME: 'Płatność po zakończeniu, stawka godzinowa'
+    SUBSCRIPTION_FIXED: 'Płatność na koniec miesiąca, za zlecenie'
+    SUBSCRIPTION_TIME: 'Płatność na koniec miesiąca, stawka godzinowa'
+    CONTRACT: 'Płatność na koniec miesiąca, abonament'
   transport_types:
-    PARCEL: "Kurier"
-    PERSONAL: "Osobiście"
-    INTERNAL: "Pracownik serwisu"
-
+    PARCEL: Kurier
+    PERSONAL: Osobiście
+    INTERNAL: Pracownik serwisu
   order_status:
-    UNSAVED: "Niezapisane"
-    APPROVAL: "Oczekuje na zatwierdzenie"
-    WAITING_FOR_DELIVERY: "Oczekuje na dostarczenie"
-    WAITING_FOR_DIAGNOSIS: "Oczekuje na diagnozę"
-    DIAGNOSIS: "W trakcie diagnozy"
-    REQ_CUSTOMER_ACCEPT: "Wymaga potwierdzenia kosztów u klienta"
-    CONFIRMED: "Potwierdzone"
-    IN_PROGRESS: "W trakcie naprawy"
-    WAITING_FOR_PARTS: "Oczekuje na podzespoły"
-    UNDER_TESTING: "W trakcie testów"
-    REQ_SUMMARY: "Podsumowanie naprawy"
-    NOT_ACCEPTED: "Nie zaakceptowane"
-    CANCELED: "Anulowane"
-    NOT_PROCESSABLE: "Naprawa nie jest możliwa"
-    WAITING_FOR_COLLECTION: "Do odbioru"
-    PASSED_FOR_RETURN: "Przekazano do wysyłki"
-    CLOSED: "Odebrane"
-    SCRAPPED: "Zezłomowane"
-
+    UNSAVED: Niezapisane
+    APPROVAL: Oczekuje na zatwierdzenie
+    WAITING_FOR_DELIVERY: Oczekuje na dostarczenie
+    WAITING_FOR_DIAGNOSIS: Oczekuje na diagnozę
+    DIAGNOSIS: W trakcie diagnozy
+    REQ_CUSTOMER_ACCEPT: Wymaga potwierdzenia kosztów u klienta
+    CONFIRMED: Potwierdzone
+    IN_PROGRESS: W trakcie naprawy
+    WAITING_FOR_PARTS: Oczekuje na podzespoły
+    UNDER_TESTING: W trakcie testów
+    REQ_SUMMARY: Podsumowanie naprawy
+    NOT_ACCEPTED: Nie zaakceptowane
+    CANCELED: Anulowane
+    NOT_PROCESSABLE: Naprawa nie jest możliwa
+    WAITING_FOR_COLLECTION: Do odbioru
+    PASSED_FOR_RETURN: Przekazano do wysyłki
+    CLOSED: Odebrane
+    SCRAPPED: Zezłomowane
   ticket_status:
-    UNSAVED: "Niezapisane"
-    NEW: "Nowe"
-    ASSIGNED: "Przypisane"
-    ON_THE_WAY: "Wyjazd"
-    IN_PROGRESS: "W trakcie realizacji"
-    RESOLVED: "Rozwiązany"
-    CANCELED: "Anulowany"
-
+    UNSAVED: Niezapisane
+    NEW: Nowe
+    ASSIGNED: Przypisane
+    ON_THE_WAY: Wyjazd
+    IN_PROGRESS: W trakcie realizacji
+    RESOLVED: Rozwiązany
+    CANCELED: Anulowany
   parcel_delivery_status:
-    NOT_ORDERED: "Oczekuje na zamówienie"
-    ORDERED: "Zamówiona"
-    COLLECTED: "Odebrana od nadawcy"
-    NOT_COLLECTED: "Nie udało się odebrać przesyłki od nadawcy"
-    TRANSIT: "W drodze"
-    DELIVERY: "Wydano do doręczenia"
-    DELIVERED: "Doręczono"
-    NOT_DELIVERED: "Nie udało się doręczyć przesłyki"
-    CANCELED: "Anulowana"
-    RETURNED: "Zwrócona"
-
+    NOT_ORDERED: Oczekuje na zamówienie
+    ORDERED: Zamówiona
+    COLLECTED: Odebrana od nadawcy
+    NOT_COLLECTED: Nie udało się odebrać przesyłki od nadawcy
+    TRANSIT: W drodze
+    DELIVERY: Wydano do doręczenia
+    DELIVERED: Doręczono
+    NOT_DELIVERED: Nie udało się doręczyć przesłyki
+    CANCELED: Anulowana
+    RETURNED: Zwrócona
   login_new:
-    title: "Zaloguj się!"
-    login_description: "Zanim rozpoczniesz korzystanie z aplikacji powinieneś się zalogować."
-    signup_description: "Jeśli nie masz danych do logowania możesz je utworzyć poprzez rejestrację swojego konta."
-    signup: "Zarejestruj własne konto"
-    login: "Login lub adres email"
-    login_not_found: "Nie znaleziono konta - upewnij się, że podano login lub adres email konta które rejestrowałeś."
-    subscriber_deleted: "Serwis do którego próbujesz się zalogować nie jest już dostępny na naszej platformie.
-      Skontaktuj się z serwisem telefonicznie."
-    login_not_activated: "Aktywuj twoje konto linkiem, który otrzymałeś zaraz po rejestracji."
-    login_disabled: "Twoje konto zostało usunięte lub zablokowane. Skontaktuj się z serwisem w celu wyjaśnienia
-      sytuacji"
-    internet_access_not_enabled: "Twój dostęp do panelu klienckiego musi zostać aktywowany. Skontaktuj się z serwisem."
-    password: "Hasło"
-    submit: "Rozpocznij"
-    forgot_password: "Przypomnij moje hasło"
-
+    title: Zaloguj się!
+    login_description: Zanim rozpoczniesz korzystanie z aplikacji powinieneś się zalogować.
+    signup_description: >-
+      Jeśli nie masz danych do logowania możesz je utworzyć poprzez rejestrację
+      swojego konta.
+    signup: Zarejestruj własne konto
+    login: Login lub adres email
+    login_not_found: >-
+      Nie znaleziono konta - upewnij się, że podano login lub adres email konta
+      które rejestrowałeś.
+    subscriber_deleted: >-
+      Serwis do którego próbujesz się zalogować nie jest już dostępny na naszej
+      platformie. Skontaktuj się z serwisem telefonicznie.
+    login_not_activated: 'Aktywuj twoje konto linkiem, który otrzymałeś zaraz po rejestracji.'
+    login_disabled: >-
+      Twoje konto zostało usunięte lub zablokowane. Skontaktuj się z serwisem w
+      celu wyjaśnienia sytuacji
+    internet_access_not_enabled: >-
+      Twój dostęp do panelu klienckiego musi zostać aktywowany. Skontaktuj się z
+      serwisem.
+    password: Hasło
+    submit: Rozpocznij
+    forgot_password: Przypomnij moje hasło
   signup_new:
-    title: "Rejestracja nowego konta"
-    description: "Zacznij od rejestracji własnego konta. Wypełnij formularz."
-    type: "Typ konta"
+    title: Rejestracja nowego konta
+    description: Zacznij od rejestracji własnego konta. Wypełnij formularz.
+    type: Typ konta
     customer_type:
-      personal: "Osoba prywatna, konsument"
-      business: "Firma"
-    person: "Imię i nazwisko"
-    company_name: "Nazwa firmy"
-    email: "Adres email"
-    phone_number: "Numer telefonu"
-    phone_prefix: "Prefix kraju"
-    login: "Login do konta"
-    password: "Hasło"
-    submit: "Zarejestruj własne konto"
-    cancel: "Anuluj"
-    read_agreement: "Czytaj"
-    close: "Zamknij"
+      personal: 'Osoba prywatna, konsument'
+      business: Firma
+    person: Imię i nazwisko
+    company_name: Nazwa firmy
+    email: Adres email
+    phone_number: Numer telefonu
+    phone_prefix: Prefix kraju
+    login: Login do konta
+    password: Hasło
+    submit: Zarejestruj własne konto
+    cancel: Anuluj
+    read_agreement: Czytaj
+    close: Zamknij
     please_login_modal:
-      title: "Informacja"
-      content_html: "Wykryliśmy, że w bazie danych serwisu istnieje już konto klienta powiązane z podanym adresem email. 
-        Prosimy o przerwanie rejestracji i przejście do strony logowania.<br><br>
-        Proszę użyć podanego tutaj adresu email do logowania.<br><br> 
-        Jeśli  nie pamiętasz lub nie masz jeszcze swojego hasła, użyj opcji 'Przypomnij hasło' aby je zresetować, lub 
-        ustawić nowe."
-      close: "Anuluj"
-      ok: "Rozumiem, przechodzę do logowania"
-
+      title: Informacja
+      content_html: >-
+        Wykryliśmy, że w bazie danych serwisu istnieje już konto klienta
+        powiązane z podanym adresem email.  Prosimy o przerwanie rejestracji i
+        przejście do strony logowania.<br><br> Proszę użyć podanego tutaj adresu
+        email do logowania.<br><br>  Jeśli  nie pamiętasz lub nie masz jeszcze
+        swojego hasła, użyj opcji 'Przypomnij hasło' aby je zresetować, lub 
+        ustawić nowe.
+      close: Anuluj
+      ok: 'Rozumiem, przechodzę do logowania'
   access_request_ask:
-    title: "Aktywacja dostępu do panelu klienta"
-    description: "Wykryliśmy, że serwis utworzył już twoje konto. Prawdopodobnie zlecałeś już w jakąś 
-      naprawę, lub zgłoszenie stacjonarnie, telefonicznie, etc. Kliknij przycisk Wyślij link aby otrzymać na twój
-      adres email link, do strony na której będzie można ustawić login i hasło do panelu."
-    submit: "Wyślij link"
-    cancel: "Anuluj"
-
+    title: Aktywacja dostępu do panelu klienta
+    description: >-
+      Wykryliśmy, że serwis utworzył już twoje konto. Prawdopodobnie zlecałeś
+      już w jakąś  naprawę, lub zgłoszenie stacjonarnie, telefonicznie, etc.
+      Kliknij przycisk Wyślij link aby otrzymać na twój adres email link, do
+      strony na której będzie można ustawić login i hasło do panelu.
+    submit: Wyślij link
+    cancel: Anuluj
   access_request_new:
-    title: "Aktywacja dostępu do panelu klienta"
-    description: "Dokończ aktywację dostępu do panelu klienckiego. W tym celu wybierz swój login i hasło oraz zaakceptuj
-      niezbedne zgody."
-    login_pass_info_html: "Loginem może być twoje imie i nazwisko. Możesz wybrać cokolwiek, pamiętaj że do panelu możesz także 
-      <strong>logować się adresem email</strong>.
-      <br>
-      <br>
-      Używaj różnych haseł, w różnych serwisach. Zamiast zapamiętywać je, zapisz w przeglądarce. Nie martw się o utratę 
-      dostepu. <strong>Jeśli zapomnisz hasła</strong> będziesz mógł je z dowolnym momencie zresetować."
-    login: "Login do konta"
-    password: "Hasło"
-    read_agreement: "Czytaj"
-    submit: "Aktywuj konto"
-    cancel: "Anuluj"
-    close: "Zamknij"
-
+    title: Aktywacja dostępu do panelu klienta
+    description: >-
+      Dokończ aktywację dostępu do panelu klienckiego. W tym celu wybierz swój
+      login i hasło oraz zaakceptuj niezbedne zgody.
+    login_pass_info_html: >-
+      Loginem może być twoje imie i nazwisko. Możesz wybrać cokolwiek, pamiętaj
+      że do panelu możesz także  <strong>logować się adresem email</strong>.
+      <br> <br> Używaj różnych haseł, w różnych serwisach. Zamiast zapamiętywać
+      je, zapisz w przeglądarce. Nie martw się o utratę  dostepu. <strong>Jeśli
+      zapomnisz hasła</strong> będziesz mógł je z dowolnym momencie zresetować.
+    login: Login do konta
+    password: Hasło
+    read_agreement: Czytaj
+    submit: Aktywuj konto
+    cancel: Anuluj
+    close: Zamknij
   viewer_edit:
-    title: "Aktualizacja danych"
-    description: "Zaktualizuj odpowiednie pola formularza, aby uaktualnić twoje dane."
-    type: "Typ konta"
+    title: Aktualizacja danych
+    description: 'Zaktualizuj odpowiednie pola formularza, aby uaktualnić twoje dane.'
+    type: Typ konta
     customer_type:
-      personal: "Osoba prywatna, konsument"
-      business: "Firma"
-    person: "Imię i nazwisko"
-    company_name: "Nazwa firmy"
-    tax_id: "NIP"
-    email: "Adres email"
-    phone_number: "Numer telefonu"
-    phone_prefix: "Prefix kraju"
-    login: "Login do konta"
-    password: "Hasło"
-    submit: "Aktualizuj dane"
-    cancel: "Anuluj"
-    read_agreement: "Czytaj"
-    close: "Zamknij"
-    address: "Adres"
-    street: "Ulica"
-    building: "Numer"
-    postalCode: "Kod pocztowy"
-    city: "Miasto"
-    country: "Kraj"
-
+      personal: 'Osoba prywatna, konsument'
+      business: Firma
+    person: Imię i nazwisko
+    company_name: Nazwa firmy
+    tax_id: NIP
+    email: Adres email
+    phone_number: Numer telefonu
+    phone_prefix: Prefix kraju
+    login: Login do konta
+    password: Hasło
+    submit: Aktualizuj dane
+    cancel: Anuluj
+    read_agreement: Czytaj
+    close: Zamknij
+    address: Adres
+    street: Ulica
+    building: Numer
+    postalCode: Kod pocztowy
+    city: Miasto
+    country: Kraj
   signup_confirmation_failure:
-    title: "Aktywacja konta nie powiodła się"
-    description: 'Aktywacja wcześniej założonego konta nie powiodła się powodów wymienionych poniżej:'
+    title: Aktywacja konta nie powiodła się
+    description: >-
+      Aktywacja wcześniej założonego konta nie powiodła się powodów wymienionych
+      poniżej:
     errors:
-      too_short: "klucz aktywacyjny jest zbyt krótki"
-      invalid: "klucz aktywacyjny jest niepoprawny, nie próbuj przepisywać ręcznie klucza do paska adresu - kliknij
-        link, lub skopiuj link do schowka i wklej go w pasku adresu"
-      already_activated: "konto jest już aktywne - aktywacja jest operacją jednorazową - możesz przejść na stronę
-        logowania"
-    button_caption: "Przejdź na stronę logowania"
-
+      too_short: klucz aktywacyjny jest zbyt krótki
+      invalid: >-
+        klucz aktywacyjny jest niepoprawny, nie próbuj przepisywać ręcznie
+        klucza do paska adresu - kliknij link, lub skopiuj link do schowka i
+        wklej go w pasku adresu
+      already_activated: >-
+        konto jest już aktywne - aktywacja jest operacją jednorazową - możesz
+        przejść na stronę logowania
+    button_caption: Przejdź na stronę logowania
   password_reset_new:
-    title: "Resetowanie hasła"
-    description: "To narzędzie umożliwia zresetowanie zapomnianego hasła. Najpierw podaj login lub email Twojego konta
-      w Panelu Klienta. Jeśli uda się je odnaleźć, wyślemy na adres email powiązany z Twoim kontem
-      link, który będzie umożliwiał ustawienie nowego hasła."
-    login_or_email: "Login lub adres email"
-    submit: "Odzyskaj hasło"
-    cancel: "Anuluj"
+    title: Resetowanie hasła
+    description: >-
+      To narzędzie umożliwia zresetowanie zapomnianego hasła. Najpierw podaj
+      login lub email Twojego konta w Panelu Klienta. Jeśli uda się je odnaleźć,
+      wyślemy na adres email powiązany z Twoim kontem link, który będzie
+      umożliwiał ustawienie nowego hasła.
+    login_or_email: Login lub adres email
+    submit: Odzyskaj hasło
+    cancel: Anuluj
     errors:
-      not_found: "Nie znaleziono użytkownika pasującego do podanego loginu lub adresu email"
-
+      not_found: >-
+        Nie znaleziono użytkownika pasującego do podanego loginu lub adresu
+        email
   password_reset_new_password:
-    title: "Resetowanie hasła"
-    description: "Podaj nowe hasło dla Twojego konta."
-    password: "Hasło"
-    password_confirmation: "Powtórz hasło"
-    cancel: "Anuluj"
-    submit: "Zmień hasło"
-
+    title: Resetowanie hasła
+    description: Podaj nowe hasło dla Twojego konta.
+    password: Hasło
+    password_confirmation: Powtórz hasło
+    cancel: Anuluj
+    submit: Zmień hasło
   repairs:
-    title: "Naprawy"
-    create_repair: "Utwórz nową naprawę"
-    no_repairs: "Nie dodałeś jeszcze żadnej naprawy. Aby dodać jakąś, kliknij w przycisk znajdujący się w górnej części strony."
+    title: Naprawy
+    create_repair: Utwórz nową naprawę
+    no_repairs: >-
+      Nie dodałeś jeszcze żadnej naprawy. Aby dodać jakąś, kliknij w przycisk
+      znajdujący się w górnej części strony.
     list:
-      rma: "Numer naprawy"
-      description: "Przedmiot naprawy"
-      status: "Stan"
-      details: "Szczegóły"
-
+      rma: Numer naprawy
+      description: Przedmiot naprawy
+      status: Stan
+      details: Szczegóły
   repair:
-    close: "Zamknij"
-    print_intro: "Przyjęcie"
-    print_summary: "Podsumowanie"
+    close: Zamknij
+    print_intro: Przyjęcie
+    print_summary: Podsumowanie
     panel_parcels:
-      title: "Przesyłki kurierskie powiązane z naprawą"
-      sender: "Nadawca"
-      recipient: "Odbiorca"
-      courier: "Kurier"
-      status: "Stan przesyłki"
-      tracking: "Numer listu przewozowego"
+      title: Przesyłki kurierskie powiązane z naprawą
+      sender: Nadawca
+      recipient: Odbiorca
+      courier: Kurier
+      status: Stan przesyłki
+      tracking: Numer listu przewozowego
     panel_service_supplier:
       title: 'Naprawiane przez:'
     panel_info:
       device: 'Urządzenie, którego dotyczy naprawa'
-      title: 'Informacje o naprawie'
-      number: "Numer"
-      vendor: "Producent"
-      model: "Model"
-      serial: "Numer seryjny"
-      purchase_date: "Data zakupu"
-      purchase_doc: "Numer dokumentu zakupu"
-      warranty_repair: "Naprawa gwarancyjna"
-      delivery_type: "Sposób doręczenia"
-      collection_type: "Sposób odbioru naprawy"
+      title: Informacje o naprawie
+      number: Numer
+      vendor: Producent
+      model: Model
+      serial: Numer seryjny
+      purchase_date: Data zakupu
+      purchase_doc: Numer dokumentu zakupu
+      warranty_repair: Naprawa gwarancyjna
+      delivery_type: Sposób doręczenia
+      collection_type: Sposób odbioru naprawy
     panel_custom_fields:
-      title: "Dodatkowe informacje"
+      title: Dodatkowe informacje
     panel_issue:
-      title: "Problem"
-      issue_description: 'Opis problemu.'
-      diagnosis_desctiption: 'Diagnoza.'
+      title: Problem
+      issue_description: Opis problemu.
+      diagnosis_desctiption: Diagnoza.
       summary_canceled_or_rejected: 'Opis naprawy: Naprawa nie jest możliwa.'
-      summary: 'Opis naprawy.'
+      summary: Opis naprawy.
     panel_money:
-      title: "Koszty naprawy"
-      net: "Netto"
-      gross: "Brutto"
-      accepted_costs: "Zaakceptowany próg kosztów"
-      not_defined: "Nie ustalono"
-      confirmed_costs: "Koszt potwierdzony"
-      final_cost: "Koszt ostateczny"
-      none_taken: "Nie pobrano"
-      advance_amount: "Kwota zaliczki"
-      to_pay: "Do zapłaty"
+      title: Koszty naprawy
+      net: Netto
+      gross: Brutto
+      accepted_costs: Zaakceptowany próg kosztów
+      not_defined: Nie ustalono
+      confirmed_costs: Koszt potwierdzony
+      final_cost: Koszt ostateczny
+      none_taken: Nie pobrano
+      advance_amount: Kwota zaliczki
+      to_pay: Do zapłaty
     panel_status:
-      title: "Stan naprawy"
-      status_name: "Status"
-      delegation_status_name: "Status naprawy zewnętrznej"
-      delegation_info: "Ta naprawa została przekazana zewnętrznemu partnerowi."
-      work_progress: "Postęp prac"
-      created_at: "Data utworzenia"
-      started_at: "Data rozpoczęcia"
-      tbc_after_rcv_at_office: "Zostanie ustalona po odebraniu w serwisie"
-      finish_date_estimated: "Planowana data zakończenia"
-      days_worked: "Ilość dni, od daty przyjęcia"
-      days_worked_tooltip: "Ilość przepracowanych dni roboczych. Kolor pomarańczowy informuje o zbliżaniu sie do
-        granicznej daty ustalonego terminu wykonania usługi, kolor czerwony informuje o przekroczeniu daty."
-      time_status: "Sytuacja czasowa"
+      title: Stan naprawy
+      status_name: Status
+      delegation_status_name: Status naprawy zewnętrznej
+      delegation_info: Ta naprawa została przekazana zewnętrznemu partnerowi.
+      work_progress: Postęp prac
+      created_at: Data utworzenia
+      started_at: Data rozpoczęcia
+      tbc_after_rcv_at_office: Zostanie ustalona po odebraniu w serwisie
+      finish_date_estimated: Planowana data zakończenia
+      days_worked: 'Ilość dni, od daty przyjęcia'
+      days_worked_tooltip: >-
+        Ilość przepracowanych dni roboczych. Kolor pomarańczowy informuje o
+        zbliżaniu sie do granicznej daty ustalonego terminu wykonania usługi,
+        kolor czerwony informuje o przekroczeniu daty.
+      time_status: Sytuacja czasowa
     panel_files:
-      title: "Załączone pliki"
-      download: "Pobierz załączony plik"
+      title: Załączone pliki
+      download: Pobierz załączony plik
     additional_items:
-      title: "Elementy dodatkowe naprawy"
-      type: "Rodzaj"
-      description: "Opis"
+      title: Elementy dodatkowe naprawy
+      type: Rodzaj
+      description: Opis
     panel_change_status:
-      price_estimated: "Szacowany koszt naprawy"
-      price_final: "Do zapłaty"
-      reject: "Nie akceptuję kosztów"
-      reject_all: "Odrzuć wszystkie oferty"
-      reject_confirm_html: "Jeśli jesteś pewny, że nie chcesz kontynuować naprawy i potwierdzasz chęć odbioru naprawy kliknij 'dalej'.
-        Możesz także skontaktować się z nami, jeśli jesteś zainteresowany szczegółami wyceny."
-      accept: "Akceptuję koszty naprawy"
-      accept_offer: "Akceptuję ofertę"
-      accept_confirm: "Czy zgadzasz się na poniesienie kosztów naprawy w kwocie %{amount}? Jeśli zaakceptujesz koszty
-        rozpoczniemy naprawę."
-      accept_confirm_offer: "Czy akceptujesz przygotowaną przez serwis ofertę numer %{offer_number} - całkowity koszt
-        w przypadku wyboru tej oferty to %{amount}? Zaakceptowanie równoznaczne jest ze zgodą na poniesienie ww.
-        kosztów."
-      confirmed: "Koszt naprawy został potwierdzony osobiście, e-mailem lub podczas rozmowy telefonicznej z
-        pracownikiem serwisu."
-      offer: "Oferta"
-      description: "Opis"
-      price_net: "Cena netto"
-      price_gross: "Cena brutto"
-      title: "Decyzja dotycząca kosztów naprawy"
-      repair: "Naprawa"
-      confirmation: "Potwierdzenie"
-      confirm: "Potwierdzam"
-
+      price_estimated: Szacowany koszt naprawy
+      price_final: Do zapłaty
+      reject: Nie akceptuję kosztów
+      reject_all: Odrzuć wszystkie oferty
+      reject_confirm_html: >-
+        Jeśli jesteś pewny, że nie chcesz kontynuować naprawy i potwierdzasz
+        chęć odbioru naprawy kliknij 'dalej'. Możesz także skontaktować się z
+        nami, jeśli jesteś zainteresowany szczegółami wyceny.
+      accept: Akceptuję koszty naprawy
+      accept_offer: Akceptuję ofertę
+      accept_confirm: >-
+        Czy zgadzasz się na poniesienie kosztów naprawy w kwocie %{amount}?
+        Jeśli zaakceptujesz koszty rozpoczniemy naprawę.
+      accept_confirm_offer: >-
+        Czy akceptujesz przygotowaną przez serwis ofertę numer %{offer_number} -
+        całkowity koszt w przypadku wyboru tej oferty to %{amount}?
+        Zaakceptowanie równoznaczne jest ze zgodą na poniesienie ww. kosztów.
+      confirmed: >-
+        Koszt naprawy został potwierdzony osobiście, e-mailem lub podczas
+        rozmowy telefonicznej z pracownikiem serwisu.
+      offer: Oferta
+      description: Opis
+      price_net: Cena netto
+      price_gross: Cena brutto
+      title: Decyzja dotycząca kosztów naprawy
+      repair: Naprawa
+      confirmation: Potwierdzenie
+      confirm: Potwierdzam
   repair_new:
-    title: "Dodaj nową naprawę"
-    description: "Aby zarejestrować nową naprawę w bazie serwisu uzupełnij poniższy formularz."
-    type: "Przedmiot naprawy"
-    vendor: "Producent"
-    model: "Model"
-    serial: "Numer seryjny urządzenia"
-    warranty: "Naprawa w ramach gwarancji"
-    warrantyPurchaseDate: "Data zakupu"
-    warrantyPurchaseDocument: "Numer dokumentu zakupu"
-    issue: "Opis usterki, problemu"
-    returnAddress: "Adres:"
-    street: "Ulica"
-    building: "Numer"
-    postalCode: "Kod pocztowy"
-    city: "Miasto"
-    country: "Kraj"
-    delivery: "Sposób dostarczenia naprawy"
-    collection: "Sposób odbioru naprawy"
-    cancel: "Anuluj"
-    submit: "Dodaj naprawę"
-
+    title: Dodaj nową naprawę
+    description: >-
+      Aby zarejestrować nową naprawę w bazie serwisu uzupełnij poniższy
+      formularz.
+    type: Przedmiot naprawy
+    vendor: Producent
+    model: Model
+    serial: Numer seryjny urządzenia
+    warranty: Naprawa w ramach gwarancji
+    warrantyPurchaseDate: Data zakupu
+    warrantyPurchaseDocument: Numer dokumentu zakupu
+    issue: 'Opis usterki, problemu'
+    returnAddress: 'Adres:'
+    street: Ulica
+    building: Numer
+    postalCode: Kod pocztowy
+    city: Miasto
+    country: Kraj
+    delivery: Sposób dostarczenia naprawy
+    collection: Sposób odbioru naprawy
+    cancel: Anuluj
+    submit: Dodaj naprawę
   tickets:
-    title: "Zgłoszenia"
-    create_ticket: "Dodaj zgłoszenie awarii"
-    no_tickets: "Nie utworzyłeś jeszcze żadnego zgłoszenia. Aby dodać jakieś, kliknij w przycisk znajdujący się w górnej części strony."
+    title: Zgłoszenia
+    create_ticket: Dodaj zgłoszenie awarii
+    no_tickets: >-
+      Nie utworzyłeś jeszcze żadnego zgłoszenia. Aby dodać jakieś, kliknij w
+      przycisk znajdujący się w górnej części strony.
     list:
-      number: "Numer zgłoszenia"
-      employee: "Odpowiedzialny pracownik"
-      type: "Rodzaj"
-      status: "Stan"
-      details: "Szczegóły"
-
+      number: Numer zgłoszenia
+      employee: Odpowiedzialny pracownik
+      type: Rodzaj
+      status: Stan
+      details: Szczegóły
   ticket_new:
-    title: "Dodaj zgłoszenie awarii"
-    description: "Aby zgłosić nową usterkę, awarię lub inny problem wymagający ingerencji serwisu u ciebie uzupełnij
-      poniższy formularz podając wszystkie szczegóły."
-    priority: "Priorytet zgłoszenia"
-    startAt: "Najbliższy możliwy termin przyjazdu serwisanta"
-    issue: "Informacje o awarii"
-    address: "Adres zgłoszenia"
-    addressOther: "Inny, dowolny adres"
-    other_address: "Podaj inny adres"
-    cancel: "Anuluj"
-    submit: "Dodaj zgłoszenie"
-    street: "Ulica"
-    building: "Numer"
-    postalCode: "Kod pocztowy"
-    city: "Miasto"
-    country: "Kraj"
-    device:   "Urządzenie, którego dotyczy zgłoszenie"
-
+    title: Dodaj zgłoszenie awarii
+    description: >-
+      Aby zgłosić nową usterkę, awarię lub inny problem wymagający ingerencji
+      serwisu u ciebie uzupełnij poniższy formularz podając wszystkie szczegóły.
+    priority: Priorytet zgłoszenia
+    startAt: Najbliższy możliwy termin przyjazdu serwisanta
+    issue: Informacje o awarii
+    address: Adres zgłoszenia
+    addressOther: 'Inny, dowolny adres'
+    other_address: Podaj inny adres
+    cancel: Anuluj
+    submit: Dodaj zgłoszenie
+    street: Ulica
+    building: Numer
+    postalCode: Kod pocztowy
+    city: Miasto
+    country: Kraj
+    device: 'Urządzenie, którego dotyczy zgłoszenie'
   ticket:
-    close: "Zamknij"
-    print: "Wydruk"
-    panel_info: "Ogólne informacje"
-    number: "Numer zgłoszenia"
-    devices: "Urządzenia, których dotyczy zgłoszenie"
-    employee: "Odpowiedzialny pracownik"
-    address: "Adres realizacji zgłoszenia"
-    group: "Grupa"
-    panel_payments: "Informacje o płatności"
-    payment_type: "Sposób zapłaty"
-    not_defined: "Nie ustalono"
-    time: "Czas poświęcony na realizację zgłoszenia"
-    hour: "h"
-    payment: "Do zapłaty"
-    paid: "Zapłacono"
-    panel_status: "Stan zgłoszenia"
-    priority: "Priorytet"
-    status: "Stan"
-    created: "Data przyjęcia zgłoszenia"
-    scheduled_on: "Planowana data rozpoczęcia pracy nad zgłoszeniem"
-    scheduled_to: "Planowana data zakończenia pracy nad zgłoszeniem"
-    started_on: "Data rozpoczęcia pracy"
-    finished_at: "Data zakończenia pracy"
-    panel_custom_form_fields: "Dodatkowe informacje"
-    panel_files: "Załączone pliki"
-
+    close: Zamknij
+    print: Wydruk
+    panel_info: Ogólne informacje
+    number: Numer zgłoszenia
+    devices: 'Urządzenia, których dotyczy zgłoszenie'
+    employee: Odpowiedzialny pracownik
+    address: Adres realizacji zgłoszenia
+    group: Grupa
+    panel_payments: Informacje o płatności
+    payment_type: Sposób zapłaty
+    not_defined: Nie ustalono
+    time: Czas poświęcony na realizację zgłoszenia
+    hour: h
+    payment: Do zapłaty
+    paid: Zapłacono
+    panel_status: Stan zgłoszenia
+    priority: Priorytet
+    status: Stan
+    created: Data przyjęcia zgłoszenia
+    scheduled_on: Planowana data rozpoczęcia pracy nad zgłoszeniem
+    scheduled_to: Planowana data zakończenia pracy nad zgłoszeniem
+    started_on: Data rozpoczęcia pracy
+    finished_at: Data zakończenia pracy
+    panel_custom_form_fields: Dodatkowe informacje
+    panel_files: Załączone pliki
   online_payment_by_token:
-    payment: "Płatność"
-    method: "Wybierz metodę płatności"
-
+    payment: Płatność
+    method: Wybierz metodę płatności
   online_payment:
     popus:
       code_modal:
         title:
-          sending: "wysyłam dane do banku..."
-          confirm: "spójrz ponownie na telefon i potwierdź płatność"
-          errors: "pojawiły się pewne problemy, które możesz rozwiązać"
-          failure: "coś poszło nie tak, jeśli anulowałeś transakcję możesz ją ponowić"
-          success: "dziękujemy, przekazaliśmy płatność do serwisu"
+          sending: wysyłam dane do banku...
+          confirm: spójrz ponownie na telefon i potwierdź płatność
+          errors: 'pojawiły się pewne problemy, które możesz rozwiązać'
+          failure: 'coś poszło nie tak, jeśli anulowałeś transakcję możesz ją ponowić'
+          success: 'dziękujemy, przekazaliśmy płatność do serwisu'
       transfer_modal:
         title:
-          sending: "wysyłam dane do banku..."
-          errors: "pojawiły się pewne problemy, które możesz rozwiązać"
-          redirecting: "za chwilę przekieruję do strony banku w celu finalizacji transakcji..."
-          receiving: "odbieram informacje z banku, to może zająć chwilę..."
-          failure: "coś poszło nie tak, jeśli anulowałeś transakcję możesz ją ponowić"
-          success: "dziękujemy, przekazaliśmy płatność do serwisu"
+          sending: wysyłam dane do banku...
+          errors: 'pojawiły się pewne problemy, które możesz rozwiązać'
+          redirecting: >-
+            za chwilę przekieruję do strony banku w celu finalizacji
+            transakcji...
+          receiving: 'odbieram informacje z banku, to może zająć chwilę...'
+          failure: 'coś poszło nie tak, jeśli anulowałeś transakcję możesz ją ponowić'
+          success: 'dziękujemy, przekazaliśmy płatność do serwisu'
     panel_payment_methods:
-      BLIK: "Kod BLIK z telefonu"
-      TRANSFER: "Szybki przelew z Twojego banku"
-      pay: "Zapłać"
+      BLIK: Kod BLIK z telefonu
+      TRANSFER: Szybki przelew z Twojego banku
+      pay: Zapłać
       blik:
-        read: "Odczytaj 6 cyfr kodu i wpisz poniżej"
-        create: "Utwórz kod BLIK w aplikacji banku"
-      agreement_data_processing: "Wyrażam zgodę, aby moje dane osobowe jako osoby dokonującej płatności, były
-        przekazywane do firmy Krajowy Integrator Płatności S.A., ul. Św. Marcin 73/6, 61-808 Poznań i przetwarzane w
-        zakresie niezbędnym do zrealizowania płatności na rzecz %{name}, obejmującym imię, nazwisko i adres e-mail.
-        Podanie danych jest dobrowolne, ale konieczne do dokonania płatności; przysługuje mi prawo dostępu do treści
-        moich danych oraz ich poprawiania."
-      agreement_payment_html: "Akceptuję regulamin płatności (<a href='https://tpay.com/user/assets/files_for_download/regulamin.pdf'>regulamin</a>,
-        <a href='https://tpay.com/user/assets/files_for_download/informacja-dla-konsumenta.pdf'>informacje dla konsumenta</a>)"
+        read: Odczytaj 6 cyfr kodu i wpisz poniżej
+        create: Utwórz kod BLIK w aplikacji banku
+      agreement_data_processing: >-
+        Wyrażam zgodę, aby moje dane osobowe jako osoby dokonującej płatności,
+        były przekazywane do firmy Krajowy Integrator Płatności S.A., ul. Św.
+        Marcin 73/6, 61-808 Poznań i przetwarzane w zakresie niezbędnym do
+        zrealizowania płatności na rzecz %{name}, obejmującym imię, nazwisko i
+        adres e-mail. Podanie danych jest dobrowolne, ale konieczne do dokonania
+        płatności; przysługuje mi prawo dostępu do treści moich danych oraz ich
+        poprawiania.
+      agreement_payment_html: >-
+        Akceptuję regulamin płatności (<a
+        href='https://tpay.com/user/assets/files_for_download/regulamin.pdf'>regulamin</a>,
+        <a
+        href='https://tpay.com/user/assets/files_for_download/informacja-dla-konsumenta.pdf'>informacje
+        dla konsumenta</a>)
     panel_payment_details:
-      items: "Pozycje"
-      payment_receivier: "Odbiorca"
-      title: "Informacje o płatności %{number}"
-      amount_to_pay: "Pozostało do zapłaty"
-      amount: "Kwota"
-      status: "Stan płatności"
-      description: "Informacje od serwisu"
+      items: Pozycje
+      payment_receivier: Odbiorca
+      title: 'Informacje o płatności %{number}'
+      amount_to_pay: Pozostało do zapłaty
+      amount: Kwota
+      status: Stan płatności
+      description: Informacje od serwisu
       status_name:
-        WAITING_FOR_PAYMENT: "Oczekuje na płatność"
-        PAID: "Zapłacono"
-        UNPAID: "Nie zapłacono"
-
+        WAITING_FOR_PAYMENT: Oczekuje na płatność
+        PAID: Zapłacono
+        UNPAID: Nie zapłacono
   messages:
-    title: "Wiadomości"
-    no_messages: "Nie wysłałeś, ani nie otrzymałeś żadnej wiadomości od serwisu. Jeśli chcesz skontaktować się z serwisem poprzez
-      wiadomość, kliknij w przycisk znajdujący się w górnej części strony."
-    create_message: "Napisz wiadomość"
-    subject: "Temat"
-    date: "Data"
-    read: "Czytaj wątek"
-
+    title: Wiadomości
+    no_messages: >-
+      Nie wysłałeś, ani nie otrzymałeś żadnej wiadomości od serwisu. Jeśli
+      chcesz skontaktować się z serwisem poprzez wiadomość, kliknij w przycisk
+      znajdujący się w górnej części strony.
+    create_message: Napisz wiadomość
+    subject: Temat
+    date: Data
+    read: Czytaj wątek
   message:
-    title: "Czytaj wiadomość"
-    close: "Zamknij"
-    create_message_reply: "Napisz odpowiedź"
-    service: "Serwis"
-    employee: "Pracownik serwisu"
-    you: "Ty"
-
+    title: Czytaj wiadomość
+    close: Zamknij
+    create_message_reply: Napisz odpowiedź
+    service: Serwis
+    employee: Pracownik serwisu
+    you: Ty
   message_new:
-    title: "Napisz nową wiadomość"
-    description: "Za pomocą tego formularza możesz utworzyć wiadomość, która trafi do serwisu. W treści wiadomości
-      przekaż wszystkie niezbędne informacje."
-    subject: "Temat wiadomości"
-    content: "Treść wiadomości"
-    cancel: "Anuluj"
-    submit: "Wyślij wiadomość"
-
+    title: Napisz nową wiadomość
+    description: >-
+      Za pomocą tego formularza możesz utworzyć wiadomość, która trafi do
+      serwisu. W treści wiadomości przekaż wszystkie niezbędne informacje.
+    subject: Temat wiadomości
+    content: Treść wiadomości
+    cancel: Anuluj
+    submit: Wyślij wiadomość
   message_new_reply:
-    title: "Odpowiedź na wiadomość"
-    description: "Odpowiadasz na wiadomość o tytule %{subject}"
-    content: "Treść odpowiedzi"
-    cancel: "Anuluj"
-    submit: "Wyślij odpowiedź"
-
+    title: Odpowiedź na wiadomość
+    description: 'Odpowiadasz na wiadomość o tytule %{subject}'
+    content: Treść odpowiedzi
+    cancel: Anuluj
+    submit: Wyślij odpowiedź
   dashboard:
-    title: "Strona początkowa"
-    calendar: "Kalendarz zaplanowanych zadań i zgłoszeń"
-
+    title: Strona początkowa
+    calendar: Kalendarz zaplanowanych zadań i zgłoszeń
   subscriber_by_token:
-    search: "sprawdź kod"
-    or: "lub"
-    customer_panel: "przejdź do panelu klienckiego"
-
+    search: sprawdź kod
+    or: lub
+    customer_panel: przejdź do panelu klienckiego
   viewer_password_edit:
-    title: "Aktualizacja hasła"
-    description: "Aby zaktualizować hasło musisz znać hasło aktualne. Jeśli go nie pamiętasz wyloguj się i skorzystaj ze
-      ścieżki resetowania hasła podczas logowania. Wybierając nowe hasło użyj małych i wielkich znaków, cyfr lub znaków 
-      specjalnych takich jak kropka lub pytajnik. Zwróć uwagę na to, że po zmianie hasła zostaniesz wylogowany."
-    currentPassword: "Aktualne hasło"
-    password: "Nowe hasło"
-    passwordConfirmation: "Potwierdzenie hasła"
-    cancel: "Anuluj"
-    submit: "Zmień hasło"
-
+    title: Aktualizacja hasła
+    description: >-
+      Aby zaktualizować hasło musisz znać hasło aktualne. Jeśli go nie pamiętasz
+      wyloguj się i skorzystaj ze ścieżki resetowania hasła podczas logowania.
+      Wybierając nowe hasło użyj małych i wielkich znaków, cyfr lub znaków 
+      specjalnych takich jak kropka lub pytajnik. Zwróć uwagę na to, że po
+      zmianie hasła zostaniesz wylogowany.
+    currentPassword: Aktualne hasło
+    password: Nowe hasło
+    passwordConfirmation: Potwierdzenie hasła
+    cancel: Anuluj
+    submit: Zmień hasło
   devices:
-    no_devices: "Brak przypisanych urządzeń. Jeśli obsługujący cię serwis doda w przyszłości jakieś urządzenia pojawią się na tej liście."
-    title: "Urządzenia"
-    number: "ID"
-    type: "Rodzaj"
-    vendor_model: "Producent i model"
-    address: "Adres"
-    serial: "Numer seryjny"
-    details: "Szczegóły"
-
+    no_devices: >-
+      Brak przypisanych urządzeń. Jeśli obsługujący cię serwis doda w
+      przyszłości jakieś urządzenia pojawią się na tej liście.
+    title: Urządzenia
+    number: ID
+    type: Rodzaj
+    vendor_model: Producent i model
+    address: Adres
+    serial: Numer seryjny
+    details: Szczegóły
+    vendor: Producent
+    model: Model
   device:
-    close: "Zamknij"
-    new_ticket: "Zgłoś awarię tego urządzenia"
+    close: Zamknij
+    new_ticket: Zgłoś awarię tego urządzenia
     panel_info:
-      title: "Informacje o urządzeniu"
-    address: "Adres"
-    number: "Numer"
-    vendor: "Producent"
-    model: "Model"
-    serial: "Numer seryjny"
+      title: Informacje o urządzeniu
+    address: Adres
+    number: Numer
+    vendor: Producent
+    model: Model
+    serial: Numer seryjny
     panel_custom_fields:
-      title: "Dodatkowe informacje"
+      title: Dodatkowe informacje
     panel_files:
-      title: "Pliki"
+      title: Pliki
     panel_service_supplier:
-      title: "Serwis obsługujący urządzenie"
+      title: Serwis obsługujący urządzenie

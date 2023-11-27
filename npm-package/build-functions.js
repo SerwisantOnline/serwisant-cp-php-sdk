@@ -17,7 +17,9 @@ const BuildFunctions = {
       if (err.code !== 'EEXIST') {
         throw err;
       } else {
-        console.log('mkdir ' + dir);
+        fs.rmSync(dir, { recursive: true, force: true });
+        console.log('rmdir ' + dir);
+        BuildFunctions.mkdir(dir);
       }
     }
   },

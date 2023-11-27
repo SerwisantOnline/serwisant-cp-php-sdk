@@ -225,11 +225,11 @@ en:
       Your account has been deleted or blocked. Please contact the service to
       resolve the issue.
     internet_access_not_enabled: >-
-      Your access to the client panel must be activated. Please contact the
+      Your access to the customer panel must be activated. Please contact the
       service.
     password: Password
     submit: Start
-    forgot_password: Remind password
+    forgot_password: Reset password
   signup_new:
     title: New account registration
     description: Start with registering own account. Please fill out the form.
@@ -270,7 +270,7 @@ en:
   access_request_new:
     title: The client pannel access activation
     description: >-
-      Please finish activating access to the client panel. To do so, please
+      Please finish activating access to the customer panel. To do so, please
       choose your login and password and accept necessary agreements.
     login_pass_info_html: >-
       Your name and surname can be used as login. You can choose whatever you
@@ -309,7 +309,7 @@ en:
     building: Number
     postalCode: Postal number
     city: City
-    country: "Country"
+    country: Country
   signup_confirmation_failure:
     title: Account activation failed
     description: 'Previously created account activation failed for reasons stated below:'
@@ -327,7 +327,7 @@ en:
     title: Reseting the password
     description: >-
       This tool allows to reset forgotten password. Firstly, provide login or
-      email adress of your account in the clinet panel. If we menage to find it,
+      email adress of your account in the customer panel. If we menage to find it,
       we will send the password reset link onto email adress associated with
       your account.
     login_or_email: Login or email adress
@@ -461,13 +461,13 @@ en:
     warranty: Repair under warranty
     warrantyPurchaseDate: Purchase date
     warrantyPurchaseDocument: Purchase document number
-    issue: 'Malfunction, Issue descriprion'
+    issue: 'Issue descriprion'
     returnAddress: 'Adress:'
     street: Street
     building: Number
     postalCode: Postal number
     city: City
-    country: "Country"
+    country: Country
     delivery: Method of delivery of the repair
     collection: Method of receiving of the repair
     cancel: Cancel
@@ -492,7 +492,7 @@ en:
       details.
     priority: Ticket priority
     startAt: The nearest possible date of arrival of the service technician
-    issue: Malfunction information
+    issue: Issue description
     address: Ticket adress
     addressOther: 'Other, any adress'
     other_address: Provide another adress
@@ -502,12 +502,14 @@ en:
     building: Number
     postalCode: Postal number
     city: City
-    country: "Country"
+    country: Country
+    device: The device concerned by this ticket
   ticket:
     close: Close
     print: Printout
     panel_info: General information
     number: Ticket number
+    devices: Devices concerned by the report
     employee: Assigned employee
     address: Address for the realization of the ticket
     group: Group
@@ -590,10 +592,11 @@ en:
         UNPAID: Not paid
   messages:
     title: Messages
-    no_messages: You haven't send, nor haven't recieved any message from service. If you
+    no_messages: >-
+      You haven't send, nor haven't recieved any message from service. If you
       want to contact the service via message, please click on the button
       located in upper site of the website.
-    create_message: Write a new message
+    create_message: Send a new message
     subject: Topic
     date: Date
     read: Read thread
@@ -605,7 +608,7 @@ en:
     employee: Service employee
     you: You
   message_new:
-    title: Write a new message
+    title: Send a new message
     description: >-
       Using this form you can write a message to the service. In the content,
       please convey all necessary information.
@@ -625,7 +628,7 @@ en:
   subscriber_by_token:
     search: check code
     or: or
-    customer_panel: go to the client pannel
+    customer_panel: go to the customer pannel
   viewer_password_edit:
     title: Password update
     description: >-
@@ -640,15 +643,21 @@ en:
     cancel: Cancel
     submit: Change password
   devices:
+    no_devices: >-
+      No devices assigned. If your service provider adds any devices in the
+      future, they will appear on this list.
     title: Devices
     number: ID
     type: Type
-    vendor: Manufacturer
-    model: Model
+    vendor_model: Manufacturer and model
+    address: Address
     serial: Serial number
     details: Details
+    vendor: Manufacturer
+    model: Model
   device:
     close: Close
+    new_ticket: Report ticket for that device
     panel_info:
       title: Device information
     address: Adress
