@@ -24,7 +24,11 @@
             <td>{{ device.type.name }}</td>
             <td>{{ device.vendor }} {{ device.model }}</td>
             <td>{{ device.serial }}</td>
-            <td> {{ device.address.street }} {{ device.address.building }}, {{ device.address.postalCode }} {{ device.address.city }}</td>
+            <td>
+              {% if device.address %}
+                {{ device.address.street }} {{ device.address.building }}, {{ device.address.postalCode }} {{ device.address.city }}
+              {% endif %}
+            </td>
             <td>
               <a href="{{ path('device', {'id': device.ID}) }}">{{ t(_self, 'details') }}</a>
             </td>
