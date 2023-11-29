@@ -12,14 +12,14 @@ class Application
   private $view_paths = [];
   private $query_paths = [];
   private $tr_files = [];
-  private $default_locale;
+  private string $default_locale;
 
   private $base_dir;
 
   private $app;
   private $router;
 
-  public function __construct($env = 'production', $view_paths = [], $query_paths = [], $tr_files = [], $default_locale = 'pl_PL')
+  public function __construct($env = 'production', $view_paths = [], $query_paths = [], $tr_files = [], string $default_locale = 'pl_PL')
   {
     if ($env) {
       $this->env = $env;

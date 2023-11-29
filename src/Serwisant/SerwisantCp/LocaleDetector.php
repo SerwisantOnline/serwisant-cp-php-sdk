@@ -14,8 +14,8 @@ class LocaleDetector
 
   public function __construct(HttpFoundation\Request $request, string $default_locale = 'pl_PL')
   {
-    $this->setRequest($request);
     $this->default_locale = $default_locale;
+    $this->setRequest($request);
   }
 
   private function setRequest(HttpFoundation\Request $request)
