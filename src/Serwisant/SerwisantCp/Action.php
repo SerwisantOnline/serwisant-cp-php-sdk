@@ -149,7 +149,11 @@ class Action
     if ($flash_tr) {
       $this->flashMessage($this->t($flash_tr));
     }
-    return $this->app->redirect($_SERVER['HTTP_REFERER']);
+    if (isset($_SERVER['HTTP_REFERER'])) {
+      return $this->app->redirect($_SERVER['HTTP_REFERER']);
+    } else {
+      return $this->renderPage('303.html.twig');
+    }
   }
 
   protected function redirectTo($binding, $flash_tr = null)

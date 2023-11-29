@@ -12,7 +12,6 @@ class Lang extends Action
     if (!$this->app['tr']->isSupported($lang)) {
       throw new ExceptionNotFound(__CLASS__, __LINE__);
     }
-
     $_SESSION['lang'] = $lang;
     return $this->redirectBack();
   }

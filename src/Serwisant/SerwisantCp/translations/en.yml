@@ -671,3 +671,7 @@ en:
       title: Files
     panel_service_supplier:
       title: Service handling the device
+  303:
+    title: Return to previous page
+    lead: We were unable to determine the forwarding address. Click the button below to return to the previous page.
+    button: Back

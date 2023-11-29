@@ -683,3 +683,7 @@ pl:
       title: Pliki
     panel_service_supplier:
       title: Serwis obsługujący urządzenie
+  303:
+    title: Powrót do poprzedniej strony
+    lead: Nie mogliśmy ustalić adresu przekierowania. Kliknij w przycisk poniżej, aby powrócić do poprzedniej strony.
+    button: Wróć
