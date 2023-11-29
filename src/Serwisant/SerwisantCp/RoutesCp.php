@@ -147,12 +147,6 @@ class RoutesCp extends Routes
       ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
       ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
       ->bind('autocomplete_model');
-
-    $cp->get('/lang/{lang}', function (Request $request, Token $token, $lang) {
-      return (new Actions\Lang($this->app, $request, $token))->update($lang);
-    })
-      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
-      ->bind('lang_update');
   }
 
   /**

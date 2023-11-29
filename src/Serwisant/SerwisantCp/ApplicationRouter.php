@@ -11,6 +11,6 @@ class ApplicationRouter implements Router
   {
     $app->mount('/', (new RoutesCp($app))->getRoutes());
     $app->mount('/token', (new RoutesCa($app))->getRoutes());
-    $app->mount('/docs', (new RoutesDocuments($app))->getRoutes());
+    $app->mount('/shared', (new RoutesShared($app))->getRoutes());
   }
 }
