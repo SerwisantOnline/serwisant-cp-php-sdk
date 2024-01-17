@@ -139,7 +139,12 @@ class Application
     }
 
     // język może być wskazany w sesji, jeśli nie, próbujemy wykrywać
-    $app['tr']->setLanguage(array_key_exists('lang', $_SESSION) ? $_SESSION['lang'] : $app['locale_detector']->language());
+    if (isset($_SESSION) && array_key_exists('lang', $_SESSION)) {
+      $lang = $_SESSION['lang'];
+    } else {
+      $lang = $app['locale_detector']->language();
+    }
+    $app['tr']->setLanguage($lang);
 
     if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
       $data = json_decode($request->getContent(), true);
