@@ -6,6 +6,8 @@ use Serwisant\SerwisantCp\Action;
 use Serwisant\SerwisantCp\Exception;
 use Serwisant\SerwisantCp\ExceptionNotFound;
 
+use Serwisant\SerwisantApi\Types\SchemaPublic\RepairSubmitPrompt;
+
 use Serwisant\SerwisantApi\Types\SchemaCustomer\RepairsFilter;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\RepairsFilterType;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\RepairsSort;
@@ -86,6 +88,15 @@ class Repairs extends Action
     }
   }
 
+  public function submitPrompt()
+  {
+    $action_query = $this->actionQuery();
+    $vars = [
+      'prompt_content' => $action_query->fetch('configuration')->repairSubmitPromptContent,
+    ];
+    return $this->renderPage('repair_submit_prompt.html.twig', $vars);
+  }
+
   public function new($errors = [])
   {
     $this->checkModuleActive();
@@ -132,6 +143,9 @@ class Repairs extends Action
   {
     $this->checkModuleActive();
 
+    $action_configuration = $this->actionQuery()->fetch('configuration');
+    $redirect_to_prompt = ($action_configuration->repairSubmitPrompt == RepairSubmitPrompt::ALWAYS || ($action_configuration->repairSubmitPrompt == RepairSubmitPrompt::FIRST && $this->hasNoRepairs()));
+
     $helper = $this->formHelper();
 
     $repair = $this->request->get('repair', []);
@@ -175,6 +189,8 @@ class Repairs extends Action
 
     if (count($repair_errors) > 0 || count($address_errors) > 0) {
       return $this->new(array_merge($repair_errors, $address_errors));
+    } elseif ($redirect_to_prompt) {
+      return $this->redirectTo('repair_prompt', 'flashes.repair_creation_successful');
     } else {
       return $this->redirectTo('repairs', 'flashes.repair_creation_successful');
     }
@@ -186,5 +202,17 @@ class Repairs extends Action
     if (false === $this->getLayoutVars()['configuration']->panelRepairs) {
       throw new ExceptionNotFound(__CLASS__, __LINE__);
     }
+  }
+
+  private function hasNoRepairs()
+  {
+    $filter = new RepairsFilter(['type' => RepairsFilterType::ALL]);
+    $repairs = $this->apiCustomer()->customerQuery()->repairs(2, 1, $filter, RepairsSort::DATE_UPDATED, ['count' => true]);
+    return count($repairs->items) == 0;
+  }
+
+  private function actionQuery()
+  {
+    return $this->apiPublic()->publicQuery()->newRequest()->setFile('repairsAction.graphql')->execute();
   }
 }

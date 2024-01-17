@@ -267,6 +267,13 @@ class RoutesCp extends Routes
       ->assert('id', $this->hashIdAssertion())
       ->before($this->expectJson())
       ->bind('repair_reject');
+
+    $cp->get('/repairs/submit_prompt', function (Request $request, Token $token) {
+      return (new Actions\Repairs($this->app, $request, $token))->submitPrompt();
+    })
+      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
+      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
+      ->bind('repair_prompt');
   }
 
   /**

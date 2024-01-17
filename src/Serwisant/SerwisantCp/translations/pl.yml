@@ -687,3 +687,7 @@ pl:
     title: Powrót do poprzedniej strony
     lead: Nie mogliśmy ustalić adresu przekierowania. Kliknij w przycisk poniżej, aby powrócić do poprzedniej strony.
     button: Wróć
+  repair_submit_prompt:
+    title: Co dalej?
+    description: Poniżej znajdziesz instrukcję dalszego postępowania.
+    confirm: Rozumiem

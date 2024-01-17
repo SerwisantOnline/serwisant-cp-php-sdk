@@ -675,3 +675,7 @@ en:
     title: Return to previous page
     lead: We were unable to determine the forwarding address. Click the button below to return to the previous page.
     button: Back
+  repair_submit_prompt:
+    title: What next?
+    description: Below you'll find instructions on how to proceed after adding the repair to our database.
+    confirm: I understand

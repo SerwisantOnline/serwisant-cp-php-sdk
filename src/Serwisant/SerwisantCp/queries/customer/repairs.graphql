@@ -1,4 +1,12 @@
-query repairs($limit: Int, $page: Int, $filter: RepairsFilter, $sort: RepairsSort, $list: Boolean = false, $single: Boolean = false) {
+query repairs($limit: Int, $page: Int, $filter: RepairsFilter, $sort: RepairsSort, $list: Boolean = false, $single: Boolean = false, $count: Boolean = false) {
+    repairs(limit: $limit, page: $page, filter: $filter, sort: $sort) @include(if: $count) {
+        __typename
+        pages
+        items {
+            __typename
+            ID
+        }
+    }
     repairs(limit: $limit, page: $page, filter: $filter, sort: $sort) @include(if: $list) {
         __typename
         pages

@@ -1,0 +1,16 @@
+<div class="bg-light p-5 rounded mt-3">
+  <h1>{{ t(_self, 'title') }}</h1>
+  <p class="lead">{{ t(_self, 'description') }}</p>
+</div>
+
+{% if prompt_content %}
+  <div class="bg-light p-5 rounded mt-3">
+    {{ prompt_content | raw }}
+  </div>
+{% endif %}
+
+<div class="clearfix">
+  <div class="mb-3 float-end form-buttons">
+    <a href="{{ path('repairs') }}" class="btn btn-primary mb-3">{{ t(_self, 'confirm') }}</a>
+  </div>
+</div>
