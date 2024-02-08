@@ -6,7 +6,10 @@
     <strong>{{ subscriber.serviceSupplier.displayName }}</strong>
     <br>
     {% if subscriber.serviceSupplier.address %}
-      {{ subscriber.serviceSupplier.address.street }} {{ subscriber.serviceSupplier.address.postalCode }} {{ subscriber.serviceSupplier.address.city }}
+      {{ subscriber.serviceSupplier.address.street }} {{ subscriber.serviceSupplier.address.building }}
+      <br>
+      {{ subscriber.serviceSupplier.address.postalCode }} {{ subscriber.serviceSupplier.address.city }}
+      <br>
       <br>
     {% endif %}
     {% if subscriber.serviceSupplier.phone %}

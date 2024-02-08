@@ -110,7 +110,10 @@
               <address>
                 <strong>{{ device.serviceSupplier.displayName }}</strong></br>
                 {% if device.serviceSupplier.address %}
-                  {{ device.serviceSupplier.address.street }} {{ device.serviceSupplier.address.postalCode }} {{ device.serviceSupplier.address.city }}
+                  {{ device.serviceSupplier.address.street }} {{ device.serviceSupplier.address.building }}
+                  <br>
+                  {{ device.serviceSupplier.address.postalCode }} {{ device.serviceSupplier.address.city }}
+                  <br>
                   <br>
                 {% endif %}
                 {% if device.serviceSupplier.phone %}
