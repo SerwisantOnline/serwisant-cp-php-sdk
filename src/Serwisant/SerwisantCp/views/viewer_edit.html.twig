@@ -81,7 +81,7 @@
             {{ form_field({type: 'text', argument: "addresses.#{loop.index0}.city", caption: t(_self, 'city'), value: address.city}, form_params, errors) }}
           </div>
           <div class="col-md-2 mb-3">
-            {{ form_field({type: 'countrypicker', argument: 'addresses.#{loop.index0}.countryIso', caption: t(_self, 'country'), value: address.countryIso}, form_params, errors) }}
+            {{ form_field({type: 'countrypicker', argument: "addresses.#{loop.index0}.countryIso", caption: t(_self, 'country'), value: address.countryIso}, form_params, errors) }}
           </div>
         </div>
 
