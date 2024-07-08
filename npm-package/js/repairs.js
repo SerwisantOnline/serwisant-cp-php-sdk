@@ -34,6 +34,7 @@ Application.Repairs.Form = function () {
   }
 
   if ($('#create_repair_file_uploader').length > 0) {
+    Application.Ui.FileUploadConfigure();
     var pond = FilePond.create({
       files: _.map($('.temporary-file-json'), function (div) {
         return {

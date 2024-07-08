@@ -2,14 +2,21 @@
 
 namespace Serwisant\SerwisantCp\Actions;
 
+use Serwisant\SerwisantApi\Types\SchemaCustomer\AddressInput;
+use Serwisant\SerwisantApi\Types\SchemaCustomer\AddressType;
+
 use Serwisant\SerwisantApi\Types\SchemaCustomer\DevicesFilterType;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\DevicesFilter;
+use Serwisant\SerwisantApi\Types\SchemaCustomer\DeviceInput;
+
 use Serwisant\SerwisantApi\Types\SchemaCustomer\RepairsFilterType;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\RepairsFilter;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\RepairsSort;
+
 use Serwisant\SerwisantApi\Types\SchemaCustomer\TicketsFilterType;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\TicketsFilter;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\TicketsSort;
+
 use Serwisant\SerwisantCp\Action;
 use Serwisant\SerwisantCp\ExceptionNotFound;
 
@@ -59,10 +66,75 @@ class Devices extends Action
     return $this->renderPage('device.html.twig', $variables);
   }
 
-  private function checkModuleActive()
+  public function new($errors = [])
+  {
+    $this->checkModuleActive(true);
+
+    $result = $this->apiCustomer()->customerQuery()->newRequest()->setFile('newDevice.graphql')->execute();
+
+    $dictionary_select_options = [];
+    foreach ($result->fetch('dictionaryEntries') as $entry) {
+      $dictionary_select_options[$entry->ID] = $entry->name;
+    }
+
+    $variables = [
+      'customFieldsDefinitions' => $result->fetch('deviceCustomFields'),
+      'dictionary_select_options' => $dictionary_select_options,
+
+      'form_params' => $this->request->request,
+      'temporary_files' => $this->formHelper()->mapTemporaryFiles($this->request->get('temporary_files')),
+      'errors' => $errors,
+      'js_files' => ['devices_new.js'],
+      'pageTitle' => $this->t('repair_new.title'),
+    ];
+    return $this->renderPage('device_new.html.twig', $variables);
+  }
+
+  public function create()
+  {
+    $this->checkModuleActive(true);
+
+    $helper = $this->formHelper();
+
+    $device = $this->request->get('device', []);
+
+    $device_input = new DeviceInput($device);
+    if (array_key_exists('customFields', $device)) {
+      $device_input->customFields = $helper->mapCustomFields($device['customFields']);
+    }
+    $temporary_files = $helper->mapTemporaryFiles($this->request->get('temporary_files'));
+    if (count($temporary_files) > 0) {
+      $device_input->copyOfSaleDocumentTemporaryFile = $temporary_files[0];
+    }
+
+    $address_input = new AddressInput($this->request->get('address', []));
+    $address_input->type = AddressType::HOME;
+
+    $result = $this
+      ->apiCustomer()
+      ->customerMutation()
+      ->createDevice($device_input, $address_input);
+
+    if ($result->errors) {
+      $device_errors = $result->errors;
+    } else {
+      $device_errors = [];
+    }
+
+    if (count($device_errors)) {
+      return $this->new($device_errors);
+    } else {
+      return $this->redirectTo('devices', 'flashes.device_registration_successful');
+    }
+  }
+
+  private function checkModuleActive($check_registration = false)
   {
     $this->checkPanelActive();
     if (false === $this->getLayoutVars()['configuration']->panelDevices) {
+      throw new ExceptionNotFound(__CLASS__, __LINE__);
+    }
+    if ($check_registration && false === $this->getLayoutVars()['configuration']->panelDevicesRegistration) {
       throw new ExceptionNotFound(__CLASS__, __LINE__);
     }
   }

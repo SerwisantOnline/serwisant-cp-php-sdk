@@ -77,6 +77,7 @@ type CustomerPanelConfig {
     "True when service want to use a messaging system in customer panel"
     panelCommunication: Boolean!
     panelDevices: Boolean!
+    panelDevicesRegistration: Boolean!
     "Is access to customer panel enables"
     panelEnabled: Boolean!
     "True if service want to use repairs module"
@@ -87,6 +88,8 @@ type CustomerPanelConfig {
     panelTickets: Boolean!
     panelToken: String
     personalTransportEnabled: Boolean!
+    repairSubmitPrompt: RepairSubmitPrompt!
+    repairSubmitPromptContent: String
     requirePhoneNumber: Boolean!
     showOrderProgressInfo: Boolean!
     showRepairDelegation: Boolean!
@@ -927,6 +930,12 @@ enum RepairState {
     WAITING_FOR_DELIVERY
     WAITING_FOR_DIAGNOSIS
     WAITING_FOR_PARTS
+}
+
+enum RepairSubmitPrompt {
+    ALWAYS
+    FIRST
+    NEVER
 }
 
 enum RepairTransportType {

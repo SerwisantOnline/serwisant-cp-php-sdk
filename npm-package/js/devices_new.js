@@ -1,6 +1,6 @@
-Application.Tickets = {}
+Application.Devices = {}
 
-Application.Tickets.Form = function () {
+Application.Devices.Form = function () {
   var customFields = function (id) {
     $('.custom-field').each(function () {
       if ($(this).attr('data-type-id') !== '') {
@@ -13,13 +13,14 @@ Application.Tickets.Form = function () {
     })
   };
 
-  $('#repair_type').change(function () {
+  var repairTypeInput = $('#device_type');
+  repairTypeInput.on('change', function () {
     customFields($(this).val());
-  });
-  customFields($('#repair_type').val());
+  })
+  customFields(repairTypeInput.val());
 
-  if ($('#create_ticket_file_uploader').length > 0) {
-    Application.Ui.FileUploadConfigure();
+  if ($('#create_device_file_uploader').length > 0) {
+    Application.Ui.FileUploadConfigure(true)
     var pond = FilePond.create({
       files: _.map($('.temporary-file-json'), function (div) {
         return {
@@ -30,7 +31,7 @@ Application.Tickets.Form = function () {
         }
       })
     });
-    pond.appendTo(document.getElementById('create_ticket_file_uploader'));
+    pond.appendTo(document.getElementById('create_device_file_uploader'));
     pond.on('addfilestart', function () {
       $('.form-buttons > button').addClass('disabled');
     })
@@ -42,19 +43,10 @@ Application.Tickets.Form = function () {
     })
   }
 
-  var otherAddressFunc = function () {
-    var addressRadio = $('input[name="ticket[address]"]:checked');
-    if (!addressRadio.val()) {
-      $('.address-other-container').slideDown()
-    } else {
-      $('.address-other-container').slideUp()
-    }
-  }
-
-  $('input[name="ticket[address]"]').change(otherAddressFunc);
-  otherAddressFunc();
+  Application.Ui.Autocomplete($('#device_vendor'));
+  Application.Ui.Autocomplete($('#device_model'));
 }
 
 $(document).ready(function () {
-  Application.Tickets.Form();
+  Application.Devices.Form();
 })

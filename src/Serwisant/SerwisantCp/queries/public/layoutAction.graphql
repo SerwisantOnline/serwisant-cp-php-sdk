@@ -58,6 +58,7 @@ query {
         panelTickets
         panelCommunication
         panelDevices
+        panelDevicesRegistration
         panelSignups
         dashboardMessage
         orderDictModel

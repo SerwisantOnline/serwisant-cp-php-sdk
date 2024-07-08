@@ -71,6 +71,10 @@ pl:
       self: Naprawa
       customFields:
         value: Pole tekstowe
+    device:
+      copyOfSaleDocument: Kopia dokumentu sprzedaży
+      customFields:
+        value: Pole tekstowe
   twig_extensions:
     progressed_about: 'Wykonano w %{percent}%'
     prev_page: Poprzednia
@@ -116,6 +120,7 @@ pl:
     imageValidateSizeLabelExpectedMinResolution: 'Minimalna rozdzielczość to {minResolution}'
     imageValidateSizeLabelExpectedMaxResolution: 'Maksymalna rozdzielczość to {maxResolution}'
   flashes:
+    device_registration_successful: Pomyślnie dodano urządzenie do bazy. Poczekaj teraz na weryfikację urządzenia przez serwis.
     login_first: Zanim rozpoczniesz korzystanie z aplikacji powinieneś się zalogować.
     signup_successful: >-
       Konto zostało zarejestrowane. Musisz je teraz potwierdzić za pomocą linku,
@@ -472,6 +477,7 @@ pl:
     description: >-
       Aby zarejestrować nową naprawę w bazie serwisu uzupełnij poniższy
       formularz.
+    device: 'Urządzenie, którego dotyczy naprawa'
     type: Przedmiot naprawy
     vendor: Producent
     model: Model
@@ -667,12 +673,16 @@ pl:
     details: Szczegóły
     vendor: Producent
     model: Model
+    create_device: Zarejestruj urządzenie
+    not_verified: Urządzenie oczekuje na weryfikację przez serwis.
   device:
     close: Zamknij
+    new_repair: Utwórz naprawę tego urządzenia
     new_ticket: Zgłoś awarię tego urządzenia
     panel_info:
       title: Informacje o urządzeniu
     address: Adres
+    type: Rodzaj
     number: Numer
     vendor: Producent
     model: Model
@@ -683,6 +693,25 @@ pl:
       title: Pliki
     panel_service_supplier:
       title: Serwis obsługujący urządzenie
+    not_verified: Urządzenie oczekuje na weryfikację przez serwis.
+    not_verified_unable_to_perform: Nie można wykonać operacji na niezweryfikowanym urządzeniu. Poczekaj na weryfikację urządzenia przez serwis.
+    copy_of_sale_document: Dokument sprzedaży
+  device_new:
+    title: Rejestracja urządzenia
+    description: Aby zarejestrować urządzenie wprowadź odpowiednie dane oraz załącz skan dokumentu sprzedaży. Po weryfikacji urządzenia przez serwis otrzymasz wiadomość email oraz będziesz mógł dodawać naprawy lub zgłoszenia.
+    type: Urządzenie
+    vendor: Producent
+    model: Model
+    serial: Numer seryjny urządzenia
+    copy_of_sale_document: Kopia dokumentu sprzedaży, paragonu lub faktury w postaci pliku graficznego.
+    address: Adres instalacji urządzenia
+    street: Ulica
+    building: Numer
+    postalCode: Kod pocztowy
+    city: Miasto
+    country: Kraj
+    cancel: Anuluj
+    submit: Zarejestruj
   303:
     title: Powrót do poprzedniej strony
     lead: Nie mogliśmy ustalić adresu przekierowania. Kliknij w przycisk poniżej, aby powrócić do poprzedniej strony.

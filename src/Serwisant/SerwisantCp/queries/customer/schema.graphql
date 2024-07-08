@@ -93,6 +93,8 @@ type CustomerMutation {
         offer: HashID,
         repair: HashID!
     ): AcceptOrRejectRepairResult
+    "Use this mutation to register a new device. Because we don't want trust customer's data created device will be marked as not-verified."
+    createDevice(address: AddressInput, device: DeviceInput!): DeviceCreationResult
     createMessage(message: MessageInput!): MessageCreationResult
     createMessageReply(content: String, message: HashID!): MessageReplyCreationResult
     "Create new repair as customer. Field `temporaryFiles` takes IDs of temporary files create via `createTemporaryFile `. Temporary files will be attached to repair and persisted."
@@ -125,16 +127,23 @@ type Device {
     ID: HashID!
     additionalItems: [DeviceItem!]!
     address: Address
+    copyOfSaleDocument: File
     "Will return a list of values for custom fields"
     customFields: [CustomFieldValue!]!
     displayName: String!
     files: [File!]!
-    model: String!
+    isVerified: Boolean!
+    model: String
     number: String!
-    serial: String!
+    serial: String
     serviceSupplier: ServiceSupplier!
     type: Dictionary!
-    vendor: String!
+    vendor: String
+}
+
+type DeviceCreationResult {
+    device: Device
+    errors: [Error!]
 }
 
 type DeviceItem {
@@ -938,6 +947,7 @@ enum RepairTransportType {
 enum RepairsFilterType {
     "All repairs"
     ALL
+    CUSTOMER
     DEVICE
     "Only expired repairs"
     EXPIRED
@@ -1060,6 +1070,15 @@ scalar Decimal
 "A reference to other, related entity or primary key of updated entity. 8 or more chars, uniq in scope of particular entity."
 scalar HashID
 
+input AddressInput {
+    building: String
+    city: String
+    countryIso: CountryCode
+    postalCode: String
+    street: String
+    type: AddressType
+}
+
 input AddressUpdateInput {
     ID: HashID
     building: String
@@ -1105,6 +1124,17 @@ input CustomerUpdateInput {
 input DateRangeInput {
     from: Date!
     to: Date!
+}
+
+input DeviceInput {
+    "Upload temporary file with document, then pass here `ID` of `TemporaryFile` entity."
+    copyOfSaleDocumentTemporaryFile: HashID
+    customFields: [CustomFieldValueInput!]
+    model: String
+    serial: String
+    "`ID` passed from one of `REPAIR_SUBJECT_TYPE` `Dictionary` entity. Please note - device has no special type - it shares types with repairs."
+    type: HashID!
+    vendor: String
 }
 
 input DevicesFilter {

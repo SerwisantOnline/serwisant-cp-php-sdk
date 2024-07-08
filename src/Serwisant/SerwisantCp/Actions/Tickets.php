@@ -2,6 +2,7 @@
 
 namespace Serwisant\SerwisantCp\Actions;
 
+use Serwisant\SerwisantCp\Traits;
 use Serwisant\SerwisantCp\Action;
 use Serwisant\SerwisantCp\ExceptionNotFound;
 
@@ -12,12 +13,11 @@ use Serwisant\SerwisantApi\Types\SchemaCustomer\TicketsFilterType;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\TicketsSort;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\TicketInput;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\PrintType;
-use Serwisant\SerwisantApi\Types\SchemaCustomer\Device;
-use Serwisant\SerwisantApi\Types\SchemaCustomer\DevicesFilter;
-use Serwisant\SerwisantApi\Types\SchemaCustomer\DevicesFilterType;
 
 class Tickets extends Action
 {
+  use Traits\Devices;
+
   public function index()
   {
     $this->checkModuleActive();
@@ -173,18 +173,5 @@ class Tickets extends Action
     if (false === $this->getLayoutVars()['configuration']->panelTickets) {
       throw new ExceptionNotFound(__CLASS__, __LINE__);
     }
-  }
-
-  /**
-   * @return Device
-   */
-  private function getDevice(): ?Device
-  {
-    if ($device_id = $this->request->get('device')) {
-      $devices_filter = new DevicesFilter(['type' => DevicesFilterType::ID, 'ID' => $device_id]);
-      $devices = $this->apiCustomer()->customerQuery()->devices(1, null, $devices_filter, null, ['single' => true]);
-      return $devices->items[0];
-    }
-    return null;
   }
 }

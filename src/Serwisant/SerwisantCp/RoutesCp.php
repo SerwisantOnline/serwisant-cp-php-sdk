@@ -66,6 +66,20 @@ class RoutesCp extends Routes
       ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
       ->assert('id', $this->hashIdAssertion())
       ->bind('device');
+
+    $cp->get('/devices/create', function (Request $request, Token $token) {
+      return (new Actions\Devices($this->app, $request, $token))->new();
+    })
+      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
+      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
+      ->bind('new_device');
+
+    $cp->post('/devices/create', function (Request $request, Token $token) {
+      return (new Actions\Devices($this->app, $request, $token))->create();
+    })
+      ->before($this->expectAccessTokens())->before($this->expectAuthenticated())
+      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
+      ->bind('create_device');
   }
 
   /**

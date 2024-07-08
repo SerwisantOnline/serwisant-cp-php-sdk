@@ -2,6 +2,7 @@
 
 namespace Serwisant\SerwisantCp\Actions;
 
+use Serwisant\SerwisantCp\Traits;
 use Serwisant\SerwisantCp\Action;
 use Serwisant\SerwisantCp\Exception;
 use Serwisant\SerwisantCp\ExceptionNotFound;
@@ -18,6 +19,8 @@ use Serwisant\SerwisantApi\Types\SchemaCustomer\RepairTransportType;
 
 class Repairs extends Action
 {
+  use Traits\Devices;
+
   public function index()
   {
     $this->checkModuleActive();
@@ -102,6 +105,7 @@ class Repairs extends Action
     $this->checkModuleActive();
 
     $result = $this->apiCustomer()->customerQuery()->newRequest()->setFile('newRepair.graphql')->execute();
+    $device = $this->getDevice();
 
     $dictionary_select_options = [];
     foreach ($result->fetch('dictionaryEntries') as $entry) {
@@ -109,8 +113,13 @@ class Repairs extends Action
     }
 
     $addresses_radio_options = [];
+    $default_address = null;
     foreach ($result->fetch('viewer')->customer->addresses as $address) {
       $addresses_radio_options[$address->ID] = trim("{$address->postalCode} {$address->city}, {$address->street} {$address->building}");
+    }
+    if ($device && $device->address) {
+      $addresses_radio_options[$device->address->ID] = trim("{$device->address->postalCode} {$device->address->city}, {$device->address->street} {$device->address->building}");
+      $default_address = $device->address->ID;
     }
 
     $transport_radio_options = [RepairTransportType::PARCEL => $this->t('transport_types.PARCEL')];
@@ -128,6 +137,8 @@ class Repairs extends Action
       'addresses_radio_options' => $addresses_radio_options,
       'transport_radio_options' => $transport_radio_options,
       'defaultReturnAddress' => ($result->fetch('viewer')->customer->address ? $result->fetch('viewer')->customer->address->ID : null),
+      'defaultAddress' => $default_address,
+      'device' => $device,
 
       'form_params' => $this->request->request,
       'temporary_files' => $this->formHelper()->mapTemporaryFiles($this->request->get('temporary_files')),
@@ -179,7 +190,12 @@ class Repairs extends Action
     $result = $this
       ->apiCustomer()
       ->customerMutation()
-      ->createRepair($repair_input, [], $helper->mapTemporaryFiles($this->request->get('temporary_files')));
+      ->createRepair(
+        $repair_input,
+        [],
+        $helper->mapTemporaryFiles($this->request->get('temporary_files')),
+        (($device = $this->getDevice()) ? $device->ID : null)
+      );
 
     if ($result->errors) {
       $repair_errors = $result->errors;

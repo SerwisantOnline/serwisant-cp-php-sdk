@@ -1,3 +1,7 @@
+{% if configuration.panelDevicesRegistration %}
+  <a class="btn btn-primary btn-lg" href="{{ path('new_device') }}">{{ t(_self, 'create_device') }}</a>
+{% endif %}
+
 <div class="bg-light p-5 rounded mt-3">
   {% if devices.items is empty %}
     <p class="lead">{{ t(_self, 'no_devices') }}</p>
@@ -20,7 +24,12 @@
         <tbody>
         {% for device in devices.items %}
           <tr>
-            <th scope="row">{{ device.number }}</th>
+            <th scope="row">
+              {{ device.number }}
+              {% if not device.isVerified %}
+                <i class="fas fa-eye-slash text-tooltip" title="{{ t(_self, 'not_verified') }}"></i>
+              {% endif %}
+            </th>
             <td>{{ device.type.name }}</td>
             <td>{{ device.vendor }} {{ device.model }}</td>
             <td>{{ device.serial }}</td>
@@ -37,8 +46,6 @@
         </tbody>
       </table>
     </div>
-
-
 
     {{ paginator(devices.pages) }}
   {% endif %}

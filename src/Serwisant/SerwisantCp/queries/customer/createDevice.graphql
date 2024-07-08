@@ -1,0 +1,10 @@
+mutation createDevice($device: DeviceInput!, $address: AddressInput) {
+    createDevice(device: $device, address: $address) {
+        __typename
+        errors {
+            __typename
+            argument
+            code
+        }
+    }
+}

@@ -237,24 +237,30 @@ Application.Ui.FormErrorsToPopover = function () {
   });
 };
 
-Application.Ui.FileUploadConfigure = function () {
+Application.Ui.FileUploadConfigure = function (single) {
   var translations = Application.Options.Get('fpTranslations');
 
   FilePond.registerPlugin(FilePondPluginImagePreview);
   FilePond.registerPlugin(FilePondPluginFileValidateType);
 
-  FilePond.setOptions(_.merge(translations, {
+  var config = _.merge(translations, {
     server: {
       url: Application.Options.Get('uploadUrl')
     },
-    maxFiles: 10,
-    allowMultiple: true,
     stylePanelLayout: 'compact',
     name: 'temporary_files[]',
     credits: [],
     allowFileTypeValidation: (Application.Options.Get('uploadOnlyImages') === 1),
     acceptedFileTypes: (Application.Options.Get('uploadOnlyImages') === 1 ? ['image/*'] : [])
-  }));
+  })
+
+  if (single) {
+    config = _.merge(config, {maxFiles: 1, allowMultiple: false})
+  } else {
+    config = _.merge(config, {maxFiles: 10, allowMultiple: true})
+  }
+
+  FilePond.setOptions(config);
 }
 
 Application.Ui.GenerateLogin = function (user_login, src_fields, watch_fields) {

@@ -10,6 +10,9 @@
 
   <div class="col col-lg-3">
     <div class="d-grid gap-2 mt-3">
+      {% if configuration.panelDevices and configuration.panelDevicesRegistration %}
+        <a class="btn btn-primary btn-lg" href="{{ path('new_device') }}">{{ t('devices.create_device') }}</a>
+      {% endif %}
       {% if configuration.panelRepairs %}
         <a class="btn btn-primary btn-lg" href="{{ path('new_repair') }}">{{ t('repairs.create_repair') }}</a>
       {% endif %}

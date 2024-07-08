@@ -14,7 +14,6 @@ $(document).ready(function () {
   Application.Ui.Popup.DataMethodAttach();
   Application.Ui.DatePickerAttach();
   Application.Ui.FormErrorsToPopover();
-  Application.Ui.FileUploadConfigure();
   Application.Ui.FormCommitButtonLock();
   Application.Ui.Select2();
 

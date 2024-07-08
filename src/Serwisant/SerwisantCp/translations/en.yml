@@ -1,4 +1,10 @@
 en:
+  '303':
+    title: Return to previous page
+    lead: >-
+      We were unable to determine the forwarding address. Click the button below
+      to return to the previous page.
+    button: Back
   errors_title: Please fix following issues
   errors:
     blank: Required value has not been given
@@ -65,6 +71,10 @@ en:
       self: Repair
       customFields:
         value: Text box
+    device:
+      copyOfSaleDocument: Copy of the sale document
+      customFields:
+        value: Text box
   twig_extensions:
     progressed_about: '%{percent}% completed'
     prev_page: Previous
@@ -108,6 +118,9 @@ en:
     imageValidateSizeLabelExpectedMinResolution: 'Minimal resolution is {minResolution}'
     imageValidateSizeLabelExpectedMaxResolution: 'Maximal resolution is {maxResolution}'
   flashes:
+    device_registration_successful: >-
+      The device has been successfully added to the database. Now wait for the
+      device to be verified by the service.
     login_first: 'Before you start using the app, you should sign up.'
     signup_successful: >-
       Account has been registered. You have to confirm it using the link, that
@@ -327,8 +340,8 @@ en:
     title: Reseting the password
     description: >-
       This tool allows to reset forgotten password. Firstly, provide login or
-      email adress of your account in the customer panel. If we menage to find it,
-      we will send the password reset link onto email adress associated with
+      email adress of your account in the customer panel. If we menage to find
+      it, we will send the password reset link onto email adress associated with
       your account.
     login_or_email: Login or email adress
     submit: Recover password
@@ -454,6 +467,7 @@ en:
     description: >-
       To register a new repair in service database, please fill the following
       form.
+    device: The device concerned by this repair
     type: Subject of repair
     vendor: Manufacturer
     model: Model
@@ -461,7 +475,7 @@ en:
     warranty: Repair under warranty
     warrantyPurchaseDate: Purchase date
     warrantyPurchaseDocument: Purchase document number
-    issue: 'Issue descriprion'
+    issue: Issue descriprion
     returnAddress: 'Adress:'
     street: Street
     building: Number
@@ -655,12 +669,16 @@ en:
     details: Details
     vendor: Manufacturer
     model: Model
+    create_device: Register your device
+    not_verified: The device is waiting for verification by the service.
   device:
     close: Close
+    new_repair: Create a repair for this device
     new_ticket: Report ticket for that device
     panel_info:
       title: Device information
     address: Adress
+    type: Type
     number: Number
     vendor: Manufacturer
     model: Model
@@ -671,11 +689,33 @@ en:
       title: Files
     panel_service_supplier:
       title: Service handling the device
-  303:
-    title: Return to previous page
-    lead: We were unable to determine the forwarding address. Click the button below to return to the previous page.
-    button: Back
+    not_verified: The device is waiting for verification by the service.
+    not_verified_unable_to_perform: >-
+      Operations cannot be performed on an unverified device. Wait for the
+      device to be verified by the service.
+    copy_of_sale_document: Sales document
+  device_new:
+    title: Device registration
+    description: >-
+      To register the device, enter the appropriate data and attach a scan of
+      the sales document. After the device is verified by the service, you will
+      receive an email and will be able to add repairs or reports.
+    type: Device
+    vendor: Vendor
+    model: Make
+    serial: Serial number
+    copy_of_sale_document: 'A copy of a sales document, receipt or invoice in as image file.'
+    address: Device installation address
+    street: Street
+    building: Number
+    postalCode: Postal code
+    city: City
+    country: Country
+    cancel: Cancel
+    submit: Perform registration
   repair_submit_prompt:
     title: What next?
-    description: Below you'll find instructions on how to proceed after adding the repair to our database.
+    description: >-
+      Below you'll find instructions on how to proceed after adding the repair
+      to our database.
     confirm: I understand

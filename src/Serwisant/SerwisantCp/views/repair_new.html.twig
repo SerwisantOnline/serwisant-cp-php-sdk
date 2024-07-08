@@ -7,23 +7,40 @@
   {{ form_errors(_self, errors) }}
 
   <div class="bg-light p-5 rounded mt-3">
-    <div class="mb-3">
-      {{ form_field({type: 'selectpicker', argument: 'repair.type', caption: t(_self, 'type'), options: dictionary_select_options, include_blank: true}, form_params, errors) }}
-    </div>
+    {% if device %}
+      {{ form_field({type: 'hidden', argument: 'device', value: device.ID}, form_params, errors) }}
+      {{ form_field({type: 'hidden', argument: 'repair.type', value: device.type.ID}, form_params, errors) }}
+      {{ form_field({type: 'hidden', argument: 'repair.vendor', value: device.vendor}, form_params, errors) }}
+      {{ form_field({type: 'hidden', argument: 'repair.model', value: device.model}, form_params, errors) }}
+      {{ form_field({type: 'hidden', argument: 'repair.serial', value: device.serial}, form_params, errors) }}
 
-    {% if not configuration.orderDictModel %}
       <div class="mb-3">
-        {{ form_field({type: 'datalist', argument: 'repair.vendor', caption: t(_self, 'vendor'), data_url: path('autocomplete_vendor')}, form_params, errors) }}
+        <div class="form-floating">
+          <input type="text" class="form-control" placeholder="{{ t(_self, 'device') }}"
+                 title="{{ t(_self, 'device') }}" disabled
+                 value="{{ device.type.name }} {{ device.vendor }} {{ device.model }}">
+          <label for="ticket_customFields_1_value" class="form-label">{{ t(_self, 'device') }}</label>
+        </div>
+      </div>
+    {% else %}
+      <div class="mb-3">
+        {{ form_field({type: 'selectpicker', argument: 'repair.type', caption: t(_self, 'type'), options: dictionary_select_options, include_blank: true}, form_params, errors) }}
       </div>
 
+      {% if not configuration.orderDictModel %}
+        <div class="mb-3">
+          {{ form_field({type: 'datalist', argument: 'repair.vendor', caption: t(_self, 'vendor'), data_url: path('autocomplete_vendor')}, form_params, errors) }}
+        </div>
+
+        <div class="mb-3">
+          {{ form_field({type: 'datalist', argument: 'repair.model', caption: t(_self, 'model'), data_url: path('autocomplete_model')}, form_params, errors) }}
+        </div>
+      {% endif %}
+
       <div class="mb-3">
-        {{ form_field({type: 'datalist', argument: 'repair.model', caption: t(_self, 'model'), data_url: path('autocomplete_model')}, form_params, errors) }}
+        {{ form_field({type: 'text', argument: 'repair.serial', caption: t(_self, 'serial')}, form_params, errors) }}
       </div>
     {% endif %}
-
-    <div class="mb-3">
-      {{ form_field({type: 'text', argument: 'repair.serial', caption: t(_self, 'serial')}, form_params, errors) }}
-    </div>
 
     <div class="mb-3">
       {{ form_field({type: 'switch', argument: "repair.warranty", caption: t(_self, 'warranty'), value: 1}, form_params, errors) }}
