@@ -2,13 +2,12 @@
   <a href="{{ path('devices') }}" class="btn btn-secondary btn-lg">{{ t(_self, 'close') }}</a>
 
   {% if configuration.panelRepairs %}
-    <a href="{{ path('new_repair', {device: device.ID}) }}"
-       class="btn btn-primary btn-lg {{ device.isVerified ? '' : 'disabled' }}">{{ t(_self, 'new_repair') }}</a>
+    <a href="{{ path('new_repair', {device: device.ID}) }}" class="d-none d-md-none d-lg-block btn btn-primary btn-lg {{ device.isVerified ? '' : 'disabled' }}">{{ t(_self, 'new_repair') }}</a>
+    <a href="{{ path('new_repair', {device: device.ID}) }}" class="d-lg-none btn btn-primary btn-lg {{ device.isVerified ? '' : 'disabled' }}">{{ t(_self, 'new_repair_s') }}</a>
   {% endif %}
-
   {% if configuration.panelTickets %}
-    <a href="{{ path('new_ticket', {device: device.ID}) }}"
-       class="btn btn-primary btn-lg {{ device.isVerified ? '' : 'disabled' }}">{{ t(_self, 'new_ticket') }}</a>
+    <a href="{{ path('new_ticket', {device: device.ID}) }}" class="d-none d-md-none d-lg-block btn btn-primary btn-lg {{ device.isVerified ? '' : 'disabled' }}">{{ t(_self, 'new_ticket') }}</a>
+    <a href="{{ path('new_ticket', {device: device.ID}) }}" class="d-lg-none btn btn-primary btn-lg {{ device.isVerified ? '' : 'disabled' }}">{{ t(_self, 'new_ticket_s') }}</a>
   {% endif %}
 </div>
 

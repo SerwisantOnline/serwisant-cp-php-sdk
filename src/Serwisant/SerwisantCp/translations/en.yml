@@ -660,6 +660,7 @@ en:
     no_devices: >-
       No devices assigned. If your service provider adds any devices in the
       future, they will appear on this list.
+    description: Device description
     title: Devices
     number: ID
     type: Type
@@ -674,7 +675,9 @@ en:
   device:
     close: Close
     new_repair: Create a repair for this device
+    new_repair_s: Repair
     new_ticket: Report ticket for that device
+    new_ticket_s: Ticket
     panel_info:
       title: Device information
     address: Adress

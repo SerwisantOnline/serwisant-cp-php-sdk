@@ -47,6 +47,30 @@
       </table>
     </div>
 
+    <!-- mobile -->
+    <div class="d-lg-none">
+      <table class="table">
+        <thead>
+        <tr>
+          <th scope="col">{{ t(_self, 'description') }}</th>
+          <th scope="col">{{ t(_self, 'serial') }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for device in devices.items %}
+          <tr>
+            <td>
+              <a href="{{ path('device', {'id': device.ID}) }}">
+                {{ device.type.name }} {{ device.vendor }} {{ device.model }}
+              </a>
+            </td>
+            <td>{{ device.number }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
     {{ paginator(devices.pages) }}
   {% endif %}
 </div>

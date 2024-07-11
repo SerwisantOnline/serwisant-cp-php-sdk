@@ -664,6 +664,7 @@ pl:
     no_devices: >-
       Brak przypisanych urządzeń. Jeśli obsługujący cię serwis doda w
       przyszłości jakieś urządzenia pojawią się na tej liście.
+    description: Opis urządzenia
     title: Urządzenia
     number: ID
     type: Rodzaj
@@ -678,7 +679,9 @@ pl:
   device:
     close: Zamknij
     new_repair: Utwórz naprawę tego urządzenia
+    new_repair_s: Naprawa
     new_ticket: Zgłoś awarię tego urządzenia
+    new_ticket_s: Awaria
     panel_info:
       title: Informacje o urządzeniu
     address: Adres
