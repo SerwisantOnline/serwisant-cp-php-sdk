@@ -160,34 +160,7 @@
         {{ ticket.issue }}
       </div>
 
-      {% if ticket.files %}
-
-        <div class="card my-2">
-          <div class="card-header">
-            <span class="glyphicon glyphicon-file icon-margin pull-right"></span>
-            {{ t(_self, 'panel_files') }}
-          </div>
-          <div class="card-body">
-            {% for files_group in (ticket.files | group_files) %}
-              <div class="card-group">
-                {% for file in files_group %}
-                  <div class="card">
-                    {% if file %}
-                      {% if file.image %}
-                        <a href="{{ file.url }}"><img src="{{ file.thumbUrl }}" class="card-img-top img-thumbnail"></a>
-                      {% else %}
-                        <a href="{{ file.url }}" class="text-sm-center">{{ t(_self, 'download') }}</a>
-                      {% endif %}
-                      <div class="card-body"><p class="card-text">{{ file.publicRemarks }}</p></div>
-                    {% endif %}
-                  </div>
-                {% endfor %}
-              </div>
-            {% endfor %}
-          </div>
-        </div>
-
-      {% endif %}
+      {% include 'shared/files.html.twig' with {'files': ticket.files, 'title': t(_self, 'panel_files')} %}
     </div>
   </div>
 </div>

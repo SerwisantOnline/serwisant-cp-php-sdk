@@ -1,0 +1,35 @@
+{% if files %}
+  <div class="card my-2">
+    <div class="card-header">
+      <span class="glyphicon glyphicon-file icon-margin pull-right"></span>
+      {{ title }}
+    </div>
+    <div class="card-body">
+      {% for files_group in (files | group_files) %}
+        <div class="card-group">
+          {% for file in files_group %}
+            <div class="card card-spaced">
+              {% if file %}
+                {% if file.image %}
+                  <a href="{{ file.url }}">
+                    <img src="{{ file.thumbUrl }}" class="card-img-top img-thumbnail">
+                  </a>
+                {% else %}
+                  <a href="{{ file.url }}" class="text-sm-center">
+                    {% if file.contentType == 'application/pdf' %}
+                      <i class="fas fa-10x fa-file-pdf"></i>
+                    {% else %}
+                      <i class="fas fa-10x fa-file-download"></i>
+                    {% endif %}
+                  </a>
+                {% endif %}
+                <div class="card-body"><small class="card-text">{{ file.publicRemarks }}</small></div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}
+

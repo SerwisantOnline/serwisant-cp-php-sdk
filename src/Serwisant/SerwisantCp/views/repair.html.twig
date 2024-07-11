@@ -26,7 +26,7 @@
     <div class="col-md-6">
       {% include 'repair/panel_money.html.twig' %}
       {% include 'repair/panel_status.html.twig' %}
-      {% include 'repair/panel_files.html.twig' %}
+      {% include 'shared/files.html.twig' with {'files': repair.files, 'title': t('repair.panel_files.title')} %}
     </div>
   </div>
 

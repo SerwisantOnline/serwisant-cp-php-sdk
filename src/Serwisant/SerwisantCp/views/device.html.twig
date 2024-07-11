@@ -22,7 +22,6 @@
 <div class="bg-light p-5 rounded mt-3">
   <div class="row">
     <div class="col-md-6">
-
       <div class="card my-2">
         <div class="card-header">
           <span class="glyphicon glyphicon-info-sign icon-margin pull-right"></span>
@@ -74,10 +73,11 @@
               <td>
                 <div class="card">
                   {% if device.copyOfSaleDocument.image %}
-                    <a href="{{ device.copyOfSaleDocument.url }}"><img src="{{ device.copyOfSaleDocument.thumbUrl }}"
-                                                                       class="card-img-top img-thumbnail"></a>
+                    <a href="{{ device.copyOfSaleDocument.url }}"><img src="{{ device.copyOfSaleDocument.thumbUrl }}" class="card-img-top img-thumbnail"></a>
                   {% else %}
-                    <a href="{{ device.copyOfSaleDocument.url }}" class="text-sm-center">{{ t(_self, 'download') }}</a>
+                    <a href="{{ device.copyOfSaleDocument.url }}" class="text-sm-center">
+                      <i class="fas fa-file"></i>
+                    </a>
                   {% endif %}
                 </div>
               </td>
@@ -104,36 +104,9 @@
         </table>
       </div>
 
-      {% if device.files %}
-        <div class="card my-2">
-          <div class="card-header">
-            <span class="glyphicon glyphicon-file icon-margin pull-right"></span>
-            {{ t(_self, 'panel_files.title') }}
-          </div>
-          <div class="card-body">
-            {% for files_group in (device.files | group_files) %}
-              <div class="card-group">
-                {% for file in files_group %}
-                  <div class="card">
-                    {% if file %}
-                      {% if file.image %}
-                        <a href="{{ file.url }}"><img src="{{ file.thumbUrl }}" class="card-img-top img-thumbnail"></a>
-                      {% else %}
-                        <a href="{{ file.url }}" class="text-sm-center">{{ t(_self, 'download') }}</a>
-                      {% endif %}
-                      <div class="card-body"><p class="card-text">{{ file.publicRemarks }}</p></div>
-                    {% endif %}
-                  </div>
-                {% endfor %}
-              </div>
-            {% endfor %}
-          </div>
-        </div>
-      {% endif %}
-
+      {% include 'shared/files.html.twig' with {'files': device.files, 'title': t(_self, 'panel_files.title')} %}
     </div>
     <div class="col-md-6">
-
       <div class="card my-2">
         <div class="card-body">
           <div class="row">

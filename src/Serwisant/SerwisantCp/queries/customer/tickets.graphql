@@ -54,6 +54,7 @@ query tickets($limit: Int, $page: Int, $filter: TicketsFilter, $sort: TicketsSor
             }
             files {
                 __typename
+                contentType
                 image
                 url
                 thumbUrl: url(size: THUMBNAIL)
