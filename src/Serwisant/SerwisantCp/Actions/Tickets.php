@@ -7,12 +7,14 @@ use Serwisant\SerwisantCp\Action;
 use Serwisant\SerwisantCp\ExceptionNotFound;
 
 use Serwisant\SerwisantApi\Types\SchemaCustomer\AddressUpdateInput;
-use Serwisant\SerwisantApi\Types\SchemaCustomer\RepairsFilterType;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\TicketsFilter;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\TicketsFilterType;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\TicketsSort;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\TicketInput;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\PrintType;
+
+use Serwisant\SerwisantApi\Types\SchemaCustomer\RatingSubjectType;
+use Serwisant\SerwisantApi\Types\SchemaCustomer\RatingInput;
 
 class Tickets extends Action
 {
@@ -39,19 +41,17 @@ class Tickets extends Action
     return $this->renderPage('tickets.html.twig', $variables);
   }
 
-  public function show($id)
+  public function show($id, $rating_errors = [])
   {
     $this->checkModuleActive();
 
-    $filter = new TicketsFilter(['type' => RepairsFilterType::ID, 'ID' => $id]);
-    $result = $this->apiCustomer()->customerQuery()->tickets(1, null, $filter, null, ['single' => true]);
-    if (count($result->items) !== 1) {
-      throw new ExceptionNotFound(__CLASS__, __LINE__);
-    }
+    $ticket = $this->fetchTicket($id);
 
     $variables = [
-      'ticket' => $result->items[0],
-      'pageTitle' => $result->items[0]->number,
+      'ticket' => $ticket,
+      'pageTitle' => $ticket->number,
+      'form_params' => $this->request->request,
+      'rating_errors' => $rating_errors,
     ];
 
     return $this->renderPage('ticket.html.twig', $variables);
@@ -165,6 +165,37 @@ class Tickets extends Action
     } else {
       return $this->redirectTo('tickets', 'flashes.ticket_creation_successful');
     }
+  }
+
+  public function rate($id)
+  {
+    $this->checkModuleActive();
+
+    $ticket = $this->fetchTicket($id);
+
+    if (false === $ticket->isRateable) {
+      throw new ExceptionNotFound(__CLASS__, __LINE__);
+    }
+
+    $rating_input = new RatingInput($this->request->get('rating', []));
+
+    $result = $this->apiCustomer()->customerMutation()->setRating($id, RatingSubjectType::TICKET, $rating_input);
+
+    if ($result->errors) {
+      return $this->show($id, $result->errors);
+    } else {
+      return $this->redirectTo(['ticket', ['id' => $id]]);
+    }
+  }
+
+  private function fetchTicket($id)
+  {
+    $filter = new TicketsFilter(['type' => TicketsFilterType::ID, 'ID' => $id]);
+    $result = $this->apiCustomer()->customerQuery()->tickets(1, null, $filter, null, ['single' => true]);
+    if (count($result->items) !== 1) {
+      throw new ExceptionNotFound(__CLASS__, __LINE__);
+    }
+    return $result->items[0];
   }
 
   private function checkModuleActive()

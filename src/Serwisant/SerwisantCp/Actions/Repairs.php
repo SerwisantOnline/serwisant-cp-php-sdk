@@ -11,11 +11,14 @@ use Serwisant\SerwisantApi\Types\SchemaPublic\RepairSubmitPrompt;
 
 use Serwisant\SerwisantApi\Types\SchemaCustomer\RepairsFilter;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\RepairsFilterType;
+use Serwisant\SerwisantApi\Types\SchemaCustomer\RepairTransportType;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\RepairsSort;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\RepairInput;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\AddressUpdateInput;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\PrintType;
-use Serwisant\SerwisantApi\Types\SchemaCustomer\RepairTransportType;
+
+use Serwisant\SerwisantApi\Types\SchemaCustomer\RatingSubjectType;
+use Serwisant\SerwisantApi\Types\SchemaCustomer\RatingInput;
 
 class Repairs extends Action
 {
@@ -43,19 +46,17 @@ class Repairs extends Action
     return $this->renderPage('repairs.html.twig', $variables);
   }
 
-  public function show($id)
+  public function show($id, $rating_errors = [])
   {
     $this->checkModuleActive();
 
-    $filter = new RepairsFilter(['type' => RepairsFilterType::ID, 'ID' => $id]);
-    $result = $this->apiCustomer()->customerQuery()->repairs(1, null, $filter, null, ['single' => true]);
-    if (count($result->items) !== 1) {
-      throw new ExceptionNotFound(__CLASS__, __LINE__);
-    }
+    $repair = $this->fetchRepair($id);
 
     $variables = [
-      'repair' => $result->items[0],
-      'pageTitle' => $result->items[0]->rma,
+      'repair' => $repair,
+      'pageTitle' => $repair->rma,
+      'form_params' => $this->request->request,
+      'rating_errors' => $rating_errors,
     ];
 
     return $this->renderPage('repair.html.twig', $variables);
@@ -210,6 +211,37 @@ class Repairs extends Action
     } else {
       return $this->redirectTo('repairs', 'flashes.repair_creation_successful');
     }
+  }
+
+  public function rate($id)
+  {
+    $this->checkModuleActive();
+
+    $repair = $this->fetchRepair($id);
+
+    if (false === $repair->isRateable) {
+      throw new ExceptionNotFound(__CLASS__, __LINE__);
+    }
+
+    $rating_input = new RatingInput($this->request->get('rating', []));
+
+    $result = $this->apiCustomer()->customerMutation()->setRating($id, RatingSubjectType::REPAIR, $rating_input);
+
+    if ($result->errors) {
+      return $this->show($id, $result->errors);
+    } else {
+      return $this->redirectTo(['repair', ['id' => $id]]);
+    }
+  }
+
+  private function fetchRepair($id)
+  {
+    $filter = new RepairsFilter(['type' => RepairsFilterType::ID, 'ID' => $id]);
+    $result = $this->apiCustomer()->customerQuery()->repairs(1, null, $filter, null, ['single' => true]);
+    if (count($result->items) !== 1) {
+      throw new ExceptionNotFound(__CLASS__, __LINE__);
+    }
+    return $result->items[0];
   }
 
   private function checkModuleActive()

@@ -52,6 +52,9 @@ pl:
         customer_rate_limit: >-
           Nie możesz teraz dodać nowej naprawy. Przed dodaniem kolejnej odczekaj
           chwilę.
+    rating:
+          stars:
+            greater_than_or_equal_to: Wybierz od jednej do pięciu gwiazdek
   entitles:
     loginOrEmail: Login lub adres email
     resetToken: Link resetowania hasła
@@ -75,6 +78,8 @@ pl:
       copyOfSaleDocument: Kopia dokumentu sprzedaży
       customFields:
         value: Pole tekstowe
+    rating:
+      stars: Ocena
   twig_extensions:
     progressed_about: 'Wykonano w %{percent}%'
     prev_page: Poprzednia
@@ -177,6 +182,11 @@ pl:
     messages: Wiadomości
     devices: Urządzenia
     viewer_password: Zmień hasło
+  shared:
+    rating:
+      title: Oceń wykonaną usługę wskazując od jednej do pięciu gwiazdek
+      comment: Możesz zostawić dodatkowy komentarz dla serwisu
+      submit: Prześlij ocenę
   payment_types:
     INSTANT_FIXED: 'Płatność po zakończeniu, za zlecenie'
     INSTANT_TIME: 'Płatność po zakończeniu, stawka godzinowa'
