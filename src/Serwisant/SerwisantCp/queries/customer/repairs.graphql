@@ -176,6 +176,13 @@ query repairs($limit: Int, $page: Int, $filter: RepairsFilter, $sort: RepairsSor
                 displayName
                 __typename
             }
+            isRateable
+            rating {
+                comment
+                stars
+                date
+                __typename
+            }
             __typename
         }
     }

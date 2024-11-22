@@ -104,6 +104,7 @@ type CustomerMutation {
     createTicket(devices: [HashID!], options: TicketCreationOptions, temporaryFiles: [HashID!], ticket: TicketInput!): TicketCreationResult
     markMessageRead(message: HashID!): Boolean
     print(ID: HashID!, type: PrintType!): TemporaryFileCreationResult
+    setRating(rating: RatingInput!, subject: HashID!, subjectType: RatingSubjectType!): RatingResult
     updateViewer(addresses: [AddressUpdateInput!], agreements: [CustomerAgreementUpdateInput!], customer: CustomerUpdateInput): ViewerUpdateResult
     updateViewerPassword(currentPassword: String!, password: String!, passwordConfirmation: String!): ViewerPasswordUpdateResult
 }
@@ -261,6 +262,16 @@ type Priority {
     type: PriorityType!
 }
 
+type Rating {
+    comment: String
+    date: Date!
+    stars: Int!
+}
+
+type RatingResult {
+    errors: [Error!]
+}
+
 type Repair {
     ID: HashID!
     additionalItems: [RepairItem!]!
@@ -281,12 +292,14 @@ type Repair {
     displayName: String!
     "Files attached to repair. For :service schema it includes private and public files, for otcher schemas only public files are included"
     files: [File!]!
+    isRateable: Boolean!
     issue: String
     model: String
     offers: [RepairOffer!]
     parcels: [Parcel!]
     priceEstimated: Decimal
     priceEstimatedTaxRate: Decimal
+    rating: Rating
     rma: String!
     secretToken: SecretToken!
     serial: String
@@ -445,10 +458,12 @@ type Ticket {
     devices: [Device!]!
     employee: Employee
     files: [File!]!
+    isRateable: Boolean!
     issue: String!
     number: String!
     payment: TicketPayment!
     priority: Priority!
+    rating: Rating
     status: TicketStatus!
     type: Dictionary
 }
@@ -908,6 +923,11 @@ enum PriorityType {
     TICKET
 }
 
+enum RatingSubjectType {
+    REPAIR
+    TICKET
+}
+
 enum RepairOfferItemType {
     "Diagnosis part, inserted in automated way if present"
     DIAGNOSIS
@@ -1173,6 +1193,11 @@ input PhoneInput {
 
 input PrioritiesFilter {
     type: PriorityType
+}
+
+input RatingInput {
+    comment: String
+    stars: Int!
 }
 
 input RepairCreationOptions {

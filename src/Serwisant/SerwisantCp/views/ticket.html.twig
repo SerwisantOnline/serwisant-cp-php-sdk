@@ -5,6 +5,9 @@
   </a>
 </div>
 
+{{ form_errors(_self, rating_errors) }}
+{% include 'shared/rating.html.twig' with {'isRateable': ticket.isRateable, 'formUrl': path('ticket_rate', {'id': ticket.ID}), 'rating': ticket.rating} %}
+
 <div class="bg-light p-5 rounded mt-3">
   <div class="row">
     <div class="col-md-6">

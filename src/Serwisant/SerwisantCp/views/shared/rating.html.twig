@@ -1,0 +1,59 @@
+{% if isRateable %}
+  <div class="card mt-2 success">
+    <div class="card-header">{{ t(_self, 'title') }}</div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-12">
+          <form method="post" action="{{ formUrl }}">
+            <div class="d-flex justify-content-center mb-3">
+              <div class="text-center">
+                <div class="rating">
+                  <input type="radio" name="rating[stars]" value="5" id="5" {{ rating and rating.stars == 5 ? 'checked' : '' }}>
+                  <label for="5">☆</label>
+                  <input type="radio" name="rating[stars]" value="4" id="4" {{ rating and rating.stars == 4 ? 'checked' : '' }}>
+                  <label for="4">☆</label>
+                  <input type="radio" name="rating[stars]" value="3" id="3" {{ rating and rating.stars == 3 ? 'checked' : '' }}>
+                  <label for="3">☆</label>
+                  <input type="radio" name="rating[stars]" value="2" id="2" {{ rating and rating.stars == 2 ? 'checked' : '' }}>
+                  <label for="2">☆</label>
+                  <input type="radio" name="rating[stars]" value="1" id="1" {{ rating and rating.stars == 1 ? 'checked' : '' }}>
+                  <label for="1">☆</label>
+                  <input type="radio" name="rating[stars]" value="0" id="0" {{ rating ? '' : 'checked' }}>
+                </div>
+              </div>
+            </div>
+            {{ form_field({type: 'textarea', argument: 'rating.comment', caption: t(_self, 'comment'), value: (rating ? rating.comment : '')}, form_params, rating_errors) }}
+            <div class="mt-3 float-end">
+              <button type="submit" class="btn btn-primary mb-3">{{ t(_self, 'submit') }}</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% elseif rating %}
+  <div class="card mt-2 success">
+    <div class="card-header">{{ t(_self, 'title') }}</div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="rating">
+            <span>{{ rating.stars >= 5 ? "&#x2605;" : "&#x2606;"  }}</span>
+            <span>{{ rating.stars >= 4 ? "&#x2605;" : "&#x2606;"  }}</span>
+            <span>{{ rating.stars >= 3 ? "&#x2605;" : "&#x2606;"  }}</span>
+            <span>{{ rating.stars >= 2 ? "&#x2605;" : "&#x2606;"  }}</span>
+            <span>{{ rating.stars >= 1 ? "&#x2605;" : "&#x2606;"  }}</span>
+          </div>
+          <figure class="text-center">
+            <blockquote>
+              <p>{{ rating.comment }}</p>
+            </blockquote>
+            <figcaption class="blockquote-footer">
+              {{ rating.date }}
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}

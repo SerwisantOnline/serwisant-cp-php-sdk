@@ -1,0 +1,11 @@
+mutation setRating($subject: HashID!, $subjectType: RatingSubjectType!, $rating: RatingInput!) {
+    setRating(subject: $subject, subjectType: $subjectType, rating: $rating) {
+        __typename
+        errors {
+            __typename
+            argument
+            code
+            message
+        }
+    }
+}
