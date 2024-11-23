@@ -101,7 +101,8 @@ type CustomerMutation {
     createRepair(additionalItems: [RepairItemInput!], device: HashID, options: RepairCreationOptions, repair: RepairInput!, temporaryFiles: [HashID!]): RepairCreationResult
     "Create a temporary file - file can be attached to created repair and will be persisted. It's useful to scenarios, where files must be uploaded before creation of eg. repair - and persisted with repair."
     createTemporaryFile(file: FileInput!): TemporaryFileCreationResult
-    createTicket(devices: [HashID!], options: TicketCreationOptions, temporaryFiles: [HashID!], ticket: TicketInput!): TicketCreationResult
+    createTicket(address: AddressInput, devices: [HashID!], options: TicketCreationOptions, temporaryFiles: [HashID!], ticket: TicketInput!): TicketCreationResult
+    destroyViewer: ViewerDestructionResult
     markMessageRead(message: HashID!): Boolean
     print(ID: HashID!, type: PrintType!): TemporaryFileCreationResult
     updateViewer(addresses: [AddressUpdateInput!], agreements: [CustomerAgreementUpdateInput!], customer: CustomerUpdateInput): ViewerUpdateResult
@@ -117,6 +118,7 @@ type CustomerQuery {
     priorities(filter: PrioritiesFilter): [Priority!]!
     repairs(filter: RepairsFilter = {type: OPEN}, limit: Int = 20, page: Int = 1, sort: RepairsSort): RepairsResult!
     scheduleDates(filter: ScheduleDatesFilter!): [ScheduleDate!]!
+    serviceSuppliers(filter: ServiceSuppliersFilter): [ServiceSupplier!]
     "Return details of temporary files identified by ID passed in arguments."
     temporaryFiles(ID: [HashID!]!): [TemporaryFile!]!
     tickets(filter: TicketsFilter = {type: OPEN}, limit: Int = 20, page: Int = 1, sort: TicketsSort = ID): TicketsResult!
@@ -423,6 +425,19 @@ type ServiceSupplier {
     type: ServiceSupplierType!
 }
 
+type Subscriber {
+    address: Address
+    businessActivity: SubscriberBusinessActivity
+    companyName: String
+    "Formatted legal name"
+    displayName: String!
+    email: String!
+    "Data of main service supplier - branded - this is a data for customer information"
+    serviceSupplier: ServiceSupplier!
+    taxId: String
+    taxPrefix: TaxPrefix
+}
+
 type TemporaryFile {
     ID: HashID!
     contentType: String!
@@ -476,7 +491,7 @@ type TicketPayment {
 
 type TicketStatus {
     createdAt: DateTime!
-    "Human readeable status"
+    "Human readable status"
     displayName: String!
     "Real finish time, remarks are the same as for `started_on`"
     finishedAt: DateTime
@@ -497,9 +512,15 @@ type Viewer {
     "Current customer"
     customer: Customer!
     "Service supplier dedicated for handling all repairs - it can be differ from main service supplier"
-    repairsServiceSupplier: ServiceSupplier
+    repairsServiceSupplier: ServiceSupplier!
+    "Information from public registry"
+    subscriber: Subscriber!
     "Service supplier dedicated for handling ticketing - it can be differ from main service supplier"
-    ticketsServiceSupplier: ServiceSupplier
+    ticketsServiceSupplier: ServiceSupplier!
+}
+
+type ViewerDestructionResult {
+    errors: [Error!]
 }
 
 type ViewerPasswordUpdateResult {
@@ -508,7 +529,7 @@ type ViewerPasswordUpdateResult {
 
 type ViewerUpdateResult {
     errors: [Error!]
-    viewer: Viewer
+    viewer: Viewer!
 }
 
 enum AcceptOrRejectRepairDecision {
@@ -519,6 +540,7 @@ enum AcceptOrRejectRepairDecision {
 enum AddressType {
     BILLING
     BUSINESS
+    GPS
     HOME
     OTHER
 }
@@ -993,6 +1015,23 @@ enum ServiceSupplierType {
     SERVICE_SUPPLIER
 }
 
+enum ServiceSuppliersFilterType {
+    ID
+}
+
+enum SubscriberBusinessActivity {
+    BIKES
+    CELL_PHONE
+    ELECTRONIC
+    GARDEN
+    HOUSEHOLD_EQUIPMENT
+    INDUSTRY
+    OTHER
+    PC
+    PHOTO
+    UNDEFINED
+}
+
 enum TaxPrefix {
     AT
     BE
@@ -1074,6 +1113,7 @@ input AddressInput {
     building: String
     city: String
     countryIso: CountryCode
+    geoPoint: GeoPointInput
     postalCode: String
     street: String
     type: AddressType
@@ -1156,6 +1196,11 @@ input FileInput {
     payload: String!
 }
 
+input GeoPointInput {
+    lat: String!
+    lng: String!
+}
+
 input MessageInput {
     content: String
     subject: String
@@ -1217,13 +1262,16 @@ input ScheduleDatesFilter {
     dateRange: DateRangeInput!
 }
 
+input ServiceSuppliersFilter {
+    ID: HashID
+    type: ServiceSuppliersFilterType!
+}
+
 input TicketCreationOptions {
     skipFloodValidation: Boolean = false
 }
 
 input TicketInput {
-    address: HashID
-    addressOther: String
     customFields: [CustomFieldValueInput!]
     issue: String
     priority: HashID

@@ -15,20 +15,26 @@ class TemporaryFile extends Action
 
     $files = $this->request->files->get('temporary_files');
 
-    if (is_array($files) && count($files) == 1 && $files[0]->isValid()) {
-      $file = new FileInput([
-        'contentType' => $files[0]->getClientMimeType(),
-        'name' => $files[0]->getClientOriginalName(),
-        'payload' => base64_encode(file_get_contents($files[0]->getPathname()))
-      ]);
-
-      $result = $this->apiCustomer()->customerMutation()->createTemporaryFile($file);
-      if (!$result->errors) {
-        return new HttpFoundation\Response($result->temporaryFile->ID);
-      }
+    if (!is_array($files) or count($files) != 1 or !($files[0] instanceof HttpFoundation\File\UploadedFile)) {
+      return new HttpFoundation\Response('File is missing or multiple files sent', 422);
+    }
+    if (!$files[0]->isValid()) {
+      return new HttpFoundation\Response('File error: ' . $files[0]->getErrorMessage(), 422);
     }
 
-    return new HttpFoundation\Response('INVALID', 422);
+    $file = new FileInput([
+      'contentType' => $files[0]->getClientMimeType(),
+      'name' => $files[0]->getClientOriginalName(),
+      'payload' => base64_encode(file_get_contents($files[0]->getPathname()))
+    ]);
+
+    $result = $this->apiCustomer()->customerMutation()->createTemporaryFile($file);
+
+    if ($result->errors) {
+      return new HttpFoundation\Response(print_r($result->errors, true), 422);
+    } else {
+      return new HttpFoundation\Response($result->temporaryFile->ID);
+    }
   }
 
   public function show()

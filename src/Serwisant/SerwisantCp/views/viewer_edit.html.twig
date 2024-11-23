@@ -34,10 +34,10 @@
       </div>
       <div class="col-md-6 mb-3">
         <div class="row g-2">
-          <div class="col-3">
+          <div class="col-4">
             {{ form_field({type: 'phoneprefixpicker', argument: 'customer.phone.countryPrefix', caption: t(_self, 'phone_prefix'), value: (customer.phone ? customer.phone.countryPrefix : locale_PhonePrefix())}, form_params, errors) }}
           </div>
-          <div class="col-9">
+          <div class="col-8">
             {{ form_field({type: 'text', argument: 'customer.phone.number', caption: t(_self, 'phone_number'), value: customer.phone ? customer.phone.number : ''}, form_params, errors) }}
           </div>
         </div>

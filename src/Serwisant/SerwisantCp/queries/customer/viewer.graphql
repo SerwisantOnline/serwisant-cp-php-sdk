@@ -1,10 +1,26 @@
-query viewer($basic: Boolean = false, $complete: Boolean = false) {
+query viewer($basic: Boolean = false, $complete: Boolean = false, $addresses: Boolean = false) {
     viewer @include(if: $basic) {
         __typename
         customer {
             __typename
             displayName
         }
+    }
+    viewer @include(if: $addresses) {
+      __typename
+      customer {
+          __typename
+          addresses {
+              __typename
+              ID
+              building
+              city
+              countryIso
+              postalCode
+              street
+              type
+          }
+      }
     }
     viewer @include(if: $complete) {
         __typename

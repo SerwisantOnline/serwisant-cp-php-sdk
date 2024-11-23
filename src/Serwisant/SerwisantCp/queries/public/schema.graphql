@@ -21,7 +21,6 @@ type Address {
 
 type CustomField {
     ID: HashID!
-    concern: Dictionary
     description: String
     name: String!
     required: Boolean!
@@ -106,8 +105,18 @@ type CustomerStatement {
     title: String!
 }
 
+type Device {
+    displayName: String!
+    model: String
+    type: Dictionary!
+    vendor: String
+}
+
 type Dictionary {
+    ID: HashID!
+    auxiliaryId: String
     name: String!
+    type: DictionaryType!
 }
 
 "Error from mutation"
@@ -193,6 +202,14 @@ type Phone {
     number: String
 }
 
+type Priority {
+    ID: HashID!
+    color: String
+    name: String!
+    sla: Int
+    type: PriorityType!
+}
+
 type PublicMutation {
     "Send there a customer decision regarding estimated repair costs"
     acceptOrRejectRepair(
@@ -209,6 +226,8 @@ type PublicMutation {
     createCustomer(addresses: [AddressInput!], agreements: [CustomerAgreementInput!], customer: CustomerInput!): CustomerCreationResult
     "Activate customer panel access for existing customer - set a login and password"
     createCustomerAccess(activationToken: String!, agreements: [CustomerAgreementInput!], login: String!, password: String!): CustomerAccessCreationResult
+    createTemporaryFile(file: FileInput!): TemporaryFileCreationResult
+    createTicket(address: AddressInput, applicant: AnonymousApplicantInput!, devices: [HashID!], temporaryFiles: [HashID!], ticket: TicketInput!): TicketCreationResult
     "Pay for `OnlinePayment` using any available `type` of payment. Depending on result status, payment may be queued: in that case pool for result, may be asked to redirect user to other site to complete a payment."
     pay(errorUrl: String!, onlineTransaction: OnlineTransactionInput!, successUrl: String!, token: String!): OnlinePaymentResult
     "If customer already exists (`login` query will return `INTERNET_ACCESS_NOT_ENABLED`, or `create_customer` ends up with email exists validation error) this mutation can be used to send a secret link points to panel access activation (set up a login and password)."
@@ -222,11 +241,13 @@ type PublicMutation {
 type PublicQuery {
     "Get a basic customer panel configuration options"
     configuration: CustomerPanelConfig!
+    "Will return a list of custom fields for form specified in filter. In `public` schema some forms available in filter can be absent"
+    customFields(form: CustomFieldForm!): [CustomField!]!
     "List of agreements, eg. GDPR, rules, privacy policy to show/accept during a signup"
     customerAgreements(filter: CustomerAgreementsFilter): [CustomerAgreement!]!
-    "Will return a list of custom fields for customer signup form - for generic list see customFields in other schemas"
-    customerCustomFields: [CustomField!]!
+    customerCustomFields: [CustomField!]! @deprecated(reason: "Use generic customFields with applicable filter.")
     customerStatements: [CustomerStatement!]!
+    device(ID: HashID!): Device!
     "This query map given login credential, ie. email, or username itself to OAuth login. Please note: given credential can point to more than one login, so thus must be handled on frontend side. This will also return unavailability reasons if customer has no internet access enabled or account is not activated with confirmation link."
     login(loginCredential: String!): [LoginResult!]!
     "If token belongs to online payment, use this query to get details"
@@ -238,10 +259,12 @@ type PublicQuery {
     """
     paymentMethods: [OnlinePaymentMethod!]!
     paymentTransaction(ID: HashID!): OnlineTransaction!
+    priorities(filter: PrioritiesFilter): [Priority!]!
     "Return detailed information about particular repair"
     repairByToken(token: String!): Repair!
     "Using this query you can lookup a token, to determine where it belongs, eg. order, or payment"
     secretToken(token: String!): SecretToken!
+    serviceSuppliers(filter: ServiceSuppliersFilter): [ServiceSupplier!]
     "Information about a service, public registry name, address and branded name, address as well"
     viewer: Viewer!
 }
@@ -387,9 +410,60 @@ type Subscriber {
     taxPrefix: TaxPrefix
 }
 
+type TemporaryFile {
+    ID: HashID!
+    contentType: String!
+    name: String!
+    url(size: ImageSize = ORIGINAL): String
+}
+
+type TemporaryFileCreationResult {
+    errors: [Error!]
+    temporaryFile: TemporaryFile
+}
+
+type Ticket {
+    ID: HashID!
+    address: Address
+    addressRemarks: String
+    "Will return a list of values for custom fields"
+    customFields: [CustomFieldValue!]!
+    devices: [Device!]!
+    files: [File!]!
+    issue: String!
+    number: String!
+    priority: Priority!
+    serviceSupplier: ServiceSupplier!
+    status: TicketStatus!
+    type: Dictionary
+}
+
+type TicketCreationResult {
+    errors: [Error!]
+    ticket: Ticket
+}
+
+type TicketStatus {
+    createdAt: DateTime!
+    "Human readable status"
+    displayName: String!
+    "Real finish time, remarks are the same as for `started_on`"
+    finishedAt: DateTime
+    scheduledOn: DateTime
+    scheduledTo: DateTime
+    "Real start time based on status change - please note: if ticket status will not be updated or it will be updated post-factum date may be inaccurate"
+    startedOn: DateTime
+    "Ticket status as enum, use it to comparisons or other logic"
+    status: TicketState!
+}
+
 type Viewer {
+    "Service supplier dedicated for handling all repairs - it can be differ from main service supplier"
+    repairsServiceSupplier: ServiceSupplier!
     "Information from public registry"
     subscriber: Subscriber!
+    "Service supplier dedicated for handling ticketing - it can be differ from main service supplier"
+    ticketsServiceSupplier: ServiceSupplier!
 }
 
 enum AcceptOrRejectRepairDecision {
@@ -400,6 +474,7 @@ enum AcceptOrRejectRepairDecision {
 enum AddressType {
     BILLING
     BUSINESS
+    GPS
     HOME
     OTHER
 }
@@ -818,6 +893,13 @@ enum Currency {
     ZWD
 }
 
+enum CustomFieldForm {
+    CUSTOMER
+    DEVICE
+    REPAIR
+    TICKET
+}
+
 enum CustomFieldType {
     "Option"
     CHECKBOX
@@ -849,6 +931,17 @@ enum CustomerType {
     BUSINESS
     "Person"
     PERSONAL
+}
+
+enum DictionaryType {
+    "Type of component from inventory"
+    COMPONENT_TYPE
+    "Group od customers"
+    CUSTOMER_GROUP
+    "Repaired equipment types"
+    REPAIR_SUBJECT_TYPE
+    "Category of ticket"
+    TICKET_CATEGORY
 }
 
 enum ImageSize {
@@ -903,6 +996,10 @@ enum OrderTimeStatus {
 
 enum PasswordResetSubject {
     CUSTOMER
+}
+
+enum PriorityType {
+    TICKET
 }
 
 enum RepairOfferItemType {
@@ -962,6 +1059,10 @@ enum ServiceSupplierType {
     SERVICE_SUPPLIER
 }
 
+enum ServiceSuppliersFilterType {
+    ID
+}
+
 enum SubscriberBusinessActivity {
     BIKES
     CELL_PHONE
@@ -1006,6 +1107,16 @@ enum TaxPrefix {
     SK
 }
 
+enum TicketState {
+    ASSIGNED
+    CANCELED
+    IN_PROGRESS
+    NEW
+    ON_THE_WAY
+    RESOLVED
+    UNSAVED
+}
+
 "An ISO 8601-encoded date, eg. 2000-01-01, YYYY-MM-DD"
 scalar Date
 
@@ -1022,9 +1133,17 @@ input AddressInput {
     building: String
     city: String
     countryIso: CountryCode
+    geoPoint: GeoPointInput
     postalCode: String
     street: String
     type: AddressType
+}
+
+input AnonymousApplicantInput {
+    agreements: [CustomerAgreementInput!]
+    deviceUid: String!
+    email: String
+    phone: PhoneInput
 }
 
 input CustomFieldValueInput {
@@ -1059,6 +1178,20 @@ input CustomerInput {
     type: CustomerType
 }
 
+input FileInput {
+    "File MIME type, eg. image/png - must be valid IANA media type, list: http://www.iana.org/assignments/media-types/media-types.xhtml"
+    contentType: String!
+    "File name, only for display purposes"
+    name: String!
+    "File content encoded with base64. Please note: generic request size limit is always applied - whole mutation must be below 100MB"
+    payload: String!
+}
+
+input GeoPointInput {
+    lat: String!
+    lng: String!
+}
+
 input OnlineTransactionAgreementsInput {
     dataProcessing: Boolean!
     payment: Boolean!
@@ -1080,4 +1213,20 @@ input OnlineTransactionPayerInput {
 input PhoneInput {
     countryPrefix: String!
     number: String!
+}
+
+input PrioritiesFilter {
+    type: PriorityType
+}
+
+input ServiceSuppliersFilter {
+    ID: HashID
+    type: ServiceSuppliersFilterType!
+}
+
+input TicketInput {
+    customFields: [CustomFieldValueInput!]
+    issue: String
+    priority: HashID
+    startAt: DateTime
 }

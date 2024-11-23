@@ -43,7 +43,7 @@ Application.Tickets.Form = function () {
   }
 
   var otherAddressFunc = function () {
-    var addressRadio = $('input[name="ticket[address]"]:checked');
+    var addressRadio = $('input[name="addressID"]:checked');
     if (!addressRadio.val()) {
       $('.address-other-container').slideDown()
     } else {
@@ -51,7 +51,7 @@ Application.Tickets.Form = function () {
     }
   }
 
-  $('input[name="ticket[address]"]').change(otherAddressFunc);
+  $('input[name="addressID"]').change(otherAddressFunc);
   otherAddressFunc();
 }
 
