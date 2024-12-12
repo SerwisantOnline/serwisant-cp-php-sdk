@@ -1,5 +1,5 @@
 query {
-    orderCustomFields: customFields(form: TICKET) {
+    ticketCustomFields: customFields(form: TICKET) {
         __typename
         ID
         type

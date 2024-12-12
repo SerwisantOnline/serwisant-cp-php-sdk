@@ -56,6 +56,13 @@ pl:
     loginOrEmail: Login lub adres email
     resetToken: Link resetowania hasła
     passwordConfirmation: Potwierdzenie hasła
+    applicant:
+      phone:
+        prefix: Kraj
+        number: Numer telefonu
+      email: Adres email
+      agreements:
+        accepted: Akceptacja zgody
     agreements:
       accepted: Zgoda
     customer:
@@ -527,6 +534,10 @@ pl:
     city: Miasto
     country: Kraj
     device: 'Urządzenie, którego dotyczy zgłoszenie'
+    phone_prefix: Kraj
+    phone_number: Numer telefonu
+    email: Adres email
+    read_agreement: Czytaj
   ticket:
     close: Zamknij
     print: Wydruk
