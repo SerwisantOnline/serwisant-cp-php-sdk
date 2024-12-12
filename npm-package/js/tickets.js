@@ -1,23 +1,6 @@
 Application.Tickets = {}
 
 Application.Tickets.Form = function () {
-  var customFields = function (id) {
-    $('.custom-field').each(function () {
-      if ($(this).attr('data-type-id') !== '') {
-        if ($(this).attr('data-type-id') === id) {
-          $(this).removeClass('undisplayed');
-        } else {
-          $(this).addClass('undisplayed');
-        }
-      }
-    })
-  };
-
-  $('#repair_type').change(function () {
-    customFields($(this).val());
-  });
-  customFields($('#repair_type').val());
-
   if ($('#create_ticket_file_uploader').length > 0) {
     Application.Ui.FileUploadConfigure();
     var pond = FilePond.create({

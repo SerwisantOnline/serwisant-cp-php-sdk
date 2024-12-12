@@ -17,23 +17,12 @@ query {
         ID
         name
     }
-    viewer: viewer {
+    customerAgreements: customerAgreements {
         __typename
-        customer {
-            __typename
-            address {
-                __typename
-                ID
-            }
-            addresses {
-                __typename
-                ID
-                building
-                city
-                countryIso
-                postalCode
-                street
-            }
-        }
+        ID
+        title
+        content
+        visiblePersonal
+        visibleBusiness
     }
 }

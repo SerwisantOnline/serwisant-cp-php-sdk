@@ -5,6 +5,7 @@ namespace Serwisant\SerwisantCp;
 use Silex;
 use Symfony\Component\HttpFoundation;
 use JDesrosiers\Silex\Provider\CorsServiceProvider;
+use Symfony\Component\HttpFoundation\Cookie;
 
 class Application
 {
@@ -108,6 +109,14 @@ class Application
 
     $this->app->before(function (HttpFoundation\Request $request, Silex\Application $app) {
       $this->beforeRequest($request, $app);
+    });
+
+    $this->app->after(function (HttpFoundation\Request $request, HttpFoundation\Response $response, Silex\Application $app) {
+      if (!$request->cookies->has(Routes::DEVICE_COOKIE_NAME)) {
+        $cookie = new Cookie(Routes::DEVICE_COOKIE_NAME, uniqid('naprawiam_' . rand(1000, 9999) . '_', true), (time() + (60 * 60 * 24 * 365 * 10)));
+        $response->headers->setCookie($cookie);
+      }
+      return $response;
     });
 
     $this->router->createRoutes($this->app);

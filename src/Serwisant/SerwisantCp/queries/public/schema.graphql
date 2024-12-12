@@ -21,7 +21,9 @@ type Address {
 
 type CustomField {
     ID: HashID!
+    concern: Dictionary
     description: String
+    form: CustomFieldForm!
     name: String!
     required: Boolean!
     selectOptions: [String!]

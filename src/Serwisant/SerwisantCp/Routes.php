@@ -3,10 +3,14 @@
 namespace Serwisant\SerwisantCp;
 
 use Silex;
+use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 abstract class Routes
 {
+  const DEVICE_COOKIE_NAME = 'naprawiam_device_uid';
+
   protected $app;
 
   public function __construct(Silex\Application $app)
@@ -54,6 +58,13 @@ abstract class Routes
       if (false === strpos($request->headers->get('Content-Type'), 'application/json')) {
         throw new ExceptionNotFound(__CLASS__, __LINE__);
       }
+    };
+  }
+
+  protected function sendDeviceCookie()
+  {
+    return function (Request $request, Response $response) {
+
     };
   }
 }
