@@ -1,21 +1,27 @@
 <div class="row align-items-start">
+
   <div class="col">
     {% if subscriber is defined %}
       <p class="pull-left">
         <small>
-          {{ subscriber.displayName }}
-          {% if subscriber.address %}
+          <strong>{{ subscriber.serviceSupplier.displayName }}</strong>
+          {% if subscriber.serviceSupplier.address %}
             <br>
-            {{ subscriber.address.street }} {{ subscriber.address.building }}, {{ subscriber.address.postalCode }} {{ subscriber.address.city }}
+            {{ subscriber.serviceSupplier.address.street }} {{ subscriber.serviceSupplier.address.building }}, {{ subscriber.serviceSupplier.address.postalCode }} {{ subscriber.serviceSupplier.address.city }}
           {% endif %}
-          {% if subscriber.taxId %}
+          {% if subscriber.serviceSupplier.phone %}
             <br>
-            NIP {{ subscriber.taxId }}
+            <a href="tel:{{ subscriber.serviceSupplier.phone.formatted }}">{{ subscriber.serviceSupplier.phone.formatted }}</a>
+          {% endif %}
+          {% if subscriber.serviceSupplier.email %}
+            <br>
+            <a href="mailto:{{ subscriber.serviceSupplier.email }}">{{ subscriber.serviceSupplier.email }}</a>
           {% endif %}
         </small>
       </p>
     {% endif %}
   </div>
+
   <div class="col">
     {% if agreements is defined %}
       <ul class="list-unstyled pull-right text-right">
@@ -38,6 +44,7 @@
       </ul>
     {% endif %}
   </div>
+
   <div class="col">
     <div class="float-end">
       <a href="{{ path('lang_update', {lang: 'pl'}) }}">
@@ -49,4 +56,5 @@
       </a>
     </div>
   </div>
+
 </div>

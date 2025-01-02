@@ -421,6 +421,7 @@ type ServiceSupplier {
     avatar: File
     displayName: String!
     email: String
+    hasCompleteData: Boolean!
     phone: Phone
     type: ServiceSupplierType!
 }
@@ -464,6 +465,7 @@ type Ticket {
     number: String!
     payment: TicketPayment!
     priority: Priority!
+    serviceSupplier: ServiceSupplier!
     status: TicketStatus!
     type: Dictionary
 }

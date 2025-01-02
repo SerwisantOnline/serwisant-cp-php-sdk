@@ -388,7 +388,7 @@ pl:
       status: Stan przesyłki
       tracking: Numer listu przewozowego
     panel_service_supplier:
-      title: 'Naprawiane przez:'
+      title: 'Aby uzyskać informację na temat tej naprawy, kontaktuj się z serwisem używając poniższych danych:'
     panel_info:
       device: 'Urządzenie, którego dotyczy naprawa'
       title: Informacje o naprawie
@@ -537,6 +537,7 @@ pl:
     address: Adres realizacji zgłoszenia
     group: Grupa
     panel_payments: Informacje o płatności
+    panel_supplier: 'Aby uzyskać informację na temat tego zgłoszenia, kontaktuj się z serwisem używając poniższych danych:'
     payment_type: Sposób zapłaty
     not_defined: Nie ustalono
     time: Czas poświęcony na realizację zgłoszenia

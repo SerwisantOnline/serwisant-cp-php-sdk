@@ -378,7 +378,7 @@ en:
       status: Delivery status
       tracking: Shipping list number
     panel_service_supplier:
-      title: 'Repaired by:'
+      title: 'For information about this repair, please contact the service center using the details below:'
     panel_info:
       device: The device under repair
       title: Repair information
