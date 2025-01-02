@@ -3,6 +3,7 @@ query {
         __typename
         subscriber {
             __typename
+            businessActivity
             serviceSupplier {
                 displayName
                 address {
