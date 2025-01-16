@@ -10,6 +10,36 @@
     <div class="col-md-6">
 
       <div class="card my-2">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <p>{{ t(_self, 'panel_supplier') }}</p>
+              <address>
+                <strong>{{ ticket.serviceSupplier.displayName }}</strong>
+                </br>
+                {% if ticket.serviceSupplier.address %}
+                  {{ ticket.serviceSupplier.address.street }} {{ ticket.serviceSupplier.address.building }}, {{ ticket.serviceSupplier.address.postalCode }} {{ ticket.serviceSupplier.address.city }}
+                  <br>
+                {% endif %}
+                {% if ticket.serviceSupplier.phone %}
+                  <a href="tel:{{ ticket.serviceSupplier.phone.formatted }}">{{ ticket.serviceSupplier.phone.formatted }}</a>
+                  <br>
+                {% endif %}
+                {% if ticket.serviceSupplier.email %}
+                  <a href="mailto:{{ ticket.serviceSupplier.email }}">{{ ticket.serviceSupplier.email }}</a>
+                {% endif %}
+              </address>
+            </div>
+            <div class="col-md-6">
+              {% if ticket.serviceSupplier.avatar %}
+                <img class="pull-right" src="{{ ticket.serviceSupplier.avatar.url }}" alt="{{ ticket.serviceSupplier.displayName }}">
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card my-2">
         <div class="card-header">
           <span class="pull-right"></span>
           {{ t(_self, 'panel_info') }}

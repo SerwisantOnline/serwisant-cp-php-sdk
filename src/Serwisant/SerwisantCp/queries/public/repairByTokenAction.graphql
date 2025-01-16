@@ -11,8 +11,7 @@ query($token: String!) {
                 __typename
             }
             phone {
-                number
-                countryPrefix
+                formatted
                 __typename
             }
             email

@@ -395,6 +395,7 @@ type ServiceSupplier {
     avatar: File
     displayName: String!
     email: String
+    hasCompleteData: Boolean!
     phone: Phone
     type: ServiceSupplierType!
 }
