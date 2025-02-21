@@ -2,13 +2,28 @@
 
 namespace Serwisant\SerwisantCp\Actions;
 
-use Serwisant\SerwisantCp\ExceptionNotFound;
 use Symfony\Component\HttpFoundation;
-use Serwisant\SerwisantApi\Types\SchemaCustomer\FileInput;
+use Serwisant\SerwisantCp\ExceptionNotFound;
 use Serwisant\SerwisantCp\Action;
+use Serwisant\SerwisantApi\Types\SchemaCustomer\FileInput;
 
 class TemporaryFile extends Action
 {
+  protected function temporaryFilesMutation()
+  {
+    return $this->apiCustomer()->customerMutation();
+  }
+
+  protected function temporaryFilesQuery()
+  {
+    return $this->apiCustomer()->customerQuery();
+  }
+
+  protected function fileInput($content_type, $name, $payload)
+  {
+    return new FileInput(['contentType' => $content_type, 'name' => $name, 'payload' => $payload]);
+  }
+
   public function create()
   {
     $this->checkModuleActive();
@@ -22,13 +37,13 @@ class TemporaryFile extends Action
       return new HttpFoundation\Response('File error: ' . $files[0]->getErrorMessage(), 422);
     }
 
-    $file = new FileInput([
-      'contentType' => $files[0]->getClientMimeType(),
-      'name' => $files[0]->getClientOriginalName(),
-      'payload' => base64_encode(file_get_contents($files[0]->getPathname()))
-    ]);
+    $file = $this->fileInput(
+      $files[0]->getClientMimeType(),
+      $files[0]->getClientOriginalName(),
+      base64_encode(file_get_contents($files[0]->getPathname()))
+    );
 
-    $result = $this->apiCustomer()->customerMutation()->createTemporaryFile($file);
+    $result = $this->temporaryFilesMutation()->createTemporaryFile($file);
 
     if ($result->errors) {
       return new HttpFoundation\Response(print_r($result->errors, true), 422);
@@ -41,7 +56,7 @@ class TemporaryFile extends Action
   {
     $this->checkModuleActive();
 
-    $result = $this->apiCustomer()->customerQuery()->temporaryFiles([$this->request->get('load')]);
+    $result = $this->temporaryFilesQuery()->temporaryFiles([$this->request->get('load')]);
 
     if (is_array($result) && count($result) == 1) {
       $content = file_get_contents($result[0]->url);

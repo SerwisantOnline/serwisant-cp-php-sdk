@@ -1,0 +1,38 @@
+<div class="card my-2">
+  <div class="card-header">
+    <span class="pull-right"></span>
+    {{ t(_self, 'title') }}
+  </div>
+  <table class="table table-bordered card-table">
+    <tbody>
+    <tr>
+      <td class="column-definition">{{ t(_self, 'priority') }}</td>
+      <td>{{ ticket.priority.name }}</td>
+    </tr>
+    <tr>
+      <td class="column-definition">{{ t(_self, 'status') }}</td>
+      <td>{{ ticket_label(ticket, configuration.useCustomStatusNames) }}</td>
+    </tr>
+    <tr>
+      <td class="column-definition">{{ t(_self, 'created') }}</td>
+      <td>{{ ticket.status.createdAt | format_datetime }}</td>
+    </tr>
+    <tr>
+      <td class="column-definition">{{ t(_self, 'scheduled_on') }}</td>
+      <td>{{ ticket.status.scheduledOn | format_datetime }}</td>
+    </tr>
+    <tr>
+      <td class="column-definition">{{ t(_self, 'scheduled_to') }}</td>
+      <td>{{ ticket.status.scheduledTo ? ticket.status.scheduledTo | format_datetime : '' }}</td>
+    </tr>
+    <tr>
+      <td class="column-definition">{{ t(_self, 'started_on') }}</td>
+      <td>{{ ticket.status.startedOn ? ticket.status.startedOn | format_datetime : '' }}</td>
+    </tr>
+    <tr>
+      <td class="column-definition">{{ t(_self, 'finished_at') }}</td>
+      <td>{{ ticket.status.finishedAt ? ticket.status.finishedAt | format_datetime : '' }}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>

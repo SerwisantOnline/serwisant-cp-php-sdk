@@ -13,12 +13,12 @@
 </div>
 
 <div class="bg-light p-5 rounded mt-3">
+  {% include 'shared/service_supplier_card.html.twig' with {'serviceSupplier': repair.serviceSupplier, 'title': t(_self, 'introduction')} %}
 
   {% include 'repair/panel_change_status.html.twig' with {'parent': 'cp'} %}
 
   <div class="row">
     <div class="col-md-6">
-      {% include 'repair/panel_service_supplier.html.twig' %}
       {% include 'repair/panel_info.html.twig' %}
       {% include 'repair/additional_items.html.twig' %}
       {% include 'repair/panel_custom_fields.html.twig' %}

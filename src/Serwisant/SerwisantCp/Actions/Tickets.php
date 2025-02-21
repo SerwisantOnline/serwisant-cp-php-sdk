@@ -104,7 +104,6 @@ class Tickets extends Action
       'errors' => $errors,
       'js_files' => ['tickets.js'],
       'pageTitle' => $this->t('ticket_new.title'),
-      'formActionUrl' => $this->generateUrl('create_ticket'),
     ];
 
     return $this->renderPage('ticket_new.html.twig', $variables);

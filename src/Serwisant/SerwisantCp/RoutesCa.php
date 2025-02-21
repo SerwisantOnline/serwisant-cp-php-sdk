@@ -40,7 +40,30 @@ class RoutesCa extends Routes
   {
     $ca = $this->app['controllers_factory'];
 
-    // tickets
+    // temporary files - required for tickets
+    $ca->post('/{token}/temporary_file', function (Request $request, Token $token) {
+      return (new Actions\TemporaryFilePublic($this->app, $request, $token))->create();
+    })
+      ->before($this->expectPublicAccessToken())
+      ->assert('token', $this->tokenAssertion())
+      ->convert('token', $this->tokenConverter());
+
+    $ca->delete('/{token}/temporary_file', function (Request $request, Token $token) {
+      return 'OK';
+    })
+      ->before($this->expectPublicAccessToken())
+      ->assert('token', $this->tokenAssertion())
+      ->convert('token', $this->tokenConverter());
+
+    $ca->get('/{token}/temporary_file', function (Request $request, Token $token) {
+      return (new Actions\TemporaryFilePublic($this->app, $request, $token))->show();
+    })
+      ->before($this->expectPublicAccessToken())
+      ->assert('token', $this->tokenAssertion())
+      ->convert('token', $this->tokenConverter())
+      ->bind('token_temporary_file');
+
+    // anonymous ticket
 
     $ca->get('/{token}/tickets/create', function (Request $request, Token $token) {
       if ($token->subjectType() === SecretTokenSubject::LICENCE) {
@@ -134,10 +157,12 @@ class RoutesCa extends Routes
       ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
       ->bind('token_repair_reject');
 
-    // token page - can show: repair status, payment page, service supplier starting page
+    // token page - can show: repair status, ticket status, payment page, service supplier starting page
 
     $ca->get('/{token}', function (Request $request, Token $token) {
       switch ($token->subjectType()) {
+        case SecretTokenSubject::TICKET:
+          return (new Actions\TicketByToken($this->app, $request, $token))->call();
         case SecretTokenSubject::REPAIR:
           return (new Actions\RepairByToken($this->app, $request, $token))->call();
         case  SecretTokenSubject::ONLINEPAYMENT:

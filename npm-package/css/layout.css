@@ -178,3 +178,15 @@ textarea {
 .select2-ctl-dropdown li {
     font-size: .9rem !important;
 }
+
+#ticket-by-token-map {
+    display: block;
+    width: auto;
+    height: 300px;
+}
+
+.map-pointer {
+    display: block;
+    width: auto;
+    height: 300px;
+}

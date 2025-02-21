@@ -68,7 +68,7 @@ class Action
       'currentAction' => array_slice(explode("\\", get_class($this)), -1)[0],
       'isAuthenticated' => $this->isAuthenticated(),
       'locale' => $this->app['locale'],
-      'innerTemplate' => $template,
+      'innerTemplate' => $template
     ];
 
     $vars = array_merge($vars, $this->getLayoutVars());
@@ -175,7 +175,7 @@ class Action
       $this->flashMessage($this->t($flash_tr));
     }
     if (is_array($binding)) {
-      $url = $this->generateUrl($binding[0], array_merge($binding[1], $redirect_variables));
+      $url = $this->generateUrl($binding[0], array_merge($redirect_variables, $binding[1]));
     } else {
       $url = $this->generateUrl($binding, $redirect_variables);
     }

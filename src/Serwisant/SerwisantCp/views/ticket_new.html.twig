@@ -1,4 +1,4 @@
-<form method="post" action="{{ formActionUrl }}">
+<form method="post" action="{{ path('create_ticket') }}">
   <div class="bg-light p-5 rounded mt-3">
     <h1>{{ t(_self, 'title') }}</h1>
     <p class="lead">{{ t(_self, 'description') }}</p>
@@ -7,29 +7,6 @@
   {{ form_errors(_self, errors) }}
 
   <div class="bg-light p-5 rounded mt-3">
-
-    {% if not isAuthenticated %}
-      <div class="mb-3">
-        <div class="row">
-          <div class="col-md-4 mb-3">
-
-            <div class="row g-2">
-              <div class="col-3">
-                {{ form_field({type: 'phoneprefixpicker', argument: 'applicant.phone.countryPrefix', caption: t(_self, 'phone_prefix'), value: locale_PhonePrefix()}, form_params, errors) }}
-              </div>
-              <div class="col-9">
-                {{ form_field({type: 'text', argument: 'applicant.phone.number', caption: t(_self, 'phone_number')}, form_params, errors) }}
-              </div>
-            </div>
-
-          </div>
-          <div class="col-md-4 mb-3">
-            {{ form_field({type: 'text', argument: 'applicant.email', caption: t(_self, 'email')}, form_params, errors) }}
-          </div>
-        </div>
-      </div>
-    {% endif %}
-
     {% if device %}
       {{ form_field({type: 'hidden', argument: 'device', value: device.ID}, form_params, errors) }}
       <div class="mb-3">
@@ -104,27 +81,6 @@
         {{ custom_form_field(customField, {argument: "ticket.customFields.#{loop.index0}"}, form_params, errors) }}
       </div>
     {% endfor %}
-
-    {% if not isAuthenticated %}
-      <table class="table table-borderless">
-        {% for agreement in agreementsDefinitions %}
-          <tr>
-            <td>
-              <div class="{{ customer_agreement_class(agreement) }}">
-                {{ form_field({type: 'hidden', argument: "applicant.agreements.#{loop.index0}.customerAgreement", value: agreement.ID}, form_params, errors) }}
-                {{ form_field({type: 'checkbox', argument: "applicant.agreements.#{loop.index0}.accepted", caption: agreement.title, value: 1}, form_params, errors) }}
-              </div>
-            </td>
-            <td>
-              <div class="{{ customer_agreement_class(agreement) }}">
-                <a href="#" data-bs-toggle="modal"
-                   data-bs-target="#agreement_content_{{ agreement.ID }}">{{ t(_self, 'read_agreement') }}</a>
-              </div>
-            </td>
-          </tr>
-        {% endfor %}
-      </table>
-    {% endif %}
   </div>
 
   <div class="clearfix">

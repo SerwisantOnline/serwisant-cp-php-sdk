@@ -1,4 +1,28 @@
 query {
+    viewer: viewer {
+        __typename
+        ticketsServiceSupplier {
+            displayName
+            address {
+                street
+                building
+                city
+                postalCode
+                countryIso
+                __typename
+            }
+            phone {
+                formatted
+                __typename
+            }
+            email
+            avatar {
+                url
+                __typename
+            }
+            __typename
+        }
+    }
     ticketCustomFields: customFields(form: TICKET) {
         __typename
         ID

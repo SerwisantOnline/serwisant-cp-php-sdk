@@ -1,11 +1,12 @@
 {% include 'repair/panel_change_status.html.twig' with {'parent': 'ca'} %}
 
-<div class="bg-light p-5 rounded mt-3">
+<div class="p-5 mt-3">
+    <div class="pb-2">
+        {% include 'shared/service_supplier_card.html.twig' with {'serviceSupplier': repair.serviceSupplier, 'title': t(_self, 'introduction')} %}
+    </div>
+
     <div class="row">
         <div class="col-md-6">
-            <div class="pb-2">
-                {% include 'repair/panel_service_supplier.html.twig' %}
-            </div>
             <div class="pb-2">
                 {% include 'repair/panel_info.html.twig' %}
             </div>
@@ -28,4 +29,5 @@
             </div>
         </div>
     </div>
+
 </div>

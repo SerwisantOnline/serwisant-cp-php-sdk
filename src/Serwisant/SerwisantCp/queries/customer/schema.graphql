@@ -15,6 +15,7 @@ type Address {
     building: String!
     city: String!
     countryIso: String!
+    geoPoint: GeoPoint!
     postalCode: String!
     street: String!
     type: AddressType!
@@ -183,6 +184,11 @@ type File {
     image: Boolean!
     publicRemarks: String
     url(size: ImageSize = ORIGINAL): String
+}
+
+type GeoPoint {
+    lat: String
+    lng: String
 }
 
 type Message {
@@ -465,6 +471,7 @@ type Ticket {
     number: String!
     payment: TicketPayment!
     priority: Priority!
+    secretToken: SecretToken
     serviceSupplier: ServiceSupplier!
     status: TicketStatus!
     type: Dictionary
@@ -1007,6 +1014,7 @@ enum SecretTokenSubject {
     ONLINEPAYMENT
     PARCEL
     REPAIR
+    TICKET
 }
 
 enum ServiceSupplierType {

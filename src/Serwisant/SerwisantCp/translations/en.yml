@@ -518,32 +518,42 @@ en:
     city: City
     country: Country
     device: The device concerned by this ticket
+  ticket_by_token:
+    panel_files:
+      title: Attached files
   ticket:
     close: Close
     print: Printout
-    panel_info: General information
-    number: Ticket number
-    devices: Devices concerned by the report
-    employee: Assigned employee
-    address: Address for the realization of the ticket
-    group: Group
-    panel_payments: Payment information
-    payment_type: Method of payment
-    not_defined: Not determined
-    time: Time spent on the ticket
-    hour: h
-    payment: To pay
-    paid: Paid
-    panel_status: Ticket status
-    priority: Priority
-    status: Status
-    created: Date of acceptance of ticket
-    scheduled_on: Planned date to start work on the ticket
-    scheduled_to: planned date to finish work on the ticket
-    started_on: Work start date
-    finished_at: Work finish date
-    panel_custom_form_fields: Additional information
-    panel_files: Attached files
+    panel_info:
+      title: General information
+      number: Ticket number
+      devices: Devices concerned by the report
+      employee: Assigned employee
+      address: Address for the realization of the ticket
+      group: Group
+    panel_service_supplier:
+      title: 'For information about this report, please contact the service using the details below:'
+    panel_payments:
+      title: Payment information
+      payment_type: Method of payment
+      not_defined: Not determined
+      time: Time spent on the ticket
+      hour: h
+      payment: To pay
+      paid: Paid
+    panel_status:
+      title: Ticket status
+      priority: Priority
+      status: Status
+      created: Date of acceptance of ticket
+      scheduled_on: Planned date to start work on the ticket
+      scheduled_to: planned date to finish work on the ticket
+      started_on: Work start date
+      finished_at: Work finish date
+    panel_custom_form_fields:
+      title: Additional information
+    panel_files:
+      title: Attached files
   online_payment_by_token:
     payment: Payment
     method: Choose the payment method
