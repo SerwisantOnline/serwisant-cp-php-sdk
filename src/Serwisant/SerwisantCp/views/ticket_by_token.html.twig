@@ -9,7 +9,7 @@
         {% include 'ticket/panel_info.html.twig'  with {'canCreateLinks': false} %}
       </div>
 
-      {% if ticket.address.geoPoint.lat and ticket.address.geoPoint.lng %}
+      {% if ticket.address and ticket.address.geoPoint and ticket.address.geoPoint.lat and ticket.address.geoPoint.lng %}
         <div id="ticket-by-token-map" data-lat="{{ ticket.address.geoPoint.lat  }}" data-lng="{{ ticket.address.geoPoint.lng }}"></div>
       {% endif %}
 

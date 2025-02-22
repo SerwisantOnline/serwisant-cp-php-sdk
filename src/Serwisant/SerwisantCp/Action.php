@@ -2,7 +2,6 @@
 
 namespace Serwisant\SerwisantCp;
 
-
 use Silex;
 use Symfony\Component\HttpFoundation\Request;
 use Serwisant\SerwisantApi;
@@ -23,7 +22,6 @@ class Action
   private $access_token_public;
   private $api_customer;
   private $api_public;
-  private $api_mobile;
 
   public function __construct(Silex\Application $app, Request $request, Token $token)
   {
@@ -219,20 +217,6 @@ class Action
   protected function apiPublic(): ?Api
   {
     if (is_null($this->api_public) && !is_null($this->access_token_public)) {
-      $this->api_public = new Api(
-        $this->app,
-        $this->access_token_public,
-        [$this->app['base_dir'] . '/queries/public'],
-        ($this->debug ? 2 : 0)
-      );
-      $this->api_public->setHttpHeaders($this->api_http_headers);
-    }
-    return $this->api_public;
-  }
-
-  protected function apiMobile(): ?Api
-  {
-    if (is_null($this->api_mobile) && !is_null($this->access_token_public)) {
       $this->api_public = new Api(
         $this->app,
         $this->access_token_public,
