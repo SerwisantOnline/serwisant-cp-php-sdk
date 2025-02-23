@@ -6,33 +6,6 @@
   <table class="table table-bordered card-table">
     <tbody>
     <tr>
-      <td class="column-definition text-nowrap">{{ t(_self, 'payment_receivier') }}</td>
-      <td>
-        <div class="clearfix">
-          {% if payment.serviceSupplier.avatar %}
-            <img class="pull-left" src="{{ payment.serviceSupplier.avatar.url }}"
-                 alt="{{ payment.serviceSupplier.displayName }}">
-          {% endif %}
-          <div class="pull-left">
-            <strong>{{ payment.serviceSupplier.displayName }}</strong>
-            <br>
-            {% if payment.serviceSupplier.address %}
-              {{ payment.serviceSupplier.address.street }} {{ payment.serviceSupplier.address.building }}, {{ payment.serviceSupplier.address.postalCode }} {{ payment.serviceSupplier.address.city }}
-              <br>
-            {% endif %}
-            {% if payment.serviceSupplier.phone %}
-              tel.:
-              {{ payment.serviceSupplier.phone.formatted }}
-              <br>
-            {% endif %}
-            {% if payment.serviceSupplier.email %}
-              <a href="mailto:{{ payment.serviceSupplier.email }}">{{ payment.serviceSupplier.email }}</a>
-            {% endif %}
-          </div>
-        </div>
-      </td>
-    </tr>
-    <tr>
       <td class="column-definition text-nowrap">{{ t(_self, 'amount_to_pay') }}</td>
       <td>{{ payment.amountToPay | format_currency(payment.currency) }}</td>
     </tr>

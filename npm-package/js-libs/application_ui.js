@@ -242,6 +242,7 @@ Application.Ui.FileUploadConfigure = function (single) {
 
   FilePond.registerPlugin(FilePondPluginImagePreview);
   FilePond.registerPlugin(FilePondPluginFileValidateType);
+  FilePond.registerPlugin(FilePondPluginFileValidateSize);
 
   var config = _.merge(translations, {
     server: {
@@ -251,7 +252,9 @@ Application.Ui.FileUploadConfigure = function (single) {
     name: 'temporary_files[]',
     credits: [],
     allowFileTypeValidation: (Application.Options.Get('uploadOnlyImages') === 1),
-    acceptedFileTypes: (Application.Options.Get('uploadOnlyImages') === 1 ? ['image/*'] : [])
+    acceptedFileTypes: (Application.Options.Get('uploadOnlyImages') === 1 ? ['image/*'] : []),
+    minFileSize: '10KB',
+    maxFileSize: '20MB'
   })
 
   if (single) {

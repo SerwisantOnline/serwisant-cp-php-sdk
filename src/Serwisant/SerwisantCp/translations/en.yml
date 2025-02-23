@@ -592,8 +592,7 @@ en:
     email: Email address
     read_agreement: Read
   online_payment_by_token:
-    payment: Payment
-    method: Choose the payment method
+    introduction: 'For additional information regarding this payment, please contact the service using the following details:'
   online_payment:
     popus:
       code_modal:
@@ -641,7 +640,7 @@ en:
         dla konsumenta</a>)
     panel_payment_details:
       items: Items
-      payment_receivier: Reciever
+      payment_receiver: Recipient
       title: 'Payment  %{number} information'
       amount_to_pay: Remaining to pay
       amount: Amount

@@ -33,6 +33,7 @@ var jsFiles = [
   "node_modules/filepond/dist/filepond.js",
   "node_modules/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js",
   "node_modules/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js",
+  "node_modules/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js",
   "node_modules/jstorage/jstorage.js",
   "node_modules/leaflet/dist/leaflet.js",
   "node_modules/fullcalendar/index.global.js",
