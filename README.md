@@ -242,8 +242,3 @@ database credentials.
 ```php
 $application->set('session_handler', new \Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler(...))
 ```
-
-## Major changes
-
-- 1.0 - initial release
-- 1.1.0 - changed way how assets are built, new approach is not compatibile with previous one
