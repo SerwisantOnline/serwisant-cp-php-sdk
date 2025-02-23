@@ -1,0 +1,52 @@
+query {
+    viewer: viewer {
+        __typename
+        ticketsServiceSupplier {
+            displayName
+            address {
+                street
+                building
+                city
+                postalCode
+                countryIso
+                __typename
+            }
+            phone {
+                formatted
+                __typename
+            }
+            email
+            avatar {
+                url
+                __typename
+            }
+            __typename
+        }
+    }
+    ticketCustomFields: customFields(form: TICKET) {
+        __typename
+        ID
+        type
+        selectOptions
+        required
+        concern {
+            __typename
+            ID
+        }
+        name
+        description
+    }
+    priorities: priorities(filter: {type: TICKET}) {
+        __typename
+        ID
+        name
+    }
+    customerAgreements: customerAgreements {
+        __typename
+        ID
+        title
+        content
+        visiblePersonal
+        visibleBusiness
+    }
+}

@@ -1,0 +1,21 @@
+query($ID: HashID!) {
+    device: device(ID: $ID) {
+        ID
+        vendor
+        model
+        type {
+            name
+            __typename
+        }
+        address {
+            building
+            city
+            countryIso
+             postalCode
+            street
+            __typename
+        }
+        isVerified
+        __typename
+    }
+}

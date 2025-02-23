@@ -7,7 +7,6 @@
   {{ form_errors(_self, errors) }}
 
   <div class="bg-light p-5 rounded mt-3">
-
     {% if device %}
       {{ form_field({type: 'hidden', argument: 'device', value: device.ID}, form_params, errors) }}
       <div class="mb-3">

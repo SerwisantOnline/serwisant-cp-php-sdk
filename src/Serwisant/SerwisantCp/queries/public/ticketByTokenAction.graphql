@@ -1,0 +1,92 @@
+query($token: String!) {
+    ticket: ticketByToken(token: $token) {
+        ID
+        address {
+            building
+            city
+            countryIso
+            postalCode
+            street
+            geoPoint {
+                lat
+                lng
+                __typename
+            }
+            __typename
+        }
+        addressRemarks
+        serviceSupplier {
+            __typename
+            displayName
+            email
+            phone {
+                __typename
+                formatted
+            }
+            address {
+                __typename
+                street
+                building
+                city
+                postalCode
+                countryIso
+            }
+            avatar {
+                __typename
+                url
+            }
+        }
+        files {
+            __typename
+            contentType
+            image
+            url
+            thumbUrl: url(size: THUMBNAIL)
+            publicRemarks
+        }
+        issue
+        number
+        priority {
+            __typename
+            name
+        }
+        status {
+            __typename
+            createdAt
+            status
+            displayName
+            scheduledOn
+            scheduledTo
+            startedOn
+            finishedAt
+        }
+        type {
+            __typename
+            name
+        }
+        customFields {
+            __typename
+            field {
+                __typename
+                name
+                type
+            }
+            value
+        }
+        devices {
+            __typename
+            type {
+                __typename
+                name
+            }
+            vendor
+            model
+        }
+        __typename
+    }
+    configuration: configuration {
+        currency
+        useCustomStatusNames
+        __typename
+    }
+}

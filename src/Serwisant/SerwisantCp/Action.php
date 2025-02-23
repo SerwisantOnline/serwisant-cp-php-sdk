@@ -4,6 +4,7 @@ namespace Serwisant\SerwisantCp;
 
 use Silex;
 use Symfony\Component\HttpFoundation\Request;
+use Serwisant\SerwisantApi;
 
 class Action
 {
@@ -16,11 +17,11 @@ class Action
   protected $translator;
   protected $debug = false;
 
+  private $layout_vars;
   private $access_token_customer;
   private $access_token_public;
   private $api_customer;
   private $api_public;
-  private $layout_vars;
 
   public function __construct(Silex\Application $app, Request $request, Token $token)
   {
@@ -63,9 +64,9 @@ class Action
       'pageTitle' => '',
       'token' => (string)$this->token,
       'currentAction' => array_slice(explode("\\", get_class($this)), -1)[0],
-      'isAuthenticated' => (!is_null($this->access_token_customer) && $this->access_token_customer->isAuthenticated()),
+      'isAuthenticated' => $this->isAuthenticated(),
       'locale' => $this->app['locale'],
-      'innerTemplate' => $template,
+      'innerTemplate' => $template
     ];
 
     $vars = array_merge($vars, $this->getLayoutVars());
@@ -74,7 +75,7 @@ class Action
       $vars = array_merge($vars, $this->decorator->getLayoutVars($template));
     }
 
-    if (!is_null($this->access_token_customer) && $this->access_token_customer->isAuthenticated()) {
+    if ($this->isAuthenticated()) {
       $vars['me'] = $this->apiCustomer()->customerQuery()->viewer(['basic' => true]);
     }
 
@@ -88,6 +89,11 @@ class Action
     } else {
       return 'layout.html.twig';
     }
+  }
+
+  protected function isAuthenticated(): bool
+  {
+    return !is_null($this->access_token_customer) && $this->access_token_customer->isAuthenticated();
   }
 
   protected function getLayoutVars(): array
@@ -167,7 +173,7 @@ class Action
       $this->flashMessage($this->t($flash_tr));
     }
     if (is_array($binding)) {
-      $url = $this->generateUrl($binding[0], array_merge($binding[1], $redirect_variables));
+      $url = $this->generateUrl($binding[0], array_merge($redirect_variables, $binding[1]));
     } else {
       $url = $this->generateUrl($binding, $redirect_variables);
     }
@@ -194,7 +200,7 @@ class Action
     return $this->access_token_customer;
   }
 
-  protected function apiCustomer()
+  protected function apiCustomer(): ?Api
   {
     if (is_null($this->api_customer) && !is_null($this->access_token_customer)) {
       $this->api_customer = new Api(
@@ -208,7 +214,7 @@ class Action
     return $this->api_customer;
   }
 
-  protected function apiPublic()
+  protected function apiPublic(): ?Api
   {
     if (is_null($this->api_public) && !is_null($this->access_token_public)) {
       $this->api_public = new Api(

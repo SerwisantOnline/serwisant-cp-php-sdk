@@ -14,6 +14,7 @@ type Address {
     building: String!
     city: String!
     countryIso: String!
+    geoPoint: GeoPoint!
     postalCode: String!
     street: String!
     type: AddressType!
@@ -21,7 +22,9 @@ type Address {
 
 type CustomField {
     ID: HashID!
+    concern: Dictionary
     description: String
+    form: CustomFieldForm!
     name: String!
     required: Boolean!
     selectOptions: [String!]
@@ -106,7 +109,10 @@ type CustomerStatement {
 }
 
 type Device {
+    ID: HashID!
+    address: Address
     displayName: String!
+    isVerified: Boolean!
     model: String
     type: Dictionary!
     vendor: String
@@ -131,6 +137,11 @@ type File {
     image: Boolean!
     publicRemarks: String
     url(size: ImageSize = ORIGINAL): String
+}
+
+type GeoPoint {
+    lat: String
+    lng: String
 }
 
 type LoginResult {
@@ -262,9 +273,11 @@ type PublicQuery {
     priorities(filter: PrioritiesFilter): [Priority!]!
     "Return detailed information about particular repair"
     repairByToken(token: String!): Repair!
-    "Using this query you can lookup a token, to determine where it belongs, eg. order, or payment"
+    "Using this query you can lookup a token, to determine where it belongs, eg. order, or payment. Please note: this will return proper result to tokens issued for your data. There is no point to look up other's tokens because you'll get 404 error."
     secretToken(token: String!): SecretToken!
     serviceSuppliers(filter: ServiceSuppliersFilter): [ServiceSupplier!]
+    temporaryFiles(ID: [HashID!]!): [TemporaryFile!]!
+    ticketByToken(token: String!): Ticket!
     "Information about a service, public registry name, address and branded name, address as well"
     viewer: Viewer!
 }
@@ -434,6 +447,7 @@ type Ticket {
     issue: String!
     number: String!
     priority: Priority!
+    secretToken: SecretToken
     serviceSupplier: ServiceSupplier!
     status: TicketStatus!
     type: Dictionary
@@ -1050,6 +1064,7 @@ enum SecretTokenSubject {
     ONLINEPAYMENT
     PARCEL
     REPAIR
+    TICKET
 }
 
 enum ServiceSupplierType {

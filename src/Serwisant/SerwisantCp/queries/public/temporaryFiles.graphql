@@ -1,0 +1,9 @@
+query temporaryFiles($ID: [HashID!]!) {
+    temporaryFiles(ID: $ID) {
+        __typename
+        ID
+        contentType
+        name
+        url
+    }
+}

@@ -1,4 +1,10 @@
 pl:
+  '303':
+    title: Powrót do poprzedniej strony
+    lead: >-
+      Nie mogliśmy ustalić adresu przekierowania. Kliknij w przycisk poniżej,
+      aby powrócić do poprzedniej strony.
+    button: Wróć
   errors_title: Proszę poprawić następujące problemy
   errors:
     blank: Nie podano wymaganej wartości
@@ -56,6 +62,13 @@ pl:
     loginOrEmail: Login lub adres email
     resetToken: Link resetowania hasła
     passwordConfirmation: Potwierdzenie hasła
+    applicant:
+      phone:
+        prefix: Kraj
+        number: Numer telefonu
+      email: Adres email
+      agreements:
+        accepted: Akceptacja zgody
     agreements:
       accepted: Zgoda
     customer:
@@ -120,7 +133,9 @@ pl:
     imageValidateSizeLabelExpectedMinResolution: 'Minimalna rozdzielczość to {minResolution}'
     imageValidateSizeLabelExpectedMaxResolution: 'Maksymalna rozdzielczość to {maxResolution}'
   flashes:
-    device_registration_successful: Pomyślnie dodano urządzenie do bazy. Poczekaj teraz na weryfikację urządzenia przez serwis.
+    device_registration_successful: >-
+      Pomyślnie dodano urządzenie do bazy. Poczekaj teraz na weryfikację
+      urządzenia przez serwis.
     login_first: Zanim rozpoczniesz korzystanie z aplikacji powinieneś się zalogować.
     signup_successful: >-
       Konto zostało zarejestrowane. Musisz je teraz potwierdzić za pomocą linku,
@@ -377,6 +392,9 @@ pl:
       status: Stan
       details: Szczegóły
   repair:
+    introduction: >-
+      Aby uzyskać informację na temat tej naprawy, skontaktuj się z serwisem, który ją realizuje
+      używając poniższych danych:
     close: Zamknij
     print_intro: Przyjęcie
     print_summary: Podsumowanie
@@ -387,8 +405,6 @@ pl:
       courier: Kurier
       status: Stan przesyłki
       tracking: Numer listu przewozowego
-    panel_service_supplier:
-      title: 'Aby uzyskać informację na temat tej naprawy, kontaktuj się z serwisem używając poniższych danych:'
     panel_info:
       device: 'Urządzenie, którego dotyczy naprawa'
       title: Informacje o naprawie
@@ -472,6 +488,12 @@ pl:
       repair: Naprawa
       confirmation: Potwierdzenie
       confirm: Potwierdzam
+    panel_service_supplier:
+      title: ''
+  repair_by_token:
+    introduction: >-
+      Aby uzyskać informację na temat tej naprawy, skontaktuj się z serwisem, który ją realizuje
+      używając poniższych danych:
   repair_new:
     title: Dodaj nową naprawę
     description: >-
@@ -508,6 +530,48 @@ pl:
       type: Rodzaj
       status: Stan
       details: Szczegóły
+  ticket:
+    introduction: >-
+      Aby uzyskać informację na temat tego zgłoszenia, skontaktuj się z serwisem, który je obsługuje
+      używając poniższych danych:
+    close: Zamknij
+    print: Wydruk
+    panel_info:
+      title: Ogólne informacje
+      number: Numer zgłoszenia
+      devices: 'Urządzenia, których dotyczy zgłoszenie'
+      employee: Odpowiedzialny pracownik
+      address: Adres realizacji zgłoszenia
+      group: Grupa
+    panel_payments:
+      title: Informacje o płatności
+      payment_type: Sposób zapłaty
+      not_defined: Nie ustalono
+      time: Czas poświęcony na realizację zgłoszenia
+      hour: h
+      payment: Do zapłaty
+      paid: Zapłacono
+    panel_status:
+      title: Stan zgłoszenia
+      priority: Priorytet
+      status: Stan
+      created: Data przyjęcia zgłoszenia
+      scheduled_on: Planowana data rozpoczęcia pracy nad zgłoszeniem
+      scheduled_to: Planowana data zakończenia pracy nad zgłoszeniem
+      started_on: Data rozpoczęcia pracy
+      finished_at: Data zakończenia pracy
+    panel_custom_form_fields:
+      title: Dodatkowe informacje
+    panel_files:
+      title: Załączone pliki
+    panel_service_supplier:
+      title: ''
+  ticket_by_token:
+    introduction: >-
+      Aby uzyskać informację na temat tego zgłoszenia, skontaktuj się z serwisem, który je obsługuje
+      używając poniższych danych:
+    panel_files:
+      title: Załączone pliki
   ticket_new:
     title: Dodaj zgłoszenie awarii
     description: >-
@@ -527,33 +591,27 @@ pl:
     city: Miasto
     country: Kraj
     device: 'Urządzenie, którego dotyczy zgłoszenie'
-  ticket:
-    close: Zamknij
-    print: Wydruk
-    panel_info: Ogólne informacje
-    number: Numer zgłoszenia
-    devices: 'Urządzenia, których dotyczy zgłoszenie'
-    employee: Odpowiedzialny pracownik
-    address: Adres realizacji zgłoszenia
-    group: Grupa
-    panel_payments: Informacje o płatności
-    panel_supplier: 'Aby uzyskać informację na temat tego zgłoszenia, kontaktuj się z serwisem używając poniższych danych:'
-    payment_type: Sposób zapłaty
-    not_defined: Nie ustalono
-    time: Czas poświęcony na realizację zgłoszenia
-    hour: h
-    payment: Do zapłaty
-    paid: Zapłacono
-    panel_status: Stan zgłoszenia
-    priority: Priorytet
-    status: Stan
-    created: Data przyjęcia zgłoszenia
-    scheduled_on: Planowana data rozpoczęcia pracy nad zgłoszeniem
-    scheduled_to: Planowana data zakończenia pracy nad zgłoszeniem
-    started_on: Data rozpoczęcia pracy
-    finished_at: Data zakończenia pracy
-    panel_custom_form_fields: Dodatkowe informacje
-    panel_files: Załączone pliki
+  ticket_public_new:
+    title: Dodaj zgłoszenie awarii
+    introduction: 'Zgłoszona awaria zostanie przekazana do serwisu:'
+    priority: Priorytet zgłoszenia
+    startAt: Najbliższy możliwy termin przyjazdu serwisanta
+    issue: Informacje o awarii
+    address: Adres zgłoszenia
+    addressOther: 'Inny, dowolny adres'
+    other_address: Podaj inny adres
+    cancel: Anuluj
+    submit: Dodaj zgłoszenie
+    street: Ulica
+    building: Numer
+    postalCode: Kod pocztowy
+    city: Miasto
+    country: Kraj
+    device: 'Urządzenie, którego dotyczy zgłoszenie'
+    phone_prefix: Kraj
+    phone_number: Numer telefonu
+    email: Adres email
+    read_agreement: Czytaj
   online_payment_by_token:
     payment: Płatność
     method: Wybierz metodę płatności
@@ -678,6 +736,7 @@ pl:
     create_device: Zarejestruj urządzenie
     not_verified: Urządzenie oczekuje na weryfikację przez serwis.
   device:
+    introduction: Serwis obsługujący urządzenie
     close: Zamknij
     new_repair: Utwórz naprawę tego urządzenia
     new_repair_s: Naprawa
@@ -695,19 +754,26 @@ pl:
       title: Dodatkowe informacje
     panel_files:
       title: Pliki
-    panel_service_supplier:
-      title: Serwis obsługujący urządzenie
     not_verified: Urządzenie oczekuje na weryfikację przez serwis.
-    not_verified_unable_to_perform: Nie można wykonać operacji na niezweryfikowanym urządzeniu. Poczekaj na weryfikację urządzenia przez serwis.
+    not_verified_unable_to_perform: >-
+      Nie można wykonać operacji na niezweryfikowanym urządzeniu. Poczekaj na
+      weryfikację urządzenia przez serwis.
     copy_of_sale_document: Dokument sprzedaży
+    panel_service_supplier:
+      title: ''
   device_new:
     title: Rejestracja urządzenia
-    description: Aby zarejestrować urządzenie wprowadź odpowiednie dane oraz załącz skan dokumentu sprzedaży. Po weryfikacji urządzenia przez serwis otrzymasz wiadomość email oraz będziesz mógł dodawać naprawy lub zgłoszenia.
+    description: >-
+      Aby zarejestrować urządzenie wprowadź odpowiednie dane oraz załącz skan
+      dokumentu sprzedaży. Po weryfikacji urządzenia przez serwis otrzymasz
+      wiadomość email oraz będziesz mógł dodawać naprawy lub zgłoszenia.
     type: Urządzenie
     vendor: Producent
     model: Model
     serial: Numer seryjny urządzenia
-    copy_of_sale_document: Kopia dokumentu sprzedaży, paragonu lub faktury w postaci pliku graficznego.
+    copy_of_sale_document: >-
+      Kopia dokumentu sprzedaży, paragonu lub faktury w postaci pliku
+      graficznego.
     address: Adres instalacji urządzenia
     street: Ulica
     building: Numer
@@ -716,10 +782,6 @@ pl:
     country: Kraj
     cancel: Anuluj
     submit: Zarejestruj
-  303:
-    title: Powrót do poprzedniej strony
-    lead: Nie mogliśmy ustalić adresu przekierowania. Kliknij w przycisk poniżej, aby powrócić do poprzedniej strony.
-    button: Wróć
   repair_submit_prompt:
     title: Co dalej?
     description: Poniżej znajdziesz instrukcję dalszego postępowania.

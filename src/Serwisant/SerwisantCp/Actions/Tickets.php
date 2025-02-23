@@ -69,12 +69,7 @@ class Tickets extends Action
   {
     $this->checkModuleActive();
 
-    $result = $this
-      ->apiCustomer()
-      ->customerQuery()
-      ->newRequest()
-      ->setFile('newTicket.graphql')
-      ->execute();
+    $result = $this->apiCustomer()->customerQuery()->newRequest()->setFile('newTicket.graphql')->execute();
 
     $priorities_select_options = [];
     foreach ($result->fetch('priorities') as $entry) {
@@ -99,12 +94,11 @@ class Tickets extends Action
     }
 
     $variables = [
-      'customFieldsDefinitions' => $result->fetch('orderCustomFields'),
+      'customFieldsDefinitions' => $result->fetch('ticketCustomFields'),
       'priorities_select_options' => $priorities_select_options,
       'addresses_radio_options' => $addresses_radio_options,
       'defaultAddress' => $default_address,
       'device' => $device,
-
       'form_params' => $this->request->request,
       'temporary_files' => $this->formHelper()->mapTemporaryFiles($this->request->get('temporary_files')),
       'errors' => $errors,
@@ -120,8 +114,6 @@ class Tickets extends Action
     $this->checkModuleActive();
 
     $helper = $this->formHelper();
-
-    $ticket = $this->request->get('ticket', []);
 
     $devices = [];
     if ($device = $this->getDevice()) {
@@ -141,13 +133,13 @@ class Tickets extends Action
       $address_input = new AddressInput(array_merge($this->request->get('address', []), ['type' => AddressType::OTHER]));
     }
 
+    $ticket = $this->request->get('ticket', []);
     if (array_key_exists('customFields', $ticket)) {
       $ticket['customFields'] = $helper->mapCustomFields($ticket['customFields']);
     }
-
     $ticket['startAt'] = $helper->dateTimeToISO8601($ticket['startAt'], $this->app['timezone']);
-
     $ticket_input = new TicketInput($ticket);
+
     $result = $this
       ->apiCustomer()
       ->customerMutation()

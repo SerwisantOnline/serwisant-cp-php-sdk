@@ -56,6 +56,13 @@ en:
     loginOrEmail: Login or email adress
     resetToken: Password reset link
     passwordConfirmation: Password confirmation
+    applicant:
+      phone:
+        prefix: Country
+        number: Phone number
+      email: Email address
+      agreements:
+        accepted: Accept agreement
     agreements:
       accepted: Accepted
     customer:
@@ -367,6 +374,9 @@ en:
       status: Status
       details: Details
   repair:
+    introduction: >-
+      For information about this repair, please contact the service center using
+      the details below:
     close: Close
     print_intro: Reception
     print_summary: Summary
@@ -377,8 +387,6 @@ en:
       courier: Courier
       status: Delivery status
       tracking: Shipping list number
-    panel_service_supplier:
-      title: 'For information about this repair, please contact the service center using the details below:'
     panel_info:
       device: The device under repair
       title: Repair information
@@ -462,6 +470,10 @@ en:
       repair: Repair
       confirmation: Confirmation
       confirm: I confirm
+  repair_by_token:
+    introduction: >-
+      For information about this repair, please contact the service center using
+      the details below:
   repair_new:
     title: Add a new repair
     description: >-
@@ -498,6 +510,46 @@ en:
       type: Type
       status: Status
       details: Details
+  ticket:
+    introduction: >-
+      For information about this ticket, please contact the service using the
+      details below:
+    close: Close
+    print: Printout
+    panel_info:
+      title: General information
+      number: Ticket number
+      devices: Devices concerned by the report
+      employee: Assigned employee
+      address: Address for the realization of the ticket
+      group: Group
+    panel_payments:
+      title: Payment information
+      payment_type: Method of payment
+      not_defined: Not determined
+      time: Time spent on the ticket
+      hour: h
+      payment: To pay
+      paid: Paid
+    panel_status:
+      title: Ticket status
+      priority: Priority
+      status: Status
+      created: Date of acceptance of ticket
+      scheduled_on: Planned date to start work on the ticket
+      scheduled_to: planned date to finish work on the ticket
+      started_on: Work start date
+      finished_at: Work finish date
+    panel_custom_form_fields:
+      title: Additional information
+    panel_files:
+      title: Attached files
+  ticket_by_token:
+    introduction: >-
+      For information about this ticket, please contact the service using the
+      details below:
+    panel_files:
+      title: Attached files
   ticket_new:
     title: Open a ticket
     description: >-
@@ -518,32 +570,27 @@ en:
     city: City
     country: Country
     device: The device concerned by this ticket
-  ticket:
-    close: Close
-    print: Printout
-    panel_info: General information
-    number: Ticket number
-    devices: Devices concerned by the report
-    employee: Assigned employee
-    address: Address for the realization of the ticket
-    group: Group
-    panel_payments: Payment information
-    payment_type: Method of payment
-    not_defined: Not determined
-    time: Time spent on the ticket
-    hour: h
-    payment: To pay
-    paid: Paid
-    panel_status: Ticket status
-    priority: Priority
-    status: Status
-    created: Date of acceptance of ticket
-    scheduled_on: Planned date to start work on the ticket
-    scheduled_to: planned date to finish work on the ticket
-    started_on: Work start date
-    finished_at: Work finish date
-    panel_custom_form_fields: Additional information
-    panel_files: Attached files
+  ticket_public_new:
+    title: Create ticket
+    introduction: 'The reported failure will be forwarded to the service:'
+    priority: Ticket priority
+    startAt: The nearest possible date of arrival of the service technician
+    issue: Issue description
+    address: Address of issue placement
+    addressOther: 'Other, any address'
+    other_address: Provide another address
+    cancel: Cancel
+    submit: Create ticket
+    street: Street
+    building: Number
+    postalCode: Postal code
+    city: City
+    country: Country
+    device: The device concerned by this issue
+    phone_prefix: Country
+    phone_number: Phone number
+    email: Email address
+    read_agreement: Read
   online_payment_by_token:
     payment: Payment
     method: Choose the payment method
@@ -673,6 +720,7 @@ en:
     create_device: Register your device
     not_verified: The device is waiting for verification by the service.
   device:
+    introduction: 'Service supporting this device:'
     close: Close
     new_repair: Create a repair for this device
     new_repair_s: Repair
@@ -690,8 +738,6 @@ en:
       title: Additional information
     panel_files:
       title: Files
-    panel_service_supplier:
-      title: Service handling the device
     not_verified: The device is waiting for verification by the service.
     not_verified_unable_to_perform: >-
       Operations cannot be performed on an unverified device. Wait for the

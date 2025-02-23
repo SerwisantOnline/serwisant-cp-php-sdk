@@ -1,0 +1,15 @@
+mutation createTemporaryFile($file: FileInput!) {
+    createTemporaryFile(file: $file) {
+        __typename
+        errors {
+            __typename
+            argument
+            message
+            code
+        }
+        temporaryFile {
+            __typename
+            ID
+        }
+    }
+}
