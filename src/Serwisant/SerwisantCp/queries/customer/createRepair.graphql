@@ -1,6 +1,10 @@
-mutation createRepair($repair: RepairInput!, $additional_items: [RepairItemInput!], $temporaryFiles: [HashID!], $device: HashID) {
-    createRepair(repair: $repair, additionalItems: $additional_items, temporaryFiles: $temporaryFiles, device: $device) {
+mutation createRepair($repair: RepairInput!, $additional_items: [RepairItemInput!], $temporaryFiles: [HashID!], $device: HashID, $address: AddressInput) {
+    createRepair(repair: $repair, additionalItems: $additional_items, temporaryFiles: $temporaryFiles, device: $device, address: $address) {
         __typename
+        repair {
+            __typename
+            ID
+        }
         errors {
             __typename
             argument

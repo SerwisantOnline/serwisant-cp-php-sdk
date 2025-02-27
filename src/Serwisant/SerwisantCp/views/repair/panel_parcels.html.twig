@@ -8,8 +8,9 @@
       <tr>
         <th>{{ t(_self, 'sender') }}</th>
         <th>{{ t(_self, 'recipient') }}</th>
-        <th>{{ t(_self, 'courier') }}</th>
         <th>{{ t(_self, 'status') }}</th>
+        <th>{{ t(_self, 'courier') }}</th>
+        <th>{{ t(_self, 'pickup_hours') }}</th>
         <th>{{ t(_self, 'tracking') }}</th>
       </tr>
       </thead>
@@ -18,8 +19,14 @@
         <tr>
           <td>{{ parcel.pickupFrom.company }} {{ parcel.pickupFrom.name }}</td>
           <td>{{ parcel.deliverTo.company }} {{ parcel.deliverTo.name }}</td>
-          <td>{{ parcel.courierName }}</td>
           <td>{{ t('parcel_delivery_status', parcel.deliveryStatus) }}</td>
+          <td>{{ parcel.courierName }}</td>
+          <td>
+            {% if parcel.pickupFrom.ownerType == 'CUSTOMER' and parcel.pickupTime.from and parcel.pickupTime.to %}
+              {{ t(_self, 'pickup_time_from') }} {{ parcel.pickupTime.from | format_datetime() }}
+              {{ t(_self, 'pickup_time_to') }} {{ parcel.pickupTime.to | format_datetime() }}
+            {% endif %}
+          </td>
           <td>{{ parcel.trackingNumber }}</td>
         </tr>
       {% endfor %}

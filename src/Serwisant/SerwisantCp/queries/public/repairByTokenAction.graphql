@@ -28,8 +28,8 @@ query($token: String!) {
             __typename
         }
         advanceAmount
-        deliveryType
-        collectionType
+        delivery
+        collection
         issue
         priceEstimated
         priceEstimatedTaxRate

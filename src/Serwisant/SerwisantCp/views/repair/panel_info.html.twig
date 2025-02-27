@@ -60,11 +60,23 @@
     {% endif %}
     <tr>
       <td class="column-definition">{{ t(_self, 'delivery_type') }}</td>
-      <td>{{ t('transport_types', repair.deliveryType) }}</td>
+      <td>
+        {{ t('transport_types', repair.delivery) }}
+        {% if addresses and repair.pickUpAddress %}
+          {{ t(_self, 'from') }}
+          {{ repair.pickUpAddress.street }} {{ repair.pickUpAddress.building }}, {{ repair.pickUpAddress.postalCode }} {{ repair.pickUpAddress.city }}
+        {% endif %}
+      </td>
     </tr>
     <tr>
       <td class="column-definition">{{ t(_self, 'collection_type') }}</td>
-      <td>{{ t('transport_types', repair.collectionType) }}</td>
+      <td>
+        {{ t('transport_types', repair.collection) }}
+        {% if addresses and repair.returnAddress %}
+          {{ t(_self, 'to') }}
+          {{ repair.returnAddress.street }} {{ repair.returnAddress.building }}, {{ repair.returnAddress.postalCode }} {{ repair.returnAddress.city }}
+        {% endif %}
+      </td>
     </tr>
     </tbody>
   </table>

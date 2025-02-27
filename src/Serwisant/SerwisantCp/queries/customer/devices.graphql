@@ -46,6 +46,7 @@ query devices($limit: Int, $page: Int, $filter: DevicesFilter, $sort: DevicesSor
                 countryIso
                 postalCode
                 street
+                type
             }
             customFields {
                 __typename

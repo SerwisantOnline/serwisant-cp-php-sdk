@@ -8,14 +8,16 @@ use Serwisant\SerwisantCp\Exception;
 use Serwisant\SerwisantCp\ExceptionNotFound;
 
 use Serwisant\SerwisantApi\Types\SchemaPublic\RepairSubmitPrompt;
-
 use Serwisant\SerwisantApi\Types\SchemaCustomer\RepairsFilter;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\RepairsFilterType;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\RepairsSort;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\RepairInput;
-use Serwisant\SerwisantApi\Types\SchemaCustomer\AddressUpdateInput;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\PrintType;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\RepairTransportType;
+use Serwisant\SerwisantApi\Types\SchemaCustomer\Device;
+use Serwisant\SerwisantApi\Types\SchemaCustomer\AddressInput;
+use Serwisant\SerwisantApi\Types\SchemaCustomer\AddressUpdateInput;
+use Serwisant\SerwisantApi\Types\SchemaCustomer\AddressType;
 
 class Repairs extends Action
 {
@@ -105,25 +107,28 @@ class Repairs extends Action
     $this->checkModuleActive();
 
     $result = $this->apiCustomer()->customerQuery()->newRequest()->setFile('newRepair.graphql')->execute();
-    $device = $this->getDevice();
 
     $dictionary_select_options = [];
     foreach ($result->fetch('dictionaryEntries') as $entry) {
       $dictionary_select_options[$entry->ID] = $entry->name;
     }
 
+    /* @var $device Device */
+    $device = $this->getDevice();
+
     $addresses_radio_options = [];
-    $default_address = null;
+    if ($device && $device->address) {
+      $addresses_radio_options[$device->address->ID] = trim("{$device->address->postalCode} {$device->address->city}, {$device->address->street} {$device->address->building}");
+    }
     foreach ($result->fetch('viewer')->customer->addresses as $address) {
       $addresses_radio_options[$address->ID] = trim("{$address->postalCode} {$address->city}, {$address->street} {$address->building}");
     }
-    if ($device && $device->address) {
-      $addresses_radio_options[$device->address->ID] = trim("{$device->address->postalCode} {$device->address->city}, {$device->address->street} {$device->address->building}");
-      $default_address = $device->address->ID;
+    if (count($addresses_radio_options) > 0) {
+      $addresses_radio_options[''] = $this->t('repair_new', 'other_address');
     }
+    $default_address = array_key_first($addresses_radio_options);
 
     $transport_radio_options = [RepairTransportType::PARCEL => $this->t('transport_types.PARCEL')];
-
     if ($this->getLayoutVars()['configuration']->personalTransportEnabled) {
       $transport_radio_options[RepairTransportType::PERSONAL] = $this->t('transport_types.PERSONAL');
     }
@@ -136,10 +141,8 @@ class Repairs extends Action
       'dictionary_select_options' => $dictionary_select_options,
       'addresses_radio_options' => $addresses_radio_options,
       'transport_radio_options' => $transport_radio_options,
-      'defaultReturnAddress' => ($result->fetch('viewer')->customer->address ? $result->fetch('viewer')->customer->address->ID : null),
       'defaultAddress' => $default_address,
       'device' => $device,
-
       'form_params' => $this->request->request,
       'temporary_files' => $this->formHelper()->mapTemporaryFiles($this->request->get('temporary_files')),
       'errors' => $errors,
@@ -160,55 +163,51 @@ class Repairs extends Action
     $helper = $this->formHelper();
 
     $repair = $this->request->get('repair', []);
-    $addresses = $this->request->get('addresses', []);
-
-    $address_errors = [];
-    if ($addresses) {
-      $result = $this->apiCustomer()->customerMutation()->updateViewer(
-        null,
-        [],
-        array_map(function ($a) {
-          return new AddressUpdateInput($a);
-        }, $addresses)
-      );
-      if ($result->errors) {
-        $address_errors = $result->errors;
-      } else {
-        $repair['returnAddress'] = $result->viewer->customer->address->ID;
-      }
-    }
-
     if (array_key_exists('customFields', $repair)) {
       $repair['customFields'] = $helper->mapCustomFields($repair['customFields']);
     }
     $repair['warranty'] = (array_key_exists('warranty', $repair) && $repair['warranty'] == '1');
-    if (array_key_exists('returnAddress', $repair)) {
-      $repair['pickUpAddress'] = $repair['returnAddress'];
+    $repair_input = new RepairInput($repair);
+
+    $device = $this->getDevice();
+
+    if ($this->request->get('addressID')) {
+      $address_input = new AddressInput();
+      if ($device && $device->address && $device->address->ID == $this->request->get('addressID')) {
+        $address_input = new AddressInput($device->address->toArray(['ID', 'geoPoint']));
+      } else {
+        foreach ($this->apiCustomer()->customerQuery()->viewer(['addresses' => true])->customer->addresses as $a) {
+          if ($a->ID == $this->request->get('addressID')) {
+            $address_input = new AddressInput($a->toArray(['ID', 'geoPoint']));
+          }
+        }
+      }
+    } else {
+      $address_input = new AddressInput(array_merge($this->request->get('address', []), ['type' => AddressType::OTHER]));
     }
 
-    $repair_input = new RepairInput($repair);
-    $result = $this
-      ->apiCustomer()
-      ->customerMutation()
-      ->createRepair(
-        $repair_input,
+    $result = $this->apiCustomer()->customerMutation()->createRepair(
+      $repair_input,
+      [],
+      $helper->mapTemporaryFiles($this->request->get('temporary_files')),
+      ($device ? $device->ID : null),
+      $address_input
+    );
+
+    if ($this->request->get('addressSaveToProfile') && !$this->request->get('addressID') && !$result->errors) {
+      $this->apiCustomer()->customerMutation()->updateViewer(
+        null,
         [],
-        $helper->mapTemporaryFiles($this->request->get('temporary_files')),
-        (($device = $this->getDevice()) ? $device->ID : null)
+        [new AddressUpdateInput(array_merge($this->request->get('address', []), ['type' => AddressType::OTHER]))]
       );
+    }
 
     if ($result->errors) {
-      $repair_errors = $result->errors;
-    } else {
-      $repair_errors = [];
-    }
-
-    if (count($repair_errors) > 0 || count($address_errors) > 0) {
-      return $this->new(array_merge($repair_errors, $address_errors));
+      return $this->new($result->errors);
     } elseif ($redirect_to_prompt) {
       return $this->redirectTo('repair_prompt', 'flashes.repair_creation_successful');
     } else {
-      return $this->redirectTo('repairs', 'flashes.repair_creation_successful');
+      return $this->redirectTo(['repair', ['id' => $result->repair->ID]], 'flashes.repair_creation_successful');
     }
   }
 

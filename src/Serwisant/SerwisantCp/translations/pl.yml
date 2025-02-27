@@ -405,6 +405,9 @@ pl:
       courier: Kurier
       status: Stan przesyłki
       tracking: Numer listu przewozowego
+      pickup_hours: Czas odbioru
+      pickup_time_from: Od
+      pickup_time_to: do
     panel_info:
       device: 'Urządzenie, którego dotyczy naprawa'
       title: Informacje o naprawie
@@ -417,6 +420,8 @@ pl:
       warranty_repair: Naprawa gwarancyjna
       delivery_type: Sposób doręczenia
       collection_type: Sposób odbioru naprawy
+      from: 'z adresu:'
+      to: 'na adres:'
     panel_custom_fields:
       title: Dodatkowe informacje
     panel_issue:
@@ -508,12 +513,14 @@ pl:
     warrantyPurchaseDate: Data zakupu
     warrantyPurchaseDocument: Numer dokumentu zakupu
     issue: 'Opis usterki, problemu'
-    returnAddress: 'Adres:'
+    addressID: 'Adres odbioru i zwrotu naprawy:'
+    addressSaveToProfile: Zapisz podany adres w moim profilu
     street: Ulica
     building: Numer
     postalCode: Kod pocztowy
     city: Miasto
     country: Kraj
+    other_address: Inny adres
     delivery: Sposób dostarczenia naprawy
     collection: Sposób odbioru naprawy
     cancel: Anuluj

@@ -8,13 +8,13 @@ use Serwisant\SerwisantCp\ExceptionNotFound;
 
 use Serwisant\SerwisantApi\Types\SchemaCustomer\AddressType;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\AddressInput;
-use Serwisant\SerwisantApi\Types\SchemaCustomer\AddressUpdateInput;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\RepairsFilterType;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\TicketsFilter;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\TicketsFilterType;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\TicketsSort;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\TicketInput;
 use Serwisant\SerwisantApi\Types\SchemaCustomer\PrintType;
+use Serwisant\SerwisantApi\Types\SchemaCustomer\Device;
 
 class Tickets extends Action
 {
@@ -76,22 +76,17 @@ class Tickets extends Action
       $priorities_select_options[$entry->ID] = $entry->name;
     }
 
+    /* @var $device Device */
+    $device = $this->getDevice();
+
     $addresses_radio_options = [];
     foreach ($result->fetch('viewer')->customer->addresses as $address) {
       $addresses_radio_options[$address->ID] = trim("{$address->postalCode} {$address->city}, {$address->street} {$address->building}");
     }
-    $default_address = ($result->fetch('viewer')->customer->address ? $result->fetch('viewer')->customer->address->ID : null);
-
-    if ($device = $this->getDevice()) {
-      if ($device->address) {
-        $addresses_radio_options[$device->address->ID] = trim("{$device->address->postalCode} {$device->address->city}, {$device->address->street} {$device->address->building}");
-        $default_address = $device->address->ID;
-      }
-    }
-
     if (count($addresses_radio_options) > 0) {
       $addresses_radio_options[''] = $this->t('ticket_new', 'other_address');
     }
+    $default_address = array_key_first($addresses_radio_options);
 
     $variables = [
       'customFieldsDefinitions' => $result->fetch('ticketCustomFields'),
@@ -115,45 +110,42 @@ class Tickets extends Action
 
     $helper = $this->formHelper();
 
+    $ticket = $this->request->get('ticket', []);
+    $ticket['startAt'] = $helper->dateTimeToISO8601($ticket['startAt'], $this->app['timezone']);
+    if (array_key_exists('customFields', $ticket)) {
+      $ticket['customFields'] = $helper->mapCustomFields($ticket['customFields']);
+    }
+    $ticket_input = new TicketInput($ticket);
+
     $devices = [];
     if ($device = $this->getDevice()) {
       $devices[] = $device->ID;
     }
 
-    $address_input = null;
-    $address_id = $this->request->get('addressID', '');
-    if ($address_id <> '') {
+    if ($device && $device->address) {
+      $address_input = new AddressInput(array_merge($device->address->toArray(['ID', 'geoPoint']), ['type' => AddressType::OTHER])); // always use original device address
+    } elseif ($this->request->get('addressID')) {
+      $address_input = new AddressInput();
       foreach ($this->apiCustomer()->customerQuery()->viewer(['addresses' => true])->customer->addresses as $a) {
-        if ($a->ID == $address_id) {
-          $address_input = new AddressInput($a->toArray(false));
+        if ($a->ID == $this->request->get('addressID')) {
+          $address_input = new AddressInput($a->toArray(['ID']));
         }
       }
-    }
-    if (is_null($address_input)) {
+    } else {
       $address_input = new AddressInput(array_merge($this->request->get('address', []), ['type' => AddressType::OTHER]));
     }
 
-    $ticket = $this->request->get('ticket', []);
-    if (array_key_exists('customFields', $ticket)) {
-      $ticket['customFields'] = $helper->mapCustomFields($ticket['customFields']);
-    }
-    $ticket['startAt'] = $helper->dateTimeToISO8601($ticket['startAt'], $this->app['timezone']);
-    $ticket_input = new TicketInput($ticket);
-
-    $result = $this
-      ->apiCustomer()
-      ->customerMutation()
-      ->createTicket($ticket_input, $helper->mapTemporaryFiles($this->request->get('temporary_files')), $devices, $address_input);
+    $result = $this->apiCustomer()->customerMutation()->createTicket(
+      $ticket_input,
+      $helper->mapTemporaryFiles($this->request->get('temporary_files')),
+      $devices,
+      $address_input
+    );
 
     if ($result->errors) {
       $ticket_errors = $result->errors;
     } else {
       $ticket_errors = [];
-
-      // dodano nowy adres, dodaj go także do karty klienta, dodajemy po pomyślnym utworzeniu zgłoszenia
-      if ($address_id == '' and $this->request->get('address', false)) {
-        $this->apiCustomer()->customerMutation()->updateViewer(null, [], [new AddressUpdateInput(array_merge($this->request->get('address', []), ['type' => AddressType::OTHER]))]);
-      }
     }
 
     if (count($ticket_errors) > 0) {

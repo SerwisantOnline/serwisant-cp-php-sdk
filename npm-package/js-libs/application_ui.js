@@ -254,7 +254,8 @@ Application.Ui.FileUploadConfigure = function (single) {
     allowFileTypeValidation: (Application.Options.Get('uploadOnlyImages') === 1),
     acceptedFileTypes: (Application.Options.Get('uploadOnlyImages') === 1 ? ['image/*'] : []),
     minFileSize: '10KB',
-    maxFileSize: '20MB'
+    maxFileSize: '20MB',
+    captureMethod: 'camera'
   })
 
   if (single) {

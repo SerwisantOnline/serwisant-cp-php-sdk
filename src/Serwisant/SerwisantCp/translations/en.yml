@@ -383,10 +383,13 @@ en:
     panel_parcels:
       title: Shipping associated with repair
       sender: Sender
-      recipient: Reciever
+      recipient: Receiver
       courier: Courier
       status: Delivery status
       tracking: Shipping list number
+      pickup_hours: Pickup time
+      pickup_time_from: From
+      pickup_time_to: to
     panel_info:
       device: The device under repair
       title: Repair information
@@ -399,6 +402,8 @@ en:
       warranty_repair: Warranty repair
       delivery_type: Delivery method
       collection_type: Repair delivery method
+      from: 'from address:'
+      to: 'to address:'
     panel_custom_fields:
       title: Additional information
     panel_issue:
@@ -487,13 +492,15 @@ en:
     warranty: Repair under warranty
     warrantyPurchaseDate: Purchase date
     warrantyPurchaseDocument: Purchase document number
-    issue: Issue descriprion
-    returnAddress: 'Adress:'
+    issue: Issue description
+    addressID: 'Repair collection and return address:'
+    addressSaveToProfile: Save the given address in my profile
     street: Street
     building: Number
     postalCode: Postal number
     city: City
     country: Country
+    other_address: Other address
     delivery: Method of delivery of the repair
     collection: Method of receiving of the repair
     cancel: Cancel

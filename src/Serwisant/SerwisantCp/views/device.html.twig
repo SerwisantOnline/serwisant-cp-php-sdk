@@ -19,7 +19,7 @@
   </div>
 {% endif %}
 
-<div class="bg-light p-5 rounded mt-3">
+<div class="panel-spaced bg-light rounded">
   {% include 'shared/service_supplier_card.html.twig' with {'serviceSupplier': device.serviceSupplier, 'title': t(_self, 'introduction')} %}
 
   <div class="row">
@@ -115,7 +115,7 @@
 </div>
 
 {% if repairs.items is not empty %}
-  <div class="bg-light p-5 rounded mt-3">
+  <div class="panel-spaced bg-light rounded">
     {{ paginator(repairs.pages, 'repairs_page') }}
     {% include 'repairs/list.html.twig' %}
     {{ paginator(repairs.pages, 'repairs_page') }}
@@ -123,7 +123,7 @@
 {% endif %}
 
 {% if tickets.items is not empty %}
-  <div class="bg-light p-5 rounded mt-3">
+  <div class="panel-spaced bg-light rounded">
     {{ paginator(tickets.pages, 'tickets_page') }}
     {% include 'tickets/list.html.twig' %}
     {{ paginator(tickets.pages, 'tickets_page') }}

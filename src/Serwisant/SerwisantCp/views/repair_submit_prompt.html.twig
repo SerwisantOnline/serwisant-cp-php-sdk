@@ -1,10 +1,10 @@
-<div class="bg-light p-5 rounded mt-3">
+<div class="panel-spaced bg-light rounded">
   <h1>{{ t(_self, 'title') }}</h1>
   <p class="lead">{{ t(_self, 'description') }}</p>
 </div>
 
 {% if prompt_content %}
-  <div class="bg-light p-5 rounded mt-3">
+  <div class="panel-spaced bg-light rounded">
     {{ prompt_content | raw }}
   </div>
 {% endif %}

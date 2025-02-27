@@ -18,7 +18,11 @@ class TicketsPublic extends Action
     $this->checkModuleActive();
 
     if ($this->isAuthenticated()) {
-      return $this->redirectTo('new_ticket');
+      if ($this->request->get('device')) {
+        return $this->redirectTo('new_ticket', null, ['device' => $this->request->get('device')]);
+      } else {
+        return $this->redirectTo('new_ticket');
+      }
     }
 
     $result = $this->apiPublic()->publicQuery()->newRequest()->setFile('newTicket.graphql')->execute();
@@ -78,7 +82,7 @@ class TicketsPublic extends Action
     }
 
     $geo_point = new SchemaPublic\GeoPointInput($this->request->get('geoPoint', []));
-    if ($device) {
+    if ($device && $device->address) {
       $address_input = new SchemaPublic\AddressInput(array_merge($device->address->toArray(), ['type' => SchemaPublic\AddressType::OTHER])); // always use original device address
     } elseif ($geo_point->lat && $geo_point->lng) {
       $address_input = new SchemaPublic\AddressInput(['geoPoint' => $geo_point, 'type' => SchemaPublic\AddressType::GPS]); // fill only GPS coords if given, address will be geocoded on backend

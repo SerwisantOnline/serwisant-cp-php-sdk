@@ -24,7 +24,7 @@
 
     {% if device %}
       {{ form_field({type: 'hidden', argument: 'device', value: device.ID}, form_params, errors) }}
-      <div class="mb-3">
+      <div class="col-md-5 mb-3">
         <div class="form-floating">
           <input type="text" class="form-control" placeholder="{{ t(_self, 'device') }}"
                  title="{{ t(_self, 'device') }}" disabled
@@ -50,7 +50,7 @@
       </div>
     </div>
 
-    {% if not device %}
+    {% if (not device) or (not device.address) %}
       <div class="mb-3 undisplayed" id="map-container">
         <div class="map-pointer" id="map"></div>
         {{ form_field({type: 'hidden', argument: 'geoPoint.lat'}, form_params, errors) }}
@@ -58,25 +58,25 @@
       </div>
     {% endif %}
 
-    <fieldset class="mb-3 {{ device ? '' : 'undisplayed' }}" {{ device ? 'disabled' : '' }} id="address-container">
+    <fieldset class="mb-3 {{ (device and device.address) ? '' : 'undisplayed' }}" {{ (device and device.address) ? 'disabled' : '' }} id="address-container">
       <div class="row">
         <div class="col-md-4 mb-3">
-          {{ form_field({type: 'text', argument: 'address.street', value: (device ? device.address.street : ''), caption: t(_self, 'street')}, form_params, errors) }}
+          {{ form_field({type: 'text', argument: 'address.street', value: ((device and device.address) ? device.address.street : ''), caption: t(_self, 'street')}, form_params, errors) }}
         </div>
         <div class="col-md-1 mb-3">
-          {{ form_field({type: 'text', argument: 'address.building', value: (device ? device.address.building : ''), caption: t(_self, 'building')}, form_params, errors) }}
+          {{ form_field({type: 'text', argument: 'address.building', value: ((device and device.address) ? device.address.building : ''), caption: t(_self, 'building')}, form_params, errors) }}
         </div>
         <div class="col-md-2 mb-3">
-          {{ form_field({type: 'text', argument: 'address.postalCode', value: (device ? device.address.postalCode : ''), caption: t(_self, 'postalCode')}, form_params, errors) }}
+          {{ form_field({type: 'text', argument: 'address.postalCode', value: ((device and device.address) ? device.address.postalCode : ''), caption: t(_self, 'postalCode')}, form_params, errors) }}
         </div>
         <div class="col-md-3 mb-3">
-          {{ form_field({type: 'text', argument: 'address.city', value: (device ? device.address.city : ''), caption: t(_self, 'city'), postfix: locale_flag()}, form_params, errors) }}
+          {{ form_field({type: 'text', argument: 'address.city', value: ((device and device.address) ? device.address.city : ''), caption: t(_self, 'city'), postfix: locale_flag()}, form_params, errors) }}
         </div>
         <div class="col-md-2 mb-3">
-          {% if device %}
-            {{ form_field({type: 'text', argument: 'address.countryIso', value: (device ? device.address.countryIso : locale_ISO()), caption: t(_self, 'country')}, form_params, errors) }}
+          {% if (device and device.address) %}
+            {{ form_field({type: 'text', argument: 'address.countryIso', value: ((device and device.address) ? device.address.countryIso : locale_ISO()), caption: t(_self, 'country')}, form_params, errors) }}
           {% else %}
-            {{ form_field({type: 'countrypicker', argument: 'address.countryIso', value: (device ? device.address.countryIso : locale_ISO()), caption: t(_self, 'country')}, form_params, errors) }}
+            {{ form_field({type: 'countrypicker', argument: 'address.countryIso', value: locale_ISO(), caption: t(_self, 'country')}, form_params, errors) }}
           {% endif %}
         </div>
       </div>

@@ -59,6 +59,18 @@ Application.Repairs.Form = function () {
 
   Application.Ui.Autocomplete($('#repair_vendor'));
   Application.Ui.Autocomplete($('#repair_model'));
+
+  var otherAddressFunc = function () {
+    var addressRadio = $('input[name="addressID"]:checked');
+    if (!addressRadio.val()) {
+      $('.address-other-container').slideDown()
+    } else {
+      $('.address-other-container').slideUp()
+    }
+  }
+
+  $('input[name="addressID"]').change(otherAddressFunc);
+  otherAddressFunc();
 }
 
 $(document).ready(function () {

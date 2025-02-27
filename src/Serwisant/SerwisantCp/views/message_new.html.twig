@@ -1,12 +1,12 @@
 <form method="post" action="{{ path('create_message') }}">
-  <div class="bg-light p-5 rounded mt-3">
+  <div class="panel-spaced bg-light rounded">
     <h1>{{ t(_self, 'title') }}</h1>
     <p class="lead">{{ t(_self, 'description') }}</p>
   </div>
 
   {{ form_errors(_self, errors) }}
 
-  <div class="bg-light p-5 rounded mt-3">
+  <div class="panel-spaced bg-light rounded">
     <div class="mb-3">
       {{ form_field({type: 'text', argument: 'message.subject', caption: t(_self, 'subject')}, form_params, errors) }}
     </div>

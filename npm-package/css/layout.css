@@ -48,6 +48,19 @@ textarea {
     padding: 10px !important;
 }
 
+.panel-spaced {
+    /* 16:9 */
+    @media (min-width: 992px) {
+        padding: 40px;
+        margin: 20px 0 20px 0;
+    }
+    /* horizontal */
+    @media (max-width: 992px) {
+        padding: 8px;
+        margin: 10px 0 10px 0;
+    }
+}
+
 /* pluginy */
 
 .filepond--item {

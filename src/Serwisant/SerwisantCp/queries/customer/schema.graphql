@@ -98,8 +98,17 @@ type CustomerMutation {
     createDevice(address: AddressInput, device: DeviceInput!): DeviceCreationResult
     createMessage(message: MessageInput!): MessageCreationResult
     createMessageReply(content: String, message: HashID!): MessageReplyCreationResult
-    "Create new repair as customer. Field `temporaryFiles` takes IDs of temporary files create via `createTemporaryFile `. Temporary files will be attached to repair and persisted."
-    createRepair(additionalItems: [RepairItemInput!], device: HashID, options: RepairCreationOptions, repair: RepairInput!, temporaryFiles: [HashID!]): RepairCreationResult
+    "Create new repair as customer. "
+    createRepair(
+        additionalItems: [RepairItemInput!],
+        "If given will be used as pickup and return address. Otherwise default customer's address will be used. You can also set `repair.pickUpAddress` and `repair.returnAddress` to one of customer's address"
+        address: AddressInput,
+        device: HashID,
+        options: RepairCreationOptions,
+        repair: RepairInput!,
+        "Takes IDs of temporary files created via `createTemporaryFile` mutation. Temporary files will be attached to repair and persisted."
+        temporaryFiles: [HashID!]
+    ): RepairCreationResult
     "Create a temporary file - file can be attached to created repair and will be persisted. It's useful to scenarios, where files must be uploaded before creation of eg. repair - and persisted with repair."
     createTemporaryFile(file: FileInput!): TemporaryFileCreationResult
     createTicket(address: AddressInput, devices: [HashID!], options: TicketCreationOptions, temporaryFiles: [HashID!], ticket: TicketInput!): TicketCreationResult
@@ -241,6 +250,7 @@ type Parcel {
     "This is a status obtained from external courier service and represent a parcel delivery state."
     deliveryStatus: ParcelDeliveryStatus!
     pickupFrom: ParcelEdge!
+    pickupTime: ParcelPickupWindow!
     "Internal parcel's state."
     status: ParcelStatus!
     "Parcel's number ad courier tracking service. In general tracking services age public available and number can be used to get current delivery status. Please note: delivery status is tracked, so more-less it should match a `deliveryStatus` field."
@@ -250,6 +260,12 @@ type Parcel {
 type ParcelEdge {
     company: String
     name: String
+    ownerType: ParcelEdgeOwnerType!
+}
+
+type ParcelPickupWindow {
+    from: DateTime
+    to: DateTime
 }
 
 type Phone {
@@ -273,17 +289,17 @@ type Repair {
     ID: HashID!
     additionalItems: [RepairItem!]!
     advanceAmount: Decimal!
-    "Address where service should pick up a repair item. Empty if `collectionType` type is `PERSONAL`"
-    collectionAddress: Address
-    "Defines how repair item will be collected from customer."
-    collectionType: RepairTransportType!
+    "Defines how repaired item should be returned to customer. Return address is specified in `returnAddress`"
+    collection: RepairTransportType!
+    collectionAddress: Address @deprecated(reason: "Use `pickUpAddress` instead")
+    collectionType: RepairTransportType! @deprecated(reason: "Use `collection` instead")
     costs: RepairCosts!
     "Will return a list of values for custom fields"
     customFields: [CustomFieldValue!]!
-    "Address where repaired item should be returned. Empty if `deliveryType` type is `PERSONAL`"
-    deliveryAddress: Address
-    "Defines how repaired item should be returned to customer."
-    deliveryType: RepairTransportType!
+    "Defines how repair item will be picked-up from customer and delivered to service. Pick-up address is specified in `pickUpAddress`"
+    delivery: RepairTransportType!
+    deliveryAddress: Address @deprecated(reason: "Use `returnAddress` instead")
+    deliveryType: RepairTransportType! @deprecated(reason: "Use `delivery` instead")
     device: Device
     diagnosis: RepairDiagnosis
     displayName: String!
@@ -293,8 +309,12 @@ type Repair {
     model: String
     offers: [RepairOffer!]
     parcels: [Parcel!]
+    "Address where service should pick up a repair item. Leave empty if `deliveryType` is `PERSONAL`"
+    pickUpAddress: Address
     priceEstimated: Decimal
     priceEstimatedTaxRate: Decimal
+    "Address where repaired item should be returned. Leave empty if `collectionType` type is `PERSONAL`"
+    returnAddress: Address
     rma: String!
     secretToken: SecretToken!
     serial: String
@@ -366,7 +386,7 @@ type RepairOfferItem {
 type RepairStatus {
     canceledOrRejected: Boolean!
     confirmed: Boolean!
-    "Repair creation date - first apear in database"
+    "Repair creation date - first appear in database"
     createdAt: DateTime!
     "Business days passed from startedAt date"
     daysFromStart: Int!
@@ -920,6 +940,11 @@ enum ParcelDeliveryStatus {
     TRANSIT
 }
 
+enum ParcelEdgeOwnerType {
+    CUSTOMER
+    SERVICE_SUPPLIER
+}
+
 enum ParcelStatus {
     CLOSED
     FAILED
@@ -1235,16 +1260,16 @@ input RepairCreationOptions {
 }
 
 input RepairInput {
-    "How repair will be returned from service to customer"
+    "Defines how repaired item should be returned to customer. Return address is specified in `returnAddress`"
     collection: RepairTransportType
     customFields: [CustomFieldValueInput!]
-    "How repair will be delivered to service"
+    "Defines how repair item will be picked-up from customer and delivered to service. Pick-up address is specified in `pickUpAddress`"
     delivery: RepairTransportType
     issue: String
     model: String
-    "ID passed from one Address entity points to address where from repair will be picked up"
+    "Address where service should pick up a repair item. Leave empty if `deliveryType` is `PERSONAL`"
     pickUpAddress: HashID
-    "ID passed from one Address entity points to address where repair will be returned"
+    "Address where repaired item should be returned. Leave empty if `collectionType` type is `PERSONAL`"
     returnAddress: HashID
     serial: String
     "ID passed from one of REPAIR_SUBJECT_TYPE Dictionary entity"

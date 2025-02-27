@@ -35,7 +35,10 @@ class Action
     if (isset($app['api_http_headers'])) {
       $this->api_http_headers = $app['api_http_headers'];
     }
+
     $this->twig = $app['twig'];
+    $this->twig->getExtension(\Twig\Extension\CoreExtension::class)->setTimezone(date_default_timezone_get());
+
     $this->translator = $app['tr'];
     $this->debug = ($this->app['env'] == 'development');
 
@@ -162,7 +165,7 @@ class Action
     }
   }
 
-  protected function redirectTo($binding, $flash_tr = null)
+  protected function redirectTo($binding, $flash_tr = null, array $get_params = [])
   {
     $redirect_variables = [];
     if (isset($this->app['token'])) {
@@ -176,6 +179,9 @@ class Action
       $url = $this->generateUrl($binding[0], array_merge($redirect_variables, $binding[1]));
     } else {
       $url = $this->generateUrl($binding, $redirect_variables);
+    }
+    if (count($get_params) > 0) {
+      $url .= '?' . http_build_query($get_params);
     }
     return $this->app->redirect($url);
   }
