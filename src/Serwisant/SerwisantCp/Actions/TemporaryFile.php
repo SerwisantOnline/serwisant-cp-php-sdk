@@ -34,8 +34,6 @@ class TemporaryFile extends Action
       return new HttpFoundation\Response('File is missing or multiple files sent', 422);
     }
     if (!$files[0]->isValid()) {
-      error_log('------------------------------------------------');
-      error_log($files[0]->getErrorMessage());
       return new HttpFoundation\Response('File error: ' . $files[0]->getErrorMessage(), 422);
     }
 
