@@ -101,7 +101,7 @@ type CustomerMutation {
     "Create new repair as customer. "
     createRepair(
         additionalItems: [RepairItemInput!],
-        "If given will be used as pickup and return address. Otherwise default customer's address will be used. You can also set `repair.pickUpAddress` and `repair.returnAddress` to one of customer's address"
+        "If given will be used as pickup AND return address. It's required in `Public` schema if passing any remote delivery or collection method. It takes precedence over other options. For `Customer` schema default customer's address will be used. For `Customer` and `Service` schemas you can set `repair.pickUpAddress` and `repair.returnAddress` to one of existing customer's address."
         address: AddressInput,
         device: HashID,
         options: RepairCreationOptions,
@@ -309,11 +309,11 @@ type Repair {
     model: String
     offers: [RepairOffer!]
     parcels: [Parcel!]
-    "Address where service should pick up a repair item. Leave empty if `deliveryType` is `PERSONAL`"
+    "Address where service should pick up a repair item. Leave empty if `delivery` is `PERSONAL`"
     pickUpAddress: Address
     priceEstimated: Decimal
     priceEstimatedTaxRate: Decimal
-    "Address where repaired item should be returned. Leave empty if `collectionType` type is `PERSONAL`"
+    "Address where repaired item should be returned. Leave empty if `collection` type is `PERSONAL`"
     returnAddress: Address
     rma: String!
     secretToken: SecretToken!
@@ -1267,9 +1267,9 @@ input RepairInput {
     delivery: RepairTransportType
     issue: String
     model: String
-    "Address where service should pick up a repair item. Leave empty if `deliveryType` is `PERSONAL`"
+    "Address where service should pick up a repair item. Leave empty if `delivery` is `PERSONAL`"
     pickUpAddress: HashID
-    "Address where repaired item should be returned. Leave empty if `collectionType` type is `PERSONAL`"
+    "Address where repaired item should be returned. Leave empty if `collection` type is `PERSONAL`"
     returnAddress: HashID
     serial: String
     "ID passed from one of REPAIR_SUBJECT_TYPE Dictionary entity"

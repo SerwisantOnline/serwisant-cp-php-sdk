@@ -4,6 +4,7 @@ query($ID: HashID!) {
         vendor
         model
         type {
+            ID
             name
             __typename
         }

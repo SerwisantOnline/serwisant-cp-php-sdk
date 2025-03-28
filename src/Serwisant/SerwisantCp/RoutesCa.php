@@ -7,9 +7,12 @@ use Symfony\Component\HttpFoundation\Request;
 
 class RoutesCa extends Routes
 {
-  private $api;
+  private Api $api;
 
-  protected function api()
+  /**
+   * @return Api
+   */
+  protected function api(): Api
   {
     if (is_null($this->api) && isset($this->app['access_token_public'])) {
       $this->api = new Api($this->app, $this->app['access_token_public'], [$this->app['base_dir'] . '/queries/public']);
@@ -40,6 +43,52 @@ class RoutesCa extends Routes
   {
     $ca = $this->app['controllers_factory'];
 
+    $this->repair($ca);
+    $this->ticket($ca);
+    $this->payments($ca);
+    $this->temporaryFiles($ca);
+
+    // token page - can show: repair status, ticket status, payment page, service supplier starting page
+
+    $ca->get('/{token}', function (Request $request, Token $token) {
+      switch ($token->subjectType()) {
+        case SecretTokenSubject::TICKET:
+          return (new Actions\TicketByToken($this->app, $request, $token))->call();
+        case SecretTokenSubject::REPAIR:
+          return (new Actions\RepairByToken($this->app, $request, $token))->call();
+        case  SecretTokenSubject::ONLINEPAYMENT:
+          return (new Actions\PaymentByToken($this->app, $request, $token))->call();
+        case SecretTokenSubject::LICENCE:
+          return (new Actions\SubscriberByToken($this->app, $request, $token))->call();
+        default:
+          throw new ExceptionNotFound(__CLASS__, __LINE__);
+      }
+    })
+      ->before($this->expectPublicAccessToken())
+      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
+      ->bind('token');
+
+    // this works only on self-hosted - shows main page (service supplier starting page) based on pre-defined key-secret
+
+    $ca->get('/', function (Request $request) {
+      if ($this->api()) {
+        $result = $this->api()->publicQuery()->configuration();
+        $t = new Token($result->panelToken, SecretTokenSubject::LICENCE);
+        return (new Actions\SubscriberByToken($this->app, $request, $t))->call();
+      } else {
+        throw new ExceptionNotFound(__CLASS__, __LINE__);
+      }
+    });
+
+    return $ca;
+  }
+
+  /**
+   * @param $ca
+   * @return void
+   */
+  private function temporaryFiles($ca): void
+  {
     // temporary files - required for tickets
     $ca->post('/{token}/temporary_file', function (Request $request, Token $token) {
       return (new Actions\TemporaryFilePublic($this->app, $request, $token))->create();
@@ -62,10 +111,18 @@ class RoutesCa extends Routes
       ->assert('token', $this->tokenAssertion())
       ->convert('token', $this->tokenConverter())
       ->bind('token_temporary_file');
+  }
 
-    // anonymous ticket
+  /**
+   * @param $ca
+   * @return void
+   * @throws ExceptionNotFound
+   */
+  private function ticket($ca): void
+  {
+    // ticket anonymous submit
 
-    $ca->get('/{token}/tickets/create', function (Request $request, Token $token) {
+    $ca->get('/{token}/ticket/create', function (Request $request, Token $token) {
       if ($token->subjectType() === SecretTokenSubject::LICENCE) {
         return (new Actions\TicketsPublic($this->app, $request, $token))->new();
       }
@@ -76,7 +133,7 @@ class RoutesCa extends Routes
       ->convert('token', $this->tokenConverter())
       ->bind('token_new_ticket');
 
-    $ca->post('/{token}/tickets/create', function (Request $request, Token $token) {
+    $ca->post('/{token}/ticket/create', function (Request $request, Token $token) {
       if ($token->subjectType() === SecretTokenSubject::LICENCE) {
         return (new Actions\TicketsPublic($this->app, $request, $token))->create($request->cookies->get(self::DEVICE_COOKIE_NAME));
       }
@@ -86,9 +143,16 @@ class RoutesCa extends Routes
       ->assert('token', $this->tokenAssertion())
       ->convert('token', $this->tokenConverter())
       ->bind('token_create_ticket');
+  }
 
+  /**
+   * @param $ca
+   * @return void
+   * @throws ExceptionNotFound
+   */
+  private function payments($ca): void
+  {
     // payments
-
     $ca->post('/{token}/payment/pay', function (Request $request, Token $token) {
       switch ($token->subjectType()) {
         case  SecretTokenSubject::ONLINEPAYMENT:
@@ -114,8 +178,51 @@ class RoutesCa extends Routes
       ->before($this->expectJson())
       ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
       ->bind('token_payment_pool');
+  }
 
-    // repair
+  /**
+   * @param $ca
+   * @return void
+   * @throws ExceptionNotFound
+   */
+  private function repair($ca): void
+  {
+    // repair anonymous submit
+
+    $ca->get('/{token}/repair/create', function (Request $request, Token $token) {
+      if ($token->subjectType() === SecretTokenSubject::LICENCE) {
+        return (new Actions\RepairsPublic($this->app, $request, $token))->new();
+      }
+      throw new ExceptionNotFound(__CLASS__, __LINE__);
+    })
+      ->before($this->expectPublicAccessToken())
+      ->assert('token', $this->tokenAssertion())
+      ->convert('token', $this->tokenConverter())
+      ->bind('token_new_repair');
+
+    $ca->post('/{token}/repair/create', function (Request $request, Token $token) {
+      if ($token->subjectType() === SecretTokenSubject::LICENCE) {
+        return (new Actions\RepairsPublic($this->app, $request, $token))->create($request->cookies->get(self::DEVICE_COOKIE_NAME));
+      }
+      throw new ExceptionNotFound(__CLASS__, __LINE__);
+    })
+      ->before($this->expectPublicAccessToken())
+      ->assert('token', $this->tokenAssertion())
+      ->convert('token', $this->tokenConverter())
+      ->bind('token_create_repair');
+
+    $ca->get('/{token}/repair/submit_prompt', function (Request $request, Token $token) {
+      if ($token->subjectType() === SecretTokenSubject::LICENCE) {
+        return (new Actions\RepairsPublic($this->app, $request, $token))->submitPrompt();
+      }
+      throw new ExceptionNotFound(__CLASS__, __LINE__);
+    })
+      ->before($this->expectPublicAccessToken())
+      ->assert('token', $this->tokenAssertion())
+      ->convert('token', $this->tokenConverter())
+      ->bind('token_repair_submit_prompt');
+
+    // repair (by its token)
 
     $ca->post('/{token}/repair/accept', function (Request $request, Token $token) {
       switch ($token->subjectType()) {
@@ -156,39 +263,5 @@ class RoutesCa extends Routes
       ->before($this->expectJson())
       ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
       ->bind('token_repair_reject');
-
-    // token page - can show: repair status, ticket status, payment page, service supplier starting page
-
-    $ca->get('/{token}', function (Request $request, Token $token) {
-      switch ($token->subjectType()) {
-        case SecretTokenSubject::TICKET:
-          return (new Actions\TicketByToken($this->app, $request, $token))->call();
-        case SecretTokenSubject::REPAIR:
-          return (new Actions\RepairByToken($this->app, $request, $token))->call();
-        case  SecretTokenSubject::ONLINEPAYMENT:
-          return (new Actions\PaymentByToken($this->app, $request, $token))->call();
-        case SecretTokenSubject::LICENCE:
-          return (new Actions\SubscriberByToken($this->app, $request, $token))->call();
-        default:
-          throw new ExceptionNotFound(__CLASS__, __LINE__);
-      }
-    })
-      ->before($this->expectPublicAccessToken())
-      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
-      ->bind('token');
-
-    // this works only on self-hosted - shows main page (service supplier starting page) based on pre-defined key-secret
-
-    $ca->get('/', function (Request $request) {
-      if ($this->api()) {
-        $result = $this->api()->publicQuery()->configuration();
-        $t = new Token($result->panelToken, SecretTokenSubject::LICENCE);
-        return (new Actions\SubscriberByToken($this->app, $request, $t))->call();
-      } else {
-        throw new ExceptionNotFound(__CLASS__, __LINE__);
-      }
-    });
-
-    return $ca;
   }
 }

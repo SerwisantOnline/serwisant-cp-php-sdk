@@ -9,6 +9,9 @@ use Symfony\Component\HttpFoundation\Cookie;
 
 class Application
 {
+  const ENV_PRODUCTION = 'production';
+  const ENV_DEVELOPMENT = 'development';
+
   private $env;
   private $view_paths = [];
   private $query_paths = [];
@@ -20,12 +23,12 @@ class Application
   private $app;
   private $router;
 
-  public function __construct($env = 'production', $view_paths = [], $query_paths = [], $tr_files = [], string $default_locale = 'pl_PL')
+  public function __construct($env = self::ENV_PRODUCTION, $view_paths = [], $query_paths = [], $tr_files = [], string $default_locale = 'pl_PL')
   {
     if ($env) {
       $this->env = $env;
     } else {
-      $this->env = 'production';
+      $this->env = self::ENV_PRODUCTION;
     }
     $this->view_paths = $view_paths;
     $this->query_paths = $query_paths;
@@ -67,6 +70,12 @@ class Application
     $this->app['tr'] = new Translator($this->tr_files, explode('_', $this->default_locale)[0]);
     $this->app['flash'] = new Flash();
 
+    if ($this->env != self::ENV_PRODUCTION) {
+      $assets_version = sha1(time());
+    } else {
+      $assets_version = $this->app['assets_version'] ? $this->app['assets_version'] : sha1(date('Y-m-d'));
+    }
+
     $this->app->register(new Silex\Provider\TwigServiceProvider(), ['twig.path' => $this->view_paths]);
     $this->app->register(new Silex\Provider\RoutingServiceProvider());
     $this->app->register(new \Devim\Provider\CorsServiceProvider\CorsServiceProvider());
@@ -74,7 +83,7 @@ class Application
       new Silex\Provider\AssetServiceProvider(),
       [
         'assets.version_format' => '%s?%s',
-        'assets.version' => (isset($this->app['assets_version']) ? (string)$this->app['assets_version'] : sha1(date('ymd'))),
+        'assets.version' => (string)$assets_version,
         'assets.base_path' => '/',
       ]
     );
@@ -167,7 +176,7 @@ class Application
 
   protected function sessionStart()
   {
-    session_set_cookie_params((60 * 60 * 6), '/', null, ($this->env == 'production'), false);
+    session_set_cookie_params((60 * 60 * 6), '/', null, ($this->env == self::ENV_PRODUCTION), false);
     ini_set('session.cookie_samesite', 1);
     ini_set('session.use_strict_mode', 1);
 
