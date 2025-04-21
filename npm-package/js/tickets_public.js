@@ -26,8 +26,14 @@ Application.TicketsPublic.Form = function () {
   }
 
   var mapContainer = $('#map-container');
-  if (mapContainer.length > 0) {
+  var mapInitialized = false;
+  var showAddressToggle = $('#showAddress');
+  var funcMap = function() {
+    if (mapInitialized) {
+      return;
+    }
     if ($('#geoPoint_lat').val() && $('#geoPoint_lng').val()) {
+      $('#show-address-toggle-container').slideDown();
       mapContainer.slideDown(400, function () {
         Application.Maps.MapWithPointer($('#map'), $('#geoPoint_lat').val(), $('#geoPoint_lng').val(), function (lat, lng) {
           $('#geoPoint_lat').val(lat);
@@ -39,6 +45,7 @@ Application.TicketsPublic.Form = function () {
         if (coords.lat === undefined && coords.lng === undefined) {
           $('#address-container').slideDown();
         } else {
+          $('#show-address-toggle-container').slideDown();
           $('#geoPoint_lat').val(coords.lat);
           $('#geoPoint_lng').val(coords.lng);
           mapContainer.slideDown(400, function () {
@@ -50,6 +57,23 @@ Application.TicketsPublic.Form = function () {
         }
       });
     }
+    mapInitialized = true;
+  }
+  var funcShowAddress = function () {
+    if ($(this).is(":checked")) {
+      $('#map-container').slideUp();
+      $('#address-container').slideDown();
+    } else {
+      $('#address-container').slideUp();
+      $('#map-container').slideDown(400, funcMap);
+    }
+  }
+
+  if (mapContainer.length > 0) {
+    if (!showAddressToggle.is(":checked")) {
+      funcMap();
+    }
+    showAddressToggle.change(funcShowAddress)
   }
 }
 

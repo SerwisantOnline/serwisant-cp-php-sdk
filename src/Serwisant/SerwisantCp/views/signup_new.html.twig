@@ -68,8 +68,8 @@
           </td>
           <td>
             <div class="{{ customer_agreement_class(agreement) }}">
-              <a href="#" data-bs-toggle="modal"
-                 data-bs-target="#agreement_content_{{ agreement.ID }}">{{ t(_self, 'read_agreement') }}</a>
+              <a target="_blank" href="{{ path('agreement', {id: agreement.ID}) }}"
+                 data-title="{{ agreement.description }}">{{ t(_self, 'read_agreement') }}</a>
             </div>
           </td>
         </tr>
@@ -84,26 +84,6 @@
     </div>
   </div>
 </form>
-
-{% for agreement in agreementsDefinitions %}
-  <div class="modal fade" id="agreement_content_{{ agreement.ID }}" data-bs-backdrop="static" data-bs-keyboard="false"
-       tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable modal-xl">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="staticBackdropLabel">{{ agreement.title }}</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          {{ agreement.content | raw | nl2br }}
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ t(_self, 'close') }}</button>
-        </div>
-      </div>
-    </div>
-  </div>
-{% endfor %}
 
 {% for error in errors %}
   {% if error.argument == 'customer.email' and error.code == 'taken' %}

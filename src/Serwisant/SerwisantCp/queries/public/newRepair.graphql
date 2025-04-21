@@ -23,9 +23,30 @@ query {
             }
         }
     }
-    configuration: configuration {
+    repairCustomFields: customFields(form: REPAIR) {
         __typename
-        repairSubmitPrompt
-        repairSubmitPromptContent
+        ID
+        type
+        selectOptions
+        required
+        concern {
+            __typename
+            ID
+        }
+        name
+        description
+    }
+    dictionaryEntries: dictionaryEntries(filter: {type: REPAIR_SUBJECT_TYPE}) {
+        __typename
+        ID
+        name
+    }
+    customerAgreements: customerAgreements {
+        __typename
+        ID
+        title
+        content
+        visiblePersonal
+        visibleBusiness
     }
 }

@@ -525,6 +525,34 @@ pl:
     collection: Sposób odbioru naprawy
     cancel: Anuluj
     submit: Dodaj naprawę
+  repair_public_new:
+    title: Zgłoś naprawę
+    introduction: "Zgłoszona naprawa zostanie przekazana do serwisu:"
+    device: 'Urządzenie, którego dotyczy naprawa'
+    type: Przedmiot naprawy
+    vendor: Producent
+    model: Model
+    serial: Numer seryjny urządzenia
+    warranty: Naprawa w ramach gwarancji
+    warrantyPurchaseDate: Data zakupu
+    warrantyPurchaseDocument: Numer dokumentu zakupu
+    issue: 'Opis usterki, problemu'
+    street: Ulica
+    building: Numer
+    postalCode: Kod pocztowy
+    city: Miasto
+    country: Kraj
+    delivery: Sposób dostarczenia naprawy
+    collection: Sposób odbioru naprawy
+    phone_prefix: Kraj
+    phone_number: Numer telefonu
+    email: Adres email
+    read_agreement: Czytaj
+    cancel: Anuluj
+    submit: Dodaj naprawę
+  repair_public_submit_prompt:
+    title: 'Wiadomość od serwisu:'
+    proceed: Przejdź na stronę naprawy
   tickets:
     title: Zgłoszenia
     create_ticket: Dodaj zgłoszenie awarii
@@ -619,6 +647,7 @@ pl:
     phone_number: Numer telefonu
     email: Adres email
     read_agreement: Czytaj
+    showAddress: Pozwól mi wpisać adres z lokalizacją zgłoszenia
   online_payment_by_token:
     introduction: 'Aby uzyskać dodatkowe informacje związane z tą płatnością, skontaktuj się z serwisem używając następujących danych:'
   online_payment:

@@ -2,7 +2,7 @@ schema: schema.graphql
 extensions:
   endpoints:
     Public GraphQL Endpoint:
-      url: http://0.0.0.0:3000/graphql/public
+      url: http://0.0.0.0:3003/graphql/public
       headers:
         user-agent: JS GraphQL
       introspect: true

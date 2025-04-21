@@ -6,7 +6,6 @@ use Adbar\Dot;
 use Serwisant\SerwisantCp\Action;
 use Serwisant\SerwisantCp\Traits;
 use Serwisant\SerwisantCp\ExceptionNotFound;
-
 use Serwisant\SerwisantApi\Types\SchemaPublic;
 
 class TicketsPublic extends Action
@@ -44,6 +43,7 @@ class TicketsPublic extends Action
       'priorities_select_options' => $priorities_select_options,
       'serviceSupplier' => $viewer->ticketsServiceSupplier,
       'device' => $device,
+      'showAddress' => $this->request->get('showAddress'),
       'form_params' => $this->request->request,
       'temporary_files' => $this->formHelper()->mapTemporaryFiles($this->request->get('temporary_files')),
       'errors' => $errors,
@@ -76,15 +76,12 @@ class TicketsPublic extends Action
     $ticket_input = new SchemaPublic\TicketInput($ticket);
 
     $device = $this->getDevicePublic();
-    $devices = [];
-    if ($device) {
-      $devices[] = $device->ID;
-    }
 
     $geo_point = new SchemaPublic\GeoPointInput($this->request->get('geoPoint', []));
+    $show_address = $this->request->get('showAddress', false);
     if ($device && $device->address) {
       $address_input = new SchemaPublic\AddressInput(array_merge($device->address->toArray(), ['type' => SchemaPublic\AddressType::OTHER])); // always use original device address
-    } elseif ($geo_point->lat && $geo_point->lng) {
+    } elseif (!$show_address && $geo_point->lat && $geo_point->lng) {
       $address_input = new SchemaPublic\AddressInput(['geoPoint' => $geo_point, 'type' => SchemaPublic\AddressType::GPS]); // fill only GPS coords if given, address will be geocoded on backend
     } else {
       $address_input = new SchemaPublic\AddressInput(array_merge($this->request->get('address', []), ['type' => SchemaPublic\AddressType::OTHER])); // pass given address
@@ -94,7 +91,7 @@ class TicketsPublic extends Action
       $applicant_input,
       $ticket_input,
       $helper->mapTemporaryFiles($this->request->get('temporary_files')),
-      $devices,
+      ($device ? $device->ID : null),
       $address_input
     );
 

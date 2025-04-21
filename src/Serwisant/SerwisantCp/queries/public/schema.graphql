@@ -114,6 +114,7 @@ type Device {
     displayName: String!
     isVerified: Boolean!
     model: String
+    serial: String
     type: Dictionary!
     vendor: String
 }
@@ -237,8 +238,18 @@ type PublicMutation {
     createCustomer(addresses: [AddressInput!], agreements: [CustomerAgreementInput!], customer: CustomerInput!): CustomerCreationResult
     "Activate customer panel access for existing customer - set a login and password"
     createCustomerAccess(activationToken: String!, agreements: [CustomerAgreementInput!], login: String!, password: String!): CustomerAccessCreationResult
+    createRepair(
+        additionalItems: [RepairItemInput!],
+        "If given will be used as pickup AND return address. It's required in `Public` schema if passing any remote delivery or collection method. It takes precedence over other options. For `Customer` schema default customer's address will be used. For `Customer` and `Service` schemas you can set `repair.pickUpAddress` and `repair.returnAddress` to one of existing customer's address."
+        address: AddressInput,
+        applicant: AnonymousApplicantInput!,
+        device: HashID,
+        repair: RepairInput!,
+        "Takes IDs of temporary files created via `createTemporaryFile` mutation. Temporary files will be attached to repair and persisted."
+        temporaryFiles: [HashID!]
+    ): RepairCreationResult
     createTemporaryFile(file: FileInput!): TemporaryFileCreationResult
-    createTicket(address: AddressInput, applicant: AnonymousApplicantInput!, devices: [HashID!], temporaryFiles: [HashID!], ticket: TicketInput!): TicketCreationResult
+    createTicket(address: AddressInput, applicant: AnonymousApplicantInput!, device: HashID, temporaryFiles: [HashID!], ticket: TicketInput!): TicketCreationResult
     "Pay for `OnlinePayment` using any available `type` of payment. Depending on result status, payment may be queued: in that case pool for result, may be asked to redirect user to other site to complete a payment."
     pay(errorUrl: String!, onlineTransaction: OnlineTransactionInput!, successUrl: String!, token: String!): OnlinePaymentResult
     "If customer already exists (`login` query will return `INTERNET_ACCESS_NOT_ENABLED`, or `create_customer` ends up with email exists validation error) this mutation can be used to send a secret link points to panel access activation (set up a login and password)."
@@ -259,6 +270,7 @@ type PublicQuery {
     customerCustomFields: [CustomField!]! @deprecated(reason: "Use generic customFields with applicable filter.")
     customerStatements: [CustomerStatement!]!
     device(ID: HashID!): Device!
+    dictionaryEntries(filter: DictionaryEntriesFilter): [Dictionary!]!
     "This query map given login credential, ie. email, or username itself to OAuth login. Please note: given credential can point to more than one login, so thus must be handled on frontend side. This will also return unavailability reasons if customer has no internet access enabled or account is not activated with confirmation link."
     login(loginCredential: String!): [LoginResult!]!
     "If token belongs to online payment, use this query to get details"
@@ -283,6 +295,7 @@ type PublicQuery {
 }
 
 type Repair {
+    ID: HashID!
     advanceAmount: Decimal!
     "Defines how repaired item should be returned to customer. Return address is specified in `returnAddress`"
     collection: RepairTransportType!
@@ -332,6 +345,11 @@ type RepairCosts {
     proposedGross: Decimal
     "Net price proposed durring repair aquisition, nil if nothing was proposed, it's not a real price, rather a guess"
     proposedNet: Decimal
+}
+
+type RepairCreationResult {
+    errors: [Error!]
+    repair: Repair
 }
 
 type RepairDiagnosis {
@@ -1192,6 +1210,10 @@ input CustomerInput {
     type: CustomerType
 }
 
+input DictionaryEntriesFilter {
+    type: DictionaryType
+}
+
 input FileInput {
     "File MIME type, eg. image/png - must be valid IANA media type, list: http://www.iana.org/assignments/media-types/media-types.xhtml"
     contentType: String!
@@ -1231,6 +1253,29 @@ input PhoneInput {
 
 input PrioritiesFilter {
     type: PriorityType
+}
+
+input RepairInput {
+    "Defines how repaired item should be returned to customer. Return address is specified in `returnAddress`"
+    collection: RepairTransportType
+    customFields: [CustomFieldValueInput!]
+    "Defines how repair item will be picked-up from customer and delivered to service. Pick-up address is specified in `pickUpAddress`"
+    delivery: RepairTransportType
+    issue: String
+    model: String
+    serial: String
+    "ID passed from one of REPAIR_SUBJECT_TYPE Dictionary entity"
+    type: HashID!
+    vendor: String
+    warranty: Boolean
+    warrantyPurchaseDate: Date
+    warrantyPurchaseDocument: String
+}
+
+input RepairItemInput {
+    description: String
+    serial: String
+    type: HashID!
 }
 
 input ServiceSuppliersFilter {

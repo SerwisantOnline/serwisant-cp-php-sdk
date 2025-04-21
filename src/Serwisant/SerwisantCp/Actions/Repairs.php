@@ -6,31 +6,23 @@ use Serwisant\SerwisantCp\Traits;
 use Serwisant\SerwisantCp\Action;
 use Serwisant\SerwisantCp\Exception;
 use Serwisant\SerwisantCp\ExceptionNotFound;
-
 use Serwisant\SerwisantApi\Types\SchemaPublic\RepairSubmitPrompt;
-use Serwisant\SerwisantApi\Types\SchemaCustomer\RepairsFilter;
-use Serwisant\SerwisantApi\Types\SchemaCustomer\RepairsFilterType;
-use Serwisant\SerwisantApi\Types\SchemaCustomer\RepairsSort;
-use Serwisant\SerwisantApi\Types\SchemaCustomer\RepairInput;
-use Serwisant\SerwisantApi\Types\SchemaCustomer\PrintType;
-use Serwisant\SerwisantApi\Types\SchemaCustomer\RepairTransportType;
-use Serwisant\SerwisantApi\Types\SchemaCustomer\Device;
-use Serwisant\SerwisantApi\Types\SchemaCustomer\AddressInput;
-use Serwisant\SerwisantApi\Types\SchemaCustomer\AddressUpdateInput;
-use Serwisant\SerwisantApi\Types\SchemaCustomer\AddressType;
+use Serwisant\SerwisantApi\Types\SchemaCustomer;
 
 class Repairs extends Action
 {
   use Traits\Devices;
+  use Traits\RepairsAction;
 
+  /* queries [customer/repairs.graphql] */
   public function index()
   {
     $this->checkModuleActive();
 
     $limit = $this->getListLimit();
     $page = $this->request->get('page', 1);
-    $filter = new RepairsFilter(['type' => RepairsFilterType::ALL]);
-    $sort = RepairsSort::DATE_UPDATED;
+    $filter = new SchemaCustomer\RepairsFilter(['type' => SchemaCustomer\RepairsFilterType::ALL]);
+    $sort = SchemaCustomer\RepairsSort::DATE_UPDATED;
 
     $repairs = $this
       ->apiCustomer()
@@ -45,11 +37,12 @@ class Repairs extends Action
     return $this->renderPage('repairs.html.twig', $variables);
   }
 
+  /* queries [customer/repairs.graphql] */
   public function show($id)
   {
     $this->checkModuleActive();
 
-    $filter = new RepairsFilter(['type' => RepairsFilterType::ID, 'ID' => $id]);
+    $filter = new SchemaCustomer\RepairsFilter(['type' => SchemaCustomer\RepairsFilterType::ID, 'ID' => $id]);
     $result = $this->apiCustomer()->customerQuery()->repairs(1, null, $filter, null, ['single' => true]);
     if (count($result->items) !== 1) {
       throw new ExceptionNotFound(__CLASS__, __LINE__);
@@ -63,16 +56,17 @@ class Repairs extends Action
     return $this->renderPage('repair.html.twig', $variables);
   }
 
+  /* queries [customer/print.graphql] */
   public function print($id, $type)
   {
     $this->checkModuleActive();
 
     switch ($type) {
       case 'intro':
-        $print_type = PrintType::REPAIR_INTRO;
+        $print_type = SchemaCustomer\PrintType::REPAIR_INTRO;
         break;
       case 'summary':
-        $print_type = PrintType::REPAIR_SUMMARY;
+        $print_type = SchemaCustomer\PrintType::REPAIR_SUMMARY;
         break;
       default:
         throw new ExceptionNotFound(__CLASS__, __LINE__);
@@ -93,6 +87,7 @@ class Repairs extends Action
     }
   }
 
+  /* queries [customer/repairsAction.graphql] */
   public function submitPrompt()
   {
     $action_query = $this->actionQuery();
@@ -108,12 +103,7 @@ class Repairs extends Action
 
     $result = $this->apiCustomer()->customerQuery()->newRequest()->setFile('newRepair.graphql')->execute();
 
-    $dictionary_select_options = [];
-    foreach ($result->fetch('dictionaryEntries') as $entry) {
-      $dictionary_select_options[$entry->ID] = $entry->name;
-    }
-
-    /* @var $device Device */
+    /* @var $device SchemaCustomer\Device */
     $device = $this->getDevice();
 
     $addresses_radio_options = [];
@@ -128,25 +118,17 @@ class Repairs extends Action
     }
     $default_address = array_key_first($addresses_radio_options);
 
-    $transport_radio_options = [RepairTransportType::PARCEL => $this->t('transport_types.PARCEL')];
-    if ($this->getLayoutVars()['configuration']->personalTransportEnabled) {
-      $transport_radio_options[RepairTransportType::PERSONAL] = $this->t('transport_types.PERSONAL');
-    }
-    if ($this->getLayoutVars()['configuration']->internalTransportEnabled) {
-      $transport_radio_options[RepairTransportType::INTERNAL] = $this->t('transport_types.INTERNAL');
-    }
-
     $variables = [
       'customFieldsDefinitions' => $result->fetch('orderCustomFields'),
-      'dictionary_select_options' => $dictionary_select_options,
+      'dictionary_select_options' => $this->dictionarySelectOptions($result->fetch('dictionaryEntries')),
       'addresses_radio_options' => $addresses_radio_options,
-      'transport_radio_options' => $transport_radio_options,
+      'transport_radio_options' => $this->transportRadioOptions(),
       'defaultAddress' => $default_address,
       'device' => $device,
       'form_params' => $this->request->request,
       'temporary_files' => $this->formHelper()->mapTemporaryFiles($this->request->get('temporary_files')),
       'errors' => $errors,
-      'js_files' => ['repairs.js'],
+      'js_files' => ['repairs_shared.js', 'repairs.js'],
       'pageTitle' => $this->t('repair_new.title'),
     ];
 
@@ -167,23 +149,25 @@ class Repairs extends Action
       $repair['customFields'] = $helper->mapCustomFields($repair['customFields']);
     }
     $repair['warranty'] = (array_key_exists('warranty', $repair) && $repair['warranty'] == '1');
-    $repair_input = new RepairInput($repair);
+    $repair_input = new SchemaCustomer\RepairInput($repair);
 
     $device = $this->getDevice();
 
     if ($this->request->get('addressID')) {
-      $address_input = new AddressInput();
+      $address_input = new SchemaCustomer\AddressInput();
       if ($device && $device->address && $device->address->ID == $this->request->get('addressID')) {
-        $address_input = new AddressInput($device->address->toArray(['ID', 'geoPoint']));
+        $address_input = new SchemaCustomer\AddressInput($device->address->toArray(['ID', 'geoPoint']));
       } else {
         foreach ($this->apiCustomer()->customerQuery()->viewer(['addresses' => true])->customer->addresses as $a) {
           if ($a->ID == $this->request->get('addressID')) {
-            $address_input = new AddressInput($a->toArray(['ID', 'geoPoint']));
+            $address_input = new SchemaCustomer\AddressInput($a->toArray(['ID', 'geoPoint']));
           }
         }
       }
+    } elseif ($repair_input->delivery == SchemaCustomer\RepairTransportType::PERSONAL && $repair_input->collection == SchemaCustomer\RepairTransportType::PERSONAL) {
+      $address_input = null;
     } else {
-      $address_input = new AddressInput(array_merge($this->request->get('address', []), ['type' => AddressType::OTHER]));
+      $address_input = new SchemaCustomer\AddressInput(array_merge($this->request->get('address', []), ['type' => SchemaCustomer\AddressType::OTHER]));
     }
 
     $result = $this->apiCustomer()->customerMutation()->createRepair(
@@ -198,7 +182,7 @@ class Repairs extends Action
       $this->apiCustomer()->customerMutation()->updateViewer(
         null,
         [],
-        [new AddressUpdateInput(array_merge($this->request->get('address', []), ['type' => AddressType::OTHER]))]
+        [new SchemaCustomer\AddressUpdateInput(array_merge($this->request->get('address', []), ['type' => SchemaCustomer\AddressType::OTHER]))]
       );
     }
 
@@ -211,23 +195,10 @@ class Repairs extends Action
     }
   }
 
-  private function checkModuleActive()
-  {
-    $this->checkPanelActive();
-    if (false === $this->getLayoutVars()['configuration']->panelRepairs) {
-      throw new ExceptionNotFound(__CLASS__, __LINE__);
-    }
-  }
-
   private function hasNoRepairs()
   {
-    $filter = new RepairsFilter(['type' => RepairsFilterType::ALL]);
-    $repairs = $this->apiCustomer()->customerQuery()->repairs(2, 1, $filter, RepairsSort::DATE_UPDATED, ['count' => true]);
+    $filter = new SchemaCustomer\RepairsFilter(['type' => SchemaCustomer\RepairsFilterType::ALL]);
+    $repairs = $this->apiCustomer()->customerQuery()->repairs(2, 1, $filter, SchemaCustomer\RepairsSort::DATE_UPDATED, ['count' => true]);
     return count($repairs->items) == 0;
-  }
-
-  private function actionQuery()
-  {
-    return $this->apiPublic()->publicQuery()->newRequest()->setFile('repairsAction.graphql')->execute();
   }
 }

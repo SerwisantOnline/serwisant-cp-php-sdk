@@ -225,17 +225,30 @@ class TwigFormExtensions extends TwigExtensions
         break;
 
       case 'radios':
-        $html .= '<fieldset class="row"><legend class="col-form-label col-4 pt-0">';
-        $html .= $options->get('caption');
-        $html .= '</legend><div class="col-8">';
+      case 'radios-horizontal':
+        if ($type === 'radios') {
+          $html .= '<fieldset class="row"><legend class="col-form-label col-4 pt-0">';
+          $html .= $options->get('caption');
+          $html .= '</legend><div class="col-8">';
+        } elseif ($type === 'radios-horizontal') {
+          $html .= '<legend class="col-form-label pt-0">';
+          $html .= $options->get('caption');
+          $html .= '</legend>';
+        }
         foreach ($options->get('options', []) as $v => $t) {
           $checked = ($v == $value) ? "checked='checked'" : "";
-          $html .= '<div class="form-check">';
+          $default_class = 'form-check';
+          if ($type === 'radios-horizontal') {
+            $default_class .= " form-check-inline";
+          }
+          $html .= "<div class='{$default_class}'>";
           $html .= "<input class='form-check-input' type='radio' name='{$name}' id='{$id}_{$v}' value='{$v}' {$checked}>";
           $html .= "<label class='form-check-label' for='{$id}_{$v}'>{$t}</label>";
           $html .= '</div>';
         }
-        $html .= '</div></fieldset>';
+        if ($type === 'radios') {
+          $html .= '</div></fieldset>';
+        }
         break;
 
       case 'select':

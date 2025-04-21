@@ -1,6 +1,6 @@
 {
   "name": "serwisant/serwisant-cp",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Customer Panel SDK for https://serwisant.online service",
   "type": "library",
   "homepage": "https://github.com/SerwisantOnline/serwisant-cp-php-sdk",
@@ -10,7 +10,7 @@
     "ext-json": "*",
     "ext-openssl": "*",
     "composer/package-versions-deprecated": "*",
-    "serwisant/serwisant-api": "~3.4.0",
+    "serwisant/serwisant-api": "~3.5.0",
     "silex/silex": "^2.3",
     "devimteam/silex-cors-provider": "^1.0",
     "symfony/asset": "^3.4",
