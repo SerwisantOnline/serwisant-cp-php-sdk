@@ -1,0 +1,44 @@
+<div class="card my-2">
+  <div class="card-header">
+    <span class="pull-right"></span>
+    {{ t(_self, 'title') }}
+  </div>
+  <table class="table table-bordered card-table">
+    <tbody>
+    <tr>
+      <td class="column-definition">{{ t(_self, 'payment_type') }}</td>
+      <td
+        colspan="2">{{ ticket.payment.type ? t('payment_types', ticket.payment.type) : t(_self, 'not_defined') }}</td>
+    </tr>
+    {% if ticket.payment.hoursSpend %}
+      <tr>
+        <td class="column-definition">{{ t(_self, 'time') }}</td>
+        <td colspan="2">
+          {{ ticket.payment.hoursSpend | number_format(0) }} {{ t(_self, 'hour') }}
+        </td>
+      </tr>
+    {% endif %}
+    {% if not ticket.payment.paymentNet is null or not ticket.payment.paymentGross is null %}
+      <tr>
+        <td class="column-definition">{{ t(_self, 'payment') }}</td>
+        <td>
+          {% if not ticket.payment.paymentNet is null %}
+            {{ ticket.payment.paymentNet | format_currency(currency) }}
+          {% endif %}
+        </td>
+        <td>
+          {% if not ticket.payment.paymentGross is null %}
+            {{ ticket.payment.paymentGross | format_currency(currency) }}
+          {% endif %}
+        </td>
+      </tr>
+    {% endif %}
+    <tr>
+      <td class="column-definition">{{ t(_self, 'paid') }}</td>
+      <td colspan="2">
+        <input type="checkbox" disabled {{ ticket.payment.paid ? 'checked="checked"' : '' }}>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

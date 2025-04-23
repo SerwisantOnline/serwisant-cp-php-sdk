@@ -15,12 +15,14 @@
 {{ form_errors(_self, rating_errors) }}
 {% include 'shared/rating.html.twig' with {'isRateable': repair.isRateable, 'formUrl': path('repair_rate', {'id': repair.ID}), 'rating': repair.rating} %}
 
-{% include 'repair/panel_change_status.html.twig' with {'parent': 'cp'} %}
+<div class="panel-spaced bg-light rounded">
+  {% include 'shared/service_supplier_card.html.twig' with {'serviceSupplier': repair.serviceSupplier, 'title': t(_self, 'introduction')} %}
 
-<div class="bg-light p-5 rounded mt-3">
+  {% include 'repair/panel_change_status.html.twig' with {'parent': 'cp'} %}
+
   <div class="row">
     <div class="col-md-6">
-      {% include 'repair/panel_info.html.twig' %}
+      {% include 'repair/panel_info.html.twig' with {'addresses': true} %}
       {% include 'repair/additional_items.html.twig' %}
       {% include 'repair/panel_custom_fields.html.twig' %}
       {% include 'repair/panel_issue.html.twig' %}

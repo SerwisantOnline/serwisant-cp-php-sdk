@@ -1,5 +1,5 @@
 query {
-    customerCustomFields: customerCustomFields {
+    customerCustomFields: customFields(form: CUSTOMER) {
         __typename
         ID
         name

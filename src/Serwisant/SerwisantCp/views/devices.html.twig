@@ -2,7 +2,7 @@
   <a class="btn btn-primary btn-lg" href="{{ path('new_device') }}">{{ t(_self, 'create_device') }}</a>
 {% endif %}
 
-<div class="bg-light p-5 rounded mt-3">
+<div class="panel-spaced bg-light rounded">
   {% if devices.items is empty %}
     <p class="lead">{{ t(_self, 'no_devices') }}</p>
   {% else %}

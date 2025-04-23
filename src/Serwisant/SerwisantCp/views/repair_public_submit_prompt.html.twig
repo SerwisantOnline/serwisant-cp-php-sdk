@@ -1,0 +1,23 @@
+<div class="pb-2">
+  {% include 'shared/service_supplier_card.html.twig' with {'serviceSupplier': serviceSupplier, 'title': t(_self, 'title')} %}
+</div>
+
+<p>
+  {% if prompt_content %}
+    {{ prompt_content | raw | nl2br }}
+  {% else %}
+    No content
+  {% endif %}
+</p>
+
+
+{% if repairID %}
+  <div class="clearfix">
+    <div class="mb-3 float-end form-buttons">
+      <a href="{{ path('token', {token: repairID}) }}" class="btn btn-primary btn-lg">
+        {{ t(_self, 'proceed') }}
+      </a>
+    </div>
+  </div>
+{% endif %}
+

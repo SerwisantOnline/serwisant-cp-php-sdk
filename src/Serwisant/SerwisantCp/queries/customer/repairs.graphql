@@ -54,8 +54,7 @@ query repairs($limit: Int, $page: Int, $filter: RepairsFilter, $sort: RepairsSor
                     __typename
                 }
                 phone {
-                    number
-                    countryPrefix
+                    formatted
                     __typename
                 }
                 email
@@ -72,8 +71,24 @@ query repairs($limit: Int, $page: Int, $filter: RepairsFilter, $sort: RepairsSor
                 __typename
             }
             advanceAmount
-            deliveryType
-            collectionType
+            delivery
+            pickUpAddress {
+                street
+                building
+                city
+                postalCode
+                countryIso
+                __typename
+            }
+            collection
+            returnAddress {
+                street
+                building
+                city
+                postalCode
+                countryIso
+                __typename
+            }
             issue
             priceEstimated
             priceEstimatedTaxRate
@@ -162,6 +177,12 @@ query repairs($limit: Int, $page: Int, $filter: RepairsFilter, $sort: RepairsSor
                 pickupFrom {
                     company
                     name
+                    ownerType
+                    __typename
+                }
+                pickupTime {
+                    from
+                    to
                     __typename
                 }
                 deliverTo {

@@ -1,6 +1,6 @@
 <a class="btn btn-primary btn-lg" href="{{ path('new_ticket') }}">{{ t(_self, 'create_ticket') }}</a>
 
-<div class="bg-light p-5 rounded mt-3">
+<div class="panel-spaced bg-light rounded">
   {% if tickets.items is empty %}
     <p class="lead">{{ t(_self, 'no_tickets') }}</p>
   {% else %}

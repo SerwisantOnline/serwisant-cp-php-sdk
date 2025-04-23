@@ -1,0 +1,17 @@
+mutation createTicket($applicant: AnonymousApplicantInput!, $ticket: TicketInput!, $temporaryFiles: [HashID!], $device: HashID, $address: AddressInput) {
+    createTicket(applicant: $applicant, ticket: $ticket, temporaryFiles: $temporaryFiles, device: $device, address: $address) {
+        __typename
+        ticket {
+            __typename
+            secretToken {
+                __typename
+                token
+            }
+        }
+        errors {
+            __typename
+            argument
+            code
+        }
+    }
+}

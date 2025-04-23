@@ -1,8 +1,15 @@
-<div class="row">
+{% if configuration.dashboardMessage %}
+  <!-- visible vertical -->
+  <div class="panel-spaced bg-light rounded d-md-block d-lg-none">
+    {{ configuration.dashboardMessage | raw }}
+  </div>
+{% endif %}
 
-  <div class="col col-lg-8">
+<div class="row">
+  <!-- visible 16:9 -->
+  <div class="col col-lg-8 d-none d-lg-block">
     {% if configuration.dashboardMessage %}
-      <div class="bg-light p-5 rounded mt-3">
+      <div class="panel-spaced bg-light rounded">
         {{ configuration.dashboardMessage | raw }}
       </div>
     {% endif %}

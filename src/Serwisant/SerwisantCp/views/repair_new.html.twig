@@ -1,19 +1,18 @@
 <form method="post" action="{{ path('create_repair') }}">
-  <div class="bg-light p-5 rounded mt-3">
+  <div class="panel-spaced bg-light rounded">
     <h1>{{ t(_self, 'title') }}</h1>
     <p class="lead">{{ t(_self, 'description') }}</p>
   </div>
 
   {{ form_errors(_self, errors) }}
 
-  <div class="bg-light p-5 rounded mt-3">
+  <div class="panel-spaced bg-light rounded">
     {% if device %}
       {{ form_field({type: 'hidden', argument: 'device', value: device.ID}, form_params, errors) }}
       {{ form_field({type: 'hidden', argument: 'repair.type', value: device.type.ID}, form_params, errors) }}
       {{ form_field({type: 'hidden', argument: 'repair.vendor', value: device.vendor}, form_params, errors) }}
       {{ form_field({type: 'hidden', argument: 'repair.model', value: device.model}, form_params, errors) }}
       {{ form_field({type: 'hidden', argument: 'repair.serial', value: device.serial}, form_params, errors) }}
-
       <div class="mb-3">
         <div class="form-floating">
           <input type="text" class="form-control" placeholder="{{ t(_self, 'device') }}"
@@ -23,22 +22,23 @@
         </div>
       </div>
     {% else %}
-      <div class="mb-3">
-        {{ form_field({type: 'selectpicker', argument: 'repair.type', caption: t(_self, 'type'), options: dictionary_select_options, include_blank: true}, form_params, errors) }}
+      <div class="row">
+        <div class="mb-3 col-5">
+          {{ form_field({type: 'selectpicker', argument: 'repair.type', caption: t(_self, 'type'), options: dictionary_select_options, include_blank: true}, form_params, errors) }}
+        </div>
+        {% if not configuration.orderDictModel %}
+          <div class="mb-3 col-3">
+            {{ form_field({type: 'datalist', argument: 'repair.vendor', caption: t(_self, 'vendor'), data_url: path('autocomplete_vendor')}, form_params, errors) }}
+          </div>
+          <div class="mb-3 col-4">
+            {{ form_field({type: 'datalist', argument: 'repair.model', caption: t(_self, 'model'), data_url: path('autocomplete_model')}, form_params, errors) }}
+          </div>
+        {% endif %}
       </div>
-
-      {% if not configuration.orderDictModel %}
-        <div class="mb-3">
-          {{ form_field({type: 'datalist', argument: 'repair.vendor', caption: t(_self, 'vendor'), data_url: path('autocomplete_vendor')}, form_params, errors) }}
+      <div class="row">
+        <div class="mb-3 col-5">
+          {{ form_field({type: 'text', argument: 'repair.serial', caption: t(_self, 'serial')}, form_params, errors) }}
         </div>
-
-        <div class="mb-3">
-          {{ form_field({type: 'datalist', argument: 'repair.model', caption: t(_self, 'model'), data_url: path('autocomplete_model')}, form_params, errors) }}
-        </div>
-      {% endif %}
-
-      <div class="mb-3">
-        {{ form_field({type: 'text', argument: 'repair.serial', caption: t(_self, 'serial')}, form_params, errors) }}
       </div>
     {% endif %}
 
@@ -47,18 +47,27 @@
     </div>
 
     <div class="undisplayed" id="create_repair_warranty_attributes">
-      <div class="mb-3">
-        {{ form_field({type: 'date', argument: 'repair.warrantyPurchaseDate', caption: t(_self, 'warrantyPurchaseDate')}, form_params, errors) }}
-      </div>
-
-      <div class="mb-3">
-        {{ form_field({type: 'text', argument: 'repair.warrantyPurchaseDocument', caption: t(_self, 'warrantyPurchaseDocument')}, form_params, errors) }}
+      <div class="row">
+        <div class="col-4 mb-3">
+          {{ form_field({type: 'date', argument: 'repair.warrantyPurchaseDate', caption: t(_self, 'warrantyPurchaseDate')}, form_params, errors) }}
+        </div>
+        <div class="col-4 mb-3">
+          {{ form_field({type: 'text', argument: 'repair.warrantyPurchaseDocument', caption: t(_self, 'warrantyPurchaseDocument')}, form_params, errors) }}
+        </div>
       </div>
     </div>
 
     <div class="mb-3">
       {{ form_field({type: 'textarea', argument: 'repair.issue', caption: t(_self, 'issue')}, form_params, errors) }}
     </div>
+
+    {% if configuration.uploadFiles %}
+      <div class="mb-3 clearfix" id="create_repair_file_uploader">
+        {% for temporary_file in temporary_files %}
+          <div class="undisplayed temporary-file-json" data-ID="{{ temporary_file }}"></div>
+        {% endfor %}
+      </div>
+    {% endif %}
 
     {% for customField in customFieldsDefinitions %}
       {% if customField.concern %}
@@ -82,38 +91,31 @@
       </div>
     {% endif %}
 
-    {% if addresses_radio_options is empty %}
+    <div class="mb-3 address-container undisplayed">
+      {{ form_field({type: 'radios', argument: 'addressID', caption: t(_self, 'addressID'), options: addresses_radio_options, value: defaultAddress}, form_params, errors) }}
+    </div>
+
+    <fieldset class="mb-3 address-other-container undisplayed">
+      {{ form_field({type: 'checkbox', argument: 'addressSaveToProfile', caption: t(_self, 'addressSaveToProfile'), value: 1}, form_params, errors) }}
+
       <div class="row">
-        <label class="form-label">{{ t(_self, 'returnAddress') }}</label>
-        <div class="col-md-4 mb-3">
-          {{ form_field({type: 'text', argument: 'addresses.0.street', caption: t(_self, 'street')}, form_params, errors) }}
-        </div>
-        <div class="col-md-1 mb-3">
-          {{ form_field({type: 'text', argument: 'addresses.0.building', caption: t(_self, 'building')}, form_params, errors) }}
+        <div class="col-md-2 mb-3">
+          {{ form_field({type: 'countrypicker', argument: 'address.countryIso', caption: t(_self, 'country'), value: locale_ISO()}, form_params, errors) }}
         </div>
         <div class="col-md-2 mb-3">
-          {{ form_field({type: 'text', argument: 'addresses.0.postalCode', caption: t(_self, 'postalCode')}, form_params, errors) }}
+          {{ form_field({type: 'text', argument: 'address.postalCode', caption: t(_self, 'postalCode')}, form_params, errors) }}
         </div>
         <div class="col-md-3 mb-3">
-          {{ form_field({type: 'text', argument: 'addresses.0.city', caption: t(_self, 'city'), postfix: locale_flag()}, form_params, errors) }}
+          {{ form_field({type: 'text', argument: 'address.city', caption: t(_self, 'city'), postfix: locale_flag()}, form_params, errors) }}
         </div>
-        <div class="col-md-2 mb-3">
-          {{ form_field({type: 'countrypicker', argument: 'addresses.0.countryIso', caption: t(_self, 'country'), value: locale_ISO()}, form_params, errors) }}
+        <div class="col-md-4 mb-3">
+          {{ form_field({type: 'text', argument: 'address.street', caption: t(_self, 'street')}, form_params, errors) }}
+        </div>
+        <div class="col-md-1 mb-3">
+          {{ form_field({type: 'text', argument: 'address.building', caption: t(_self, 'building')}, form_params, errors) }}
         </div>
       </div>
-    {% else %}
-      <div class="mb-3">
-        {{ form_field({type: 'radios', argument: 'repair.returnAddress', caption: t(_self, 'returnAddress'), options: addresses_radio_options, value: defaultReturnAddress}, form_params, errors) }}
-      </div>
-    {% endif %}
-
-    {% if configuration.uploadFiles %}
-      <div class="mb-3 clearfix" id="create_repair_file_uploader">
-        {% for temporary_file in temporary_files %}
-          <div class="undisplayed temporary-file-json" data-ID="{{ temporary_file }}"></div>
-        {% endfor %}
-      </div>
-    {% endif %}
+    </fieldset>
   </div>
 
   <div class="clearfix">

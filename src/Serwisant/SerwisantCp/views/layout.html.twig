@@ -13,13 +13,12 @@
     var application_js_options = {
       locale: "{{ locale_ISO() }}",
       fpTranslations: {{ t('fp') | json_encode() | raw }},
-      uploadUrl: "{{ path('temporary_file') }}",
       uploadOnlyImages: {{ (configuration is defined and configuration.uploadOnlyImages) ? 1 : 0 }},
       panelSignups: {{ (configuration is defined and configuration.panelSignups) ? 1 : 0 }},
-      createCustomerAccessUrl: "{{ path('new_access_request', {customer: 'ID'}) }}"
+      createCustomerAccessUrl: "{{ path('new_access_request', {customer: 'ID'}) }}",
+      uploadUrl: "{{ isAuthenticated ? path('temporary_file') :  path('token_temporary_file') }}"
     }
   </script>
-
   {% if decoratorLayoutHead is defined and decoratorLayoutHead %}{% include decoratorLayoutHead %}{% endif %}
 </head>
 
@@ -68,9 +67,18 @@
                  href="{{ path('messages') }}">{{ t(_self, 'messages') }}</a>
             </li>
           {% endif %}
+
+          <li class="nav-item d-lg-none"><a class="nav-link" href="{{ path('viewer') }}">{{ t(_self, 'viewer') }}</a>
+          </li>
+          <li class="nav-item d-lg-none"><a class="nav-link"
+                                            href="{{ path('viewer_password') }}">{{ t(_self, 'viewer_password') }}</a>
+          </li>
+          <li class="nav-item d-lg-none"><a class="nav-link"
+                                            href="{{ path('destroy_session') }}">{{ t(_self, 'logout') }}</a></li>
+
         </ul>
 
-        <ul class="navbar-nav mb-2 mb-md-0 d-none d-md-none d-lg-block">
+        <ul class="navbar-nav mb-2 mb-md-0 d-none d-lg-block">
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown"
                aria-expanded="false">{{ me.customer.displayName }} </a>

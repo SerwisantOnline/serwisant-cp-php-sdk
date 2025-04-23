@@ -2,7 +2,7 @@ schema: schema.graphql
 extensions:
   endpoints:
     Customer GraphQL Endpoint:
-      url: http://0.0.0.0:3000/graphql/customer
+      url: http://0.0.0.0:3003/graphql/customer
       headers:
         user-agent: JS GraphQL
       introspect: true

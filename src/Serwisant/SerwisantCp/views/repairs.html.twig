@@ -1,6 +1,6 @@
 <a class="btn btn-primary btn-lg" href="{{ path('new_repair') }}">{{ t(_self, 'create_repair') }}</a>
 
-<div class="bg-light p-5 rounded mt-3">
+<div class="panel-spaced bg-light rounded">
   {% if repairs.items is empty %}
     <p class="lead">{{ t(_self, 'no_repairs') }}</p>
   {% else %}

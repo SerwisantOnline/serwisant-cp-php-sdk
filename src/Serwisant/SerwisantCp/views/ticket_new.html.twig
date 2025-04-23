@@ -1,16 +1,15 @@
 <form method="post" action="{{ path('create_ticket') }}">
-  <div class="bg-light p-5 rounded mt-3">
+  <div class="panel-spaced bg-light rounded">
     <h1>{{ t(_self, 'title') }}</h1>
     <p class="lead">{{ t(_self, 'description') }}</p>
   </div>
 
   {{ form_errors(_self, errors) }}
 
-  <div class="bg-light p-5 rounded mt-3">
-
+  <div class="panel-spaced bg-light rounded">
     {% if device %}
       {{ form_field({type: 'hidden', argument: 'device', value: device.ID}, form_params, errors) }}
-      <div class="mb-3">
+      <div class="col-md-5 mb-3">
         <div class="form-floating">
           <input type="text" class="form-control" placeholder="{{ t(_self, 'device') }}"
                  title="{{ t(_self, 'device') }}" disabled
@@ -21,7 +20,7 @@
     {% endif %}
 
     {% if priorities_select_options|length > 1 %}
-      <div class="mb-3">
+      <div class="col-md-5 mb-3">
         {{ form_field({type: 'selectpicker', argument: 'ticket.priority', caption: t(_self, 'priority'), options: priorities_select_options, include_blank: true}, form_params, errors) }}
       </div>
     {% else %}
@@ -29,38 +28,40 @@
     {% endif %}
 
     <div class="row">
-    <div class="col-md-5 mb-3">
-      {{ form_field({type: 'datetime', argument: 'ticket.startAt', caption: t(_self, 'startAt')}, form_params, errors) }}
-    </div>
+      <div class="col-md-5 mb-3">
+        {{ form_field({type: 'datetime', argument: 'ticket.startAt', caption: t(_self, 'startAt')}, form_params, errors) }}
+      </div>
     </div>
 
-    {% if addresses_radio_options is empty %}
-      <div class="row">
-        <label class="form-label">{{ t(_self, 'address') }}</label>
-        <div class="col-md-4 mb-3">
-          {{ form_field({type: 'text', argument: 'addresses.0.street', caption: t(_self, 'street')}, form_params, errors) }}
-        </div>
-        <div class="col-md-1 mb-3">
-          {{ form_field({type: 'text', argument: 'addresses.0.building', caption: t(_self, 'building')}, form_params, errors) }}
-        </div>
-        <div class="col-md-2 mb-3">
-          {{ form_field({type: 'text', argument: 'addresses.0.postalCode', caption: t(_self, 'postalCode')}, form_params, errors) }}
-        </div>
-        <div class="col-md-3 mb-3">
-          {{ form_field({type: 'text', argument: 'addresses.0.city', caption: t(_self, 'city'), postfix: locale_flag()}, form_params, errors) }}
-        </div>
-        <div class="col-md-2 mb-3">
-          {{ form_field({type: 'countrypicker', argument: 'addresses.0.countryIso', caption: t(_self, 'country'), value: locale_ISO()}, form_params, errors) }}
-        </div>
-      </div>
-    {% else %}
+    {% if (not device) or (not device.address) %}
       <div class="mb-3">
-        {{ form_field({type: 'radios', argument: 'ticket.address', caption: t(_self, 'address'), options: addresses_radio_options, value: defaultAddress}, form_params, errors) }}
-      </div>
-      <div class="mb-3 address-other-container undisplayed">
-        {{ form_field({type: 'textarea', argument: 'ticket.addressOther', caption: t(_self, 'addressOther')}, form_params, errors) }}
+        {{ form_field({type: 'radios', argument: 'addressID', caption: t(_self, 'address'), options: addresses_radio_options, value: defaultAddress}, form_params, errors) }}
       </div>
     {% endif %}
+
+    <fieldset class="mb-3 address-other-container {{ (device and device.address) ? '' : 'undisplayed' }}" {{ (device and device.address) ? 'disabled' : '' }}>
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          {{ form_field({type: 'text', argument: 'address.street', value: ((device and device.address) ? device.address.street : ''), caption: t(_self, 'street')}, form_params, errors) }}
+        </div>
+        <div class="col-md-1 mb-3">
+          {{ form_field({type: 'text', argument: 'address.building', value: ((device and device.address) ? device.address.building : ''), caption: t(_self, 'building')}, form_params, errors) }}
+        </div>
+        <div class="col-md-2 mb-3">
+          {{ form_field({type: 'text', argument: 'address.postalCode', value: ((device and device.address) ? device.address.postalCode : ''), caption: t(_self, 'postalCode')}, form_params, errors) }}
+        </div>
+        <div class="col-md-3 mb-3">
+          {{ form_field({type: 'text', argument: 'address.city', value: ((device and device.address) ? device.address.city : ''), caption: t(_self, 'city'), postfix: locale_flag()}, form_params, errors) }}
+        </div>
+        <div class="col-md-2 mb-3">
+          {% if (device and device.address) %}
+            {{ form_field({type: 'text', argument: 'address.countryIso', value: ((device and device.address) ? device.address.countryIso : locale_ISO()), caption: t(_self, 'country')}, form_params, errors) }}
+          {% else %}
+            {{ form_field({type: 'countrypicker', argument: 'address.countryIso', caption: t(_self, 'country'), value: locale_ISO()}, form_params, errors) }}
+          {% endif %}
+        </div>
+      </div>
+    </fieldset>
 
     <div class="mb-3">
       {{ form_field({type: 'textarea', argument: 'ticket.issue', caption: t(_self, 'issue')}, form_params, errors) }}

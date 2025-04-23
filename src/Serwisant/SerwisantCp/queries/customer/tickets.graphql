@@ -52,6 +52,27 @@ query tickets($limit: Int, $page: Int, $filter: TicketsFilter, $sort: TicketsSor
                 __typename
                 displayName
             }
+            serviceSupplier {
+                __typename
+                displayName
+                email
+                phone {
+                    __typename
+                    formatted
+                }
+                address {
+                    __typename
+                    street
+                    building
+                    city
+                    postalCode
+                    countryIso
+                }
+                avatar {
+                    __typename
+                    url
+                }
+            }
             files {
                 __typename
                 contentType

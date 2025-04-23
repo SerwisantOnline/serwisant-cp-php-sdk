@@ -1,0 +1,48 @@
+<div class="card my-2">
+  <div class="card-header">
+    <span class="pull-right"></span>
+    {{ t(_self, 'title') }}
+  </div>
+  <table class="table table-bordered card-table">
+    <tbody>
+    <tr>
+      <td class="column-definition">{{ t(_self, 'number') }}</td>
+      <td>{{ ticket.number }}</td>
+    </tr>
+    {% if  ticket.devices %}
+      <tr>
+        <td class="column-definition">{{ t(_self, 'devices') }}</td>
+        <td>
+          {% for device in ticket.devices %}
+            {% if canCreateLinks %}
+            <a href="{{ path('device', {'id': device.ID}) }}">{{ device.type.name }} {{ device.vendor }} {{ device.model }}</a>
+            {% else %}
+              {{ device.type.name }} {{ device.vendor }} {{ device.model }}
+            {% endif %}
+          {% endfor %}
+        </td>
+      </tr>
+    {% endif %}
+    <tr>
+      <td class="column-definition">{{ t(_self, 'address') }}</td>
+      <td>
+        {% if ticket.addressRemarks %}
+          {{ ticket.addressRemarks }}
+        {% elseif ticket.address %}
+          {{ ticket.address.street }} {{ ticket.address.building }},  {{ ticket.address.postalCode }} {{ ticket.address.city }}
+        {% endif %}
+      </td>
+    </tr>
+    {% if ticket.employee is defined %}
+    <tr>
+      <td class="column-definition">{{ t(_self, 'employee') }}</td>
+      <td>{{ ticket.employee ? ticket.employee.displayName : '' }}</td>
+    </tr>
+    {% endif %}
+    <tr>
+      <td class="column-definition">{{ t(_self, 'group') }}</td>
+      <td>{{ ticket.type ? ticket.type.name : '' }}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>

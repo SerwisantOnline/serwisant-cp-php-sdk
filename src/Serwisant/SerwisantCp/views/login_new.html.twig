@@ -1,10 +1,10 @@
 {% if configuration.welcomeMessage %}
-  <div class="bg-light p-5 rounded mt-3">
+  <div class="panel-spaced bg-light rounded">
     {{ configuration.welcomeMessage | raw }}
   </div>
 {% endif %}
 
-<div class="bg-light p-5 rounded mt-3">
+<div class="panel-spaced bg-light rounded">
   <h1>{{ t(_self, 'title') }}</h1>
   <p class="lead">{{ t(_self, 'login_description') }}</p>
 
@@ -55,7 +55,7 @@
 </div>
 
 {% if configuration.panelSignups %}
-  <div class="bg-light p-5 rounded mt-3">
+  <div class="panel-spaced bg-light rounded">
     <p class="lead">{{ t(_self, 'signup_description') }}</p>
     <a href="{{ path('new_signup') }}" class="btn btn-primary mb-3">{{ t(_self, 'signup') }}</a>
   </div>

@@ -2,7 +2,12 @@ console.log("Running postinstall for Serwisant Online customer panel SDK...\n");
 
 var imgFiles = [
   'vendor/pragmarx/countries/src/data/flags/pol.svg',
-  'vendor/pragmarx/countries/src/data/flags/gbr.svg'
+  'vendor/pragmarx/countries/src/data/flags/gbr.svg',
+  'node_modules/leaflet/dist/images/layers.png',
+  'node_modules/leaflet/dist/images/layers-2x.png',
+  'node_modules/leaflet/dist/images/marker-icon.png',
+  'node_modules/leaflet/dist/images/marker-icon-2x.png',
+  'node_modules/leaflet/dist/images/marker-shadow.png'
 ]
 
 var cssFiles = [
@@ -11,6 +16,7 @@ var cssFiles = [
   'node_modules/@eonasdan/tempus-dominus/dist/css/tempus-dominus.css',
   'node_modules/filepond/dist/filepond.css',
   'node_modules/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css',
+  'node_modules/leaflet/dist/leaflet.css',
   'node_modules/@fortawesome/fontawesome-free/css/all.css',
   'node_modules/select2/dist/css/select2.css',
   'node_modules/select2-bootstrap-5-theme/dist/select2-bootstrap-5-theme.css',
@@ -27,6 +33,9 @@ var jsFiles = [
   "node_modules/filepond/dist/filepond.js",
   "node_modules/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js",
   "node_modules/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js",
+  "node_modules/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js",
+  "node_modules/jstorage/jstorage.js",
+  "node_modules/leaflet/dist/leaflet.js",
   "node_modules/fullcalendar/index.global.js",
   "node_modules/@fullcalendar/core/locales-all.global.js",
   "node_modules/@fullcalendar/bootstrap5/index.global.js",
@@ -42,6 +51,7 @@ var jsAppFiles = [
   'node_modules/serwisant-cp/js-libs/jquery_strength.js',
   'node_modules/serwisant-cp/js-libs/application.js',
   'node_modules/serwisant-cp/js-libs/application_ui.js',
+  'node_modules/serwisant-cp/js-libs/maps.js',
   'node_modules/serwisant-cp/js-libs/layout.js',
 ]
 

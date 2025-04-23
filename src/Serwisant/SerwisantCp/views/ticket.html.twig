@@ -6,164 +6,25 @@
 </div>
 
 {{ form_errors(_self, rating_errors) }}
-{% include 'shared/rating.html.twig' with {'isRateable': ticket.isRateable, 'formUrl': path('ticket_rate', {'id': ticket.ID}), 'rating': ticket.rating} %}
+{% include 'shared/rating.html.twig' with {'isRateable': repair.isRateable, 'formUrl': path('repair_rate', {'id': repair.ID}), 'rating': repair.rating} %}
 
-<div class="bg-light p-5 rounded mt-3">
+<div class="panel-spaced bg-light rounded">
+  <div class="pb-2">
+    {% include 'shared/service_supplier_card.html.twig' with {'serviceSupplier': ticket.serviceSupplier, 'title': t(_self, 'introduction')} %}
+  </div>
+
   <div class="row">
     <div class="col-md-6">
-
-      <div class="card my-2">
-        <div class="card-header">
-          <span class="pull-right"></span>
-          {{ t(_self, 'panel_info') }}
-        </div>
-        <table class="table table-bordered card-table">
-          <tbody>
-          <tr>
-            <td class="column-definition">{{ t(_self, 'number') }}</td>
-            <td>{{ ticket.number }}</td>
-          </tr>
-          {% if  ticket.devices %}
-            <tr>
-              <td class="column-definition">{{ t(_self, 'devices') }}</td>
-              <td>
-                {% for device in ticket.devices %}
-                  <a
-                    href="{{ path('device', {'id': device.ID}) }}">{{ device.type.name }} {{ device.vendor }} {{ device.model }}</a>
-                {% endfor %}
-              </td>
-            </tr>
-          {% endif %}
-          <tr>
-            <td class="column-definition">{{ t(_self, 'address') }}</td>
-            <td>
-              {% if ticket.addressRemarks %}
-                {{ ticket.addressRemarks }}
-              {% elseif ticket.address %}
-                {{ ticket.address.street }} {{ ticket.address.building }},  {{ ticket.address.postalCode }} {{ ticket.address.city }}
-              {% endif %}
-            </td>
-          </tr>
-          <tr>
-            <td class="column-definition">{{ t(_self, 'employee') }}</td>
-            <td>{{ ticket.employee ? ticket.employee.displayName : '' }}</td>
-          </tr>
-          <tr>
-            <td class="column-definition">{{ t(_self, 'group') }}</td>
-            <td>{{ ticket.type ? ticket.type.name : '' }}</td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="card my-2">
-        <div class="card-header">
-          <span class="pull-right"></span>
-          {{ t(_self, 'panel_payments') }}
-        </div>
-        <table class="table table-bordered card-table">
-          <tbody>
-          <tr>
-            <td class="column-definition">{{ t(_self, 'payment_type') }}</td>
-            <td
-              colspan="2">{{ ticket.payment.type ? t('payment_types', ticket.payment.type) : t(_self, 'not_defined') }}</td>
-          </tr>
-          {% if ticket.payment.hoursSpend %}
-            <tr>
-              <td class="column-definition">{{ t(_self, 'time') }}</td>
-              <td colspan="2">
-                {{ ticket.payment.hoursSpend | number_format(0) }} {{ t(_self, 'hour') }}
-              </td>
-            </tr>
-          {% endif %}
-          {% if not ticket.payment.paymentNet is null or not ticket.payment.paymentGross is null %}
-            <tr>
-              <td class="column-definition">{{ t(_self, 'payment') }}</td>
-              <td>
-                {% if not ticket.payment.paymentNet is null %}
-                  {{ ticket.payment.paymentNet | format_currency(currency) }}
-                {% endif %}
-              </td>
-              <td>
-                {% if not ticket.payment.paymentGross is null %}
-                  {{ ticket.payment.paymentGross | format_currency(currency) }}
-                {% endif %}
-              </td>
-            </tr>
-          {% endif %}
-          <tr>
-            <td class="column-definition">{{ t(_self, 'paid') }}</td>
-            <td colspan="2">
-              <input type="checkbox" disabled {{ ticket.payment.paid ? 'checked="checked"' : '' }}>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="card my-2">
-        <div class="card-header"><span class="glyphicon glyphicon-info-sign icon-margin pull-right"></span>
-          {{ t(_self, 'panel_custom_form_fields') }}
-        </div>
-        <table class="table table-bordered card-table">
-          <tbody>
-          {% for field in ticket.customFields %}
-            <tr>
-              <td class="column-definition">{{ field.field.name }}</td>
-              <td>{{ custom_form_field_value(field.value, field.field.type) }}</td>
-            </tr>
-          {% endfor %}
-          </tbody>
-        </table>
-      </div>
-
+      {% include 'ticket/panel_info.html.twig'  with {'canCreateLinks': false} %}
+      {% include 'ticket/panel_payments.html.twig' %}
+      {% include 'ticket/panel_custom_form_fields.html.twig' %}
     </div>
     <div class="col-md-6">
-
-      <div class="card my-2">
-        <div class="card-header">
-          <span class="pull-right"></span>
-          {{ t(_self, 'panel_status') }}
-        </div>
-        <table class="table table-bordered card-table">
-          <tbody>
-          <tr>
-            <td class="column-definition">{{ t(_self, 'priority') }}</td>
-            <td>{{ ticket.priority.name }}</td>
-          </tr>
-          <tr>
-            <td class="column-definition">{{ t(_self, 'status') }}</td>
-            <td>{{ ticket_label(ticket, configuration.useCustomStatusNames) }}</td>
-          </tr>
-          <tr>
-            <td class="column-definition">{{ t(_self, 'created') }}</td>
-            <td>{{ ticket.status.createdAt | format_datetime }}</td>
-          </tr>
-          <tr>
-            <td class="column-definition">{{ t(_self, 'scheduled_on') }}</td>
-            <td>{{ ticket.status.scheduledOn | format_datetime }}</td>
-          </tr>
-          <tr>
-            <td class="column-definition">{{ t(_self, 'scheduled_to') }}</td>
-            <td>{{ ticket.status.scheduledTo ? ticket.status.scheduledTo | format_datetime : '' }}</td>
-          </tr>
-          <tr>
-            <td class="column-definition">{{ t(_self, 'started_on') }}</td>
-            <td>{{ ticket.status.startedOn ? ticket.status.startedOn | format_datetime : '' }}</td>
-          </tr>
-          <tr>
-            <td class="column-definition">{{ t(_self, 'finished_at') }}</td>
-            <td>{{ ticket.status.finishedAt ? ticket.status.finishedAt | format_datetime : '' }}</td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-
+      {% include 'ticket/panel_status.html.twig' %}
       <div class="bd-callout bd-callout-info">
         {{ ticket.issue }}
       </div>
-
-      {% include 'shared/files.html.twig' with {'files': ticket.files, 'title': t(_self, 'panel_files')} %}
+      {% include 'shared/files.html.twig' with {'files': ticket.files, 'title': t(_self, 'panel_files.title')} %}
     </div>
   </div>
 </div>

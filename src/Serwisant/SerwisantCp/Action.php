@@ -4,6 +4,7 @@ namespace Serwisant\SerwisantCp;
 
 use Silex;
 use Symfony\Component\HttpFoundation\Request;
+use Serwisant\SerwisantApi;
 
 class Action
 {
@@ -16,11 +17,11 @@ class Action
   protected $translator;
   protected $debug = false;
 
+  private $layout_vars;
   private $access_token_customer;
   private $access_token_public;
   private $api_customer;
   private $api_public;
-  private $layout_vars;
 
   public function __construct(Silex\Application $app, Request $request, Token $token)
   {
@@ -34,7 +35,10 @@ class Action
     if (isset($app['api_http_headers'])) {
       $this->api_http_headers = $app['api_http_headers'];
     }
+
     $this->twig = $app['twig'];
+    $this->twig->getExtension(\Twig\Extension\CoreExtension::class)->setTimezone(date_default_timezone_get());
+
     $this->translator = $app['tr'];
     $this->debug = ($this->app['env'] == 'development');
 
@@ -63,9 +67,9 @@ class Action
       'pageTitle' => '',
       'token' => (string)$this->token,
       'currentAction' => array_slice(explode("\\", get_class($this)), -1)[0],
-      'isAuthenticated' => (!is_null($this->access_token_customer) && $this->access_token_customer->isAuthenticated()),
+      'isAuthenticated' => $this->isAuthenticated(),
       'locale' => $this->app['locale'],
-      'innerTemplate' => $template,
+      'innerTemplate' => $template
     ];
 
     $vars = array_merge($vars, $this->getLayoutVars());
@@ -74,7 +78,7 @@ class Action
       $vars = array_merge($vars, $this->decorator->getLayoutVars($template));
     }
 
-    if (!is_null($this->access_token_customer) && $this->access_token_customer->isAuthenticated()) {
+    if ($this->isAuthenticated()) {
       $vars['me'] = $this->apiCustomer()->customerQuery()->viewer(['basic' => true]);
     }
 
@@ -88,6 +92,11 @@ class Action
     } else {
       return 'layout.html.twig';
     }
+  }
+
+  protected function isAuthenticated(): bool
+  {
+    return !is_null($this->access_token_customer) && $this->access_token_customer->isAuthenticated();
   }
 
   protected function getLayoutVars(): array
@@ -156,7 +165,7 @@ class Action
     }
   }
 
-  protected function redirectTo($binding, $flash_tr = null)
+  protected function redirectTo($binding, $flash_tr = null, array $get_params = [])
   {
     $redirect_variables = [];
     if (isset($this->app['token'])) {
@@ -167,9 +176,12 @@ class Action
       $this->flashMessage($this->t($flash_tr));
     }
     if (is_array($binding)) {
-      $url = $this->generateUrl($binding[0], array_merge($binding[1], $redirect_variables));
+      $url = $this->generateUrl($binding[0], array_merge($redirect_variables, $binding[1]));
     } else {
       $url = $this->generateUrl($binding, $redirect_variables);
+    }
+    if (count($get_params) > 0) {
+      $url .= '?' . http_build_query($get_params);
     }
     return $this->app->redirect($url);
   }
@@ -194,7 +206,7 @@ class Action
     return $this->access_token_customer;
   }
 
-  protected function apiCustomer()
+  protected function apiCustomer(): ?Api
   {
     if (is_null($this->api_customer) && !is_null($this->access_token_customer)) {
       $this->api_customer = new Api(
@@ -208,7 +220,7 @@ class Action
     return $this->api_customer;
   }
 
-  protected function apiPublic()
+  protected function apiPublic(): ?Api
   {
     if (is_null($this->api_public) && !is_null($this->access_token_public)) {
       $this->api_public = new Api(

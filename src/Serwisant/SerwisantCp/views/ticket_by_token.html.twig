@@ -1,0 +1,33 @@
+<div class="pb-2">
+  {% include 'shared/service_supplier_card.html.twig' with {'serviceSupplier': ticket.serviceSupplier, 'title': t(_self, 'introduction')} %}
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="pb-2">
+      {% include 'ticket/panel_info.html.twig'  with {'canCreateLinks': false} %}
+    </div>
+
+    {% if ticket.address and ticket.address.geoPoint and ticket.address.geoPoint.lat and ticket.address.geoPoint.lng %}
+      <div id="ticket-by-token-map" data-lat="{{ ticket.address.geoPoint.lat }}"
+           data-lng="{{ ticket.address.geoPoint.lng }}"></div>
+    {% endif %}
+
+    <div class="pb-2">
+      {% include 'ticket/panel_custom_form_fields.html.twig' %}
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="pb-2">
+      {% include 'ticket/panel_status.html.twig' %}
+    </div>
+    <div class="pb-2">
+      <div class="bd-callout bd-callout-info">
+        {{ ticket.issue }}
+      </div>
+    </div>
+    <div class="pb-2">
+      {% include 'shared/files.html.twig' with {'files': ticket.files, 'title': t(_self, 'panel_files.title')} %}
+    </div>
+  </div>
+</div>

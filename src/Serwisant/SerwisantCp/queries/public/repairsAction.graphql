@@ -1,4 +1,28 @@
 query {
+    viewer: viewer {
+        __typename
+        repairsServiceSupplier {
+            __typename
+            displayName
+            address {
+                __typename
+                street
+                building
+                city
+                postalCode
+                countryIso
+            }
+            phone {
+                __typename
+                formatted
+            }
+            email
+            avatar {
+                __typename
+                url
+            }
+        }
+    }
     configuration: configuration {
         __typename
         repairSubmitPrompt

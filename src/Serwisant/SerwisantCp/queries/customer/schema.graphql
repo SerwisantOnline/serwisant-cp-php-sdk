@@ -15,6 +15,7 @@ type Address {
     building: String!
     city: String!
     countryIso: String!
+    geoPoint: GeoPoint!
     postalCode: String!
     street: String!
     type: AddressType!
@@ -97,14 +98,23 @@ type CustomerMutation {
     createDevice(address: AddressInput, device: DeviceInput!): DeviceCreationResult
     createMessage(message: MessageInput!): MessageCreationResult
     createMessageReply(content: String, message: HashID!): MessageReplyCreationResult
-    "Create new repair as customer. Field `temporaryFiles` takes IDs of temporary files create via `createTemporaryFile `. Temporary files will be attached to repair and persisted."
-    createRepair(additionalItems: [RepairItemInput!], device: HashID, options: RepairCreationOptions, repair: RepairInput!, temporaryFiles: [HashID!]): RepairCreationResult
+    "Create new repair as customer. "
+    createRepair(
+        additionalItems: [RepairItemInput!],
+        "If given will be used as pickup AND return address. It's required in `Public` schema if passing any remote delivery or collection method. It takes precedence over other options. For `Customer` schema default customer's address will be used. For `Customer` and `Service` schemas you can set `repair.pickUpAddress` and `repair.returnAddress` to one of existing customer's address."
+        address: AddressInput,
+        device: HashID,
+        options: RepairCreationOptions,
+        repair: RepairInput!,
+        "Takes IDs of temporary files created via `createTemporaryFile` mutation. Temporary files will be attached to repair and persisted."
+        temporaryFiles: [HashID!]
+    ): RepairCreationResult
     "Create a temporary file - file can be attached to created repair and will be persisted. It's useful to scenarios, where files must be uploaded before creation of eg. repair - and persisted with repair."
     createTemporaryFile(file: FileInput!): TemporaryFileCreationResult
-    createTicket(devices: [HashID!], options: TicketCreationOptions, temporaryFiles: [HashID!], ticket: TicketInput!): TicketCreationResult
+    createTicket(address: AddressInput, devices: [HashID!], options: TicketCreationOptions, temporaryFiles: [HashID!], ticket: TicketInput!): TicketCreationResult
+    destroyViewer: ViewerDestructionResult
     markMessageRead(message: HashID!): Boolean
     print(ID: HashID!, type: PrintType!): TemporaryFileCreationResult
-    setRating(rating: RatingInput!, subject: HashID!, subjectType: RatingSubjectType!): RatingResult
     updateViewer(addresses: [AddressUpdateInput!], agreements: [CustomerAgreementUpdateInput!], customer: CustomerUpdateInput): ViewerUpdateResult
     updateViewerPassword(currentPassword: String!, password: String!, passwordConfirmation: String!): ViewerPasswordUpdateResult
 }
@@ -118,6 +128,7 @@ type CustomerQuery {
     priorities(filter: PrioritiesFilter): [Priority!]!
     repairs(filter: RepairsFilter = {type: OPEN}, limit: Int = 20, page: Int = 1, sort: RepairsSort): RepairsResult!
     scheduleDates(filter: ScheduleDatesFilter!): [ScheduleDate!]!
+    serviceSuppliers(filter: ServiceSuppliersFilter): [ServiceSupplier!]
     "Return details of temporary files identified by ID passed in arguments."
     temporaryFiles(ID: [HashID!]!): [TemporaryFile!]!
     tickets(filter: TicketsFilter = {type: OPEN}, limit: Int = 20, page: Int = 1, sort: TicketsSort = ID): TicketsResult!
@@ -184,6 +195,11 @@ type File {
     url(size: ImageSize = ORIGINAL): String
 }
 
+type GeoPoint {
+    lat: String
+    lng: String
+}
+
 type Message {
     ID: HashID!
     content: String!
@@ -234,6 +250,7 @@ type Parcel {
     "This is a status obtained from external courier service and represent a parcel delivery state."
     deliveryStatus: ParcelDeliveryStatus!
     pickupFrom: ParcelEdge!
+    pickupTime: ParcelPickupWindow!
     "Internal parcel's state."
     status: ParcelStatus!
     "Parcel's number ad courier tracking service. In general tracking services age public available and number can be used to get current delivery status. Please note: delivery status is tracked, so more-less it should match a `deliveryStatus` field."
@@ -243,6 +260,12 @@ type Parcel {
 type ParcelEdge {
     company: String
     name: String
+    ownerType: ParcelEdgeOwnerType!
+}
+
+type ParcelPickupWindow {
+    from: DateTime
+    to: DateTime
 }
 
 type Phone {
@@ -262,44 +285,36 @@ type Priority {
     type: PriorityType!
 }
 
-type Rating {
-    comment: String
-    date: Date!
-    stars: Int!
-}
-
-type RatingResult {
-    errors: [Error!]
-}
-
 type Repair {
     ID: HashID!
     additionalItems: [RepairItem!]!
     advanceAmount: Decimal!
-    "Address where service should pick up a repair item. Empty if `collectionType` type is `PERSONAL`"
-    collectionAddress: Address
-    "Defines how repair item will be collected from customer."
-    collectionType: RepairTransportType!
+    "Defines how repaired item should be returned to customer. Return address is specified in `returnAddress`"
+    collection: RepairTransportType!
+    collectionAddress: Address @deprecated(reason: "Use `pickUpAddress` instead")
+    collectionType: RepairTransportType! @deprecated(reason: "Use `collection` instead")
     costs: RepairCosts!
     "Will return a list of values for custom fields"
     customFields: [CustomFieldValue!]!
-    "Address where repaired item should be returned. Empty if `deliveryType` type is `PERSONAL`"
-    deliveryAddress: Address
-    "Defines how repaired item should be returned to customer."
-    deliveryType: RepairTransportType!
+    "Defines how repair item will be picked-up from customer and delivered to service. Pick-up address is specified in `pickUpAddress`"
+    delivery: RepairTransportType!
+    deliveryAddress: Address @deprecated(reason: "Use `returnAddress` instead")
+    deliveryType: RepairTransportType! @deprecated(reason: "Use `delivery` instead")
     device: Device
     diagnosis: RepairDiagnosis
     displayName: String!
     "Files attached to repair. For :service schema it includes private and public files, for otcher schemas only public files are included"
     files: [File!]!
-    isRateable: Boolean!
     issue: String
     model: String
     offers: [RepairOffer!]
     parcels: [Parcel!]
+    "Address where service should pick up a repair item. Leave empty if `delivery` is `PERSONAL`"
+    pickUpAddress: Address
     priceEstimated: Decimal
     priceEstimatedTaxRate: Decimal
-    rating: Rating
+    "Address where repaired item should be returned. Leave empty if `collection` type is `PERSONAL`"
+    returnAddress: Address
     rma: String!
     secretToken: SecretToken!
     serial: String
@@ -371,7 +386,7 @@ type RepairOfferItem {
 type RepairStatus {
     canceledOrRejected: Boolean!
     confirmed: Boolean!
-    "Repair creation date - first apear in database"
+    "Repair creation date - first appear in database"
     createdAt: DateTime!
     "Business days passed from startedAt date"
     daysFromStart: Int!
@@ -432,8 +447,22 @@ type ServiceSupplier {
     avatar: File
     displayName: String!
     email: String
+    hasCompleteData: Boolean!
     phone: Phone
     type: ServiceSupplierType!
+}
+
+type Subscriber {
+    address: Address
+    businessActivity: SubscriberBusinessActivity
+    companyName: String
+    "Formatted legal name"
+    displayName: String!
+    email: String!
+    "Data of main service supplier - branded - this is a data for customer information"
+    serviceSupplier: ServiceSupplier!
+    taxId: String
+    taxPrefix: TaxPrefix
 }
 
 type TemporaryFile {
@@ -458,12 +487,12 @@ type Ticket {
     devices: [Device!]!
     employee: Employee
     files: [File!]!
-    isRateable: Boolean!
     issue: String!
     number: String!
     payment: TicketPayment!
     priority: Priority!
-    rating: Rating
+    secretToken: SecretToken
+    serviceSupplier: ServiceSupplier!
     status: TicketStatus!
     type: Dictionary
 }
@@ -491,7 +520,7 @@ type TicketPayment {
 
 type TicketStatus {
     createdAt: DateTime!
-    "Human readeable status"
+    "Human readable status"
     displayName: String!
     "Real finish time, remarks are the same as for `started_on`"
     finishedAt: DateTime
@@ -512,9 +541,15 @@ type Viewer {
     "Current customer"
     customer: Customer!
     "Service supplier dedicated for handling all repairs - it can be differ from main service supplier"
-    repairsServiceSupplier: ServiceSupplier
+    repairsServiceSupplier: ServiceSupplier!
+    "Information from public registry"
+    subscriber: Subscriber!
     "Service supplier dedicated for handling ticketing - it can be differ from main service supplier"
-    ticketsServiceSupplier: ServiceSupplier
+    ticketsServiceSupplier: ServiceSupplier!
+}
+
+type ViewerDestructionResult {
+    errors: [Error!]
 }
 
 type ViewerPasswordUpdateResult {
@@ -523,7 +558,7 @@ type ViewerPasswordUpdateResult {
 
 type ViewerUpdateResult {
     errors: [Error!]
-    viewer: Viewer
+    viewer: Viewer!
 }
 
 enum AcceptOrRejectRepairDecision {
@@ -534,6 +569,7 @@ enum AcceptOrRejectRepairDecision {
 enum AddressType {
     BILLING
     BUSINESS
+    GPS
     HOME
     OTHER
 }
@@ -904,6 +940,11 @@ enum ParcelDeliveryStatus {
     TRANSIT
 }
 
+enum ParcelEdgeOwnerType {
+    CUSTOMER
+    SERVICE_SUPPLIER
+}
+
 enum ParcelStatus {
     CLOSED
     FAILED
@@ -920,11 +961,6 @@ enum PrintType {
 }
 
 enum PriorityType {
-    TICKET
-}
-
-enum RatingSubjectType {
-    REPAIR
     TICKET
 }
 
@@ -1003,6 +1039,7 @@ enum SecretTokenSubject {
     ONLINEPAYMENT
     PARCEL
     REPAIR
+    TICKET
 }
 
 enum ServiceSupplierType {
@@ -1011,6 +1048,23 @@ enum ServiceSupplierType {
     EXCHANGE_TARGET
     MAIN
     SERVICE_SUPPLIER
+}
+
+enum ServiceSuppliersFilterType {
+    ID
+}
+
+enum SubscriberBusinessActivity {
+    BIKES
+    CELL_PHONE
+    ELECTRONIC
+    GARDEN
+    HOUSEHOLD_EQUIPMENT
+    INDUSTRY
+    OTHER
+    PC
+    PHOTO
+    UNDEFINED
 }
 
 enum TaxPrefix {
@@ -1094,6 +1148,7 @@ input AddressInput {
     building: String
     city: String
     countryIso: CountryCode
+    geoPoint: GeoPointInput
     postalCode: String
     street: String
     type: AddressType
@@ -1176,6 +1231,11 @@ input FileInput {
     payload: String!
 }
 
+input GeoPointInput {
+    lat: String!
+    lng: String!
+}
+
 input MessageInput {
     content: String
     subject: String
@@ -1195,26 +1255,21 @@ input PrioritiesFilter {
     type: PriorityType
 }
 
-input RatingInput {
-    comment: String
-    stars: Int!
-}
-
 input RepairCreationOptions {
     skipFloodValidation: Boolean = false
 }
 
 input RepairInput {
-    "How repair will be returned from service to customer"
+    "Defines how repaired item should be returned to customer. Return address is specified in `returnAddress`"
     collection: RepairTransportType
     customFields: [CustomFieldValueInput!]
-    "How repair will be delivered to service"
+    "Defines how repair item will be picked-up from customer and delivered to service. Pick-up address is specified in `pickUpAddress`"
     delivery: RepairTransportType
     issue: String
     model: String
-    "ID passed from one Address entity points to address where from repair will be picked up"
+    "Address where service should pick up a repair item. Leave empty if `delivery` is `PERSONAL`"
     pickUpAddress: HashID
-    "ID passed from one Address entity points to address where repair will be returned"
+    "Address where repaired item should be returned. Leave empty if `collection` type is `PERSONAL`"
     returnAddress: HashID
     serial: String
     "ID passed from one of REPAIR_SUBJECT_TYPE Dictionary entity"
@@ -1242,13 +1297,16 @@ input ScheduleDatesFilter {
     dateRange: DateRangeInput!
 }
 
+input ServiceSuppliersFilter {
+    ID: HashID
+    type: ServiceSuppliersFilterType!
+}
+
 input TicketCreationOptions {
     skipFloodValidation: Boolean = false
 }
 
 input TicketInput {
-    address: HashID
-    addressOther: String
     customFields: [CustomFieldValueInput!]
     issue: String
     priority: HashID

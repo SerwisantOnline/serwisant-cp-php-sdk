@@ -19,7 +19,9 @@
   </div>
 {% endif %}
 
-<div class="bg-light p-5 rounded mt-3">
+<div class="panel-spaced bg-light rounded">
+  {% include 'shared/service_supplier_card.html.twig' with {'serviceSupplier': device.serviceSupplier, 'title': t(_self, 'introduction')} %}
+
   <div class="row">
     <div class="col-md-6">
       <div class="card my-2">
@@ -107,47 +109,13 @@
       {% include 'shared/files.html.twig' with {'files': device.files, 'title': t(_self, 'panel_files.title')} %}
     </div>
     <div class="col-md-6">
-      <div class="card my-2">
-        <div class="card-body">
-          <div class="row">
-            <div class="col-md-6">
-              <h4>{{ t(_self, 'panel_service_supplier.title') }}</h4>
-              <address>
-                <strong>{{ device.serviceSupplier.displayName }}</strong></br>
-                {% if device.serviceSupplier.address %}
-                  {{ device.serviceSupplier.address.street }} {{ device.serviceSupplier.address.building }}
-                  <br>
-                  {{ device.serviceSupplier.address.postalCode }} {{ device.serviceSupplier.address.city }}
-                  <br>
-                  <br>
-                {% endif %}
-                {% if device.serviceSupplier.phone %}
-                  tel.:
-                  +{{ device.serviceSupplier.phone.countryPrefix }} {{ device.serviceSupplier.phone.number }}
-                  <br>
-                {% endif %}
-                {% if device.serviceSupplier.email %}
-                  <a href="mailto:{{ device.serviceSupplier.email }}">{{ device.serviceSupplier.email }}</a>
-                {% endif %}
-              </address>
-            </div>
-            <div class="col-md-6">
-              {% if device.serviceSupplier.avatar %}
-                <img class="pull-right" src="{{ device.serviceSupplier.avatar.url }}"
-                     alt="{{ device.serviceSupplier.displayName }}">
-              {% endif %}
-            </div>
-          </div>
-        </div>
-      </div>
-
 
     </div>
   </div>
 </div>
 
 {% if repairs.items is not empty %}
-  <div class="bg-light p-5 rounded mt-3">
+  <div class="panel-spaced bg-light rounded">
     {{ paginator(repairs.pages, 'repairs_page') }}
     {% include 'repairs/list.html.twig' %}
     {{ paginator(repairs.pages, 'repairs_page') }}
@@ -155,7 +123,7 @@
 {% endif %}
 
 {% if tickets.items is not empty %}
-  <div class="bg-light p-5 rounded mt-3">
+  <div class="panel-spaced bg-light rounded">
     {{ paginator(tickets.pages, 'tickets_page') }}
     {% include 'tickets/list.html.twig' %}
     {{ paginator(tickets.pages, 'tickets_page') }}

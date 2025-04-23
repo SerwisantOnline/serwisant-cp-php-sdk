@@ -11,8 +11,7 @@ query($token: String!) {
                 __typename
             }
             phone {
-                number
-                countryPrefix
+                formatted
                 __typename
             }
             email
@@ -29,8 +28,8 @@ query($token: String!) {
             __typename
         }
         advanceAmount
-        deliveryType
-        collectionType
+        delivery
+        collection
         issue
         priceEstimated
         priceEstimatedTaxRate
