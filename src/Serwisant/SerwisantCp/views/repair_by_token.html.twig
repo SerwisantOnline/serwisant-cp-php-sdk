@@ -4,6 +4,9 @@
 
 {% include 'repair/panel_change_status.html.twig' with {'parent': 'ca'} %}
 
+{{ form_errors(_self, rating_errors) }}
+{% include 'shared/rating.html.twig' with {'isRateable': repair.isRateable, 'formUrl': path('token_rate'), 'rating': repair.rating} %}
+
 <div class="row">
   <div class="col-md-6">
     <div class="pb-2">

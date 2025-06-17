@@ -59,8 +59,9 @@ pl:
           Nie możesz teraz dodać nowej naprawy. Przed dodaniem kolejnej odczekaj
           chwilę.
     rating:
-          stars:
-            greater_than_or_equal_to: Wybierz od jednej do pięciu gwiazdek
+      stars:
+        greater_than_or_equal_to: Wybierz od jednej do pięciu gwiazdek
+        not_a_number: Wybierz od jednej do pięciu gwiazdek
   entitles:
     loginOrEmail: Login lub adres email
     resetToken: Link resetowania hasła

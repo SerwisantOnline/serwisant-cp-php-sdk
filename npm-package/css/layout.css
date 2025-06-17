@@ -192,6 +192,8 @@ textarea {
     font-size: .9rem !important;
 }
 
+/* map */
+
 #ticket-by-token-map {
     display: block;
     width: auto;

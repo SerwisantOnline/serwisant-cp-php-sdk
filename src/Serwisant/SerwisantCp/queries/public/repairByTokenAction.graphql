@@ -110,6 +110,14 @@ query($token: String!) {
             publicRemarks
             __typename
         }
+        isRateable
+        rating {
+            comment
+            response
+            date
+            stars
+            __typename
+        }
         __typename
     }
     configuration: configuration {

@@ -258,6 +258,7 @@ type PublicMutation {
     resetPassword(loginOrEmail: String!, subject: PasswordResetSubject!): PasswordResetResult
     "Use a token sent by `resetPassword` to set a new password."
     setPassword(password: String!, passwordConfirmation: String!, resetToken: String!): PasswordSetResult
+    setRating(rating: RatingInput!, token: String!): RatingResult
 }
 
 type PublicQuery {
@@ -294,6 +295,17 @@ type PublicQuery {
     viewer: Viewer!
 }
 
+type Rating {
+    comment: String
+    date: Date!
+    response: String
+    stars: Int!
+}
+
+type RatingResult {
+    errors: [Error!]
+}
+
 type Repair {
     ID: HashID!
     advanceAmount: Decimal!
@@ -310,11 +322,13 @@ type Repair {
     displayName: String!
     "Files attached to repair. For :service schema it includes private and public files, for otcher schemas only public files are included"
     files: [File!]!
+    isRateable: Boolean!
     issue: String
     model: String
     offers: [RepairOffer!]
     priceEstimated: Decimal
     priceEstimatedTaxRate: Decimal
+    rating: Rating
     rma: String!
     secretToken: SecretToken!
     serial: String
@@ -460,9 +474,11 @@ type Ticket {
     customFields: [CustomFieldValue!]!
     devices: [Device!]!
     files: [File!]!
+    isRateable: Boolean!
     issue: String!
     number: String!
     priority: Priority!
+    rating: Rating
     secretToken: SecretToken
     serviceSupplier: ServiceSupplier!
     status: TicketStatus!
@@ -1253,6 +1269,11 @@ input PhoneInput {
 
 input PrioritiesFilter {
     type: PriorityType
+}
+
+input RatingInput {
+    comment: String
+    stars: Int!
 }
 
 input RepairInput {

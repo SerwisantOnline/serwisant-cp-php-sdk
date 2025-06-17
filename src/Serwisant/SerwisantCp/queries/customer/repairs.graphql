@@ -199,10 +199,11 @@ query repairs($limit: Int, $page: Int, $filter: RepairsFilter, $sort: RepairsSor
             }
             isRateable
             rating {
-                comment
-                stars
-                date
                 __typename
+                stars
+                comment
+                response
+                date
             }
             __typename
         }

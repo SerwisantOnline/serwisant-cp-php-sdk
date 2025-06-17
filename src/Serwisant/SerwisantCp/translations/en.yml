@@ -52,6 +52,10 @@ en:
     repair:
       self:
         customer_rate_limit: You cannot add a new repair at the moment. Please wait a moment.
+    rating:
+      stars:
+        greater_than_or_equal_to: Choose from one to five stars
+        not_a_number: Choose from one to five stars
   entitles:
     loginOrEmail: Login or email adress
     resetToken: Password reset link
@@ -82,6 +86,8 @@ en:
       copyOfSaleDocument: Copy of the sale document
       customFields:
         value: Text box
+    rating:
+      stars: Review
   twig_extensions:
     progressed_about: '%{percent}% completed'
     prev_page: Previous
@@ -178,6 +184,11 @@ en:
     messages: Messages
     devices: Devices
     viewer_password: Change password
+  shared:
+    rating:
+      title: Rate the service provided from one to five stars
+      comment: You can leave an additional comment for the our company
+      submit: Submit a review
   payment_types:
     INSTANT_FIXED: 'Payment upon completion, per order'
     INSTANT_TIME: 'Payment upon completion, hourly rate'

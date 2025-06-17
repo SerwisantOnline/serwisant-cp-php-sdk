@@ -8,15 +8,20 @@
             <div class="d-flex justify-content-center mb-3">
               <div class="text-center">
                 <div class="rating">
-                  <input type="radio" name="rating[stars]" value="5" id="5" {{ rating and rating.stars == 5 ? 'checked' : '' }}>
+                  <input type="radio" name="rating[stars]" value="5"
+                         id="5" {{ rating and rating.stars == 5 ? 'checked' : '' }}>
                   <label for="5">☆</label>
-                  <input type="radio" name="rating[stars]" value="4" id="4" {{ rating and rating.stars == 4 ? 'checked' : '' }}>
+                  <input type="radio" name="rating[stars]" value="4"
+                         id="4" {{ rating and rating.stars == 4 ? 'checked' : '' }}>
                   <label for="4">☆</label>
-                  <input type="radio" name="rating[stars]" value="3" id="3" {{ rating and rating.stars == 3 ? 'checked' : '' }}>
+                  <input type="radio" name="rating[stars]" value="3"
+                         id="3" {{ rating and rating.stars == 3 ? 'checked' : '' }}>
                   <label for="3">☆</label>
-                  <input type="radio" name="rating[stars]" value="2" id="2" {{ rating and rating.stars == 2 ? 'checked' : '' }}>
+                  <input type="radio" name="rating[stars]" value="2"
+                         id="2" {{ rating and rating.stars == 2 ? 'checked' : '' }}>
                   <label for="2">☆</label>
-                  <input type="radio" name="rating[stars]" value="1" id="1" {{ rating and rating.stars == 1 ? 'checked' : '' }}>
+                  <input type="radio" name="rating[stars]" value="1"
+                         id="1" {{ rating and rating.stars == 1 ? 'checked' : '' }}>
                   <label for="1">☆</label>
                   <input type="radio" name="rating[stars]" value="0" id="0" {{ rating ? '' : 'checked' }}>
                 </div>
@@ -38,19 +43,26 @@
       <div class="row">
         <div class="col-md-12">
           <div class="rating">
-            <span>{{ rating.stars >= 5 ? "&#x2605;" : "&#x2606;"  }}</span>
-            <span>{{ rating.stars >= 4 ? "&#x2605;" : "&#x2606;"  }}</span>
-            <span>{{ rating.stars >= 3 ? "&#x2605;" : "&#x2606;"  }}</span>
-            <span>{{ rating.stars >= 2 ? "&#x2605;" : "&#x2606;"  }}</span>
-            <span>{{ rating.stars >= 1 ? "&#x2605;" : "&#x2606;"  }}</span>
+            <span>{{ rating.stars >= 5 ? "&#x2605;" : "&#x2606;" }}</span>
+            <span>{{ rating.stars >= 4 ? "&#x2605;" : "&#x2606;" }}</span>
+            <span>{{ rating.stars >= 3 ? "&#x2605;" : "&#x2606;" }}</span>
+            <span>{{ rating.stars >= 2 ? "&#x2605;" : "&#x2606;" }}</span>
+            <span>{{ rating.stars >= 1 ? "&#x2605;" : "&#x2606;" }}</span>
           </div>
           <figure class="text-center">
             <blockquote>
-              <p>{{ rating.comment }}</p>
+              <p>{{ rating.comment | nl2br }}</p>
             </blockquote>
             <figcaption class="blockquote-footer">
               {{ rating.date }}
             </figcaption>
+            {% if rating.response %}
+              <blockquote>
+                <hr>
+                <p>{{ rating.response | nl2br }}</p>
+              </blockquote>
+            {% endif %}
+
           </figure>
         </div>
       </div>

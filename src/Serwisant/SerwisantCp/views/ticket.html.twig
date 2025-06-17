@@ -6,7 +6,7 @@
 </div>
 
 {{ form_errors(_self, rating_errors) }}
-{% include 'shared/rating.html.twig' with {'isRateable': repair.isRateable, 'formUrl': path('repair_rate', {'id': repair.ID}), 'rating': repair.rating} %}
+{% include 'shared/rating.html.twig' with {'isRateable': ticket.isRateable, 'formUrl': path('ticket_rate', {'id': ticket.ID}), 'rating': ticket.rating} %}
 
 <div class="panel-spaced bg-light rounded">
   <div class="pb-2">

@@ -149,6 +149,7 @@ query tickets($limit: Int, $page: Int, $filter: TicketsFilter, $sort: TicketsSor
                 __typename
                 stars
                 comment
+                response
                 date
             }
         }
