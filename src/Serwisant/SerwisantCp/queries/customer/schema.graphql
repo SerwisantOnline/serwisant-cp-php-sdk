@@ -288,9 +288,9 @@ type Priority {
 
 type Rating {
     comment: String
-    date: Date!
+    date: Date
     response: String
-    stars: Int!
+    stars: Int
 }
 
 type RatingResult {
@@ -1278,7 +1278,7 @@ input PrioritiesFilter {
 
 input RatingInput {
     comment: String
-    stars: Int!
+    stars: Int
 }
 
 input RepairCreationOptions {
