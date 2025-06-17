@@ -65,8 +65,26 @@ class RoutesCa extends Routes
       }
     })
       ->before($this->expectPublicAccessToken())
-      ->assert('token', $this->tokenAssertion())->convert('token', $this->tokenConverter())
+      ->assert('token', $this->tokenAssertion())
+      ->convert('token', $this->tokenConverter())
       ->bind('token');
+
+    // rating action
+
+    $ca->post('/{token}/rate', function (Request $request, Token $token) {
+      switch ($token->subjectType()) {
+        case SecretTokenSubject::TICKET:
+          return (new Actions\TicketByToken($this->app, $request, $token))->rate();
+        case SecretTokenSubject::REPAIR:
+          return (new Actions\RepairByToken($this->app, $request, $token))->rate();
+        default:
+          throw new ExceptionNotFound(__CLASS__, __LINE__);
+      }
+    })
+      ->before($this->expectPublicAccessToken())
+      ->assert('token', $this->tokenAssertion())
+      ->convert('token', $this->tokenConverter())
+      ->bind('token_rate');
 
     // this works only on self-hosted - shows main page (service supplier starting page) based on pre-defined key-secret
 

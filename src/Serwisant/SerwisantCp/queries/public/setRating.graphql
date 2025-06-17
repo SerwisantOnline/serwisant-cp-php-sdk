@@ -1,0 +1,11 @@
+mutation setRating($token: String!,  $rating: RatingInput!) {
+    setRating(token: $token, rating: $rating) {
+        __typename
+        errors {
+            __typename
+            argument
+            code
+            message
+        }
+    }
+}

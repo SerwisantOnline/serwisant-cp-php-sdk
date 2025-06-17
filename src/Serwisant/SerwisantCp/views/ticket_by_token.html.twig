@@ -2,6 +2,9 @@
   {% include 'shared/service_supplier_card.html.twig' with {'serviceSupplier': ticket.serviceSupplier, 'title': t(_self, 'introduction')} %}
 </div>
 
+{{ form_errors(_self, rating_errors) }}
+{% include 'shared/rating.html.twig' with {'isRateable': ticket.isRateable, 'formUrl': path('token_rate'), 'rating': ticket.rating} %}
+
 <div class="row">
   <div class="col-md-6">
     <div class="pb-2">

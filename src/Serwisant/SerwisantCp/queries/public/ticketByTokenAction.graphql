@@ -82,6 +82,14 @@ query($token: String!) {
             vendor
             model
         }
+        isRateable
+        rating {
+            stars
+            date
+            comment
+            response
+            __typename
+        }
         __typename
     }
     configuration: configuration {

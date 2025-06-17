@@ -12,6 +12,9 @@
   {% endif %}
 </div>
 
+{{ form_errors(_self, rating_errors) }}
+{% include 'shared/rating.html.twig' with {'isRateable': repair.isRateable, 'formUrl': path('repair_rate', {'id': repair.ID}), 'rating': repair.rating} %}
+
 <div class="panel-spaced bg-light rounded">
   {% include 'shared/service_supplier_card.html.twig' with {'serviceSupplier': repair.serviceSupplier, 'title': t(_self, 'introduction')} %}
 

@@ -1,7 +1,7 @@
 {
   "name": "serwisant/serwisant-cp",
-  "version": "1.4.1",
-  "description": "Customer Panel SDK for https://serwisant.online service",
+  "version": "1.5.0",
+  "description": "Customer Panel for https://serwisant.online service",
   "type": "library",
   "homepage": "https://github.com/SerwisantOnline/serwisant-cp-php-sdk",
   "license": "Apache-2.0",
@@ -10,7 +10,7 @@
     "ext-json": "*",
     "ext-openssl": "*",
     "composer/package-versions-deprecated": "*",
-    "serwisant/serwisant-api": "~3.5.0",
+    "serwisant/serwisant-api": "~3.5.1",
     "silex/silex": "^2.3",
     "devimteam/silex-cors-provider": "^1.0",
     "symfony/asset": "^3.4",
@@ -24,7 +24,7 @@
   "authors": [
     {
       "name": "Arkadiusz Kuryłowicz",
-      "email": "arkadiusz.kurylowicz@serwisant-online.pl"
+      "email": "hello@sugarmice.software"
     }
   ],
   "autoload": {

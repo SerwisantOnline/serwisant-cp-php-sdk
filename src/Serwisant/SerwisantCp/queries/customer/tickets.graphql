@@ -144,6 +144,14 @@ query tickets($limit: Int, $page: Int, $filter: TicketsFilter, $sort: TicketsSor
                     street
                 }
             }
+            isRateable
+            rating {
+                __typename
+                stars
+                comment
+                response
+                date
+            }
         }
     }
 }

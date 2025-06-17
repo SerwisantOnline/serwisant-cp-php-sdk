@@ -5,16 +5,7 @@ namespace Serwisant\SerwisantCp\Actions;
 use Serwisant\SerwisantCp\Traits;
 use Serwisant\SerwisantCp\Action;
 use Serwisant\SerwisantCp\ExceptionNotFound;
-
-use Serwisant\SerwisantApi\Types\SchemaCustomer\AddressType;
-use Serwisant\SerwisantApi\Types\SchemaCustomer\AddressInput;
-use Serwisant\SerwisantApi\Types\SchemaCustomer\RepairsFilterType;
-use Serwisant\SerwisantApi\Types\SchemaCustomer\TicketsFilter;
-use Serwisant\SerwisantApi\Types\SchemaCustomer\TicketsFilterType;
-use Serwisant\SerwisantApi\Types\SchemaCustomer\TicketsSort;
-use Serwisant\SerwisantApi\Types\SchemaCustomer\TicketInput;
-use Serwisant\SerwisantApi\Types\SchemaCustomer\PrintType;
-use Serwisant\SerwisantApi\Types\SchemaCustomer\Device;
+use Serwisant\SerwisantApi\Types\SchemaCustomer;
 
 class Tickets extends Action
 {
@@ -26,8 +17,8 @@ class Tickets extends Action
 
     $limit = $this->getListLimit();
     $page = $this->request->get('page', 1);
-    $filter = new TicketsFilter(['type' => TicketsFilterType::ALL]);
-    $sort = TicketsSort::CREATED_AT;
+    $filter = new SchemaCustomer\TicketsFilter(['type' => SchemaCustomer\TicketsFilterType::ALL]);
+    $sort = SchemaCustomer\TicketsSort::CREATED_AT;
 
     $tickets = $this
       ->apiCustomer()
@@ -41,19 +32,17 @@ class Tickets extends Action
     return $this->renderPage('tickets.html.twig', $variables);
   }
 
-  public function show($id)
+  public function show($id, $rating_errors = [])
   {
     $this->checkModuleActive();
 
-    $filter = new TicketsFilter(['type' => RepairsFilterType::ID, 'ID' => $id]);
-    $result = $this->apiCustomer()->customerQuery()->tickets(1, null, $filter, null, ['single' => true]);
-    if (count($result->items) !== 1) {
-      throw new ExceptionNotFound(__CLASS__, __LINE__);
-    }
+    $ticket = $this->fetchTicket($id);
 
     $variables = [
-      'ticket' => $result->items[0],
-      'pageTitle' => $result->items[0]->number,
+      'ticket' => $ticket,
+      'pageTitle' => $ticket->number,
+      'form_params' => $this->request->request,
+      'rating_errors' => $rating_errors,
     ];
 
     return $this->renderPage('ticket.html.twig', $variables);
@@ -61,7 +50,7 @@ class Tickets extends Action
 
   public function print($id)
   {
-    $result = $this->apiCustomer()->customerMutation()->print(PrintType::TICKET, $id);
+    $result = $this->apiCustomer()->customerMutation()->print(SchemaCustomer\PrintType::TICKET, $id);
     return $this->app->redirect($result->temporaryFile->url);
   }
 
@@ -76,7 +65,7 @@ class Tickets extends Action
       $priorities_select_options[$entry->ID] = $entry->name;
     }
 
-    /* @var $device Device */
+    /* @var $device SchemaCustomer\Device */
     $device = $this->getDevice();
 
     $addresses_radio_options = [];
@@ -115,7 +104,7 @@ class Tickets extends Action
     if (array_key_exists('customFields', $ticket)) {
       $ticket['customFields'] = $helper->mapCustomFields($ticket['customFields']);
     }
-    $ticket_input = new TicketInput($ticket);
+    $ticket_input = new SchemaCustomer\TicketInput($ticket);
 
     $devices = [];
     if ($device = $this->getDevice()) {
@@ -123,16 +112,16 @@ class Tickets extends Action
     }
 
     if ($device && $device->address) {
-      $address_input = new AddressInput(array_merge($device->address->toArray(['ID', 'geoPoint']), ['type' => AddressType::OTHER])); // always use original device address
+      $address_input = new SchemaCustomer\AddressInput(array_merge($device->address->toArray(['ID', 'geoPoint']), ['type' => SchemaCustomer\AddressType::OTHER])); // always use original device address
     } elseif ($this->request->get('addressID')) {
-      $address_input = new AddressInput();
+      $address_input = new SchemaCustomer\AddressInput();
       foreach ($this->apiCustomer()->customerQuery()->viewer(['addresses' => true])->customer->addresses as $a) {
         if ($a->ID == $this->request->get('addressID')) {
-          $address_input = new AddressInput($a->toArray(['ID']));
+          $address_input = new SchemaCustomer\AddressInput($a->toArray(['ID']));
         }
       }
     } else {
-      $address_input = new AddressInput(array_merge($this->request->get('address', []), ['type' => AddressType::OTHER]));
+      $address_input = new SchemaCustomer\AddressInput(array_merge($this->request->get('address', []), ['type' => SchemaCustomer\AddressType::OTHER]));
     }
 
     $result = $this->apiCustomer()->customerMutation()->createTicket(
@@ -153,6 +142,37 @@ class Tickets extends Action
     } else {
       return $this->redirectTo('tickets', 'flashes.ticket_creation_successful');
     }
+  }
+
+  public function rate($id)
+  {
+    $this->checkModuleActive();
+
+    $ticket = $this->fetchTicket($id);
+
+    if (false === $ticket->isRateable) {
+      throw new ExceptionNotFound(__CLASS__, __LINE__);
+    }
+
+    $rating_input = new SchemaCustomer\RatingInput($this->request->get('rating', []));
+
+    $result = $this->apiCustomer()->customerMutation()->setRating($id, SchemaCustomer\RatingSubjectType::TICKET, $rating_input);
+
+    if ($result->errors) {
+      return $this->show($id, $result->errors);
+    } else {
+      return $this->redirectTo(['ticket', ['id' => $id]]);
+    }
+  }
+
+  private function fetchTicket($id)
+  {
+    $filter = new SchemaCustomer\TicketsFilter(['type' => SchemaCustomer\TicketsFilterType::ID, 'ID' => $id]);
+    $result = $this->apiCustomer()->customerQuery()->tickets(1, null, $filter, null, ['single' => true]);
+    if (count($result->items) !== 1) {
+      throw new ExceptionNotFound(__CLASS__, __LINE__);
+    }
+    return $result->items[0];
   }
 
   private function checkModuleActive()
