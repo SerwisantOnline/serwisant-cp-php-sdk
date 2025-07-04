@@ -535,6 +535,7 @@ en:
     country: Country
     delivery: Method of delivery of the repair
     collection: Method of receiving of the repair
+    person: 'Applicant: name, surname'
     phone_prefix: Country
     phone_number: Phone number
     email: Email
@@ -542,7 +543,7 @@ en:
     cancel: Cancel
     submit: Add a repair
   repair_public_submit_prompt:
-    title: What next?
+    title: 'Message from the service center handling your repair:'
     proceed: Go to repair page
   tickets:
     title: Tickets
@@ -633,6 +634,7 @@ en:
     city: City
     country: Country
     device: The device concerned by this issue
+    person: 'Applicant: name, surname'
     phone_prefix: Country
     phone_number: Phone number
     email: Email address

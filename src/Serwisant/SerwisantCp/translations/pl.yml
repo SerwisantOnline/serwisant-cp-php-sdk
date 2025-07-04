@@ -553,6 +553,7 @@ pl:
     country: Kraj
     delivery: Sposób dostarczenia naprawy
     collection: Sposób odbioru naprawy
+    person: 'Zgłaszający: imię, nazwisko'
     phone_prefix: Kraj
     phone_number: Numer telefonu
     email: Adres email
@@ -560,7 +561,7 @@ pl:
     cancel: Anuluj
     submit: Dodaj naprawę
   repair_public_submit_prompt:
-    title: Co dalej?
+    title: 'Wiadomość od serwisu obsługującego Twoją naprawę:'
     proceed: Przejdź na stronę naprawy
   tickets:
     title: Zgłoszenia
@@ -650,6 +651,7 @@ pl:
     city: Miasto
     country: Kraj
     device: 'Urządzenie, którego dotyczy zgłoszenie'
+    person: 'Zgłaszający: imię, nazwisko'
     phone_prefix: Kraj
     phone_number: Numer telefonu
     email: Adres email

@@ -6,7 +6,10 @@
 
   {{ form_errors(_self, errors) }}
 
-  <div class="row row-cols-1 row-cols-md-2">
+  <div class="row row-cols-1 row-cols-md-3">
+    <div class="col mb-3">
+      {{ form_field({type: 'text', argument: 'applicant.person', caption: t(_self, 'person')}, form_params, errors) }}
+    </div>
     <div class="col mb-3">
       {{ form_field({type: 'text', argument: 'applicant.email', caption: t(_self, 'email')}, form_params, errors) }}
     </div>

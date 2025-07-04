@@ -60,6 +60,7 @@ class RepairsPublic extends Action
     $applicant = new Dot($this->request->get('applicant', []));
     $applicant_input = new SchemaPublic\AnonymousApplicantInput([
       'deviceUid' => $device_uid,
+      'person' => $applicant['person'],
       'phone' => new SchemaPublic\PhoneInput($applicant['phone']),
       'email' => $applicant['email'],
       'agreements' => $helper->mapAgreements($applicant['agreements']),
