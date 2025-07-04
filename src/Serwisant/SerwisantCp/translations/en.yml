@@ -516,6 +516,34 @@ en:
     collection: Method of receiving of the repair
     cancel: Cancel
     submit: Add a repair
+  repair_public_new:
+    title: Submit a repair
+    introduction: 'The reported repair will be forwarded to the service:'
+    device: The device being repaired
+    type: Repair item
+    vendor: Manufacturer
+    model: Model
+    serial: Serial number of the device
+    warranty: Repair under warranty
+    warrantyPurchaseDate: Purchase date
+    warrantyPurchaseDocument: Purchase document number
+    issue: Issue description
+    street: Street
+    building: Number
+    postalCode: Postal number
+    city: City
+    country: Country
+    delivery: Method of delivery of the repair
+    collection: Method of receiving of the repair
+    phone_prefix: Country
+    phone_number: Phone number
+    email: Email
+    read_agreement: Read
+    cancel: Cancel
+    submit: Add a repair
+  repair_public_submit_prompt:
+    title: What next?
+    proceed: Go to repair page
   tickets:
     title: Tickets
     create_ticket: Open a ticket
@@ -609,8 +637,11 @@ en:
     phone_number: Phone number
     email: Email address
     read_agreement: Read
+    showAddress: Let me enter the address with the location of the report
   online_payment_by_token:
-    introduction: 'For additional information regarding this payment, please contact the service using the following details:'
+    introduction: >-
+      For additional information regarding this payment, please contact the
+      service using the following details:
   online_payment:
     popus:
       code_modal:
@@ -767,8 +798,8 @@ en:
       the sales document. After the device is verified by the service, you will
       receive an email and will be able to add repairs or reports.
     type: Device
-    vendor: Vendor
-    model: Make
+    vendor: Manufacturer
+    model: Model
     serial: Serial number
     copy_of_sale_document: 'A copy of a sales document, receipt or invoice in as image file.'
     address: Device installation address

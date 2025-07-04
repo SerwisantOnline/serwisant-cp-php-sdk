@@ -404,8 +404,8 @@ pl:
       details: Szczegóły
   repair:
     introduction: >-
-      Aby uzyskać informację na temat tej naprawy, skontaktuj się z serwisem, który ją realizuje
-      używając poniższych danych:
+      Aby uzyskać informację na temat tej naprawy, skontaktuj się z serwisem,
+      który ją realizuje używając poniższych danych:
     close: Zamknij
     print_intro: Przyjęcie
     print_summary: Podsumowanie
@@ -504,12 +504,10 @@ pl:
       repair: Naprawa
       confirmation: Potwierdzenie
       confirm: Potwierdzam
-    panel_service_supplier:
-      title: ''
   repair_by_token:
     introduction: >-
-      Aby uzyskać informację na temat tej naprawy, skontaktuj się z serwisem, który ją realizuje
-      używając poniższych danych:
+      Aby uzyskać informację na temat tej naprawy, skontaktuj się z serwisem,
+      który ją realizuje używając poniższych danych:
   repair_new:
     title: Dodaj nową naprawę
     description: >-
@@ -538,7 +536,7 @@ pl:
     submit: Dodaj naprawę
   repair_public_new:
     title: Zgłoś naprawę
-    introduction: "Zgłoszona naprawa zostanie przekazana do serwisu:"
+    introduction: 'Zgłoszona naprawa zostanie przekazana do serwisu:'
     device: 'Urządzenie, którego dotyczy naprawa'
     type: Przedmiot naprawy
     vendor: Producent
@@ -562,7 +560,7 @@ pl:
     cancel: Anuluj
     submit: Dodaj naprawę
   repair_public_submit_prompt:
-    title: 'Wiadomość od serwisu:'
+    title: Co dalej?
     proceed: Przejdź na stronę naprawy
   tickets:
     title: Zgłoszenia
@@ -578,8 +576,8 @@ pl:
       details: Szczegóły
   ticket:
     introduction: >-
-      Aby uzyskać informację na temat tego zgłoszenia, skontaktuj się z serwisem, który je obsługuje
-      używając poniższych danych:
+      Aby uzyskać informację na temat tego zgłoszenia, skontaktuj się z
+      serwisem, który je obsługuje używając poniższych danych:
     close: Zamknij
     print: Wydruk
     panel_info:
@@ -610,12 +608,10 @@ pl:
       title: Dodatkowe informacje
     panel_files:
       title: Załączone pliki
-    panel_service_supplier:
-      title: ''
   ticket_by_token:
     introduction: >-
-      Aby uzyskać informację na temat tego zgłoszenia, skontaktuj się z serwisem, który je obsługuje
-      używając poniższych danych:
+      Aby uzyskać informację na temat tego zgłoszenia, skontaktuj się z
+      serwisem, który je obsługuje używając poniższych danych:
     panel_files:
       title: Załączone pliki
   ticket_new:
@@ -660,7 +656,9 @@ pl:
     read_agreement: Czytaj
     showAddress: Pozwól mi wpisać adres z lokalizacją zgłoszenia
   online_payment_by_token:
-    introduction: 'Aby uzyskać dodatkowe informacje związane z tą płatnością, skontaktuj się z serwisem używając następujących danych:'
+    introduction: >-
+      Aby uzyskać dodatkowe informacje związane z tą płatnością, skontaktuj się
+      z serwisem używając następujących danych:
   online_payment:
     popus:
       code_modal:
@@ -805,8 +803,6 @@ pl:
       Nie można wykonać operacji na niezweryfikowanym urządzeniu. Poczekaj na
       weryfikację urządzenia przez serwis.
     copy_of_sale_document: Dokument sprzedaży
-    panel_service_supplier:
-      title: ''
   device_new:
     title: Rejestracja urządzenia
     description: >-
