@@ -1,29 +1,41 @@
- query {
+query {
     viewer: viewer {
         __typename
         subscriber {
             __typename
             businessActivity
+            displayName
+            taxPrefix
+            taxId
+            taxFormatted
+            address {
+                __typename
+                street
+                building
+                city
+                postalCode
+                countryIso
+            }
             serviceSupplier {
+                __typename
                 displayName
                 address {
+                    __typename
                     street
                     building
                     city
                     postalCode
                     countryIso
-                    __typename
                 }
                 phone {
-                    formatted
                     __typename
+                    formatted
                 }
                 email
                 avatar {
-                    url
                     __typename
+                    url
                 }
-                __typename
             }
         }
     }

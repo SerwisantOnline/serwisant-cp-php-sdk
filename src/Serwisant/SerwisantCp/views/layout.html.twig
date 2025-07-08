@@ -29,9 +29,6 @@
     <div class="container">
 
       <a class="navbar-brand" href="{{ path('dashboard') }}">
-        {% if subscriber.serviceSupplier.avatar %}
-          <img src="{{ subscriber.serviceSupplier.avatar.url }}" alt="Bootstrap" height="24">
-        {% endif %}
         {{ subscriber.serviceSupplier.displayName }}
       </a>
 
@@ -67,6 +64,10 @@
                  href="{{ path('messages') }}">{{ t(_self, 'messages') }}</a>
             </li>
           {% endif %}
+          <li class="nav-item">
+            <a class="nav-link {{ currentAction == 'Contact' ? 'active' : '' }}"
+               href="{{ path('contact') }}">{{ t(_self, 'contact') }}</a>
+          </li>
 
           <li class="nav-item d-lg-none"><a class="nav-link" href="{{ path('viewer') }}">{{ t(_self, 'viewer') }}</a>
           </li>

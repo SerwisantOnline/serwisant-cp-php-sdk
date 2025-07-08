@@ -5,6 +5,13 @@
   </div>
   <table class="table table-bordered card-table">
     <tbody>
+    <tr>
+      <td class="column-definition">{{ t(_self, 'service_supplier') }}</td>
+      <td>
+        {% include 'shared/service_supplier_row.html.twig' with {'serviceSupplier': repair.serviceSupplier} %}
+      </td>
+    </tr>
+
     {% if configuration.panelDevices and repair.device %}
       <tr>
         <td class="column-definition">{{ t(_self, 'device') }}</td>

@@ -2,12 +2,16 @@
   <a href="{{ path('devices') }}" class="btn btn-secondary btn-lg">{{ t(_self, 'close') }}</a>
 
   {% if configuration.panelRepairs %}
-    <a href="{{ path('new_repair', {device: device.ID}) }}" class="d-none d-md-none d-lg-block btn btn-primary btn-lg {{ device.isVerified ? '' : 'disabled' }}">{{ t(_self, 'new_repair') }}</a>
-    <a href="{{ path('new_repair', {device: device.ID}) }}" class="d-lg-none btn btn-primary btn-lg {{ device.isVerified ? '' : 'disabled' }}">{{ t(_self, 'new_repair_s') }}</a>
+    <a href="{{ path('new_repair', {device: device.ID}) }}"
+       class="d-none d-md-none d-lg-block btn btn-primary btn-lg {{ device.isVerified ? '' : 'disabled' }}">{{ t(_self, 'new_repair') }}</a>
+    <a href="{{ path('new_repair', {device: device.ID}) }}"
+       class="d-lg-none btn btn-primary btn-lg {{ device.isVerified ? '' : 'disabled' }}">{{ t(_self, 'new_repair_s') }}</a>
   {% endif %}
   {% if configuration.panelTickets %}
-    <a href="{{ path('new_ticket', {device: device.ID}) }}" class="d-none d-md-none d-lg-block btn btn-primary btn-lg {{ device.isVerified ? '' : 'disabled' }}">{{ t(_self, 'new_ticket') }}</a>
-    <a href="{{ path('new_ticket', {device: device.ID}) }}" class="d-lg-none btn btn-primary btn-lg {{ device.isVerified ? '' : 'disabled' }}">{{ t(_self, 'new_ticket_s') }}</a>
+    <a href="{{ path('new_ticket', {device: device.ID}) }}"
+       class="d-none d-md-none d-lg-block btn btn-primary btn-lg {{ device.isVerified ? '' : 'disabled' }}">{{ t(_self, 'new_ticket') }}</a>
+    <a href="{{ path('new_ticket', {device: device.ID}) }}"
+       class="d-lg-none btn btn-primary btn-lg {{ device.isVerified ? '' : 'disabled' }}">{{ t(_self, 'new_ticket_s') }}</a>
   {% endif %}
 </div>
 
@@ -20,8 +24,6 @@
 {% endif %}
 
 <div class="panel-spaced bg-light rounded">
-  {% include 'shared/service_supplier_card.html.twig' with {'serviceSupplier': device.serviceSupplier, 'title': t(_self, 'introduction')} %}
-
   <div class="row">
     <div class="col-md-6">
       <div class="card my-2">
@@ -31,6 +33,13 @@
         </div>
         <table class="table table-bordered card-table">
           <tbody>
+          <tr>
+            <td class="column-definition">{{ t(_self, 'service_supplier') }}</td>
+            <td>
+              {% include 'shared/service_supplier_row.html.twig' with {'serviceSupplier': device.serviceSupplier} %}
+            </td>
+          </tr>
+
           {% if device.address %}
             <tr>
               <td class="column-definition">{{ t(_self, 'address') }}</td>
@@ -75,7 +84,8 @@
               <td>
                 <div class="card">
                   {% if device.copyOfSaleDocument.image %}
-                    <a href="{{ device.copyOfSaleDocument.url }}"><img src="{{ device.copyOfSaleDocument.thumbUrl }}" class="card-img-top img-thumbnail"></a>
+                    <a href="{{ device.copyOfSaleDocument.url }}"><img src="{{ device.copyOfSaleDocument.thumbUrl }}"
+                                                                       class="card-img-top img-thumbnail"></a>
                   {% else %}
                     <a href="{{ device.copyOfSaleDocument.url }}" class="text-sm-center">
                       <i class="fas fa-file"></i>
@@ -88,7 +98,8 @@
           </tbody>
         </table>
       </div>
-
+    </div>
+    <div class="col-md-6">
       <div class="card my-2">
         <div class="card-header">
           <span class="glyphicon glyphicon-info-sign icon-margin pull-right"></span>
@@ -105,11 +116,7 @@
           </tbody>
         </table>
       </div>
-
       {% include 'shared/files.html.twig' with {'files': device.files, 'title': t(_self, 'panel_files.title')} %}
-    </div>
-    <div class="col-md-6">
-
     </div>
   </div>
 </div>

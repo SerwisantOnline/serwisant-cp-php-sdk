@@ -4,18 +4,14 @@
     {% if subscriber is defined %}
       <p class="pull-left">
         <small>
-          <strong>{{ subscriber.serviceSupplier.displayName }}</strong>
-          {% if subscriber.serviceSupplier.address %}
+          <strong>{{ subscriber.displayName }}</strong>
+          {% if subscriber.address %}
             <br>
-            {{ subscriber.serviceSupplier.address.street }} {{ subscriber.serviceSupplier.address.building }}, {{ subscriber.serviceSupplier.address.postalCode }} {{ subscriber.serviceSupplier.address.city }}
+            {{ subscriber.address.street }} {{ subscriber.address.building }}, {{ subscriber.address.postalCode }} {{ subscriber.address.city }}
           {% endif %}
-          {% if subscriber.serviceSupplier.phone %}
+          {% if subscriber.taxId %}
             <br>
-            <a href="tel:{{ subscriber.serviceSupplier.phone.formatted }}">{{ subscriber.serviceSupplier.phone.formatted }}</a>
-          {% endif %}
-          {% if subscriber.serviceSupplier.email %}
-            <br>
-            <a href="mailto:{{ subscriber.serviceSupplier.email }}">{{ subscriber.serviceSupplier.email }}</a>
+            NIP {{ subscriber.taxFormatted }}
           {% endif %}
         </small>
       </p>

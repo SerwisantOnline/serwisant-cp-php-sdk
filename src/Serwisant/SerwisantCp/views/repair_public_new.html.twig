@@ -1,5 +1,5 @@
 <div class="pb-2">
-  {% include 'shared/service_supplier_card.html.twig' with {'serviceSupplier': serviceSupplier, 'title': t(_self, 'introduction')} %}
+  {% include 'shared/service_supplier_card.html.twig' with {'serviceSupplier': serviceSupplier, 'title': t(_self, 'title'), 'message': t(_self, 'introduction')} %}
 </div>
 
 <form method="post" action="{{ path('token_create_repair') }}">

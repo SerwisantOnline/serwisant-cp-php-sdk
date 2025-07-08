@@ -1,13 +1,10 @@
 <div class="pb-2">
-  {% include 'shared/service_supplier_card.html.twig' with {'serviceSupplier': payment.serviceSupplier, 'title': t(_self, 'introduction')} %}
-</div>
-
-<div class="pb-2">
   {% include 'online_payment/panel_payment_details.html.twig' %}
 </div>
 
 <div class="pb-2">
   {% if payment.amountToPay > 0 and payment.status == 'WAITING_FOR_PAYMENT' %}
+    <h4>{{ t(_self, 'payment_methods') }}</h4>
     {% include 'online_payment/panel_payment_methods.html.twig' %}
   {% endif %}
 </div>

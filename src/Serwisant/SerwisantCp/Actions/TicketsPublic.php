@@ -48,7 +48,7 @@ class TicketsPublic extends Action
       'temporary_files' => $this->formHelper()->mapTemporaryFiles($this->request->get('temporary_files')),
       'errors' => $errors,
       'js_files' => ['tickets_public.js'],
-      'pageTitle' => $this->t('ticket_new.title'),
+      'pageTitle' => $this->t('ticket_public_new.title'),
     ];
 
     return $this->renderPage('ticket_public_new.html.twig', $variables);

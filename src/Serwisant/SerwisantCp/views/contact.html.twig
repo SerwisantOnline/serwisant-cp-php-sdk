@@ -1,0 +1,31 @@
+<div class="panel-spaced bg-light rounded">
+
+  <h2>{{ t(_self, 'title') }}</h2>
+  <hr>
+  <p>{{ t(_self, 'message') }}</p>
+
+  <address>
+    <strong>{{ subscriber.serviceSupplier.displayName }}</strong>
+    <br>
+    {% if subscriber.serviceSupplier.address %}
+      {{ subscriber.serviceSupplier.address.street }} {{ subscriber.serviceSupplier.address.building }}, {{ subscriber.serviceSupplier.address.postalCode }} {{ subscriber.serviceSupplier.address.city }}
+      <br>
+    {% endif %}
+    {% if subscriber.serviceSupplier.phone %}
+      tel.: <a href="tel:{{ subscriber.serviceSupplier.phone.formatted }}">{{ subscriber.serviceSupplier.phone.formatted }}</a>
+      <br>
+    {% endif %}
+    {% if subscriber.serviceSupplier.email %}
+      <a href="mailto:{{ subscriber.serviceSupplier.email }}">{{ subscriber.serviceSupplier.email }}</a>
+    {% endif %}
+  </address>
+  {% if subscriber.taxId %}
+    <br>
+    NIP {{ subscriber.taxFormatted }}
+  {% endif %}
+</div>
+
+
+
+
+

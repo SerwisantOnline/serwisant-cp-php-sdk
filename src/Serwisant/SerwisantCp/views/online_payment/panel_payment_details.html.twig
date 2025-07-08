@@ -6,6 +6,12 @@
   <table class="table table-bordered card-table">
     <tbody>
     <tr>
+      <td class="column-definition">{{ t(_self, 'payment_receiver') }}</td>
+      <td>
+        {% include 'shared/service_supplier_row.html.twig' with {'serviceSupplier': payment.serviceSupplier} %}
+      </td>
+    </tr>
+    <tr>
       <td class="column-definition text-nowrap">{{ t(_self, 'amount_to_pay') }}</td>
       <td>{{ payment.amountToPay | format_currency(payment.currency) }}</td>
     </tr>

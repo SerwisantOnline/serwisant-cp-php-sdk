@@ -124,6 +124,10 @@ class RoutesCp extends Routes
    */
   private function miscRoutes($cp): void
   {
+    $this->routeRequirements('contact', $cp->get('/contact', function (Request $request, Token $token) {
+      return (new Actions\Contact($this->app, $request, $token))->show();
+    }));
+
     $this->routeRequirements('dashboard', $cp->get('/', function (Request $request, Token $token) {
       return (new Actions\Dashboard($this->app, $request, $token))->index();
     }));

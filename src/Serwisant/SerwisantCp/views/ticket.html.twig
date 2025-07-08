@@ -9,10 +9,6 @@
 {% include 'shared/rating.html.twig' with {'isRateable': ticket.isRateable, 'formUrl': path('ticket_rate', {'id': ticket.ID}), 'rating': ticket.rating} %}
 
 <div class="panel-spaced bg-light rounded">
-  <div class="pb-2">
-    {% include 'shared/service_supplier_card.html.twig' with {'serviceSupplier': ticket.serviceSupplier, 'title': t(_self, 'introduction')} %}
-  </div>
-
   <div class="row">
     <div class="col-md-6">
       {% include 'ticket/panel_info.html.twig'  with {'canCreateLinks': false} %}

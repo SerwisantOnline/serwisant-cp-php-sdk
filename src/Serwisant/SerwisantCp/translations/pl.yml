@@ -197,6 +197,7 @@ pl:
     tickets: Zgłoszenia
     messages: Wiadomości
     devices: Urządzenia
+    contact: Kontakt
     viewer_password: Zmień hasło
   shared:
     rating:
@@ -252,8 +253,8 @@ pl:
     CANCELED: Anulowana
     RETURNED: Zwrócona
   login_new:
-    title: Zaloguj się!
-    login_description: Zanim rozpoczniesz korzystanie z aplikacji powinieneś się zalogować.
+    title: Zaloguj się do panelu klienckiego!
+    login_description: Do logowania użyj adresu email, który podałeś podczas rejestracji lub na etapie zamawiania usługi.
     signup_description: >-
       Jeśli nie masz danych do logowania możesz je utworzyć poprzez rejestrację
       swojego konta.
@@ -403,9 +404,6 @@ pl:
       status: Stan
       details: Szczegóły
   repair:
-    introduction: >-
-      Aby uzyskać informację na temat tej naprawy, skontaktuj się z serwisem,
-      który ją realizuje używając poniższych danych:
     close: Zamknij
     print_intro: Przyjęcie
     print_summary: Podsumowanie
@@ -420,6 +418,7 @@ pl:
       pickup_time_from: Od
       pickup_time_to: do
     panel_info:
+      service_supplier: Dane kontaktowe serwisu
       device: 'Urządzenie, którego dotyczy naprawa'
       title: Informacje o naprawie
       number: Numer
@@ -504,10 +503,6 @@ pl:
       repair: Naprawa
       confirmation: Potwierdzenie
       confirm: Potwierdzam
-  repair_by_token:
-    introduction: >-
-      Aby uzyskać informację na temat tej naprawy, skontaktuj się z serwisem,
-      który ją realizuje używając poniższych danych:
   repair_new:
     title: Dodaj nową naprawę
     description: >-
@@ -536,7 +531,7 @@ pl:
     submit: Dodaj naprawę
   repair_public_new:
     title: Zgłoś naprawę
-    introduction: 'Zgłoszona naprawa zostanie przekazana do serwisu:'
+    introduction: 'Zgłoszenie zostanie przekazane do serwisu:'
     device: 'Urządzenie, którego dotyczy naprawa'
     type: Przedmiot naprawy
     vendor: Producent
@@ -576,12 +571,10 @@ pl:
       status: Stan
       details: Szczegóły
   ticket:
-    introduction: >-
-      Aby uzyskać informację na temat tego zgłoszenia, skontaktuj się z
-      serwisem, który je obsługuje używając poniższych danych:
     close: Zamknij
     print: Wydruk
     panel_info:
+      service_supplier: Dane kontaktowe serwisu
       title: Ogólne informacje
       number: Numer zgłoszenia
       devices: 'Urządzenia, których dotyczy zgłoszenie'
@@ -610,9 +603,6 @@ pl:
     panel_files:
       title: Załączone pliki
   ticket_by_token:
-    introduction: >-
-      Aby uzyskać informację na temat tego zgłoszenia, skontaktuj się z
-      serwisem, który je obsługuje używając poniższych danych:
     panel_files:
       title: Załączone pliki
   ticket_new:
@@ -635,8 +625,8 @@ pl:
     country: Kraj
     device: 'Urządzenie, którego dotyczy zgłoszenie'
   ticket_public_new:
-    title: Dodaj zgłoszenie awarii
-    introduction: 'Zgłoszona awaria zostanie przekazana do serwisu:'
+    title: Zgłoś awarię
+    introduction: 'Zgłoszenie zostanie przekazane do serwisu:'
     priority: Priorytet zgłoszenia
     startAt: Najbliższy możliwy termin przyjazdu serwisanta
     issue: Informacje o awarii
@@ -658,9 +648,7 @@ pl:
     read_agreement: Czytaj
     showAddress: Pozwól mi wpisać adres z lokalizacją zgłoszenia
   online_payment_by_token:
-    introduction: >-
-      Aby uzyskać dodatkowe informacje związane z tą płatnością, skontaktuj się
-      z serwisem używając następujących danych:
+    payment_methods: Wybierz jedną z metod płatności
   online_payment:
     popus:
       code_modal:
@@ -702,8 +690,8 @@ pl:
         href='https://tpay.com/user/assets/files_for_download/informacja-dla-konsumenta.pdf'>informacje
         dla konsumenta</a>)
     panel_payment_details:
-      items: Pozycje
-      payment_receiver: Odbiorca
+      items: Dotyczy następujących usług
+      payment_receiver: Odbiorca płatności
       title: 'Informacje o płatności %{number}'
       amount_to_pay: Pozostało do zapłaty
       amount: Kwota
@@ -782,7 +770,6 @@ pl:
     create_device: Zarejestruj urządzenie
     not_verified: Urządzenie oczekuje na weryfikację przez serwis.
   device:
-    introduction: Serwis obsługujący urządzenie
     close: Zamknij
     new_repair: Utwórz naprawę tego urządzenia
     new_repair_s: Naprawa
@@ -790,6 +777,7 @@ pl:
     new_ticket_s: Awaria
     panel_info:
       title: Informacje o urządzeniu
+    service_supplier: Dane kontaktowe serwisu
     address: Adres
     type: Rodzaj
     number: Numer
@@ -830,3 +818,6 @@ pl:
     title: Co dalej?
     description: Poniżej znajdziesz instrukcję dalszego postępowania.
     confirm: Rozumiem
+  contact:
+    title: Dane kontaktowe
+    message: 'Użyj poniższych danych aby skontaktować się z serwisem:'

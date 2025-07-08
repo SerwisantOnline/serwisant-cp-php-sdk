@@ -1,0 +1,18 @@
+{% if serviceSupplier.avatar %}
+  <div class="mb-2">
+    <img src="{{ serviceSupplier.avatar.url }}" alt="{{ serviceSupplier.displayName }}">
+  </div>
+{% endif %}
+{{ serviceSupplier.displayName }}
+<br>
+{% if serviceSupplier.address %}
+  {{ serviceSupplier.address.street }} {{ serviceSupplier.address.building }}, {{ serviceSupplier.address.postalCode }} {{ serviceSupplier.address.city }}
+  <br>
+{% endif %}
+{% if serviceSupplier.phone %}
+  <a href="tel:{{ serviceSupplier.phone.formatted }}">{{ serviceSupplier.phone.formatted }}</a>
+  <br>
+{% endif %}
+{% if serviceSupplier.email %}
+  <a href="mailto:{{ serviceSupplier.email }}">{{ serviceSupplier.email }}</a>
+{% endif %}

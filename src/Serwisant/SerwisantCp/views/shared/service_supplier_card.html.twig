@@ -1,17 +1,11 @@
 <div class="card my-2">
-  <div class="card-body">
-
-    {% if serviceSupplier.avatar %}
-      <div class="float-start me-3">
-        <img src="{{ serviceSupplier.avatar.url }}" alt="{{ serviceSupplier.displayName }}">
-      </div>
-    {% endif %}
-
-    <div class="float-start">
-      <p>{{ title }}</p>
+  <div class="card-body row">
+    <div class="col-lg-5 col-6">
+      <h2>{{ title }}</h2>
+      <br>
       <address>
         <strong>{{ serviceSupplier.displayName }}</strong>
-        </br>
+        <br>
         {% if serviceSupplier.address %}
           {{ serviceSupplier.address.street }} {{ serviceSupplier.address.building }}, {{ serviceSupplier.address.postalCode }} {{ serviceSupplier.address.city }}
           <br>
@@ -26,5 +20,10 @@
       </address>
     </div>
 
+    {% if serviceSupplier.avatar %}
+      <div class="col align-self-center">
+        <img src="{{ serviceSupplier.avatar.url }}" alt="{{ serviceSupplier.displayName }}">
+      </div>
+    {% endif %}
   </div>
 </div>

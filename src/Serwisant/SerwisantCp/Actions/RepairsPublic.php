@@ -41,7 +41,7 @@ class RepairsPublic extends Action
       'temporary_files' => $this->formHelper()->mapTemporaryFiles($this->request->get('temporary_files')),
       'errors' => $errors,
       'js_files' => ['repairs_shared.js', 'repairs_public.js'],
-      'pageTitle' => $this->t('repair_new.title'),
+      'pageTitle' => $this->t('repair_public_new.title'),
     ];
 
     return $this->renderPage('repair_public_new.html.twig', $variables);

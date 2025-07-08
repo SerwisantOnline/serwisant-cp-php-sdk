@@ -450,6 +450,7 @@ type Subscriber {
     email: String!
     "Data of main service supplier - branded - this is a data for customer information"
     serviceSupplier: ServiceSupplier!
+    taxFormatted: String
     taxId: String
     taxPrefix: TaxPrefix
 }
@@ -1191,6 +1192,7 @@ input AnonymousApplicantInput {
     agreements: [CustomerAgreementInput!]
     deviceUid: String!
     email: String
+    person: String
     phone: PhoneInput
 }
 
