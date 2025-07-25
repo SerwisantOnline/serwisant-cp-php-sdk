@@ -99,29 +99,10 @@
   </nav>
 {% endif %}
 
-{% if app.flash.anyErrors() %}
-  <div class="container">
-    <div class="alert alert-danger p-3 rounded mt-3 text-center" role="alert">
-      {% for alert in app.flash.getErrors() %}
-        <p class="p_alert">{{ alert }}</p>
-      {% endfor %}
-    </div>
-  </div>
-{% endif %}
-
-{% if app.flash.anyMessages() %}
-  <div class="container">
-    <div class="alert alert-success p-3 rounded mt-3 text-center" role="alert">
-      {% for alert in app.flash.getMessages() %}
-        <p class="p_alert">{{ alert }}</p>
-      {% endfor %}
-    </div>
-  </div>
-{% endif %}
-
 {% if decoratorLayoutInner is defined and decoratorLayoutInner %}
   {% include decoratorLayoutInner %}
 {% else %}
+  {% include 'layout/flashes.html.twig' %}
   <main class="container">
     {% include innerTemplate %}
   </main>

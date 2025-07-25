@@ -139,6 +139,7 @@ pl:
     imageValidateSizeLabelExpectedMinResolution: 'Minimalna rozdzielczość to {minResolution}'
     imageValidateSizeLabelExpectedMaxResolution: 'Maksymalna rozdzielczość to {maxResolution}'
   flashes:
+    anonymous_applicant_activated: Twoje konto zostało potwierdzone. Od teraz będziesz otrzymywać powiadomienia dotyczące realizacji usługi.
     device_registration_successful: >-
       Pomyślnie dodano urządzenie do bazy. Poczekaj teraz na weryfikację
       urządzenia przez serwis.
@@ -266,7 +267,7 @@ pl:
     subscriber_deleted: >-
       Serwis do którego próbujesz się zalogować nie jest już dostępny na naszej
       platformie. Skontaktuj się z serwisem telefonicznie.
-    login_not_activated: 'Aktywuj twoje konto linkiem, który otrzymałeś zaraz po rejestracji.'
+    login_not_activated: 'Aktywuj twoje konto linkiem, który otrzymałeś zaraz po rejestracji. Jeśli nie masz linku aktywacyjnego sprawdź w pierwszej kolejności skrzynkę "Spam" lub "Kosz". Link aktywacyjny możesz także otrzymać pisząc na adres email serwisu.'
     login_disabled: >-
       Twoje konto zostało usunięte lub zablokowane. Skontaktuj się z serwisem w
       celu wyjaśnienia sytuacji
@@ -821,3 +822,4 @@ pl:
   contact:
     title: Dane kontaktowe
     message: 'Użyj poniższych danych aby skontaktować się z serwisem:'
+    create_message: Wyślij nam wiadomość

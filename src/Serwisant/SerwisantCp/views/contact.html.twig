@@ -12,16 +12,22 @@
       <br>
     {% endif %}
     {% if subscriber.serviceSupplier.phone %}
-      tel.: <a href="tel:{{ subscriber.serviceSupplier.phone.formatted }}">{{ subscriber.serviceSupplier.phone.formatted }}</a>
+      tel.: <a
+        href="tel:{{ subscriber.serviceSupplier.phone.formatted }}">{{ subscriber.serviceSupplier.phone.formatted }}</a>
       <br>
     {% endif %}
     {% if subscriber.serviceSupplier.email %}
       <a href="mailto:{{ subscriber.serviceSupplier.email }}">{{ subscriber.serviceSupplier.email }}</a>
     {% endif %}
+
+    {% if subscriber.taxId %}
+      <br>
+      NIP {{ subscriber.taxFormatted }}
+    {% endif %}
   </address>
-  {% if subscriber.taxId %}
-    <br>
-    NIP {{ subscriber.taxFormatted }}
+
+  {% if configuration.panelCommunication %}
+    <a class="btn btn-primary btn-lg" href="{{ path('new_message') }}">{{ t(_self, 'create_message') }}</a>
   {% endif %}
 </div>
 

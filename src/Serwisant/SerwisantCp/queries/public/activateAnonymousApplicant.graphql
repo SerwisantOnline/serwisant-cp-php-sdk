@@ -1,0 +1,12 @@
+mutation ActivateAnonymousApplicant($activationToken: String!) {
+    activateAnonymousApplicant(activationToken: $activationToken) {
+        __typename
+        token
+        errors {
+            __typename
+            argument
+            code
+            message
+        }
+    }
+}

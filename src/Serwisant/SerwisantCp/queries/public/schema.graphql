@@ -20,6 +20,11 @@ type Address {
     type: AddressType!
 }
 
+type AnonymousApplicantActivateResult {
+    errors: [Error!]
+    token: String
+}
+
 type CustomField {
     ID: HashID!
     concern: Dictionary
@@ -232,6 +237,7 @@ type PublicMutation {
         "Repair token, the same was used to find repair."
         token: String!
     ): AcceptOrRejectRepairResult
+    activateAnonymousApplicant(activationToken: String!): AnonymousApplicantActivateResult
     "Once customer is created via `createCustomer` he gets an email with activation URL contains a token. Token must be used against this mutation to activate an account and also customer to log-in."
     activateCustomer(activationToken: String!): CustomerActivationResult
     "Creates a customer account usable in `Customer` schema. Account is self-created account. Don't use it for purposes other than customer Panel sign-up."

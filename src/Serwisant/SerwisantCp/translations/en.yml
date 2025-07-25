@@ -131,6 +131,7 @@ en:
     imageValidateSizeLabelExpectedMinResolution: 'Minimal resolution is {minResolution}'
     imageValidateSizeLabelExpectedMaxResolution: 'Maximal resolution is {maxResolution}'
   flashes:
+    anonymous_applicant_activated: Your account has been confirmed. You will now receive notifications regarding service delivery.
     device_registration_successful: >-
       The device has been successfully added to the database. Now wait for the
       device to be verified by the service.
@@ -809,3 +810,4 @@ en:
   contact:
     title: Contact information
     message: 'Use the following details to contact the service:'
+    create_message: Send us a message
