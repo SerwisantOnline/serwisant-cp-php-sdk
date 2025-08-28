@@ -7,18 +7,38 @@
 
   <div class="row row-cols-1 row-cols-md-3">
     <div class="col mb-3">
-      {{ form_field({type: 'text', argument: 'applicant.person', caption: t(_self, 'person')}, form_params, errors) }}
+      <div class="input-group">
+        <span class="input-group-text">
+          <i class="bi bi-person-circle"></i>
+        </span>
+        {{ form_field({type: 'text', argument: 'applicant.person', caption: t(_self, 'person')}, form_params, errors) }}
+      </div>
     </div>
     <div class="col mb-3">
-      {{ form_field({type: 'text', argument: 'applicant.email', caption: t(_self, 'email')}, form_params, errors) }}
+      <div class="input-group">
+        <span class="input-group-text">
+          <i class="bi bi-envelope-at-fill"></i>
+        </span>
+        {{ form_field({type: 'text', argument: 'applicant.email', caption: t(_self, 'email')}, form_params, errors) }}
+      </div>
     </div>
     <div class="col mb-3">
       <div class="row">
         <div class="col-4">
-          {{ form_field({type: 'phoneprefixpicker', argument: 'applicant.phone.countryPrefix', caption: t(_self, 'phone_prefix'), value: locale_PhonePrefix()}, form_params, errors) }}
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="bi bi-plus"></i>
+            </span>
+            {{ form_field({type: 'phoneprefixpicker', argument: 'applicant.phone.countryPrefix', caption: t(_self, 'phone_prefix'), value: locale_PhonePrefix()}, form_params, errors) }}
+          </div>
         </div>
         <div class="col-8">
-          {{ form_field({type: 'text', argument: 'applicant.phone.number', caption: t(_self, 'phone_number')}, form_params, errors) }}
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="bi bi-telephone"></i>
+            </span>
+            {{ form_field({type: 'text', argument: 'applicant.phone.number', caption: t(_self, 'phone_number')}, form_params, errors) }}
+          </div>
         </div>
       </div>
     </div>
