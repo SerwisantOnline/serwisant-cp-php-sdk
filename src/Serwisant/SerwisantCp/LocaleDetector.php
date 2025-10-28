@@ -4,7 +4,6 @@ namespace Serwisant\SerwisantCp;
 
 use Symfony\Component\HttpFoundation;
 use CodeZero\BrowserLocale\BrowserLocale;
-use PragmaRX\Countries\Package\Countries;
 
 class LocaleDetector
 {
@@ -25,7 +24,7 @@ class LocaleDetector
       $locale = $this->default_locale;
     }
 
-    $countries = new Countries();
+    $countries = CountryDatabase::getInstance();
     $country = $countries->where('cca2', explode('_', $locale)[1])->first();
     if (count($country) <= 0) {
       $country = $countries->where('cca2', explode('_', $this->default_locale)[1])->first();

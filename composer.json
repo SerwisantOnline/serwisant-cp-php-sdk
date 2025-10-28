@@ -1,6 +1,6 @@
 {
   "name": "serwisant/serwisant-cp",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "Customer Panel for https://serwisant.online service",
   "type": "library",
   "homepage": "https://github.com/SerwisantOnline/serwisant-cp-php-sdk",
@@ -19,7 +19,7 @@
     "twig/twig": "^2.12",
     "adbario/php-dot-notation": "^2.2",
     "codezero/browser-locale": "^3.1",
-    "pragmarx/countries": "^v0.8.2"
+    "pragmarx/countries": "^v0.8.3"
   },
   "authors": [
     {

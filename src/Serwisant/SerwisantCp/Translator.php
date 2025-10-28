@@ -66,7 +66,7 @@ class Translator
   public function codeToCurrencySymbol(string $code): string
   {
     if (empty($this->currencies)) {
-      $countries = new Countries();
+      $countries = CountryDatabase::getInstance();
       foreach ($countries->currencies() as $currency) {
         $this->currencies[$currency->get('iso.code')] = $currency->get('units.major.symbol');
       }

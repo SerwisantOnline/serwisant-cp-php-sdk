@@ -405,7 +405,7 @@ class TwigFormExtensions extends TwigExtensions
   private function phonePrefixes()
   {
     $country_select_options = [];
-    $countries = new Countries();
+    $countries = CountryDatabase::getInstance();
     foreach ($countries->all()->pluck('cca2')->toArray() as $country_iso2) {
       $country = $countries->where('cca2', $country_iso2)->first();
       $languages = array_keys($country->get('languages', [])->toArray());
@@ -423,7 +423,7 @@ class TwigFormExtensions extends TwigExtensions
   private function countries()
   {
     $country_select_options = [];
-    $countries = new Countries();
+    $countries = CountryDatabase::getInstance();
     foreach ($countries->all()->pluck('cca2')->toArray() as $country_iso2) {
       $country = $countries->where('cca2', $country_iso2)->first();
       $languages = array_keys($country->get('languages', [])->toArray());

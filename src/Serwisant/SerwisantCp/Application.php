@@ -76,7 +76,12 @@ class Application
       $assets_version = $this->app['assets_version'] ? $this->app['assets_version'] : sha1(date('Y-m-d'));
     }
 
-    $this->app->register(new Silex\Provider\TwigServiceProvider(), ['twig.path' => $this->view_paths]);
+    $twig_options = [];
+    if (getenv('TMPDIR')) {
+      $twig_options['cache'] = getenv('TMPDIR') . '/twig_cache';
+    }
+    $this->app->register(new Silex\Provider\TwigServiceProvider(), ['twig.path' => $this->view_paths, 'twig.options' => $twig_options]);
+
     $this->app->register(new Silex\Provider\RoutingServiceProvider());
     $this->app->register(new \Devim\Provider\CorsServiceProvider\CorsServiceProvider());
     $this->app->register(
