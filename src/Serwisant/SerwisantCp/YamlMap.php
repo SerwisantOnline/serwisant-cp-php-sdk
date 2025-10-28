@@ -14,7 +14,21 @@ class YamlMap
   public function __construct($file, $env = null)
   {
     $this->env = $env;
-    $this->config = new Dot(Yaml::parseFile($file));
+
+    $tmp_dir = getenv('TMPDIR');
+    if (trim($tmp_dir) == '') {
+      $tmp_dir = sys_get_temp_dir();
+    }
+    $cache_file = $tmp_dir . '/serwisant_tr_cache_' . crc32(filemtime($file) . filesize($file)) . '_' . basename($file, ".yml");
+
+    if (file_exists($cache_file)) {
+      $data = unserialize(file_get_contents($cache_file));
+    } else {
+      $data = Yaml::parseFile($file);
+      file_put_contents($cache_file, serialize($data));
+    }
+
+    $this->config = new Dot($data);
   }
 
   public function get($key)
