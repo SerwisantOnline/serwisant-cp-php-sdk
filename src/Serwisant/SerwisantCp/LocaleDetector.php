@@ -25,7 +25,9 @@ class LocaleDetector
     }
 
     $countries = CountryDatabase::getInstance();
+
     $country = $countries->where('cca2', explode('_', $locale)[1])->first();
+
     if (count($country) <= 0) {
       $country = $countries->where('cca2', explode('_', $this->default_locale)[1])->first();
       if (count($country) <= 0) {

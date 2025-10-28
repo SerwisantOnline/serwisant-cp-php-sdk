@@ -78,7 +78,7 @@ class Application
 
     $twig_options = [];
     if (getenv('TMPDIR')) {
-      $twig_options['cache'] = getenv('TMPDIR') . '/twig_cache';
+      $twig_options['cache'] = getenv('TMPDIR') . '/twig_cache_' . md5(__FILE__);
     }
     $this->app->register(new Silex\Provider\TwigServiceProvider(), ['twig.path' => $this->view_paths, 'twig.options' => $twig_options]);
 
