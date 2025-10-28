@@ -12,7 +12,11 @@ class StaticCache
   public static function getInstance(): NetteCache
   {
     if (null === self::$instance) {
-      $cache_dir = getenv('TMPDIR') . '/serwisant_nette_cache_' . md5(__FILE__);
+      $tmp_dir = getenv('TMPDIR');
+      if (trim($tmp_dir) === '') {
+        $tmp_dir = sys_get_temp_dir();
+      }
+      $cache_dir = $tmp_dir . '/serwisant_nette_cache_' . md5(__FILE__);
       if (!file_exists($cache_dir)) {
         mkdir($cache_dir);
       }
