@@ -14,11 +14,12 @@
     "silex/silex": "^2.3",
     "devimteam/silex-cors-provider": "^1.0",
     "symfony/asset": "^3.4",
-    "symfony/twig-bridge": "^3.4",
+    "symfony/twig-bridge": "v4.4.51",
     "symfony/yaml": "^3.4",
-    "twig/twig": "^2.12",
+    "twig/twig": "v2.13.1",
     "adbario/php-dot-notation": "^2.2",
     "codezero/browser-locale": "^3.1",
+    "nette/caching": "v3.1.4",
     "pragmarx/countries": "^v0.8.3"
   },
   "authors": [

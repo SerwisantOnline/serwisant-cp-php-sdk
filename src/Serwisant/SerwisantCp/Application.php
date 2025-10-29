@@ -66,7 +66,6 @@ class Application
     $this->app['env'] = $this->env;
     $this->app['base_dir'] = $this->base_dir;
     $this->app['gql_query_paths'] = $this->query_paths;
-
     $this->app['tr'] = new Translator($this->tr_files, explode('_', $this->default_locale)[0]);
     $this->app['flash'] = new Flash();
 
@@ -76,11 +75,14 @@ class Application
       $assets_version = $this->app['assets_version'] ? $this->app['assets_version'] : sha1(date('Y-m-d'));
     }
 
-    $twig_options = [];
-    if (getenv('TMPDIR')) {
-      $twig_options['cache'] = getenv('TMPDIR') . '/twig_cache_' . md5(__FILE__);
-    }
-    $this->app->register(new Silex\Provider\TwigServiceProvider(), ['twig.path' => $this->view_paths, 'twig.options' => $twig_options]);
+    $this->app->register(
+      new Silex\Provider\TwigServiceProvider(),
+      [
+        'twig.path' => $this->view_paths,
+        'twig.options' => [
+          'cache' => StaticCache::getTmpDir() . DIRECTORY_SEPARATOR . 'twig_cache_' . md5(__FILE__)
+        ]
+      ]);
 
     $this->app->register(new Silex\Provider\RoutingServiceProvider());
     $this->app->register(new \Devim\Provider\CorsServiceProvider\CorsServiceProvider());
@@ -190,14 +192,7 @@ class Application
     if (isset($this->app['session_handler'])) {
       session_set_save_handler($this->app['session_handler'], true);
     } else {
-      $dir = getenv('TMPDIR');
-      if (is_null($dir) || trim($dir) == '') {
-        $dir = sys_get_temp_dir();
-      }
-      if (!is_dir($dir)) {
-        throw new Exception("Directory do not exists - please create '{$dir}' directory.");
-      }
-      $session_options['save_path'] = getenv('TMPDIR');
+      $session_options['save_path'] = StaticCache::getTmpDir();
     }
 
     session_start($session_options);
