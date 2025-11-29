@@ -95,6 +95,7 @@ type CustomerPanelConfig {
     panelTickets: Boolean!
     panelToken: String
     personalTransportEnabled: Boolean!
+    ratings: Boolean!
     repairSubmitPrompt: RepairSubmitPrompt!
     repairSubmitPromptContent: String
     requirePhoneNumber: Boolean!

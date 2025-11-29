@@ -1,7 +1,9 @@
 {% include 'repair/panel_change_status.html.twig' with {'parent': 'ca'} %}
 
-{{ form_errors(_self, rating_errors) }}
-{% include 'shared/rating.html.twig' with {'isRateable': repair.isRateable, 'formUrl': path('token_rate'), 'rating': repair.rating} %}
+{% if configuration.ratings %}
+  {{ form_errors(_self, rating_errors) }}
+  {% include 'shared/rating.html.twig' with {'isRateable': repair.isRateable, 'formUrl': path('token_rate'), 'rating': repair.rating} %}
+{% endif %}
 
 <div class="row">
   <div class="col-md-6">

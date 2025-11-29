@@ -1334,6 +1334,8 @@ input TicketCreationOptions {
 }
 
 input TicketInput {
+    address: HashID @deprecated(reason: "Use mutation's argument `address: Types::Input::Address` instead of pointing customer's address.")
+    addressOther: String @deprecated(reason: "Use mutation's argument `address: Types::Input::Address` instead passing unstructured address data.")
     customFields: [CustomFieldValueInput!]
     issue: String
     priority: HashID

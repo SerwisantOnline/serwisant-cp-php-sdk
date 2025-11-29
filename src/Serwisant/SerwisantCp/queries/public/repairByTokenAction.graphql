@@ -124,6 +124,7 @@ query($token: String!) {
         showOrderProgressInfo
         currency
         useCustomStatusNames
+        ratings
         __typename
     }
 }

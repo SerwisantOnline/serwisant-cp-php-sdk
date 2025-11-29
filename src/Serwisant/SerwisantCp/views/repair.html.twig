@@ -12,8 +12,10 @@
   {% endif %}
 </div>
 
-{{ form_errors(_self, rating_errors) }}
-{% include 'shared/rating.html.twig' with {'isRateable': repair.isRateable, 'formUrl': path('repair_rate', {'id': repair.ID}), 'rating': repair.rating} %}
+{% if configuration.ratings %}
+  {{ form_errors(_self, rating_errors) }}
+  {% include 'shared/rating.html.twig' with {'isRateable': repair.isRateable, 'formUrl': path('repair_rate', {'id': repair.ID}), 'rating': repair.rating} %}
+{% endif %}
 
 <div class="panel-spaced bg-light rounded">
   {% include 'repair/panel_change_status.html.twig' with {'parent': 'cp'} %}

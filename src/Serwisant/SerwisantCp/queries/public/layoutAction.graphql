@@ -69,5 +69,6 @@ query {
         uploadFiles
         uploadOnlyImages
         useCustomStatusNames
+        ratings
     }
 }
