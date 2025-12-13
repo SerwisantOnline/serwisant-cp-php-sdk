@@ -458,7 +458,7 @@ en:
       type: Type
       description: Description
     panel_change_status:
-      price_estimated: Estimated repair cost
+      price_estimated: "Estimated repair cost: %{amount}."
       price_final: To pay
       reject: I do not accept costs
       reject_all: Dismiss all offers
@@ -476,7 +476,7 @@ en:
         total cost if you choose this offer is %{amount}. Acceptance is
         tantamount to an agreement to bear the aforementioned costs.
       confirmed: >-
-        The repair cost has beed confiemed in person, by e-mail or during a
+        The repair cost has beed confirmed in person, by e-mail or during a
         telephone conversation with a service employee.
       offer: Offer
       description: Description

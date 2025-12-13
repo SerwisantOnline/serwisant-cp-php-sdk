@@ -15,8 +15,6 @@ class RepairByToken extends Action
     $vars = [
       'pageTitle' => $repair->rma,
       'repair' => $repair,
-      'configuration' => $result->fetch('configuration'),
-      'currency' => $result->fetch('configuration')->currency,
       'form_params' => $this->request->request,
       'rating_errors' => $rating_errors,
     ];

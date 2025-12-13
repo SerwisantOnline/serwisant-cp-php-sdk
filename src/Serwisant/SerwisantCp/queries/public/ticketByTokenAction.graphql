@@ -92,10 +92,4 @@ query($token: String!) {
         }
         __typename
     }
-    configuration: configuration {
-        currency
-        useCustomStatusNames
-        ratings
-        __typename
-    }
 }

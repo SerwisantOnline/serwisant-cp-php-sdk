@@ -22,7 +22,7 @@ Ten widok pozwala na akceptację jednej z przedstawionych ofert lub diagnozy.
             <div class="card-header">
               <h3>
                 {{ t(_self, 'offer') }} {{ offer.number }} - <small
-                  class="fw-light">{{ offer.title }}</small>
+                    class="fw-light">{{ offer.title }}</small>
               </h3>
             </div>
             <table class="table table-striped">
@@ -85,8 +85,7 @@ Ten widok pozwala na akceptację jednej z przedstawionych ofert lub diagnozy.
         <div class="card-header">{{ t(_self, 'title') }}</div>
         <div class="card-body">
           <p>
-            <b>{{ t(_self, 'price_estimated') }}</b>
-            {{ repair.costs.estimatedGross | format_currency(currency) }}
+            <b>{{ t(_self, 'price_estimated', {amount: (repair.costs.estimatedGross | format_currency(currency))}) }}</b>
           </p>
           <div class="btn-group">
             <a href="{{ reject_path }}" class="btn btn-danger"

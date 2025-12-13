@@ -8,18 +8,16 @@ class PaymentByToken extends Action
 {
   public function call()
   {
-    $result = $this
-      ->apiPublic()
-      ->publicQuery()
-      ->newRequest()
-      ->setFile('paymentByTokenAction.graphql', ['token' => (string)$this->token])
-      ->execute();
+    $result = $this->apiPublic()->publicQuery()->newRequest()->setFile('paymentByTokenAction.graphql', ['token' => (string)$this->token])->execute();
+    $payment = $result->fetch('payment');
 
     $vars = [
-      'payment' => $result->fetch('payment'),
+      'pageTitle' => $payment->number,
+      'payment' => $payment,
       'payment_methods' => $result->fetch('paymentMethods'),
-      'js_files' => ['online_payment.js']
+      'js_files' => ['online_payment.js'],
     ];
+
     return $this->renderPage('online_payment_by_token.html.twig', $vars);
   }
 }

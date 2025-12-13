@@ -476,7 +476,7 @@ pl:
       type: Rodzaj
       description: Opis
     panel_change_status:
-      price_estimated: Szacowany koszt naprawy
+      price_estimated: "Szacowany koszt naprawy: %{amount}."
       price_final: Do zapłaty
       reject: Nie akceptuję kosztów
       reject_all: Odrzuć wszystkie oferty

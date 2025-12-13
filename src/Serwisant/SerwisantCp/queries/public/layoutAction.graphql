@@ -51,7 +51,6 @@ query {
     }
     configuration: configuration {
         __typename
-        currency
         panelEnabled
         panelRepairs
         panelTickets
@@ -59,10 +58,10 @@ query {
         panelDevices
         panelDevicesRegistration
         panelSignups
+        welcomeMessage
         dashboardMessage
         orderDictModel
         showOrderProgressInfo
-        welcomeMessage
         personalTransportEnabled
         internalTransportEnabled
         requirePhoneNumber
@@ -70,5 +69,7 @@ query {
         uploadOnlyImages
         useCustomStatusNames
         ratings
+        wallpaper
+        currency
     }
 }

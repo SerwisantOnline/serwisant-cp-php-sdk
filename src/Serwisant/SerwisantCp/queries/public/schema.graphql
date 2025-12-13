@@ -104,6 +104,7 @@ type CustomerPanelConfig {
     uploadFiles: Boolean!
     uploadOnlyImages: Boolean!
     useCustomStatusNames: Boolean!
+    wallpaper: Boolean!
     "Message to be shown before login - for every user"
     welcomeMessage: String
 }

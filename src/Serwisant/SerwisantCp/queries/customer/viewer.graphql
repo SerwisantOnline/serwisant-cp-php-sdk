@@ -7,20 +7,20 @@ query viewer($basic: Boolean = false, $complete: Boolean = false, $addresses: Bo
         }
     }
     viewer @include(if: $addresses) {
-      __typename
-      customer {
-          __typename
-          addresses {
-              __typename
-              ID
-              building
-              city
-              countryIso
-              postalCode
-              street
-              type
-          }
-      }
+        __typename
+        customer {
+            __typename
+            addresses {
+                __typename
+                ID
+                building
+                city
+                countryIso
+                postalCode
+                street
+                type
+            }
+        }
     }
     viewer @include(if: $complete) {
         __typename
