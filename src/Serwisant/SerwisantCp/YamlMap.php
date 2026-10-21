@@ -24,7 +24,7 @@ class YamlMap
     $this->config = new Dot($data);
   }
 
-  public function env(): string
+  public function env(): ?string
   {
     return $this->env;
   }

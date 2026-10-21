@@ -56,7 +56,7 @@ class Flash
   private function all($for)
   {
     $key = "flash_{$for}";
-    return array_key_exists($key, $_SESSION) ? $_SESSION[$key] : [];
+    return (isset($_SESSION) && array_key_exists($key, $_SESSION)) ? $_SESSION[$key] : [];
   }
 
   /**

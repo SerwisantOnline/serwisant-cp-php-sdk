@@ -23,7 +23,7 @@ class StaticCache
         } else {
           $storage = new NetteDevNullStorage();
         }
-      } catch (Exception $e) {
+      } catch (\Exception $e) {
         $storage = new NetteDevNullStorage();
       }
       self::$instance = new NetteCache($storage);

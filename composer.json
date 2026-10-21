@@ -1,6 +1,6 @@
 {
   "name": "serwisant/serwisant-cp",
-  "version": "1.6.2",
+  "version": "1.6.3",
   "description": "Customer Panel for https://serwisant.online service",
   "type": "library",
   "homepage": "https://github.com/SerwisantOnline/serwisant-cp-php-sdk",
@@ -10,17 +10,18 @@
     "ext-json": "*",
     "ext-openssl": "*",
     "composer/package-versions-deprecated": "*",
-    "serwisant/serwisant-api": "~3.5.3",
+    "serwisant/serwisant-api": "~3.5.5",
     "silex/silex": "^2.3",
     "devimteam/silex-cors-provider": "^1.0",
     "symfony/asset": "^3.4",
-    "symfony/twig-bridge": "v4.4.51",
+    "symfony/twig-bridge": "^4.4.51",
     "symfony/yaml": "^3.4",
-    "twig/twig": "v2.13.1",
+    "twig/twig": "^2.16",
     "adbario/php-dot-notation": "^2.2",
     "codezero/browser-locale": "^3.1",
-    "nette/caching": "v3.1.4",
-    "pragmarx/countries": "^v0.8.3"
+    "nette/caching": "^3.1.4",
+    "pragmarx/countries": "^v0.8.3",
+    "psr/simple-cache": "^1.0"
   },
   "authors": [
     {

@@ -102,7 +102,7 @@ class Messages extends Action
     $result = $this
       ->apiCustomer()
       ->customerMutation()
-      ->createMessageReply($id, $message['content']);
+      ->createMessageReply($id, $message['content'] ?? '');
 
     if ($result->errors) {
       return $this->newReply($id, $result->errors);

@@ -171,7 +171,7 @@ class Application
     }
     $app['tr']->setLanguage($lang);
 
-    if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
+    if (0 === strpos((string)$request->headers->get('Content-Type'), 'application/json')) {
       $data = json_decode($request->getContent(), true);
       $request->request->replace(is_array($data) ? $data : array());
     }
@@ -184,7 +184,7 @@ class Application
   protected function sessionStart()
   {
     session_set_cookie_params((60 * 60 * 6), '/', null, ($this->env == self::ENV_PRODUCTION), false);
-    ini_set('session.cookie_samesite', 1);
+    ini_set('session.cookie_samesite', 'Lax');
     ini_set('session.use_strict_mode', 1);
 
     $session_options = [];

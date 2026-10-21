@@ -7,12 +7,12 @@ use Symfony\Component\HttpFoundation\Request;
 
 class RoutesCa extends Routes
 {
-  private Api $api;
+  private ?Api $api = null;
 
   /**
-   * @return Api
+   * @return Api|null
    */
-  protected function api(): Api
+  protected function api(): ?Api
   {
     if (is_null($this->api) && isset($this->app['access_token_public'])) {
       $this->api = new Api($this->app, $this->app['access_token_public'], [$this->app['base_dir'] . '/queries/public']);

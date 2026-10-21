@@ -104,7 +104,7 @@ class LocaleDetector
   public function phonePrefix()
   {
     $prefix = $this->country->get('calling_codes')->first();
-    if (strlen($prefix) >= 5) {
+    if (is_string($prefix) && strlen($prefix) >= 5) {
       $prefix = substr($prefix, 0, 2);
     }
     return $prefix;

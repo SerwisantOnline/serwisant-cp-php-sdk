@@ -24,7 +24,7 @@ class TwigGenericExtensions extends TwigExtensions
         parse_str($current_uri['query'], $get_args);
       }
 
-      $current_page = array_key_exists($param_name, $get_args) ? $get_args[$param_name] : 1;
+      $current_page = array_key_exists($param_name, $get_args) ? (int)$get_args[$param_name] : 1;
 
       $get_args[$param_name] = '__page__';
       $placeholder_path = $current_uri['path'] . '?' . http_build_query($get_args);
@@ -57,11 +57,14 @@ class TwigGenericExtensions extends TwigExtensions
 
     $this->twig->addFilter(new TwigFilter('format_currency', function ($number, $currency_code) {
       $symbol = $this->translator->codeToCurrencySymbol($currency_code);
-      return number_format($number, 2, ',', '') . ' ' . $symbol;
+      return number_format((float)$number, 2, ',', '') . ' ' . $symbol;
     }));
 
     $this->twig->addFilter(new TwigFilter('format_datetime', function ($date_ISO8601) {
-      $date = \DateTime::createFromFormat('Y-m-d\TH:i:sO', $date_ISO8601);
+      $date = \DateTime::createFromFormat('Y-m-d\TH:i:sO', (string)$date_ISO8601);
+      if (false === $date) {
+        return '';
+      }
       $tz = $this->app['timezone'];
       $date->setTimezone(new \DateTimeZone($tz));
       return $date->format('Y-m-d H:i');

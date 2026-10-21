@@ -10,10 +10,13 @@ class ActionFormHelpers
   // z "2021-05-30 11:29" na "2021-05-30T11:29:00+02:00"
   public function dateTimeToISO8601($date_time_str, $tz)
   {
-    if (trim($date_time_str) == '') {
+    if (trim((string)$date_time_str) == '') {
       return null;
     }
-    $date = \DateTime::createFromFormat('Y-m-d H:m', $date_time_str);
+    $date = \DateTime::createFromFormat('Y-m-d H:i', $date_time_str);
+    if (false === $date) {
+      return null;
+    }
     $date->setTimezone(new \DateTimeZone($tz));
     return $date->format('c');
   }
@@ -59,8 +62,8 @@ class ActionFormHelpers
     if (!is_array($temporary_files)) {
       return [];
     }
-    return array_filter($temporary_files, function ($elem) {
-      return trim($elem) != '';
-    });
+    return array_values(array_filter($temporary_files, function ($elem) {
+      return is_string($elem) && trim($elem) != '';
+    }));
   }
 }

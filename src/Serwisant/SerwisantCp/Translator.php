@@ -120,12 +120,12 @@ class Translator
     if (is_array($tr)) {
       return $tr;
     }
-    if (trim($tr) === '') {
+    if (trim((string)$tr) === '') {
       throw new TranslatorException("Missing translation {$key}");
     } elseif (count($replacements) > 0) {
       foreach ($replacements as $token => $value) {
         $token = '%{' . $token . '}';
-        $tr = str_replace($token, $value, $tr);
+        $tr = str_replace($token, (string)$value, $tr);
       }
     }
     return $tr;

@@ -70,7 +70,7 @@ class TicketsPublic extends Action
     ]);
 
     $ticket = $this->request->get('ticket', []);
-    $ticket['startAt'] = $helper->dateTimeToISO8601($ticket['startAt'], $this->app['timezone']);
+    $ticket['startAt'] = $helper->dateTimeToISO8601($ticket['startAt'] ?? '', $this->app['timezone']);
     if (array_key_exists('customFields', $ticket)) {
       $ticket['customFields'] = $helper->mapCustomFields($ticket['customFields']);
     }

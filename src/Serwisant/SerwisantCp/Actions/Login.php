@@ -32,7 +32,7 @@ class Login extends Action
 
     $session_credentials = $this->request->get('session_credentials');
     try {
-      $this->accessTokenCustomer()->login($session_credentials['login'], $session_credentials['password']);
+      $this->accessTokenCustomer()->login($session_credentials['login'] ?? '', $session_credentials['password'] ?? '');
       return $this->redirectTo('dashboard', 'flashes.login_successful');
     } catch (SerwisantApi\ExceptionUnauthorized $ex) {
       $this->flashError($this->t("flashes.login_error.{$ex->getHandle()}"));

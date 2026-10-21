@@ -55,7 +55,7 @@ abstract class Routes
   protected function expectJson()
   {
     return function (Request $request) {
-      if (false === strpos($request->headers->get('Content-Type'), 'application/json')) {
+      if (false === strpos((string)$request->headers->get('Content-Type'), 'application/json')) {
         throw new ExceptionNotFound(__CLASS__, __LINE__);
       }
     };
