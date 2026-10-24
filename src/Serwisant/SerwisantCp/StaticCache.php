@@ -16,8 +16,9 @@ class StaticCache
       try {
         if (is_writable(self::getTmpDir())) {
           $cache_dir = self::getTmpDir() . DIRECTORY_SEPARATOR . 'serwisant_nette_cache_' . md5(__FILE__);
-          if (!file_exists($cache_dir)) {
-            mkdir($cache_dir);
+          // concurrent requests may race to create the directory - a failed mkdir() is fine as long as the directory exists afterwards
+          if (!is_dir($cache_dir) && !@mkdir($cache_dir) && !is_dir($cache_dir)) {
+            throw new Exception("Unable to create cache directory $cache_dir");
           }
           $storage = new NetteFileStorage($cache_dir);
         } else {

@@ -3,7 +3,14 @@
 All notable changes to `serwisant/serwisant-cp` are documented in this file.
 Entries up to 1.6.3 were reconstructed from git history.
 
-## 1.7.0 (unreleased)
+## 1.7.1 - 2026-10-24
+
+### Fixed
+
+- `StaticCache`: race condition when concurrent requests created the Nette cache directory for the first time
+  (`mkdir(): File exists` warning turned into `ErrorException` by the application error handler).
+
+## 1.7.0 - 2026-10-24
 
 ### Breaking changes
 
