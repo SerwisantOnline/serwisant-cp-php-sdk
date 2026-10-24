@@ -12,7 +12,7 @@
       </td>
     </tr>
 
-    {% if configuration.panelDevices and repair.device %}
+    {% if configuration.panelDevices and repair.device is defined and repair.device %}
       <tr>
         <td class="column-definition">{{ t(_self, 'device') }}</td>
         <td><a href="{{ path('device', {'id': repair.device.ID}) }}">{{ repair.device.displayName }}</a></td>

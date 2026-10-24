@@ -4,7 +4,9 @@ This package contains complex customer panel application including PHP code, Gra
 assets.
 
 Backend application is based
-on [Silex micro-framework](https://web.archive.org/web/20200813150217/https://silex.symfony.com/doc/2.0/)
+on [serwisant/serwisant-silex](https://packagist.org/packages/serwisant/serwisant-silex) - a Silex-compatible
+micro-framework built on current Symfony components (versions up to 1.6.x of this package were based on abandoned
+[Silex 2](https://web.archive.org/web/20200813150217/https://silex.symfony.com/doc/2.0/))
 
 Layout is powered by [Bootstrap](https://getbootstrap.com/) and jQuery with additional libraries.
 
@@ -12,7 +14,7 @@ Whole application is Apache licenced.
 
 ## Requirements:
 
-* PHP 7.4 or higher + json, openssl, curl extensions
+* PHP 8.1 or higher + json, openssl, curl extensions
 
 ### Optional:
 
@@ -247,7 +249,6 @@ class LocaleDetector extends \Serwisant\SerwisantCp\LocaleDetector
   {
     $this->default_locale = 'pl_PL';
     $this->locale = 'pl_PL';
-    $this->country = (new \PragmaRX\Countries\Package\Countries())->where('cca2', explode('PL')->first();
   }
 }
 $application->set('locale_detector', new LocaleDetector());
@@ -259,3 +260,27 @@ database credentials.
 ```php
 $application->set('session_handler', new \Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler(...))
 ```
+
+### Testing
+
+`Application::handle(Request)` processes a request and returns a `Response` without sending it (`run()` is
+`boot()` + handle + send). All HTTP traffic to serwisant.online can be redirected to a fake server by injecting a Guzzle
+client: pass it to the access tokens with `setHttpClient()` and register it as `api_http_client` - every `Api` instance
+created by actions will use it for GraphQL calls. Combined with a `GuzzleHttp\Handler\MockHandler` (or your own handler
+callable) this allows testing the whole panel without network access:
+
+```php
+$http_client = new \GuzzleHttp\Client(['handler' => \GuzzleHttp\HandlerStack::create($fake_serwisant_handler)]);
+
+$application->set('api_http_client', $http_client);
+$application->set('access_token_public', (new SerwisantApi\AccessTokenOauth($key, $secret, 'public', $container))->setHttpClient($http_client));
+$application->set('access_token_customer', (new SerwisantApi\AccessTokenOauthUserCredentials($key, $secret, 'customer', $session_container))->setHttpClient($http_client));
+$application->setRouter(new SerwisantCp\ApplicationRouter());
+
+$response = $application->handle(Request::create('/token/REPAIR1234'));
+```
+
+GraphQL queries are sent as `form_params` (`query`, `variables` as JSON) to `/graphql/{public|customer}?op={file name}`,
+so a fake handler can dispatch on the operation name. Each schema ships with `queries/{schema}/schema.graphql` - executing
+the received query against it (e.g. with `webonyx/graphql-php` and a generating field resolver) gives responses in the shape
+the actions and templates expect, including `__typename`.

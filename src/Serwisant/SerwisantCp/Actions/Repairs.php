@@ -21,7 +21,7 @@ class Repairs extends Action
     $this->checkModuleActive();
 
     $limit = $this->getListLimit();
-    $page = $this->request->get('page', 1);
+    $page = $this->requestParam('page', 1);
     $filter = new SchemaCustomer\RepairsFilter(['type' => SchemaCustomer\RepairsFilterType::ALL]);
     $sort = SchemaCustomer\RepairsSort::DATE_UPDATED;
 
@@ -125,7 +125,7 @@ class Repairs extends Action
       'defaultAddress' => $default_address,
       'device' => $device,
       'form_params' => $this->request->request,
-      'temporary_files' => $this->formHelper()->mapTemporaryFiles($this->request->get('temporary_files')),
+      'temporary_files' => $this->formHelper()->mapTemporaryFiles($this->requestParam('temporary_files')),
       'errors' => $errors,
       'js_files' => ['repairs_shared.js', 'repairs.js'],
       'pageTitle' => $this->t('repair_new.title'),
@@ -143,7 +143,7 @@ class Repairs extends Action
 
     $helper = $this->formHelper();
 
-    $repair = $this->request->get('repair', []);
+    $repair = $this->requestParam('repair', []);
     if (array_key_exists('customFields', $repair)) {
       $repair['customFields'] = $helper->mapCustomFields($repair['customFields']);
     }
@@ -152,13 +152,13 @@ class Repairs extends Action
 
     $device = $this->getDevice();
 
-    if ($this->request->get('addressID')) {
+    if ($this->requestParam('addressID')) {
       $address_input = new SchemaCustomer\AddressInput();
-      if ($device && $device->address && $device->address->ID == $this->request->get('addressID')) {
+      if ($device && $device->address && $device->address->ID == $this->requestParam('addressID')) {
         $address_input = new SchemaCustomer\AddressInput($device->address->toArray(['ID', 'geoPoint']));
       } else {
         foreach ($this->apiCustomer()->customerQuery()->viewer(['addresses' => true])->customer->addresses as $a) {
-          if ($a->ID == $this->request->get('addressID')) {
+          if ($a->ID == $this->requestParam('addressID')) {
             $address_input = new SchemaCustomer\AddressInput($a->toArray(['ID', 'geoPoint']));
           }
         }
@@ -166,22 +166,22 @@ class Repairs extends Action
     } elseif ($repair_input->delivery == SchemaCustomer\RepairTransportType::PERSONAL && $repair_input->collection == SchemaCustomer\RepairTransportType::PERSONAL) {
       $address_input = null;
     } else {
-      $address_input = new SchemaCustomer\AddressInput(array_merge($this->request->get('address', []), ['type' => SchemaCustomer\AddressType::OTHER]));
+      $address_input = new SchemaCustomer\AddressInput(array_merge($this->requestParam('address', []), ['type' => SchemaCustomer\AddressType::OTHER]));
     }
 
     $result = $this->apiCustomer()->customerMutation()->createRepair(
       $repair_input,
       [],
-      $helper->mapTemporaryFiles($this->request->get('temporary_files')),
+      $helper->mapTemporaryFiles($this->requestParam('temporary_files')),
       ($device ? $device->ID : null),
       $address_input
     );
 
-    if ($this->request->get('addressSaveToProfile') && !$this->request->get('addressID') && !$result->errors) {
+    if ($this->requestParam('addressSaveToProfile') && !$this->requestParam('addressID') && !$result->errors) {
       $this->apiCustomer()->customerMutation()->updateViewer(
         null,
         [],
-        [new SchemaCustomer\AddressUpdateInput(array_merge($this->request->get('address', []), ['type' => SchemaCustomer\AddressType::OTHER]))]
+        [new SchemaCustomer\AddressUpdateInput(array_merge($this->requestParam('address', []), ['type' => SchemaCustomer\AddressType::OTHER]))]
       );
     }
 
@@ -204,7 +204,7 @@ class Repairs extends Action
       throw new ExceptionNotFound(__CLASS__, __LINE__);
     }
 
-    $rating_input = new SchemaCustomer\RatingInput($this->request->get('rating', []));
+    $rating_input = new SchemaCustomer\RatingInput($this->requestParam('rating', []));
 
     $result = $this->apiCustomer()->customerMutation()->setRating($id, SchemaCustomer\RatingSubjectType::REPAIR, $rating_input);
 

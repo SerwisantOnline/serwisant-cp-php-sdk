@@ -9,7 +9,7 @@ class PaymentPoolTransaction extends Action
 {
   public function call()
   {
-    $transaction_id = $this->request->get('id');
+    $transaction_id = $this->requestParam('id');
 
     if (!$transaction_id) {
       throw new ExceptionNotFound(__CLASS__, __LINE__);

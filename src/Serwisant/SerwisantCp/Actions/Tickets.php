@@ -16,7 +16,7 @@ class Tickets extends Action
     $this->checkModuleActive();
 
     $limit = $this->getListLimit();
-    $page = $this->request->get('page', 1);
+    $page = $this->requestParam('page', 1);
     $filter = new SchemaCustomer\TicketsFilter(['type' => SchemaCustomer\TicketsFilterType::ALL]);
     $sort = SchemaCustomer\TicketsSort::CREATED_AT;
 
@@ -84,7 +84,7 @@ class Tickets extends Action
       'defaultAddress' => $default_address,
       'device' => $device,
       'form_params' => $this->request->request,
-      'temporary_files' => $this->formHelper()->mapTemporaryFiles($this->request->get('temporary_files')),
+      'temporary_files' => $this->formHelper()->mapTemporaryFiles($this->requestParam('temporary_files')),
       'errors' => $errors,
       'js_files' => ['tickets.js'],
       'pageTitle' => $this->t('ticket_new.title'),
@@ -99,7 +99,7 @@ class Tickets extends Action
 
     $helper = $this->formHelper();
 
-    $ticket = $this->request->get('ticket', []);
+    $ticket = $this->requestParam('ticket', []);
     $ticket['startAt'] = $helper->dateTimeToISO8601($ticket['startAt'] ?? '', $this->app['timezone']);
     if (array_key_exists('customFields', $ticket)) {
       $ticket['customFields'] = $helper->mapCustomFields($ticket['customFields']);
@@ -113,20 +113,20 @@ class Tickets extends Action
 
     if ($device && $device->address) {
       $address_input = new SchemaCustomer\AddressInput(array_merge($device->address->toArray(['ID', 'geoPoint']), ['type' => SchemaCustomer\AddressType::OTHER])); // always use original device address
-    } elseif ($this->request->get('addressID')) {
+    } elseif ($this->requestParam('addressID')) {
       $address_input = new SchemaCustomer\AddressInput();
       foreach ($this->apiCustomer()->customerQuery()->viewer(['addresses' => true])->customer->addresses as $a) {
-        if ($a->ID == $this->request->get('addressID')) {
+        if ($a->ID == $this->requestParam('addressID')) {
           $address_input = new SchemaCustomer\AddressInput($a->toArray(['ID']));
         }
       }
     } else {
-      $address_input = new SchemaCustomer\AddressInput(array_merge($this->request->get('address', []), ['type' => SchemaCustomer\AddressType::OTHER]));
+      $address_input = new SchemaCustomer\AddressInput(array_merge($this->requestParam('address', []), ['type' => SchemaCustomer\AddressType::OTHER]));
     }
 
     $result = $this->apiCustomer()->customerMutation()->createTicket(
       $ticket_input,
-      $helper->mapTemporaryFiles($this->request->get('temporary_files')),
+      $helper->mapTemporaryFiles($this->requestParam('temporary_files')),
       $devices,
       $address_input
     );
@@ -154,7 +154,7 @@ class Tickets extends Action
       throw new ExceptionNotFound(__CLASS__, __LINE__);
     }
 
-    $rating_input = new SchemaCustomer\RatingInput($this->request->get('rating', []));
+    $rating_input = new SchemaCustomer\RatingInput($this->requestParam('rating', []));
 
     $result = $this->apiCustomer()->customerMutation()->setRating($id, SchemaCustomer\RatingSubjectType::TICKET, $rating_input);
 

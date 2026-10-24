@@ -15,7 +15,7 @@ trait TokenRating
       throw new ExceptionNotFound(__CLASS__, __LINE__);
     }
 
-    $rating_input = new SchemaPublic\RatingInput($this->request->get('rating', []));
+    $rating_input = new SchemaPublic\RatingInput($this->requestParam('rating', []));
 
     $result = $this->apiPublic()->publicMutation()->setRating((string)$this->token, $rating_input);
 

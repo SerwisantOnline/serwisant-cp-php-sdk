@@ -2,7 +2,7 @@
 
 namespace Serwisant\SerwisantCp;
 
-use Silex;
+use Serwisant\Silex;
 use Symfony\Component\HttpFoundation\Request;
 use Serwisant\SerwisantApi;
 
@@ -116,6 +116,27 @@ class Action
       }
     }
     return $this->layout_vars;
+  }
+
+  /**
+   * Parametr żądania z atrybutów trasy, GET lub POST (w tej kolejności) - zamiennik przestarzałego Request::get()
+   *
+   * @param string $key
+   * @param mixed $default
+   * @return mixed
+   */
+  protected function requestParam(string $key, $default = null)
+  {
+    if ($this->request->attributes->has($key)) {
+      return $this->request->attributes->get($key);
+    }
+    if ($this->request->query->has($key)) {
+      return $this->request->query->all()[$key];
+    }
+    if ($this->request->request->has($key)) {
+      return $this->request->request->all()[$key];
+    }
+    return $default;
   }
 
   protected function getListLimit()

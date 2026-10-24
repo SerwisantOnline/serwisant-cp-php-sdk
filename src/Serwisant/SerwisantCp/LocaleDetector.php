@@ -4,12 +4,13 @@ namespace Serwisant\SerwisantCp;
 
 use Symfony\Component\HttpFoundation;
 use CodeZero\BrowserLocale\BrowserLocale;
+use Symfony\Component\Intl\Countries;
+use libphonenumber\PhoneNumberUtil;
 
 class LocaleDetector
 {
   protected string $default_locale;
   protected string $locale;
-  protected $country;
 
   public function __construct(HttpFoundation\Request $request, string $default_locale = 'pl_PL')
   {
@@ -24,20 +25,14 @@ class LocaleDetector
       $locale = $this->default_locale;
     }
 
-    $countries = CountryDatabase::getInstance();
-
-    $country = $countries->where('cca2', explode('_', $locale)[1])->first();
-
-    if (count($country) <= 0) {
-      $country = $countries->where('cca2', explode('_', $this->default_locale)[1])->first();
-      if (count($country) <= 0) {
+    if (!Countries::exists(explode('_', $locale)[1])) {
+      if (!Countries::exists(explode('_', $this->default_locale)[1])) {
         throw new Exception("There is no country for default locale: {$this->default_locale}");
       }
       $locale = explode('_', $locale)[0] . "_" . explode('_', $this->default_locale)[1];
     }
 
     $this->locale = $locale;
-    $this->country = $country;
 
     return $this;
   }
@@ -87,15 +82,20 @@ class LocaleDetector
    */
   public function timeZone(): string
   {
-    return $this->country->hydrate('timezones')->timezones->first()->zone_name;
+    $timezones = \DateTimeZone::listIdentifiers(\DateTimeZone::PER_COUNTRY, $this->countryISO());
+    return count($timezones) > 0 ? $timezones[0] : 'UTC';
   }
 
   /**
+   * Flaga kraju jako emoji w SVG
+   *
    * @return string
    */
   public function flagSVG(): string
   {
-    return 'data:image/svg+xml;base64, ' . base64_encode($this->country->get('flag.svg'));
+    $flag = implode('', array_map(fn($letter) => mb_chr(0x1F1E6 + ord($letter) - ord('A')), str_split($this->countryISO())));
+    $svg = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 24'><text x='0' y='20' font-size='20'>{$flag}</text></svg>";
+    return 'data:image/svg+xml;base64, ' . base64_encode($svg);
   }
 
   /**
@@ -103,11 +103,8 @@ class LocaleDetector
    */
   public function phonePrefix()
   {
-    $prefix = $this->country->get('calling_codes')->first();
-    if (is_string($prefix) && strlen($prefix) >= 5) {
-      $prefix = substr($prefix, 0, 2);
-    }
-    return $prefix;
+    $calling_code = PhoneNumberUtil::getInstance()->getCountryCodeForRegion($this->countryISO());
+    return $calling_code > 0 ? "+{$calling_code}" : false;
   }
 
   /**

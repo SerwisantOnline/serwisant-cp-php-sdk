@@ -14,7 +14,7 @@ trait Devices
    */
   private function getDevice(): ?SchemaCustomer\Device
   {
-    if ($device_id = $this->request->get('device')) {
+    if ($device_id = $this->requestParam('device')) {
       $devices_filter = new SchemaCustomer\DevicesFilter(['type' => SchemaCustomer\DevicesFilterType::ID, 'ID' => $device_id]);
       $devices = $this->apiCustomer()->customerQuery()->devices(1, null, $devices_filter, null, ['single' => true]);
       if (count($devices->items) == 0) {
@@ -35,7 +35,7 @@ trait Devices
    */
   private function getDevicePublic(): ?SchemaPublic\Device
   {
-    if ($device_id = $this->request->get('device')) {
+    if ($device_id = $this->requestParam('device')) {
       $device = $this->apiPublic()->publicQuery()->device($device_id);
       if (false === $device->isVerified) {
         throw new ExceptionNotFound(__CLASS__, __LINE__);

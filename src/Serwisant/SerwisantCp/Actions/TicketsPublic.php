@@ -17,8 +17,8 @@ class TicketsPublic extends Action
     $this->checkModuleActive();
 
     if ($this->isAuthenticated()) {
-      if ($this->request->get('device')) {
-        return $this->redirectTo('new_ticket', null, ['device' => $this->request->get('device')]);
+      if ($this->requestParam('device')) {
+        return $this->redirectTo('new_ticket', null, ['device' => $this->requestParam('device')]);
       } else {
         return $this->redirectTo('new_ticket');
       }
@@ -43,9 +43,9 @@ class TicketsPublic extends Action
       'priorities_select_options' => $priorities_select_options,
       'serviceSupplier' => $viewer->ticketsServiceSupplier,
       'device' => $device,
-      'showAddress' => $this->request->get('showAddress'),
+      'showAddress' => $this->requestParam('showAddress'),
       'form_params' => $this->request->request,
-      'temporary_files' => $this->formHelper()->mapTemporaryFiles($this->request->get('temporary_files')),
+      'temporary_files' => $this->formHelper()->mapTemporaryFiles($this->requestParam('temporary_files')),
       'errors' => $errors,
       'js_files' => ['tickets_public.js'],
       'pageTitle' => $this->t('ticket_public_new.title'),
@@ -60,7 +60,7 @@ class TicketsPublic extends Action
 
     $helper = $this->formHelper();
 
-    $applicant = new Dot($this->request->get('applicant', []));
+    $applicant = new Dot($this->requestParam('applicant', []));
     $applicant_input = new SchemaPublic\AnonymousApplicantInput([
       'deviceUid' => $device_uid,
       'person' => $applicant['person'],
@@ -69,7 +69,7 @@ class TicketsPublic extends Action
       'agreements' => $helper->mapAgreements($applicant['agreements']),
     ]);
 
-    $ticket = $this->request->get('ticket', []);
+    $ticket = $this->requestParam('ticket', []);
     $ticket['startAt'] = $helper->dateTimeToISO8601($ticket['startAt'] ?? '', $this->app['timezone']);
     if (array_key_exists('customFields', $ticket)) {
       $ticket['customFields'] = $helper->mapCustomFields($ticket['customFields']);
@@ -78,20 +78,20 @@ class TicketsPublic extends Action
 
     $device = $this->getDevicePublic();
 
-    $geo_point = new SchemaPublic\GeoPointInput($this->request->get('geoPoint', []));
-    $show_address = $this->request->get('showAddress', false);
+    $geo_point = new SchemaPublic\GeoPointInput($this->requestParam('geoPoint', []));
+    $show_address = $this->requestParam('showAddress', false);
     if ($device && $device->address) {
       $address_input = new SchemaPublic\AddressInput(array_merge($device->address->toArray(), ['type' => SchemaPublic\AddressType::OTHER])); // always use original device address
     } elseif (!$show_address && $geo_point->lat && $geo_point->lng) {
       $address_input = new SchemaPublic\AddressInput(['geoPoint' => $geo_point, 'type' => SchemaPublic\AddressType::GPS]); // fill only GPS coords if given, address will be geocoded on backend
     } else {
-      $address_input = new SchemaPublic\AddressInput(array_merge($this->request->get('address', []), ['type' => SchemaPublic\AddressType::OTHER])); // pass given address
+      $address_input = new SchemaPublic\AddressInput(array_merge($this->requestParam('address', []), ['type' => SchemaPublic\AddressType::OTHER])); // pass given address
     }
 
     $result = $this->apiPublic()->publicMutation()->createTicket(
       $applicant_input,
       $ticket_input,
-      $helper->mapTemporaryFiles($this->request->get('temporary_files')),
+      $helper->mapTemporaryFiles($this->requestParam('temporary_files')),
       ($device ? $device->ID : null),
       $address_input
     );

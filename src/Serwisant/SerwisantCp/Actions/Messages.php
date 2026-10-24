@@ -17,7 +17,7 @@ class Messages extends Action
     $this->checkModuleActive();
 
     $limit = $this->getListLimit();
-    $page = $this->request->get('page', 1);
+    $page = $this->requestParam('page', 1);
     $filter = new MessagesFilter(['type' => MessagesFilterType::ALL]);
     $sort = MessagesSort::DATE_UPDATED;
 
@@ -65,7 +65,7 @@ class Messages extends Action
   {
     $this->checkModuleActive();
 
-    $message = $this->request->get('message', []);
+    $message = $this->requestParam('message', []);
 
     $message_input = new MessageInput($message);
     $result = $this
@@ -97,7 +97,7 @@ class Messages extends Action
   {
     $this->checkModuleActive();
 
-    $message = $this->request->get('message', []);
+    $message = $this->requestParam('message', []);
 
     $result = $this
       ->apiCustomer()

@@ -2,7 +2,7 @@
 
 namespace Serwisant\SerwisantCp;
 
-use Silex;
+use Serwisant\Silex;
 
 class ApplicationRouter implements Router
 {

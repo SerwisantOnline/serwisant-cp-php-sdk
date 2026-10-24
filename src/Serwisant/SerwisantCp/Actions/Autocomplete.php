@@ -23,7 +23,7 @@ class Autocomplete extends Action
     $result = $this
       ->apiCustomer()
       ->customerQuery()
-      ->autocomplete($scope, $this->request->get('q', ''));
+      ->autocomplete($scope, $this->requestParam('q', ''));
 
     return $this->app->json($result);
   }

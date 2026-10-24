@@ -24,16 +24,16 @@ class Viewer extends Action
 
   public function update()
   {
-    $customer = $this->request->get('customer', []);
+    $customer = $this->requestParam('customer', []);
     if (array_key_exists('customFields', $customer)) {
       $customer['customFields'] = $this->formHelper()->mapCustomFields($customer['customFields']);
     }
 
     $customer_input = new CustomerUpdateInput($customer);
-    $agreements_input = $this->formHelper()->mapAgreements($this->request->get('agreements', []));
+    $agreements_input = $this->formHelper()->mapAgreements($this->requestParam('agreements', []));
     $addresses_input = array_map(function ($a) {
       return new AddressUpdateInput($a);
-    }, $this->request->get('addresses', []));
+    }, $this->requestParam('addresses', []));
 
     $result = $this->apiCustomer()->customerMutation()->updateViewer($customer_input, $agreements_input, $addresses_input);
 

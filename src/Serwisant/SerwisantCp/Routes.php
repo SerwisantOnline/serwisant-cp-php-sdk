@@ -2,7 +2,7 @@
 
 namespace Serwisant\SerwisantCp;
 
-use Silex;
+use Serwisant\Silex;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

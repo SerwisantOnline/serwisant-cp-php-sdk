@@ -18,8 +18,8 @@ class RepairsPublic extends Action
     $this->checkModuleActive();
 
     if ($this->isAuthenticated()) {
-      if ($this->request->get('device')) {
-        return $this->redirectTo('new_repair', null, ['device' => $this->request->get('device')]);
+      if ($this->requestParam('device')) {
+        return $this->redirectTo('new_repair', null, ['device' => $this->requestParam('device')]);
       } else {
         return $this->redirectTo('new_repair');
       }
@@ -38,7 +38,7 @@ class RepairsPublic extends Action
       'serviceSupplier' => $result->fetch('viewer')->repairsServiceSupplier,
       'device' => $device,
       'form_params' => $this->request->request,
-      'temporary_files' => $this->formHelper()->mapTemporaryFiles($this->request->get('temporary_files')),
+      'temporary_files' => $this->formHelper()->mapTemporaryFiles($this->requestParam('temporary_files')),
       'errors' => $errors,
       'js_files' => ['repairs_shared.js', 'repairs_public.js'],
       'pageTitle' => $this->t('repair_public_new.title'),
@@ -57,7 +57,7 @@ class RepairsPublic extends Action
 
     $helper = $this->formHelper();
 
-    $applicant = new Dot($this->request->get('applicant', []));
+    $applicant = new Dot($this->requestParam('applicant', []));
     $applicant_input = new SchemaPublic\AnonymousApplicantInput([
       'deviceUid' => $device_uid,
       'person' => $applicant['person'],
@@ -66,7 +66,7 @@ class RepairsPublic extends Action
       'agreements' => $helper->mapAgreements($applicant['agreements']),
     ]);
 
-    $repair = $this->request->get('repair', []);
+    $repair = $this->requestParam('repair', []);
     if (array_key_exists('customFields', $repair)) {
       $repair['customFields'] = $helper->mapCustomFields($repair['customFields']);
     }
@@ -80,14 +80,14 @@ class RepairsPublic extends Action
     } elseif ($device && $device->address) {
       $address_input = new SchemaPublic\AddressInput(array_merge($device->address->toArray(), ['type' => SchemaPublic\AddressType::OTHER])); // always use original device address
     } else {
-      $address_input = new SchemaPublic\AddressInput(array_merge($this->request->get('address', []), ['type' => SchemaPublic\AddressType::OTHER])); // pass given address
+      $address_input = new SchemaPublic\AddressInput(array_merge($this->requestParam('address', []), ['type' => SchemaPublic\AddressType::OTHER])); // pass given address
     }
 
     $result = $this->apiPublic()->publicMutation()->createRepair(
       $applicant_input,
       $repair_input,
       [],
-      $helper->mapTemporaryFiles($this->request->get('temporary_files')),
+      $helper->mapTemporaryFiles($this->requestParam('temporary_files')),
       ($device ? $device->ID : null),
       $address_input
     );
@@ -112,7 +112,7 @@ class RepairsPublic extends Action
     $action_query = $this->actionQuery();
 
     $variables = [
-      'repairID' => $this->request->get('repairID'),
+      'repairID' => $this->requestParam('repairID'),
       'serviceSupplier' => $action_query->fetch('viewer')->repairsServiceSupplier,
       'prompt_content' => $action_query->fetch('configuration')->repairSubmitPromptContent,
     ];

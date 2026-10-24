@@ -2,7 +2,8 @@
 
 namespace Serwisant\SerwisantCp;
 
-use PragmaRX\Countries\Package\Countries;
+use Symfony\Component\Intl\Currencies;
+use Symfony\Component\Intl\Exception\MissingResourceException;
 
 class Translator
 {
@@ -65,13 +66,15 @@ class Translator
    */
   public function codeToCurrencySymbol(string $code): string
   {
-    if (empty($this->currencies)) {
-      $countries = CountryDatabase::getInstance();
-      foreach ($countries->currencies() as $currency) {
-        $this->currencies[$currency->get('iso.code')] = $currency->get('units.major.symbol');
+    $key = $this->language() . '_' . $code;
+    if (!array_key_exists($key, $this->currencies)) {
+      try {
+        $this->currencies[$key] = Currencies::getSymbol($code, $this->language());
+      } catch (MissingResourceException $ex) {
+        $this->currencies[$key] = $code;
       }
     }
-    return $this->currencies[$code];
+    return $this->currencies[$key];
   }
 
   /**

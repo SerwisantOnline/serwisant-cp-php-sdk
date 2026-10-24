@@ -6,8 +6,10 @@ use Adbar;
 use Twig\Environment;
 use Twig\Error\Error;
 use Twig\TwigFunction;
+use Twig\Runtime\EscaperRuntime;
 use Symfony\Component\HttpFoundation\ParameterBag;
-use PragmaRX\Countries\Package\Countries;
+use Symfony\Component\Intl\Countries;
+use libphonenumber\PhoneNumberUtil;
 use Serwisant\SerwisantApi\Types\SchemaPublic;
 
 class TwigFormExtensions extends TwigExtensions
@@ -121,7 +123,7 @@ class TwigFormExtensions extends TwigExtensions
     if ($value === null) {
       $value = $options->get('value');
     }
-    $value = twig_escape_filter($this->twig, $value);
+    $value = $this->twig->getRuntime(EscaperRuntime::class)->escape($value);
 
     $tr_errors = $options->get('tr_errors');
     $capture_argument_errors = $options->get('capture_argument_errors', []);
@@ -405,33 +407,20 @@ class TwigFormExtensions extends TwigExtensions
   private function phonePrefixes()
   {
     $country_select_options = [];
-    $countries = CountryDatabase::getInstance();
-    foreach ($countries->all()->pluck('cca2')->toArray() as $country_iso2) {
-      $country = $countries->where('cca2', $country_iso2)->first();
-      $languages = array_keys($country->get('languages', [])->toArray());
-      $calling_codes = $country->get('calling_codes');
-      if (count($languages) > 0 && $calling_codes) {
-        $name = $country->get("name.native.{$languages[0]}.common");
-        foreach ($country->get('calling_codes')->toArray() as $calling_code) {
-          $country_select_options[$calling_code] = "{$name} {$calling_code}";
-        }
+    $phone_util = PhoneNumberUtil::getInstance();
+    foreach ($phone_util->getSupportedCallingCodes() as $calling_code) {
+      // kod wspólny dla wielu krajów (np. +1, +7) opisujemy krajem głównym
+      $country_iso2 = $phone_util->getRegionCodeForCountryCode($calling_code);
+      if (Countries::exists($country_iso2)) {
+        $country_select_options["+{$calling_code}"] = Countries::getName($country_iso2, $this->translator->language()) . " +{$calling_code}";
       }
     }
+    (new \Collator($this->translator->language()))->asort($country_select_options);
     return $country_select_options;
   }
 
   private function countries()
   {
-    $country_select_options = [];
-    $countries = CountryDatabase::getInstance();
-    foreach ($countries->all()->pluck('cca2')->toArray() as $country_iso2) {
-      $country = $countries->where('cca2', $country_iso2)->first();
-      $languages = array_keys($country->get('languages', [])->toArray());
-      if (count($languages) > 0) {
-        $name = $country->get("name.native.{$languages[0]}.common");
-        $country_select_options[$country_iso2] = $name;
-      }
-    }
-    return $country_select_options;
+    return Countries::getNames($this->translator->language());
   }
 }

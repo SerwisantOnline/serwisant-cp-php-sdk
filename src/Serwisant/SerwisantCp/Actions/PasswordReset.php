@@ -19,7 +19,7 @@ class PasswordReset extends Action
 
   public function create()
   {
-    $result = $this->apiPublic()->publicMutation()->resetPassword($this->request->get('loginOrEmail'), PasswordResetSubject::CUSTOMER);
+    $result = $this->apiPublic()->publicMutation()->resetPassword($this->requestParam('loginOrEmail'), PasswordResetSubject::CUSTOMER);
     if ($result->errors) {
       return $this->new($result->errors);
     } else {
@@ -30,7 +30,7 @@ class PasswordReset extends Action
   public function newPassword(array $errors = [])
   {
     $vars = [
-      'token' => $this->request->get('jwt_token'),
+      'token' => $this->requestParam('jwt_token'),
       'formParams' => $this->request->request,
       'errors' => $errors,
       'js_files' => ['password_reset_new_password.js']
@@ -40,7 +40,7 @@ class PasswordReset extends Action
 
   public function createPassword()
   {
-    $result = $this->apiPublic()->publicMutation()->setPassword($this->request->get('resetToken'), $this->request->get('password'), $this->request->get('passwordConfirmation'));
+    $result = $this->apiPublic()->publicMutation()->setPassword($this->requestParam('resetToken'), $this->requestParam('password'), $this->requestParam('passwordConfirmation'));
     if ($result->errors) {
       return $this->newPassword($result->errors);
     } else {

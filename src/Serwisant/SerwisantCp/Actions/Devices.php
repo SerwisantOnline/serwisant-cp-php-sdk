@@ -29,7 +29,7 @@ class Devices extends Action
     $devices = $this
       ->apiCustomer()
       ->customerQuery()
-      ->devices($this->getListLimit(), $this->request->get('page', 1), null, null, ['list' => true]);
+      ->devices($this->getListLimit(), $this->requestParam('page', 1), null, null, ['list' => true]);
 
     $variables = [
       'devices' => $devices,
@@ -51,10 +51,10 @@ class Devices extends Action
     }
 
     $repairsFilter = new RepairsFilter(['type' => RepairsFilterType::DEVICE, 'ID' => $id]);
-    $repairs = $this->apiCustomer()->customerQuery()->repairs(10, $this->request->get('repairs_page', 1), $repairsFilter, RepairsSort::DATE_UPDATED, ['list' => true]);
+    $repairs = $this->apiCustomer()->customerQuery()->repairs(10, $this->requestParam('repairs_page', 1), $repairsFilter, RepairsSort::DATE_UPDATED, ['list' => true]);
 
     $ticketsFilter = new TicketsFilter(['type' => TicketsFilterType::DEVICE, 'ID' => $id]);
-    $tickets = $this->apiCustomer()->customerQuery()->tickets(10, $this->request->get('tickets_page', 1), $ticketsFilter, TicketsSort::CREATED_AT, ['list' => true]);
+    $tickets = $this->apiCustomer()->customerQuery()->tickets(10, $this->requestParam('tickets_page', 1), $ticketsFilter, TicketsSort::CREATED_AT, ['list' => true]);
 
     $variables = [
       'device' => $devices->items[0],
@@ -82,7 +82,7 @@ class Devices extends Action
       'dictionary_select_options' => $dictionary_select_options,
 
       'form_params' => $this->request->request,
-      'temporary_files' => $this->formHelper()->mapTemporaryFiles($this->request->get('temporary_files')),
+      'temporary_files' => $this->formHelper()->mapTemporaryFiles($this->requestParam('temporary_files')),
       'errors' => $errors,
       'js_files' => ['devices_new.js'],
       'pageTitle' => $this->t('repair_new.title'),
@@ -96,18 +96,18 @@ class Devices extends Action
 
     $helper = $this->formHelper();
 
-    $device = $this->request->get('device', []);
+    $device = $this->requestParam('device', []);
 
     $device_input = new DeviceInput($device);
     if (array_key_exists('customFields', $device)) {
       $device_input->customFields = $helper->mapCustomFields($device['customFields']);
     }
-    $temporary_files = $helper->mapTemporaryFiles($this->request->get('temporary_files'));
+    $temporary_files = $helper->mapTemporaryFiles($this->requestParam('temporary_files'));
     if (count($temporary_files) > 0) {
       $device_input->copyOfSaleDocumentTemporaryFile = $temporary_files[0];
     }
 
-    $address_input = new AddressInput($this->request->get('address', []));
+    $address_input = new AddressInput($this->requestParam('address', []));
     $address_input->type = AddressType::HOME;
 
     $result = $this

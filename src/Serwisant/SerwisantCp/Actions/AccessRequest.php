@@ -25,8 +25,8 @@ class AccessRequest extends Action
     $result = $this->apiPublic()->publicQuery()->newRequest()->setFile('newSignup.graphql')->execute();
     $vars = [
       'agreementsDefinitions' => $result->fetch('customerAgreements'),
-      'jwt_token' => $this->request->get('jwt_token', ''),
-      'suggested_login' => $this->request->get('suggested_login', ''),
+      'jwt_token' => $this->requestParam('jwt_token', ''),
+      'suggested_login' => $this->requestParam('suggested_login', ''),
       'form_params' => $this->request->request,
       'errors' => $errors,
       'js_files' => ['access_request_new.js']
@@ -37,14 +37,14 @@ class AccessRequest extends Action
 
   public function create()
   {
-    $agreements_input = $this->formHelper()->mapAgreements($this->request->get('agreements', []));
+    $agreements_input = $this->formHelper()->mapAgreements($this->requestParam('agreements', []));
     $result = $this
       ->apiPublic()
       ->publicMutation()
       ->createCustomerAccess(
-        $this->request->get('jwt_token', ''),
-        $this->request->get('login', ''),
-        $this->request->get('password', ''),
+        $this->requestParam('jwt_token', ''),
+        $this->requestParam('login', ''),
+        $this->requestParam('password', ''),
         $agreements_input
       );
 

@@ -21,7 +21,7 @@ class Login extends Action
 
   public function resolveCredential()
   {
-    $login_credential = $this->request->get('login_credential', '');
+    $login_credential = $this->requestParam('login_credential', '');
     $result = $this->apiPublic()->publicQuery()->login($login_credential);
     return $this->app->json($result);
   }
@@ -30,7 +30,7 @@ class Login extends Action
   {
     $this->checkModuleActive();
 
-    $session_credentials = $this->request->get('session_credentials');
+    $session_credentials = $this->requestParam('session_credentials');
     try {
       $this->accessTokenCustomer()->login($session_credentials['login'] ?? '', $session_credentials['password'] ?? '');
       return $this->redirectTo('dashboard', 'flashes.login_successful');

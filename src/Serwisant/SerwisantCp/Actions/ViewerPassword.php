@@ -22,7 +22,7 @@ class ViewerPassword extends Action
 
   public function update()
   {
-    $user = $this->request->get('user', []);
+    $user = $this->requestParam('user', []);
     $result = $this->apiCustomer()->customerMutation()->updateViewerPassword($user['currentPassword'] ?? '', $user['password'] ?? '', $user['password'] ?? '');
 
     if ($result->errors) {

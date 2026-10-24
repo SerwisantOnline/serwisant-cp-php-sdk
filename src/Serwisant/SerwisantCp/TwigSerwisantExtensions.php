@@ -5,6 +5,7 @@ namespace Serwisant\SerwisantCp;
 use Twig\Environment;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
+use Twig\Runtime\EscaperRuntime;
 
 use Serwisant\SerwisantApi\Types\SchemaPublic\CustomFieldType;
 use Serwisant\SerwisantApi\Types\SchemaPublic\OrderTimeStatus;
@@ -53,7 +54,7 @@ class TwigSerwisantExtensions extends TwigExtensions
           break;
 
         default:
-          $html = twig_escape_filter($env, $field_value);
+          $html = $env->getRuntime(EscaperRuntime::class)->escape($field_value);
           break;
       }
 

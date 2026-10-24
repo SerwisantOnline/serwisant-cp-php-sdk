@@ -56,7 +56,7 @@ class TemporaryFile extends Action
   {
     $this->checkModuleActive();
 
-    $result = $this->temporaryFilesQuery()->temporaryFiles([$this->request->get('load')]);
+    $result = $this->temporaryFilesQuery()->temporaryFiles([$this->requestParam('load')]);
 
     if (is_array($result) && count($result) == 1) {
       $content = file_get_contents($result[0]->url);

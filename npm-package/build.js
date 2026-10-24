@@ -1,8 +1,6 @@
 console.log("Running postinstall for Serwisant Online customer panel SDK...\n");
 
 var imgFiles = [
-  'vendor/pragmarx/countries/src/data/flags/pol.svg',
-  'vendor/pragmarx/countries/src/data/flags/gbr.svg',
   'node_modules/leaflet/dist/images/layers.png',
   'node_modules/leaflet/dist/images/layers-2x.png',
   'node_modules/leaflet/dist/images/marker-icon.png',

@@ -2,9 +2,8 @@
 
 namespace Serwisant\SerwisantCp;
 
-use Silex;
+use Serwisant\Silex;
 use Symfony\Component\HttpFoundation;
-use JDesrosiers\Silex\Provider\CorsServiceProvider;
 use Symfony\Component\HttpFoundation\Cookie;
 
 class Application
@@ -22,6 +21,7 @@ class Application
 
   private $app;
   private $router;
+  private bool $booted = false;
 
   public function __construct($env = self::ENV_PRODUCTION, $view_paths = [], $query_paths = [], $tr_files = [], string $default_locale = 'pl_PL')
   {
@@ -61,8 +61,16 @@ class Application
     return $this;
   }
 
-  public function run(): Application
+  /**
+   * Rejestruje usługi, providery, filtry i trasy. Idempotentne - wołane przez run() i handle().
+   */
+  public function boot(): Application
   {
+    if ($this->booted) {
+      return $this;
+    }
+    $this->booted = true;
+
     $this->app['env'] = $this->env;
     $this->app['base_dir'] = $this->base_dir;
     $this->app['gql_query_paths'] = $this->query_paths;
@@ -72,7 +80,8 @@ class Application
     if ($this->env != self::ENV_PRODUCTION) {
       $assets_version = sha1(time());
     } else {
-      $assets_version = $this->app['assets_version'] ? $this->app['assets_version'] : sha1(date('Y-m-d'));
+      // assets_version jest opcjonalne - minimalny bootstrap z README go nie ustawia
+      $assets_version = (isset($this->app['assets_version']) && $this->app['assets_version']) ? $this->app['assets_version'] : sha1(date('Y-m-d'));
     }
 
     $this->app->register(
@@ -85,7 +94,7 @@ class Application
       ]);
 
     $this->app->register(new Silex\Provider\RoutingServiceProvider());
-    $this->app->register(new \Devim\Provider\CorsServiceProvider\CorsServiceProvider());
+    $this->app->register(new Silex\Provider\CorsServiceProvider());
     $this->app->register(
       new Silex\Provider\AssetServiceProvider(),
       [
@@ -137,8 +146,21 @@ class Application
 
     $this->router->createRoutes($this->app);
 
-    $this->app->run();
+    return $this;
+  }
 
+  /**
+   * Obsługuje żądanie bez wysyłania odpowiedzi - do testów i osadzania, patrz Silex\Application::handle().
+   */
+  public function handle(HttpFoundation\Request $request): HttpFoundation\Response
+  {
+    return $this->boot()->app->handle($request);
+  }
+
+  public function run(): Application
+  {
+    $this->boot();
+    $this->app->run();
     return $this;
   }
 
@@ -183,7 +205,12 @@ class Application
 
   protected function sessionStart()
   {
-    session_set_cookie_params((60 * 60 * 6), '/', null, ($this->env == self::ENV_PRODUCTION), false);
+    // sesja mogła zostać otwarta przez poprzednie żądanie w tym samym procesie (testy, kolejne handle())
+    if (session_status() === PHP_SESSION_ACTIVE) {
+      return;
+    }
+
+    session_set_cookie_params((60 * 60 * 6), '/', null, ($this->env == self::ENV_PRODUCTION), true);
     ini_set('session.cookie_samesite', 'Lax');
     ini_set('session.use_strict_mode', 1);
 

@@ -2,7 +2,7 @@
 
 namespace Serwisant\SerwisantCp;
 
-use Silex;
+use Serwisant\Silex;
 use Symfony\Component\HttpFoundation;
 use Serwisant\SerwisantApi;
 

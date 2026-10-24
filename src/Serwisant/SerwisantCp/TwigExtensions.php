@@ -3,7 +3,7 @@
 namespace Serwisant\SerwisantCp;
 
 use Twig\Environment;
-use Silex;
+use Serwisant\Silex;
 
 class TwigExtensions
 {

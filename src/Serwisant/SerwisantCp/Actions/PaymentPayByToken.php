@@ -12,20 +12,20 @@ class PaymentPayByToken extends Action
   public function call()
   {
     $agreements = new SchemaPublic\OnlineTransactionAgreementsInput();
-    $agreements->payment = ($this->request->get('agreement_payment') == '1');
-    $agreements->dataProcessing = ($this->request->get('agreement_data_processing') == '1');
+    $agreements->payment = ($this->requestParam('agreement_payment') == '1');
+    $agreements->dataProcessing = ($this->requestParam('agreement_data_processing') == '1');
 
     $online_transaction = new SchemaPublic\OnlineTransactionInput();
     $online_transaction->agreements = $agreements;
 
-    switch ($this->request->get('payment_type')) {
+    switch ($this->requestParam('payment_type')) {
       case SchemaPublic\OnlinePaymentMethodType::BLIK:
         $online_transaction->type = SchemaPublic\OnlinePaymentMethodType::BLIK;
-        $online_transaction->code = $this->request->get('code');
+        $online_transaction->code = $this->requestParam('code');
         break;
       case SchemaPublic\OnlinePaymentMethodType::TRANSFER:
         $online_transaction->type = SchemaPublic\OnlinePaymentMethodType::TRANSFER;
-        $online_transaction->channel = $this->request->get('channel');
+        $online_transaction->channel = $this->requestParam('channel');
         break;
       default:
         throw new ExceptionNotFound(__CLASS__, __LINE__);
