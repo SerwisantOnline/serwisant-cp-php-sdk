@@ -1,6 +1,6 @@
 {
   "name": "serwisant/serwisant-cp",
-  "version": "1.7.1",
+  "version": "1.8.0",
   "description": "Customer Panel for https://serwisant.online service",
   "type": "library",
   "homepage": "https://github.com/SerwisantOnline/serwisant-cp-php-sdk",
@@ -10,7 +10,7 @@
     "ext-json": "*",
     "ext-intl": "*",
     "ext-openssl": "*",
-    "serwisant/serwisant-api": "~3.6.0",
+    "serwisant/serwisant-api": "~3.6.1",
     "serwisant/serwisant-silex": "^1.0",
     "symfony/http-foundation": "^6.4 || ^7.4",
     "symfony/yaml": "^6.4 || ^7.4",

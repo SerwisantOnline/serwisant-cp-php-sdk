@@ -3,6 +3,51 @@
 All notable changes to `serwisant/serwisant-cp` are documented in this file.
 Entries up to 1.6.3 were reconstructed from git history.
 
+## 1.8.0 - 2026-11-11
+
+### Added
+
+- Tickets list: ticket groups (`dictionaryEntries` of type `TICKET_CATEGORY`) marked with `asMenuItem` are offered as
+  "New ticket: <group>" options in a dropdown attached to the "Open a ticket" button, linking to
+  `new_ticket?group=<ID>`. When every available group is a menu item, the whole button becomes the dropdown.
+  New query `queries/customer/dictionaryEntries.graphql`, new view variables `ticketGroupsMenu`
+  and `ticketGroupsMenuOnly` in `tickets.html.twig`, new translations `tickets.create_ticket_in_group`
+  and `tickets.toggle_groups_menu`.
+- New ticket form: ticket group select (`ticket.group`, above priority) filled from `dictionaryEntries` of type
+  `TICKET_CATEGORY` (`ticketGroups` in `newTicket.graphql`), preselected from the `group` query parameter when it
+  matches an available group; the selected group is passed as `TicketInput.group` to `createTicket` (blank option
+  sends no group). New view variables `ticket_groups_select_options` and `defaultTicketGroup` in
+  `ticket_new.html.twig`, new translation `ticket_new.group`.
+- New ticket form: custom fields with `concern` are shown only for the selected ticket group
+  (`CustomField.concern.ID` = `Dictionary.ID`), same as repair type in the new repair form - handled by
+  `tickets.js` (`Application.Tickets.Form`). npm package `serwisant-cp` bumped to 1.0.2 - run `npm install`
+  to refresh `public/assets-serwisant-cp/`.
+- New ticket form: when ticket groups are available, the priority field is hidden and becomes visible only after
+  selecting a group without assigned priority (`Dictionary.priority`); with no group selected the hidden field is
+  cleared. When the selected group (chosen in the form, posted or passed as `group` query parameter) has a priority
+  assigned, the field stays hidden and is set to group's priority;
+  `createTicket` always sends group's priority as `TicketInput.priority` in such case (enforced server-side,
+  `dictionaryEntries` is queried only when a group is posted). New view variables `ticket_groups_priorities`,
+  `selectedTicketGroupPriority` and `priorityHidden`, containers `#ticket_group_container` (`data-priorities` JSON map) and
+  `#ticket_priority_container` in `ticket_new.html.twig`.
+- Public ticket form (`TicketsPublic`, `ticket_public_new.html.twig`): the same ticket group select, custom fields
+  depending on group and group's priority handling as in the customer form, without group preselection.
+  New queries `ticketGroups` in `queries/public/newTicket.graphql` and `queries/public/dictionaryEntries.graphql`,
+  new translation `ticket_public_new.group`.
+- Shared logic extracted to `Traits\TicketGroups` (`ticketGroupsFormVariables()`, `applyTicketGroup()`) and
+  `tickets_shared.js` (`Application.TicketsShared.GroupFields()`), loaded by both new ticket forms
+  (`js_files` is now `['tickets_shared.js', 'tickets.js']` / `['tickets_shared.js', 'tickets_public.js']`).
+- Ticket group priority can't be manipulated: in both forms `createTicket` always receives priority of the selected
+  group (posted priority, also from query string, is overwritten). A posted group which is not one of available
+  groups (`dictionaryEntries` of type `TICKET_CATEGORY`) or is not a string is rejected with `ticket.group` /
+  `invalid` form error and the ticket is not sent to the API.
+
+### Changed
+
+- `serwisant/serwisant-api` bumped to `~3.6.1` (`Dictionary.asMenuItem`, `Dictionary.priority`, `TicketInput.group`).
+- `newTicket.graphql` (customer and public): priorities are now aliased as `ticketPriorities` (was `priorities`) -
+  update overridden actions or queries using `fetch('priorities')`.
+
 ## 1.7.1 - 2026-10-24
 
 ### Fixed
