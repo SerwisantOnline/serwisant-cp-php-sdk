@@ -10,6 +10,7 @@ use Serwisant\SerwisantApi\Types\SchemaCustomer;
 class Tickets extends Action
 {
   use Traits\Devices;
+  use Traits\TicketGroups;
 
   public function index()
   {
@@ -25,11 +26,25 @@ class Tickets extends Action
       ->customerQuery()
       ->tickets($limit, $page, $filter, $sort, ['list' => true]);
 
+    $groups = $this->fetchTicketGroups();
+    $menu_groups = array_values(array_filter($groups, fn($group) => $group->asMenuItem === true));
+
     $variables = [
       'tickets' => $tickets,
+      'ticketGroupsMenu' => $menu_groups,
+      'ticketGroupsMenuOnly' => count($menu_groups) > 0 && count($menu_groups) === count($groups),
       'pageTitle' => $this->t('tickets.title'),
     ];
     return $this->renderPage('tickets.html.twig', $variables);
+  }
+
+  /**
+   * @return SchemaCustomer\Dictionary[]
+   */
+  private function fetchTicketGroups(): array
+  {
+    $filter = new SchemaCustomer\DictionaryEntriesFilter(['type' => SchemaCustomer\DictionaryType::TICKET_CATEGORY]);
+    return $this->apiCustomer()->customerQuery()->dictionaryEntries($filter);
   }
 
   public function show($id, $rating_errors = [])
@@ -61,7 +76,7 @@ class Tickets extends Action
     $result = $this->apiCustomer()->customerQuery()->newRequest()->setFile('newTicket.graphql')->execute();
 
     $priorities_select_options = [];
-    foreach ($result->fetch('priorities') as $entry) {
+    foreach ($result->fetch('ticketPriorities') as $entry) {
       $priorities_select_options[$entry->ID] = $entry->name;
     }
 
@@ -77,7 +92,8 @@ class Tickets extends Action
     }
     $default_address = array_key_first($addresses_radio_options);
 
-    $variables = [
+    $variables = $this->ticketGroupsFormVariables($result->fetch('ticketGroups'), $this->requestParam('group'));
+    $variables += [
       'customFieldsDefinitions' => $result->fetch('ticketCustomFields'),
       'priorities_select_options' => $priorities_select_options,
       'addresses_radio_options' => $addresses_radio_options,
@@ -86,7 +102,7 @@ class Tickets extends Action
       'form_params' => $this->request->request,
       'temporary_files' => $this->formHelper()->mapTemporaryFiles($this->requestParam('temporary_files')),
       'errors' => $errors,
-      'js_files' => ['tickets.js'],
+      'js_files' => ['tickets_shared.js', 'tickets.js'],
       'pageTitle' => $this->t('ticket_new.title'),
     ];
 
@@ -103,6 +119,10 @@ class Tickets extends Action
     $ticket['startAt'] = $helper->dateTimeToISO8601($ticket['startAt'] ?? '', $this->app['timezone']);
     if (array_key_exists('customFields', $ticket)) {
       $ticket['customFields'] = $helper->mapCustomFields($ticket['customFields']);
+    }
+    $ticket = $this->applyTicketGroup($ticket, fn() => $this->fetchTicketGroups());
+    if ($ticket === null) {
+      return $this->new([new SchemaCustomer\Error(['argument' => 'ticket.group', 'code' => 'invalid', 'message' => 'Invalid ticket group'])]);
     }
     $ticket_input = new SchemaCustomer\TicketInput($ticket);
 

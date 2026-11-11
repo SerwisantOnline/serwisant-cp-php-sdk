@@ -1,4 +1,28 @@
-<a class="btn btn-primary btn-lg" href="{{ path('new_ticket') }}">{{ t(_self, 'create_ticket') }}</a>
+{% if ticketGroupsMenu is empty %}
+  <a class="btn btn-primary btn-lg" href="{{ path('new_ticket') }}">{{ t(_self, 'create_ticket') }}</a>
+{% else %}
+  <div class="btn-group">
+    {% if ticketGroupsMenuOnly %}
+      <button type="button" class="btn btn-primary btn-lg dropdown-toggle" data-bs-toggle="dropdown"
+              aria-expanded="false">{{ t(_self, 'create_ticket') }}</button>
+    {% else %}
+      <a class="btn btn-primary btn-lg" href="{{ path('new_ticket') }}">{{ t(_self, 'create_ticket') }}</a>
+      <button type="button" class="btn btn-primary btn-lg dropdown-toggle dropdown-toggle-split"
+              data-bs-toggle="dropdown" aria-expanded="false">
+        <span class="visually-hidden">{{ t(_self, 'toggle_groups_menu') }}</span>
+      </button>
+    {% endif %}
+    <ul class="dropdown-menu">
+      {% for group in ticketGroupsMenu %}
+        <li>
+          <a class="dropdown-item" href="{{ path('new_ticket', {group: group.ID}) }}">
+            {{ t(_self, 'create_ticket_in_group', {name: group.name}) }}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}
 
 <div class="panel-spaced bg-light rounded">
   {% if tickets.items is empty %}

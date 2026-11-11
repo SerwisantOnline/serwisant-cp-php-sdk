@@ -36,7 +36,16 @@ query {
         name
         description
     }
-    priorities: priorities(filter: {type: TICKET}) {
+    ticketGroups: dictionaryEntries(filter: {type: TICKET_CATEGORY}) {
+        __typename
+        ID
+        name
+        priority {
+            __typename
+            ID
+        }
+    }
+    ticketPriorities: priorities(filter: {type: TICKET}) {
         __typename
         ID
         name

@@ -19,12 +19,16 @@
       </div>
     {% endif %}
 
-    {% if priorities_select_options|length > 1 %}
-      <div class="col-md-5 mb-3">
-        {{ form_field({type: 'selectpicker', argument: 'ticket.priority', caption: t(_self, 'priority'), options: priorities_select_options, include_blank: true}, form_params, errors) }}
+    {% if ticket_groups_select_options is not empty %}
+      <div class="col-md-5 mb-3" id="ticket_group_container" data-priorities="{{ ticket_groups_priorities|json_encode }}">
+        {{ form_field({type: 'selectpicker', argument: 'ticket.group', caption: t(_self, 'group'), options: ticket_groups_select_options, include_blank: true, value: defaultTicketGroup}, form_params, errors) }}
       </div>
-    {% else %}
-      {{ form_field({type: 'hidden', argument: 'ticket.priority', value: priorities_select_options|keys|first}, form_params, errors) }}
+    {% endif %}
+
+    {% if priorities_select_options is not empty %}
+      <div class="col-md-5 mb-3 {{ priorityHidden ? 'undisplayed' : '' }}" id="ticket_priority_container">
+        {{ form_field({type: 'selectpicker', argument: 'ticket.priority', caption: t(_self, 'priority'), options: priorities_select_options, include_blank: true, value: selectedTicketGroupPriority}, form_params, errors) }}
+      </div>
     {% endif %}
 
     <div class="row">
