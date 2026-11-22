@@ -42,7 +42,7 @@ class Login extends Action
 
   public function destroy()
   {
-    $this->accessTokenCustomer()->revoke();
+    $this->logoutCustomer();
     return $this->redirectTo('dashboard', 'flashes.logout_successful');
   }
 

@@ -227,6 +227,20 @@ class Action
     return $this->access_token_customer;
   }
 
+  /**
+   * Logs the customer out: revokes the token on the server and clears it locally. The customer is logged out locally
+   * even when the server refuses the revocation - the refusal is only logged, as the token stays valid until expiry.
+   */
+  protected function logoutCustomer(): void
+  {
+    if (is_null($this->access_token_customer)) {
+      return;
+    }
+    if (false === $this->access_token_customer->revoke()) {
+      error_log('Serwisant CP: customer access token revocation failed or was refused by the API, token was cleared locally only');
+    }
+  }
+
   protected function apiCustomer(): ?Api
   {
     if (is_null($this->api_customer) && !is_null($this->access_token_customer)) {

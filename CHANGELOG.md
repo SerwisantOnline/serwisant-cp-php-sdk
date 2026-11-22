@@ -3,6 +3,20 @@
 All notable changes to `serwisant/serwisant-cp` are documented in this file.
 Entries up to 1.6.3 were reconstructed from git history.
 
+## 1.8.1 - 2026-11-22
+
+### Changed
+
+- Requires `serwisant/serwisant-api` `~3.7.0`: access tokens rejected by the API (HTTP 401) are refreshed and the
+  request is retried once instead of failing with HTTP 500.
+
+### Fixed
+
+- A customer whose token was rejected and could not be refreshed (`SerwisantApi\ExceptionUnauthorized` - refresh
+  token no longer valid) is redirected to the login page instead of getting an error page.
+- Logout and password change: a revocation refused by the API (eg. HTTP 403) is logged with `error_log()` instead of
+  being silently ignored; the customer is still logged out locally. New `Action::logoutCustomer()`.
+
 ## 1.8.0 - 2026-11-11
 
 ### Added
