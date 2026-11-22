@@ -28,7 +28,7 @@ class ViewerPassword extends Action
     if ($result->errors) {
       return $this->edit($result->errors);
     } else {
-      $this->accessTokenCustomer()->revoke();
+      $this->logoutCustomer();
       return $this->redirectTo('dashboard', 'flashes.viewer_password_update_successful');
     }
   }

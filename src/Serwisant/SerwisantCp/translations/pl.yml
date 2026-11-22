@@ -562,6 +562,8 @@ pl:
   tickets:
     title: Zgłoszenia
     create_ticket: Dodaj zgłoszenie awarii
+    create_ticket_in_group: 'Nowe zgłoszenie: %{name}'
+    toggle_groups_menu: Pokaż grupy zgłoszeń
     no_tickets: >-
       Nie utworzyłeś jeszcze żadnego zgłoszenia. Aby dodać jakieś, kliknij w
       przycisk znajdujący się w górnej części strony.
@@ -611,6 +613,7 @@ pl:
     description: >-
       Aby zgłosić nową usterkę, awarię lub inny problem wymagający ingerencji
       serwisu u ciebie uzupełnij poniższy formularz podając wszystkie szczegóły.
+    group: Grupa zgłoszenia
     priority: Priorytet zgłoszenia
     startAt: Najbliższy możliwy termin przyjazdu serwisanta
     issue: Informacje o awarii
@@ -628,6 +631,7 @@ pl:
   ticket_public_new:
     title: Zgłoś awarię
     introduction: 'Zgłoszenie zostanie przekazane do serwisu:'
+    group: Grupa zgłoszenia
     priority: Priorytet zgłoszenia
     startAt: Najbliższy możliwy termin przyjazdu serwisanta
     issue: Informacje o awarii

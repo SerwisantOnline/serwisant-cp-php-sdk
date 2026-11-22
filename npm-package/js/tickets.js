@@ -1,6 +1,8 @@
 Application.Tickets = {}
 
 Application.Tickets.Form = function () {
+  Application.TicketsShared.GroupFields();
+
   if ($('#create_ticket_file_uploader').length > 0) {
     Application.Ui.FileUploadConfigure();
     var pond = FilePond.create({

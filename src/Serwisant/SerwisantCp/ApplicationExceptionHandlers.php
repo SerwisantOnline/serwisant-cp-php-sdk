@@ -53,7 +53,9 @@ class ApplicationExceptionHandlers
   {
     return
       ($e instanceof ExceptionUnauthorized) ||
-      ($e instanceof SerwisantApi\ExceptionUserCredentialsRequired);
+      ($e instanceof SerwisantApi\ExceptionUserCredentialsRequired) ||
+      // only password and refresh_token grants raise it - a customer token rejected by the API could not be refreshed
+      ($e instanceof SerwisantApi\ExceptionUnauthorized);
   }
 
   private function pageNotFound($e): bool

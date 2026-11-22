@@ -5,6 +5,9 @@ schema {
     mutation: PublicMutation
 }
 
+"Requires that exactly one field must be supplied and that field must not be `null`."
+directive @oneOf on INPUT_OBJECT
+
 type AcceptOrRejectRepairResult {
     errors: [Error!]
     success: Boolean!
@@ -128,8 +131,12 @@ type Device {
 
 type Dictionary {
     ID: HashID!
+    "Entry should be offered as a shortcut in menus, e.g. adding a ticket with preselected category"
+    asMenuItem: Boolean!
     auxiliaryId: String
     name: String!
+    "Ticket priority assigned to TICKET_CATEGORY entry"
+    priority: Priority
     type: DictionaryType!
 }
 
@@ -1175,10 +1182,10 @@ enum TicketState {
 }
 
 "An ISO 8601-encoded date, eg. 2000-01-01, YYYY-MM-DD"
-scalar Date
+scalar Date @specifiedBy(url: "https://tools.ietf.org/html/rfc3339")
 
 "An ISO 8601-encoded datetime"
-scalar DateTime
+scalar DateTime @specifiedBy(url: "https://tools.ietf.org/html/rfc3339")
 
 "Represents decimal."
 scalar Decimal
@@ -1316,6 +1323,7 @@ input ServiceSuppliersFilter {
 
 input TicketInput {
     customFields: [CustomFieldValueInput!]
+    group: HashID
     issue: String
     priority: HashID
     startAt: DateTime

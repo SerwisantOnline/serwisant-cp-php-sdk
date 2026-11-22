@@ -1,0 +1,12 @@
+query dictionaryEntries($filter: DictionaryEntriesFilter) {
+    dictionaryEntries(filter: $filter) {
+        __typename
+        ID
+        name
+        asMenuItem
+        priority {
+            __typename
+            ID
+        }
+    }
+}

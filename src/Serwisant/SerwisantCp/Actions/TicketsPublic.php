@@ -11,6 +11,7 @@ use Serwisant\SerwisantApi\Types\SchemaPublic;
 class TicketsPublic extends Action
 {
   use Traits\Devices;
+  use Traits\TicketGroups;
 
   public function new($errors = [])
   {
@@ -27,7 +28,7 @@ class TicketsPublic extends Action
     $result = $this->apiPublic()->publicQuery()->newRequest()->setFile('newTicket.graphql')->execute();
 
     $priorities_select_options = [];
-    foreach ($result->fetch('priorities') as $entry) {
+    foreach ($result->fetch('ticketPriorities') as $entry) {
       $priorities_select_options[$entry->ID] = $entry->name;
     }
 
@@ -37,7 +38,8 @@ class TicketsPublic extends Action
     /* @var $viewer SchemaPublic\Viewer */
     $viewer = $result->fetch('viewer');
 
-    $variables = [
+    $variables = $this->ticketGroupsFormVariables($result->fetch('ticketGroups')); // no group preselection in public form
+    $variables += [
       'customFieldsDefinitions' => $result->fetch('ticketCustomFields'),
       'agreementsDefinitions' => $result->fetch('customerAgreements'),
       'priorities_select_options' => $priorities_select_options,
@@ -47,7 +49,7 @@ class TicketsPublic extends Action
       'form_params' => $this->request->request,
       'temporary_files' => $this->formHelper()->mapTemporaryFiles($this->requestParam('temporary_files')),
       'errors' => $errors,
-      'js_files' => ['tickets_public.js'],
+      'js_files' => ['tickets_shared.js', 'tickets_public.js'],
       'pageTitle' => $this->t('ticket_public_new.title'),
     ];
 
@@ -73,6 +75,10 @@ class TicketsPublic extends Action
     $ticket['startAt'] = $helper->dateTimeToISO8601($ticket['startAt'] ?? '', $this->app['timezone']);
     if (array_key_exists('customFields', $ticket)) {
       $ticket['customFields'] = $helper->mapCustomFields($ticket['customFields']);
+    }
+    $ticket = $this->applyTicketGroup($ticket, fn() => $this->fetchTicketGroups());
+    if ($ticket === null) {
+      return $this->new([new SchemaPublic\Error(['argument' => 'ticket.group', 'code' => 'invalid', 'message' => 'Invalid ticket group'])]);
     }
     $ticket_input = new SchemaPublic\TicketInput($ticket);
 
@@ -104,6 +110,15 @@ class TicketsPublic extends Action
       $token = $result->ticket->secretToken->token;
       return $this->redirectTo(['token', ['token' => $token]], 'flashes.ticket_creation_successful');
     }
+  }
+
+  /**
+   * @return SchemaPublic\Dictionary[]
+   */
+  private function fetchTicketGroups(): array
+  {
+    $filter = new SchemaPublic\DictionaryEntriesFilter(['type' => SchemaPublic\DictionaryType::TICKET_CATEGORY]);
+    return $this->apiPublic()->publicQuery()->dictionaryEntries($filter);
   }
 
   private function checkModuleActive()

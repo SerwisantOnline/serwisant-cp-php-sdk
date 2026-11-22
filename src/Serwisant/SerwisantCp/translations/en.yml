@@ -544,6 +544,8 @@ en:
   tickets:
     title: Tickets
     create_ticket: Open a ticket
+    create_ticket_in_group: 'New ticket: %{name}'
+    toggle_groups_menu: Show ticket groups
     no_tickets: >-
       You have not created any ticket yet. In order to do so, please click the
       button located in upper part of the website.
@@ -594,6 +596,7 @@ en:
       To report a new malfunction, failure or any other issue requiring service
       intervention at your site, please fill the following form providing all
       details.
+    group: Ticket group
     priority: Ticket priority
     startAt: The nearest possible date of arrival of the service technician
     issue: Issue description
@@ -611,6 +614,7 @@ en:
   ticket_public_new:
     title: Create ticket
     introduction: 'The reported failure will be forwarded to the service:'
+    group: Ticket group
     priority: Ticket priority
     startAt: The nearest possible date of arrival of the service technician
     issue: Issue description
