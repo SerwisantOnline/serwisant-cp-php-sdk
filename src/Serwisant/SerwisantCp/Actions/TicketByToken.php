@@ -15,7 +15,6 @@ class TicketByToken extends Action
     $vars = [
       'pageTitle' => $ticket->number,
       'ticket' => $ticket,
-      'js_files' => ['ticket_by_token.js'],
       'form_params' => $this->request->request,
       'rating_errors' => $rating_errors,
     ];

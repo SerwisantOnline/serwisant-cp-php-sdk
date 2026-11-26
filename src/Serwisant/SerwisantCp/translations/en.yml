@@ -1,63 +1,73 @@
 en:
   '303':
-    title: Return to previous page
+    title: Return to the previous page
     lead: >-
-      We were unable to determine the forwarding address. Click the button below
+      We were unable to determine the redirect address. Click the button below
       to return to the previous page.
     button: Back
-  errors_title: Please fix following issues
+  errors_title: Please fix the following issues
   errors:
-    blank: Required value has not been given
-    empty: Required value has not been given
-    too_short: Value given in box is too short
-    invalid: Value given in box is invalid
-    taken: 'This value already exists in database, please choose different one'
-    required: Completion or selection of that box is required
+    blank: Required value has not been provided
+    empty: Required value has not been provided
+    too_short: The value in this field is too short
+    invalid: The value in this field is invalid
+    taken: 'This value already exists in the database, please choose a different one'
+    required: This field must be filled in or selected
     onlineTransaction:
       onlinePayment:
-        already_paid: 'This payment is already finished, please refresh to check status'
+        already_paid: 'This payment has already been completed, refresh the page to check its status'
       amountRequested:
-        greater_than: Payment value must be higher than zero
+        greater_than: The amount to pay must be greater than zero
       code:
-        wrong_length: The BLIK code is invalid. Valid code should have 6 digits.
+        wrong_length: The BLIK code is invalid. A valid code has 6 digits.
       channel:
-        blank: Bank has not been chosen
-        invalid: Choosen Bank is unsupported at the moment
+        blank: No bank has been selected
+        invalid: The selected bank is not supported at the moment
       agreements:
         dataProcessing:
-          accepted: Consent to processing of personal data must be accepted
+          accepted: Consent to the processing of personal data must be accepted
         payment:
-          accepted: Terms of payment must be accepted
-    not_a_date: Given value is not a valid date
-    confirmation: Repeated value is invalid
+          accepted: Payment terms and conditions must be accepted
+    not_a_date: The value is not a valid date
+    confirmation: The repeated value does not match
     wrong_length: Invalid length
-    not_gsm: Phone number is required
+    not_gsm: A mobile phone number is required
     not_found: Not found
-    too_long: Text is too long. Please limit number of characters.
-    one_time_email: We do not accept e-mail adresses from temporary inboxes.
+    too_long: The text is too long. Please reduce the number of characters.
+    one_time_email: We do not accept email addresses from temporary mailboxes
+    geocoding_failed: The address could not be determined from the pointed location, enter the address manually
+    not_a_number: The value is not a number
     password:
       too_weak: >-
-        Given password is too simple. Please use uppercase and lowercase
-        letters, special characters and numbers.
+        The password is too simple. Use lowercase and uppercase letters, special
+        characters and digits.
     resetToken:
       invalid: >-
-        Password reset ink is invalid or has expired. You can fix this issue by
-        sending password reset link once again.
+        The password reset link is invalid or has expired. You can fix this by
+        sending the password reset link again.
       not_found: >-
-        Password reset link is invalid or has expired. You can fix this issue by
-        sending password reset link once again.
+        The password reset link is invalid or has expired. You can fix this by
+        sending the password reset link again.
     ticket:
       self:
-        customer_rate_limit: You cannot add a new ticket at the moment. Please wait a moment.
+        customer_rate_limit: >-
+          You cannot add a new ticket right now. Please wait a moment before
+          adding another one.
     repair:
       self:
-        customer_rate_limit: You cannot add a new repair at the moment. Please wait a moment.
+        customer_rate_limit: >-
+          You cannot add a new repair right now. Please wait a moment before
+          adding another one.
     rating:
       stars:
         greater_than_or_equal_to: Choose from one to five stars
         not_a_number: Choose from one to five stars
   entitles:
-    loginOrEmail: Login or email adress
+    address:
+      geoPoint:
+        lat: Latitude
+        lng: Longitude
+    loginOrEmail: Login or email address
     resetToken: Password reset link
     passwordConfirmation: Password confirmation
     applicant:
@@ -66,119 +76,121 @@ en:
         number: Phone number
       email: Email address
       agreements:
-        accepted: Accept agreement
+        accepted: Consent acceptance
     agreements:
-      accepted: Accepted
+      accepted: Consent
     customer:
       phone:
         number: Phone number
       customFields:
-        value: Text box
+        value: Text field
     ticket:
       self: Ticket
       customFields:
-        value: Text box
+        value: Text field
     repair:
       self: Repair
       customFields:
-        value: Text box
+        value: Text field
     device:
-      copyOfSaleDocument: Copy of the sale document
+      copyOfSaleDocument: Copy of the sales document
       customFields:
-        value: Text box
+        value: Text field
     rating:
-      stars: Review
+      stars: Rating
   twig_extensions:
     progressed_about: '%{percent}% completed'
     prev_page: Previous
     next_page: Next
   fp:
-    labelIdle: Drag and drop or <span class="filepond--label-action">choose</span> files
+    labelIdle: Drag and drop or <span class="filepond--label-action">browse</span> files
     labelInvalidField: Invalid files
-    labelFileWaitingForSize: Downloading size
+    labelFileWaitingForSize: Waiting for size
     labelFileSizeNotAvailable: Unknown size
     labelFileLoading: Loading
     labelFileLoadError: Loading error
     labelFileProcessing: Uploading
     labelFileProcessingComplete: Uploaded
-    labelFileProcessingAborted: Discontinued
-    labelFileProcessingError: Uploading has failed
+    labelFileProcessingAborted: Aborted
+    labelFileProcessingError: Upload failed
     labelFileProcessingRevertError: Something went wrong
-    labelFileRemoveError: Failed removal
+    labelFileRemoveError: Removal failed
     labelTapToCancel: Cancel
-    labelTapToRetry: Renew
+    labelTapToRetry: Retry
     labelTapToUndo: Undo
-    labelButtonRemoveItem: Delete
-    labelButtonAbortItemLoad: Abandon
-    labelButtonRetryItemLoad: Renew
+    labelButtonRemoveItem: Remove
+    labelButtonAbortItemLoad: Abort
+    labelButtonRetryItemLoad: Retry
     labelButtonAbortItemProcessing: Cancel
     labelButtonUndoItemProcessing: Undo
-    labelButtonRetryItemProcessing: Renew
+    labelButtonRetryItemProcessing: Retry
     labelButtonProcessItem: Upload
-    labelMaxFileSizeExceeded: File is too big
-    labelMaxFileSize: 'Maximum allowed file size is {filezise}'
-    labelMaxTotalFileSizeExceeded: Total number of files has been exceeded
-    labelMaxTotalFileSize: 'Total size of files cannot exceed {filesize}'
-    labelFileTypeNotAllowed: This type of files is not allowed
-    fileValidateTypeLabelExpectedTypes: '{allButLastType} or {lastType} has been expected'
+    labelMaxFileSizeExceeded: File is too large
+    labelMaxFileSize: 'Maximum file size is {filesize}'
+    labelMaxTotalFileSizeExceeded: Maximum total file size exceeded
+    labelMaxTotalFileSize: 'Total file size cannot exceed {filesize}'
+    labelFileTypeNotAllowed: File type not allowed
+    fileValidateTypeLabelExpectedTypes: 'Expected {allButLastType} or {lastType}'
     imageValidateSizeLabelFormatError: Unsupported image format
-    imageValidateSizeLabelImageSizeTooSmall: Image size is too small
-    imageValidateSizeLabelImageSizeTooBig: Image size is too big
-    imageValidateSizeLabelExpectedMinSize: 'Minimal image size is {minWidth}×{minHeight}'
-    imageValidateSizeLabelExpectedMaxSize: 'Maximal image size is {maxWidth}×{maxHeight}'
+    imageValidateSizeLabelImageSizeTooSmall: Image is too small
+    imageValidateSizeLabelImageSizeTooBig: Image is too large
+    imageValidateSizeLabelExpectedMinSize: 'Minimum image size is {minWidth}×{minHeight}'
+    imageValidateSizeLabelExpectedMaxSize: 'Maximum image size is {maxWidth}×{maxHeight}'
     imageValidateSizeLabelImageResolutionTooLow: Resolution is too low
     imageValidateSizeLabelImageResolutionTooHigh: Resolution is too high
-    imageValidateSizeLabelExpectedMinResolution: 'Minimal resolution is {minResolution}'
-    imageValidateSizeLabelExpectedMaxResolution: 'Maximal resolution is {maxResolution}'
+    imageValidateSizeLabelExpectedMinResolution: 'Minimum resolution is {minResolution}'
+    imageValidateSizeLabelExpectedMaxResolution: 'Maximum resolution is {maxResolution}'
   flashes:
-    anonymous_applicant_activated: Your account has been confirmed. You will now receive notifications regarding service delivery.
+    anonymous_applicant_activated: Your account has been confirmed. From now on you will receive notifications about the progress of the service.
     device_registration_successful: >-
-      The device has been successfully added to the database. Now wait for the
-      device to be verified by the service.
-    login_first: 'Before you start using the app, you should sign up.'
+      The device has been successfully added to the database. Please wait for
+      the device to be verified by the service.
+    login_first: Please log in before you start using the application.
     signup_successful: >-
-      Account has been registered. You have to confirm it using the link, that
-      was sent to the email adress provided during registration. Please wait for
-      a moment and check your inbox. If you cannot find the email with the
-      confirmation link, please check your 'Spam' or 'Unwanted Mail' folders.
-    signup_activated: Registered account has been activated. You can now log in.
+      Your account has been registered. Now you need to confirm it using the
+      link we have sent to the email address you provided during registration.
+      Wait a minute and then check your inbox. If you cannot see the email with
+      the activation link, check your 'Spam' or 'Junk' folders first.
+    signup_activated: Your account has been activated. You can now log in.
     login_error:
       invalid_client: >-
-        Admin of that panel has not configurated correct access data OAUTH_KEY
-        and OAUTH_SECRET properly.
+        The administrator of this panel has not configured valid OAUTH_KEY and
+        OAUTH_SECRET credentials.
       invalid_grant: >-
-        Login failed. Please check if provided login and password are correct.
-        If you don't remember your password, please use the "Reset Password"
-        option.
-    login_successful: Login successful
-    logout_successful: Logout from the customer panel successful
+        Login failed. Please check that your login and password are correct.
+        If you do not remember your password, use the password reset option.
+    login_successful: Logged in successfully
+    logout_successful: Successfully logged out of the customer panel
     password_reset_sent: >-
-      The email with password reset link has been sent to your email. Please
-      wait for a moment and check your inbox. If you cannot find the email with
-      the reset link, please check your 'Spam' or 'Unwanted Mail' folders.
-    password_set: Password has been changed. Please log in using new password.
+      We have sent an email with a password reset link to your mailbox. Wait a
+      minute and check your inbox. If you cannot see the email with the reset
+      link, check your 'Spam' or 'Junk' folders first.
+    password_set: Your password has been changed. Log in using your new password.
     order_diagnosis_rejected: >-
-      Repair cost has been declined. Infromation about receipt of the item or
-      about its shipping will be send in separate email.
+      The repair costs have been rejected. You will receive a separate email
+      with information about collecting the item or about its shipment.
     order_diagnosis_accepted: >-
-      Repair costs has been accepted, service will start working on your request
-      soon.
-    repair_creation_successful: A repair has been created.
+      The repair costs have been accepted, the service will soon start working
+      on your request.
+    repair_creation_successful: The repair has been created.
     message_creation_successful: Your message has been sent successfully
-    ticket_creation_successful: Your ticket has been successfully created
+    ticket_creation_successful: >-
+      Your ticket has been successfully created. You will find a confirmation
+      in your mailbox.
     viewer_data_update_successful: Your data has been successfully updated
     access_request_successful: >-
-      A link allowing you to create log in data and thus get into the client
-      panel has been sent to your email. Please check your inbox.
+      We have sent a link to your email address which lets you set your login
+      credentials and thus get access to the customer panel. Please check your
+      mailbox.
     access_request_complete: 'Your account has been created, you can log in now.'
-    viewer_password_update_successful: Password has been changed. Please log in using new password.
+    viewer_password_update_successful: Your password has been updated. Log in using the password you have set.
   layout:
     viewer: Edit data
     logout: Log out
     cookie_info_html: >-
-      Our website uses cookie files &#x1F36A;&nbsp; for statistical and
-      funcional purposes. Learn <a target='_blank'
-      href='https://bit.ly/3N5gW6E'>how to disable them.</a>
+      Our website uses cookies &#x1F36A;&nbsp; for statistical and functional
+      purposes. Learn <a target='_blank' href='https://bit.ly/3N5gW6E'>how to
+      disable them.</a>
     cookie_accept: I agree
     repairs: Repairs
     tickets: Tickets
@@ -188,9 +200,9 @@ en:
     viewer_password: Change password
   shared:
     rating:
-      title: Rate the service provided from one to five stars
-      comment: You can leave an additional comment for the our company
-      submit: Submit a review
+      title: Rate the service by choosing from one to five stars
+      comment: You can leave an additional comment for the service
+      submit: Submit rating
   payment_types:
     INSTANT_FIXED: 'Payment upon completion, per order'
     INSTANT_TIME: 'Payment upon completion, hourly rate'
@@ -207,202 +219,206 @@ en:
     WAITING_FOR_DELIVERY: Awaiting delivery
     WAITING_FOR_DIAGNOSIS: Awaiting diagnosis
     DIAGNOSIS: Under diagnosis
-    REQ_CUSTOMER_ACCEPT: Requires confirmation of costs on the customers site
+    REQ_CUSTOMER_ACCEPT: Awaiting customer's cost approval
     CONFIRMED: Confirmed
     IN_PROGRESS: Under repair
-    WAITING_FOR_PARTS: Awaiting for components
+    WAITING_FOR_PARTS: Awaiting parts
     UNDER_TESTING: Under testing
     REQ_SUMMARY: Repair summary
     NOT_ACCEPTED: Not accepted
     CANCELED: Canceled
     NOT_PROCESSABLE: Repair is not possible
-    WAITING_FOR_COLLECTION: Ready for reception
-    PASSED_FOR_RETURN: Forwarded for shipping
-    CLOSED: Retrieved
+    WAITING_FOR_COLLECTION: Ready for collection
+    PASSED_FOR_RETURN: Handed over for shipment
+    CLOSED: Collected
     SCRAPPED: Scrapped
   ticket_status:
     UNSAVED: Unsaved
     NEW: New
     ASSIGNED: Assigned
-    ON_THE_WAY: Departure
+    ON_THE_WAY: On the way
     IN_PROGRESS: In progress
     RESOLVED: Resolved
     CANCELED: Canceled
   parcel_delivery_status:
-    NOT_ORDERED: Awaiting for order
+    NOT_ORDERED: Awaiting order
     ORDERED: Ordered
-    COLLECTED: Retrieved from sender
-    NOT_COLLECTED: Failed to retrieve from sender
-    TRANSIT: En route
-    DELIVERY: Issued for delivery
+    COLLECTED: Picked up from sender
+    NOT_COLLECTED: Failed to pick up the parcel from sender
+    TRANSIT: In transit
+    DELIVERY: Out for delivery
     DELIVERED: Delivered
-    NOT_DELIVERED: Failed to deliver
+    NOT_DELIVERED: Failed to deliver the parcel
     CANCELED: Canceled
     RETURNED: Returned
   login_new:
-    title: Log in!
+    title: Log in to the customer panel!
     login_description: To log in, use the email address you provided during registration or when ordering the service.
     signup_description: >-
-      If you dont have logging credentials, you can create them by registering
-      your own account
-    signup: Register own account
-    login: Login or email adress
+      If you do not have login credentials, you can create them by registering
+      your own account.
+    signup: Register your own account
+    login: Login or email address
     login_not_found: >-
-      Account has not been found - make sure priovided login and/or email adress
-      belong to account registered by you.
+      Account not found - make sure you have provided the login or email
+      address of the account you registered.
     subscriber_deleted: >-
-      Service you are trying to log into is no longer available on our platform.
-      Please contact the service by phone.
-    login_not_activated: Activate the account using link recieved right after registration.
+      The service you are trying to log in to is no longer available on our
+      platform. Please contact the service by phone.
+    login_not_activated: 'Activate your account using the link you received right after registration. If you do not have the activation link, check your "Spam" or "Trash" folder first. You can also get the activation link by writing to the service email address.'
     login_disabled: >-
       Your account has been deleted or blocked. Please contact the service to
-      resolve the issue.
+      clarify the situation.
     internet_access_not_enabled: >-
       Your access to the customer panel must be activated. Please contact the
       service.
     password: Password
     submit: Start
-    forgot_password: Reset password
+    forgot_password: Forgot my password
   signup_new:
     title: New account registration
-    description: Start with registering own account. Please fill out the form.
-    type: Type of account
-    customer_type:
-      personal: 'Private individual, consumer'
-      business: Company
-    person: Name and surname
-    company_name: Company name
-    email: Email adress
-    phone_number: Phone number
-    phone_prefix: Country prefix
-    login: Account login
-    password: Password
-    submit: Register own account
-    cancel: Cancel
-    read_agreement: Read agreement
-    close: Close
-    please_login_modal:
-      title: Information
-      content_html: >-
-        Account with this email adress has been detected in service database.
-        Please abandon registration process and go to log in site.<br><br>
-        Please use email adress provided here in order to log in.<br><br> If you
-        dont remember or dont have your password, you can use the "Remind
-        password" option in order to reset it, or create a new one.
-      close: Cancel
-      ok: 'Understood, moving on to logging'
-  access_request_ask:
-    title: The client pannel access activation
-    description: >-
-      We detected that service has already created you account. Probably you
-      have ordered some repair, report stationary or by phone. Please click
-      "Send link" to recieve link on your email to website on which you can
-      create panel login and password.
-    submit: Send link
-    cancel: Cancel
-  access_request_new:
-    title: The client pannel access activation
-    description: >-
-      Please finish activating access to the customer panel. To do so, please
-      choose your login and password and accept necessary agreements.
-    login_pass_info_html: >-
-      Your name and surname can be used as login. You can choose whatever you
-      like, remember that you can <strong>log into the panel using your email
-      adress</strong>. <br> <br> Please use different passwords in different
-      services. Instead of remembering them, you can save them in browser. Don't
-      worry about losing access. <strong>If you forget your password</strong>
-      you will be able to reset it at any time.
-    login: Account login
-    password: Password
-    read_agreement: Read agreement
-    submit: Activate account
-    cancel: Cancel
-    close: Close
-  viewer_edit:
-    title: Data uptade
-    description: Please update relevant form boxes to update your information
+    description: Start by registering your own account. Please fill in the form.
     type: Account type
     customer_type:
       personal: 'Private individual, consumer'
       business: Company
     person: Name and surname
     company_name: Company name
-    tax_id: Taxpayer identification number
-    email: Email adress
+    email: Email address
+    phone_number: Phone number
+    phone_prefix: Country prefix
+    login: Account login
+    password: Password
+    submit: Register your own account
+    cancel: Cancel
+    read_agreement: Read
+    close: Close
+    please_login_modal:
+      title: Information
+      content_html: >-
+        We have detected that a customer account associated with the provided
+        email address already exists in the service database. Please stop the
+        registration and go to the login page.<br><br> Please use the email
+        address provided here to log in.<br><br> If you do not remember or do
+        not have your password yet, use the 'Forgot my password' option to reset
+        it or set a new one.
+      close: Cancel
+      ok: 'Understood, go to login'
+  access_request_ask:
+    title: Customer panel access activation
+    description: >-
+      We have detected that the service has already created your account. You
+      have probably ordered a repair or reported a ticket in person, by phone,
+      etc. Click the Send link button to receive a link to your email address
+      leading to a page where you can set your login and password for the panel.
+    submit: Send link
+    cancel: Cancel
+  access_request_new:
+    title: Customer panel access activation
+    description: >-
+      Complete the activation of your access to the customer panel. To do so,
+      choose your login and password and accept the required consents.
+    login_pass_info_html: >-
+      Your login can be your name and surname. You can choose anything you
+      like, remember that you can also <strong>log in to the panel using your
+      email address</strong>. <br> <br> Use different passwords for different
+      services. Instead of remembering them, save them in your browser. Do not
+      worry about losing access. <strong>If you forget your password</strong>
+      you will be able to reset it at any time.
+    login: Account login
+    password: Password
+    read_agreement: Read
+    submit: Activate account
+    cancel: Cancel
+    close: Close
+  viewer_edit:
+    title: Data update
+    description: 'Update the relevant form fields to update your data.'
+    type: Account type
+    customer_type:
+      personal: 'Private individual, consumer'
+      business: Company
+    person: Name and surname
+    company_name: Company name
+    tax_id: Tax ID
+    email: Email address
     phone_number: Phone number
     phone_prefix: Country prefix
     login: Account login
     password: Password
     submit: Update data
     cancel: Cancel
-    read_agreement: Read agreement
+    read_agreement: Read
     close: Close
-    address: Adress
+    address: Address
     street: Street
     building: Number
-    postalCode: Postal number
+    postalCode: Postal code
     city: City
     country: Country
   signup_confirmation_failure:
     title: Account activation failed
-    description: 'Previously created account activation failed for reasons stated below:'
-    errors:
-      too_short: activation key is too short
-      invalid: >-
-        activation key is not correct, do not try rewriting the key by yourself
-        - click the link or copy the link to the clipboard and paste it in
-        website adress bar
-      already_activated: >-
-        account is already active - activation is one-time operation - you can
-        go to the log in site now
-    button_caption: Go to log in site
-  password_reset_new:
-    title: Reseting the password
     description: >-
-      This tool allows to reset forgotten password. Firstly, provide login or
-      email adress of your account in the customer panel. If we menage to find
-      it, we will send the password reset link onto email adress associated with
-      your account.
-    login_or_email: Login or email adress
+      Activation of the previously created account failed for the reasons
+      listed below:
+    errors:
+      too_short: the activation key is too short
+      invalid: >-
+        the activation key is invalid, do not try to type the key into the
+        address bar manually - click the link, or copy the link to the
+        clipboard and paste it into the address bar
+      already_activated: >-
+        the account is already active - activation is a one-time operation - you
+        can go to the login page
+    button_caption: Go to the login page
+  password_reset_new:
+    title: Password reset
+    description: >-
+      This tool allows you to reset a forgotten password. First, enter the login
+      or email address of your Customer Panel account. If we manage to find it,
+      we will send a link to the email address associated with your account
+      that will allow you to set a new password.
+    login_or_email: Login or email address
     submit: Recover password
     cancel: Cancel
     errors:
-      not_found: A user matching provided login or email adress has not been found
+      not_found: >-
+        No user matching the provided login or email address has been found
   password_reset_new_password:
-    title: Reseting password
-    description: Please enter the new password for your account.
+    title: Password reset
+    description: Enter a new password for your account.
     password: Password
     password_confirmation: Repeat password
     cancel: Cancel
     submit: Change password
   repairs:
     title: Repairs
-    create_repair: Create new repair
+    create_repair: Create a new repair
     no_repairs: >-
-      You have not added any repair yet. In order to do so, please click the
-      button located in upper part of the website.
+      You have not added any repairs yet. To add one, click the button at the
+      top of the page.
     list:
       rma: Repair number
-      description: Subject of repair
+      description: Repair item
       status: Status
       details: Details
   repair:
     close: Close
-    print_intro: Reception
+    print_intro: Intake
     print_summary: Summary
     panel_parcels:
-      title: Shipping associated with repair
+      title: Courier shipments related to the repair
       sender: Sender
-      recipient: Receiver
+      recipient: Recipient
       courier: Courier
-      status: Delivery status
-      tracking: Shipping list number
+      status: Shipment status
+      tracking: Tracking number
       pickup_hours: Pickup time
       pickup_time_from: From
       pickup_time_to: to
     panel_info:
       service_supplier: Service contact information
-      device: The device under repair
+      device: The device concerned by this repair
       title: Repair information
       number: Number
       vendor: Manufacturer
@@ -412,7 +428,7 @@ en:
       purchase_doc: Purchase document number
       warranty_repair: Warranty repair
       delivery_type: Delivery method
-      collection_type: Repair delivery method
+      collection_type: Collection method
       from: 'from address:'
       to: 'to address:'
     panel_custom_fields:
@@ -422,133 +438,132 @@ en:
       issue_description: Issue description.
       diagnosis_desctiption: Diagnosis.
       summary_canceled_or_rejected: 'Repair description: Repair is not possible.'
-      summary: Repair description
+      summary: Repair description.
     panel_money:
-      title: Repair cost
+      title: Repair costs
       net: Net
       gross: Gross
       accepted_costs: Accepted cost threshold
       not_defined: Not determined
-      confirmed_costs: Cost confirmed
+      confirmed_costs: Confirmed cost
       final_cost: Final cost
-      none_taken: None taken
-      advance_amount: Advance amount
+      none_taken: Not collected
+      advance_amount: Advance payment
       to_pay: To pay
     panel_status:
       title: Repair status
       status_name: Status
       delegation_status_name: External repair status
-      delegation_info: This repair has been forwarded to external partner.
+      delegation_info: This repair has been forwarded to an external partner.
       work_progress: Work progress
       created_at: Creation date
-      started_at: Beggining date
+      started_at: Start date
       tbc_after_rcv_at_office: Will be determined upon receipt at the service
-      finish_date_estimated: Planned finishing date
-      days_worked: 'Number of days, from the date of reception'
+      finish_date_estimated: Planned completion date
+      days_worked: 'Number of days since intake'
       days_worked_tooltip: >-
-        Number of working days worked. Orange colour infoms about nearing the
-        determined deadline of the service, red colour infoms about exceeding
-        the deadline.
-      time_status: Time situation
+        Number of working days elapsed. Orange indicates that the agreed service
+        deadline is approaching, red indicates that the deadline has been
+        exceeded.
+      time_status: Time status
     panel_files:
       title: Attached files
       download: Download attached file
     additional_items:
-      title: Additional elements of the repair
+      title: Additional repair items
       type: Type
       description: Description
     panel_change_status:
       price_estimated: "Estimated repair cost: %{amount}."
       price_final: To pay
-      reject: I do not accept costs
-      reject_all: Dismiss all offers
+      reject: I do not accept the costs
+      reject_all: Reject all offers
       reject_confirm_html: >-
-        If you are certain you don not want to continue repair and confirms
-        willingness to retrive the repair click "next". You can also contact us
-        if you are interested in details of the pricing.
-      accept: I accept costs of repair
+        If you are sure that you do not want to continue the repair and you
+        want to collect the item, click 'next'. You can also contact us if you
+        are interested in the details of the quote.
+      accept: I accept the repair costs
       accept_offer: I accept the offer
       accept_confirm: >-
-        Do you agree to incur %{amount} of the repair costs? If you accept the
-        costs we will start the repair.
+        Do you agree to bear the repair costs of %{amount}? If you accept the
+        costs, we will start the repair.
       accept_confirm_offer: >-
         Do you accept offer number %{offer_number} prepared by the service? The
         total cost if you choose this offer is %{amount}. Acceptance is
-        tantamount to an agreement to bear the aforementioned costs.
+        equivalent to agreeing to bear the aforementioned costs.
       confirmed: >-
-        The repair cost has beed confirmed in person, by e-mail or during a
-        telephone conversation with a service employee.
+        The repair cost has been confirmed in person, by email or during a phone
+        call with a service employee.
       offer: Offer
       description: Description
       price_net: Net price
       price_gross: Gross price
-      title: The decision regarding costs of the repair
+      title: Decision regarding the repair costs
       repair: Repair
       confirmation: Confirmation
       confirm: I confirm
   repair_new:
     title: Add a new repair
     description: >-
-      To register a new repair in service database, please fill the following
-      form.
+      To register a new repair in the service database, fill in the form below.
     device: The device concerned by this repair
-    type: Subject of repair
-    vendor: Manufacturer
-    model: Model
-    serial: Serial number of the device
-    warranty: Repair under warranty
-    warrantyPurchaseDate: Purchase date
-    warrantyPurchaseDocument: Purchase document number
-    issue: Issue description
-    addressID: 'Repair collection and return address:'
-    addressSaveToProfile: Save the given address in my profile
-    street: Street
-    building: Number
-    postalCode: Postal number
-    city: City
-    country: Country
-    other_address: Other address
-    delivery: Method of delivery of the repair
-    collection: Method of receiving of the repair
-    cancel: Cancel
-    submit: Add a repair
-  repair_public_new:
-    title: Submit a repair
-    introduction: 'The reported repair will be forwarded to the service:'
-    device: The device being repaired
     type: Repair item
     vendor: Manufacturer
     model: Model
-    serial: Serial number of the device
-    warranty: Repair under warranty
+    serial: Device serial number
+    warranty: Warranty repair
     warrantyPurchaseDate: Purchase date
     warrantyPurchaseDocument: Purchase document number
-    issue: Issue description
+    issue: 'Description of the fault or issue'
+    addressID: 'Repair pickup and return address:'
+    addressSaveToProfile: Save this address in my profile
     street: Street
     building: Number
-    postalCode: Postal number
+    postalCode: Postal code
     city: City
     country: Country
-    delivery: Method of delivery of the repair
-    collection: Method of receiving of the repair
-    person: 'Applicant: name, surname'
+    other_address: Other address
+    delivery: Delivery method
+    collection: Collection method
+    cancel: Cancel
+    submit: Add repair
+  repair_public_new:
+    title: Report a repair
+    introduction: 'The request will be forwarded to the service:'
+    device: The device concerned by this repair
+    type: Repair item
+    vendor: Manufacturer
+    model: Model
+    serial: Device serial number
+    warranty: Warranty repair
+    warrantyPurchaseDate: Purchase date
+    warrantyPurchaseDocument: Purchase document number
+    issue: 'Description of the fault or issue'
+    street: Street
+    building: Number
+    postalCode: Postal code
+    city: City
+    country: Country
+    delivery: Delivery method
+    collection: Collection method
+    person: 'Applicant: name and surname'
     phone_prefix: Country
     phone_number: Phone number
-    email: Email
+    email: Email address
     read_agreement: Read
     cancel: Cancel
-    submit: Add a repair
+    submit: Add repair
   repair_public_submit_prompt:
-    title: 'Message from the service center handling your repair:'
-    proceed: Go to repair page
+    title: 'Message from the service handling your repair:'
+    proceed: Go to the repair page
   tickets:
     title: Tickets
     create_ticket: Open a ticket
     create_ticket_in_group: 'New ticket: %{name}'
     toggle_groups_menu: Show ticket groups
     no_tickets: >-
-      You have not created any ticket yet. In order to do so, please click the
-      button located in upper part of the website.
+      You have not created any tickets yet. To add one, click the button at the
+      top of the page.
     list:
       number: Ticket number
       employee: Assigned employee
@@ -557,18 +572,18 @@ en:
       details: Details
   ticket:
     close: Close
-    print: Printout
+    print: Print
     panel_info:
       service_supplier: Service contact information
       title: General information
       number: Ticket number
-      devices: Devices concerned by the report
+      devices: Devices concerned by the ticket
       employee: Assigned employee
-      address: Address for the realization of the ticket
+      address: Ticket service address
       group: Group
     panel_payments:
       title: Payment information
-      payment_type: Method of payment
+      payment_type: Payment method
       not_defined: Not determined
       time: Time spent on the ticket
       hour: h
@@ -578,11 +593,11 @@ en:
       title: Ticket status
       priority: Priority
       status: Status
-      created: Date of acceptance of ticket
-      scheduled_on: Planned date to start work on the ticket
-      scheduled_to: planned date to finish work on the ticket
+      created: Ticket received date
+      scheduled_on: Planned start date of work on the ticket
+      scheduled_to: Planned end date of work on the ticket
       started_on: Work start date
-      finished_at: Work finish date
+      finished_at: Work end date
     panel_custom_form_fields:
       title: Additional information
     panel_files:
@@ -591,156 +606,152 @@ en:
     panel_files:
       title: Attached files
   ticket_new:
-    title: Open a ticket
+    title: Create a ticket
     description: >-
-      To report a new malfunction, failure or any other issue requiring service
-      intervention at your site, please fill the following form providing all
-      details.
+      To report a new ticket: failure or any other issue that requires the
+      service's intervention at your site, fill in the form below providing all
+      the details.
     group: Ticket group
     priority: Ticket priority
-    startAt: The nearest possible date of arrival of the service technician
-    issue: Issue description
-    address: Ticket adress
-    addressOther: 'Other, any adress'
-    other_address: Provide another adress
-    cancel: Cancel
-    submit: Add a ticket
-    street: Street
-    building: Number
-    postalCode: Postal number
-    city: City
-    country: Country
-    device: The device concerned by this ticket
-  ticket_public_new:
-    title: Create ticket
-    introduction: 'The reported failure will be forwarded to the service:'
-    group: Ticket group
-    priority: Ticket priority
-    startAt: The nearest possible date of arrival of the service technician
-    issue: Issue description
-    address: Address of issue placement
+    startAt: Earliest possible date of the technician's arrival
+    issue: Ticket details
+    address: Ticket address
     addressOther: 'Other, any address'
-    other_address: Provide another address
+    gps_address: Point the address on the map
+    geoPoint: Location on the map
+    other_address: Enter address
     cancel: Cancel
-    submit: Create ticket
+    submit: Add ticket
     street: Street
     building: Number
     postalCode: Postal code
     city: City
     country: Country
-    device: The device concerned by this issue
-    person: 'Applicant: name, surname'
+    device: The device concerned by this ticket
+  ticket_public_new:
+    title: Report a failure
+    introduction: 'The ticket will be forwarded to the service:'
+    group: Ticket group
+    priority: Ticket priority
+    startAt: Earliest possible date of the technician's arrival
+    issue: Failure details
+    address: Ticket address
+    addressOther: 'Other, any address'
+    other_address: Enter address
+    cancel: Cancel
+    submit: Add ticket
+    street: Street
+    building: Number
+    postalCode: Postal code
+    city: City
+    country: Country
+    device: The device concerned by this ticket
+    person: 'Applicant: name and surname'
     phone_prefix: Country
     phone_number: Phone number
     email: Email address
     read_agreement: Read
-    showAddress: Let me enter the address with the location of the report
+    showAddress: Let me enter the address of the ticket location
   online_payment_by_token:
-    payment_methods: Select one of the payment methods
+    payment_methods: Choose one of the payment methods
   online_payment:
     popus:
       code_modal:
         title:
-          sending: sending data to bank...
-          confirm: please look at your phone again and confirm payment
-          errors: some issues that you can resolved have occured
-          failure: >-
-            something went wrong, if you canceled the transaction you can renew
-            it
+          sending: sending data to the bank...
+          confirm: look at your phone again and confirm the payment
+          errors: 'some issues have occurred that you can resolve'
+          failure: 'something went wrong, if you canceled the transaction you can retry it'
           success: 'thank you, we have forwarded the payment to the service'
       transfer_modal:
         title:
-          sending: sending data to bank...
-          errors: some issues that you can resolved have occured
+          sending: sending data to the bank...
+          errors: 'some issues have occurred that you can resolve'
           redirecting: >-
-            in a moment you will be redirected to the bank's website in order to
-            finalize the transaction...
-          receiving: >-
-            odbieram informacje z banku, to może zająć chwilę...  recieving
-            information from the bank, it may take a while...
-          failure: >-
-            something went wrong, if you canceled the transaction you can renew
-            it
+            in a moment you will be redirected to the bank's website to complete
+            the transaction...
+          receiving: 'receiving information from the bank, this may take a while...'
+          failure: 'something went wrong, if you canceled the transaction you can retry it'
           success: 'thank you, we have forwarded the payment to the service'
     panel_payment_methods:
       BLIK: BLIK code from your phone
       TRANSFER: Fast transfer from your bank
       pay: Pay
       blik:
-        read: Read 6 digits of the code and type below
-        create: Create BLIK code in bank application
+        read: Read the 6-digit code and enter it below
+        create: Generate a BLIK code in your banking app
       agreement_data_processing: >-
-        I consent that my data, as the individual making the payment, will be
-        transfered to Krajowy Integrator Płatności S.A. company, Św. Marcin 73/6
-        street, 61-808 Poznań and proceeded to the extent necessary to make the
-        payment for %{name}, consisting of name, surname and email adress.
-        Provision of data is voluntary but necessary to process the payment; I
-        have the right to access and correct the content of my data.
+        I consent to my personal data, as the person making the payment, being
+        transferred to Krajowy Integrator Płatności S.A., ul. Św. Marcin 73/6,
+        61-808 Poznań, and processed to the extent necessary to make the payment
+        to %{name}, including my name, surname and email address. Providing the
+        data is voluntary but necessary to make the payment; I have the right to
+        access and correct my data.
       agreement_payment_html: >-
-        I accept terms and conditions of payment (<a
-        href='https://tpay.com/user/assets/files_for_download/regulamin.pdf'>regulamin</a>,
-        <a
-        href='https://tpay.com/user/assets/files_for_download/informacja-dla-konsumenta.pdf'>informacje
-        dla konsumenta</a>)
+        I accept the payment terms and conditions (<a
+        href='https://tpay.com/user/assets/files_for_download/regulamin.pdf'>terms
+        and conditions</a>, <a
+        href='https://tpay.com/user/assets/files_for_download/informacja-dla-konsumenta.pdf'>consumer
+        information</a>)
     panel_payment_details:
       items: Applies to the following services
       payment_receiver: Payment recipient
-      title: 'Payment  %{number} information'
+      title: 'Payment %{number} information'
       amount_to_pay: Remaining to pay
       amount: Amount
       status: Payment status
-      description: Information from service
+      description: Information from the service
       status_name:
         WAITING_FOR_PAYMENT: Awaiting payment
         PAID: Paid
-        UNPAID: Not paid
+        UNPAID: Unpaid
   messages:
     title: Messages
     no_messages: >-
-      You haven't send, nor haven't recieved any message from service. If you
-      want to contact the service via message, please click on the button
-      located in upper site of the website.
-    create_message: Send a new message
-    subject: Topic
+      You have not sent or received any messages from the service yet. If you
+      want to contact the service via a message, click the button at the top
+      of the page.
+    create_message: Write a message
+    subject: Subject
     date: Date
     read: Read thread
   message:
     title: Read message
     close: Close
-    create_message_reply: Write an answer
+    create_message_reply: Write a reply
     service: Service
     employee: Service employee
     you: You
   message_new:
-    title: Send a new message
+    title: Write a new message
     description: >-
-      Using this form you can write a message to the service. In the content,
-      please convey all necessary information.
-    subject: Message topic
+      Using this form you can create a message that will be sent to the
+      service. Include all the necessary information in the message.
+    subject: Message subject
     content: Message content
     cancel: Cancel
     submit: Send message
   message_new_reply:
-    title: Answer to the message
-    description: 'You are answering to the message "%{subject}"'
-    content: Message content
+    title: Reply to the message
+    description: 'You are replying to the message titled %{subject}'
+    content: Reply content
     cancel: Cancel
-    submit: Send an answer
+    submit: Send reply
   dashboard:
-    title: Front page
-    calendar: Calendar of planned tasks and tickets
+    title: Home
+    calendar: Calendar of scheduled tasks and tickets
   subscriber_by_token:
     search: check code
     or: or
-    customer_panel: go to the customer pannel
+    customer_panel: go to the customer panel
   viewer_password_edit:
     title: Password update
     description: >-
-      To update password, you have to know your current password. If you do not
-      remember it, please log out and reset the password in the log in pannel.
-      Choosing new password, please use uppercase and lowercase letters, digits
-      and/or special characters, such as exclamation marks or question marks.
-      Note, that after changing password you will be logged out.
+      To update your password, you need to know your current password. If you
+      do not remember it, log out and use the password reset option on the
+      login page. When choosing a new password, use lowercase and uppercase
+      letters, digits or special characters such as a period or a question
+      mark. Note that you will be logged out after changing your password.
     currentPassword: Current password
     password: New password
     passwordConfirmation: Password confirmation
@@ -760,14 +771,14 @@ en:
     details: Details
     vendor: Manufacturer
     model: Model
-    create_device: Register your device
-    not_verified: The device is waiting for verification by the service.
+    create_device: Register a device
+    not_verified: The device is awaiting verification by the service.
   device:
     close: Close
     new_repair: Create a repair for this device
     new_repair_s: Repair
-    new_ticket: Report ticket for that device
-    new_ticket_s: Ticket
+    new_ticket: Report a failure of this device
+    new_ticket_s: Failure
     panel_info:
       title: Device information
     service_supplier: Service contact information
@@ -781,7 +792,7 @@ en:
       title: Additional information
     panel_files:
       title: Files
-    not_verified: The device is waiting for verification by the service.
+    not_verified: The device is awaiting verification by the service.
     not_verified_unable_to_perform: >-
       Operations cannot be performed on an unverified device. Wait for the
       device to be verified by the service.
@@ -789,14 +800,15 @@ en:
   device_new:
     title: Device registration
     description: >-
-      To register the device, enter the appropriate data and attach a scan of
-      the sales document. After the device is verified by the service, you will
-      receive an email and will be able to add repairs or reports.
+      To register a device, enter the relevant data and attach a scan of the
+      sales document. After the device is verified by the service, you will
+      receive an email and will be able to add repairs or tickets.
     type: Device
     vendor: Manufacturer
     model: Model
-    serial: Serial number
-    copy_of_sale_document: 'A copy of a sales document, receipt or invoice in as image file.'
+    serial: Device serial number
+    copy_of_sale_document: >-
+      A copy of the sales document, receipt or invoice as an image file.
     address: Device installation address
     street: Street
     building: Number
@@ -804,12 +816,10 @@ en:
     city: City
     country: Country
     cancel: Cancel
-    submit: Perform registration
+    submit: Register
   repair_submit_prompt:
     title: What next?
-    description: >-
-      Below you'll find instructions on how to proceed after adding the repair
-      to our database.
+    description: Below you will find instructions on how to proceed.
     confirm: I understand
   contact:
     title: Contact information

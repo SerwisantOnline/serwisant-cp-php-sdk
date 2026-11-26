@@ -105,10 +105,31 @@ class TicketsPublic extends Action
     $ticket_errors = $result->errors;
 
     if (is_array($ticket_errors) && count($ticket_errors) > 0) {
+      if ($address_input->type === SchemaPublic\AddressType::GPS) {
+        $this->fallbackToOtherAddress($ticket_errors);
+      }
       return $this->new(array_merge($ticket_errors));
     } else {
       $token = $result->ticket->secretToken->token;
       return $this->redirectTo(['token', ['token' => $token]], 'flashes.ticket_creation_successful');
+    }
+  }
+
+  /**
+   * When the API could not determine the address from coordinates pointed on the map (`address` / `geocoding_failed`,
+   * or incomplete geocoding result, eg. `address.city` / `blank`), the form is displayed again with address fields
+   * (`showAddress`), as the error asks to enter the address manually.
+   *
+   * @param SchemaPublic\Error[] $errors
+   */
+  private function fallbackToOtherAddress(array $errors): void
+  {
+    foreach ($errors as $error) {
+      $argument = (string)$error->argument;
+      if ($argument === 'address' || (str_starts_with($argument, 'address.') && !str_starts_with($argument, 'address.geoPoint'))) {
+        $this->request->request->set('showAddress', '1');
+        return;
+      }
     }
   }
 

@@ -3,6 +3,34 @@
 All notable changes to `serwisant/serwisant-cp` are documented in this file.
 Entries up to 1.6.3 were reconstructed from git history.
 
+## 1.8.1 - 2026-11-24
+
+### Added
+
+- Dashboard: "Open a ticket" button with ticket groups menu, as on the tickets list (new shared view
+  `tickets/create_button.html.twig`).
+- New ticket form: "Point the address on the map" option (`addressID` = `gps`) - coordinates are sent as a `GPS`
+  address and geocoded by the API; preselected when the customer has no saved addresses. Update overridden
+  `ticket_new.html.twig` to get the map (without it the option is hidden).
+- Customer and public new ticket forms: when the API can't determine the address from coordinates, the form is
+  displayed again with manual address fields.
+- Ticket card: map with the ticket location below the address, device links (when the devices module is enabled).
+- npm package `serwisant-cp` 1.0.3 - run `npm install` to refresh assets.
+
+### Changed
+
+- New ticket form: a group preselected with the `group` query parameter is locked (can't be changed, also after
+  validation errors). Update overridden `ticket_new.html.twig` to get the lock in the UI.
+- Ticket by token no longer shows address and map: `ticket/panel_info.html.twig` hides the address row with the new
+  `showAddress: false` variable (shown by default). `ticket_by_token.js` and `#ticket-by-token-map` CSS removed.
+- English translation proofread; Polish `tickets.create_ticket` is "Dodaj zgłoszenie". Translation keys are unchanged.
+
+### Fixed
+
+- `form_field()`: "Array to string conversion" when an array is posted in place of a scalar field.
+- English FilePond file size limit was never shown (misspelled placeholder).
+- Typos in Polish translation.
+
 ## 1.8.0 - 2026-11-22
 
 ### Added

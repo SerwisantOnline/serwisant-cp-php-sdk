@@ -194,10 +194,10 @@ textarea {
 
 /* map */
 
-#ticket-by-token-map {
+.ticket-address-map {
     display: block;
     width: auto;
-    height: 300px;
+    height: 250px;
 }
 
 .map-pointer {

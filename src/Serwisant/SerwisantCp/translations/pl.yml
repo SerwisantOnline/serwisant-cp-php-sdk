@@ -15,7 +15,7 @@ pl:
     required: Uzupełnienie lub zaznaczenie tego pola jest wymagane
     onlineTransaction:
       onlinePayment:
-        already_paid: 'Ta płatność jest już sfinalizowana, odśwież stronę aby sprawdzić stan'
+        already_paid: 'Ta płatność jest już sfinalizowana, odśwież stronę, aby sprawdzić stan'
       amountRequested:
         greater_than: Kwota do zapłaty musi być większa od zera
       code:
@@ -29,16 +29,18 @@ pl:
         payment:
           accepted: Regulamin płatności musi zostać zaakceptowany
     not_a_date: Wartość nie jest poprawną datą
-    confirmation: Powrórzona wartość jest niepoprawna
-    wrong_length: Nipoprawna długość
+    confirmation: Powtórzona wartość jest niepoprawna
+    wrong_length: Niepoprawna długość
     not_gsm: Wymagany jest numer telefonu komórkowego
     not_found: Nie znaleziono
-    too_long: Tekst jest zbyt długi. Ogranicz ilość znaków.
+    too_long: Tekst jest zbyt długi. Ogranicz liczbę znaków.
     one_time_email: Nie akceptujemy adresów email z tymczasowych skrzynek
+    geocoding_failed: Nie udało się ustalić adresu na podstawie wskazanej lokalizacji, wpisz adres ręcznie
+    not_a_number: Wartość nie jest liczbą
     password:
       too_weak: >-
-        Podane hasło jest zbyt proste. Użyj małych i dużych znaków, znaków
-        specjalnych, cyfr.
+        Podane hasło jest zbyt proste. Użyj małych i wielkich liter, cyfr
+        oraz znaków specjalnych.
     resetToken:
       invalid: >-
         Link resetowania hasła jest niepoprawny lub stracił ważność. Możesz
@@ -63,6 +65,10 @@ pl:
         greater_than_or_equal_to: Wybierz od jednej do pięciu gwiazdek
         not_a_number: Wybierz od jednej do pięciu gwiazdek
   entitles:
+    address:
+      geoPoint:
+        lat: Szerokość geograficzna
+        lng: Długość geograficzna
     loginOrEmail: Login lub adres email
     resetToken: Link resetowania hasła
     passwordConfirmation: Potwierdzenie hasła
@@ -133,7 +139,7 @@ pl:
     imageValidateSizeLabelImageSizeTooSmall: Obraz jest zbyt mały
     imageValidateSizeLabelImageSizeTooBig: Obraz jest zbyt duży
     imageValidateSizeLabelExpectedMinSize: 'Minimalne wymiary obrazu to {minWidth}×{minHeight}'
-    imageValidateSizeLabelExpectedMaxSize: 'Maksymalna wymiary obrazu to {maxWidth}×{maxHeight}'
+    imageValidateSizeLabelExpectedMaxSize: 'Maksymalne wymiary obrazu to {maxWidth}×{maxHeight}'
     imageValidateSizeLabelImageResolutionTooLow: Rozdzielczość jest zbyt niska
     imageValidateSizeLabelImageResolutionTooHigh: Rozdzielczość jest zbyt wysoka
     imageValidateSizeLabelExpectedMinResolution: 'Minimalna rozdzielczość to {minResolution}'
@@ -147,15 +153,15 @@ pl:
     signup_successful: >-
       Konto zostało zarejestrowane. Musisz je teraz potwierdzić za pomocą linku,
       który wysłaliśmy na adres email, który podałeś/podałaś podczas
-      rejestracji. Odczekaj minutę, a następnie sprawdź skrzynkę. Jeśli nie nie
-      widzisz w skrzynce maila z linkiem aktywacyjnym sprawdź w pierwszej
+      rejestracji. Odczekaj minutę, a następnie sprawdź skrzynkę. Jeśli nie
+      widzisz w skrzynce maila z linkiem aktywacyjnym, sprawdź w pierwszej
       kolejności skrzynki 'Spam', 'Niechciana poczta', etc.
     signup_activated: >-
       Zarejestrowane konto zostało poprawnie aktywowane. Możesz się teraz
       zalogować.
     login_error:
       invalid_client: >-
-        Administrator tego panel nie skonfigurował poprawnych danych dostępowych
+        Administrator tego panelu nie skonfigurował poprawnych danych dostępowych
         OAUTH_KEY i OAUTH_SECRET.
       invalid_grant: >-
         Nie udało się zalogować. Sprawdź czy podałeś poprawny login i hasło.
@@ -164,16 +170,16 @@ pl:
     logout_successful: Pomyślnie wylogowano z panelu klienta
     password_reset_sent: >-
       Wysłaliśmy na Twoją skrzynkę pocztową wiadomość z linkiem do resetowania
-      hasła. Odczekaj minutę i sprawdź pocztę. Jeśli nie nie widzisz w skrzynce
-      maila z linkiem aktywacyjnym sprawdź w pierwszej kolejności skrzynki
+      hasła. Odczekaj minutę i sprawdź pocztę. Jeśli nie widzisz w skrzynce
+      maila z linkiem do resetowania hasła, sprawdź w pierwszej kolejności skrzynki
       'Spam', 'Niechciana poczta', etc.
     password_set: Hasło zostało zmienione. Zaloguj się używając nowego hasła.
     order_diagnosis_rejected: >-
-      Odrzucono koszty naprawy. W osobnej wiadomości mailowej orzymasz
+      Odrzucono koszty naprawy. W osobnej wiadomości mailowej otrzymasz
       informację o możliwości odbioru przedmiotu naprawy lub o jego wysyłce.
     order_diagnosis_accepted: >-
-      Zaakceptowano koszty naprawy, serwis niebawem rozpocznie pracę nad twoim
-      zgłoszeniem.
+      Zaakceptowano koszty naprawy, serwis niebawem rozpocznie pracę nad twoją
+      naprawą.
     repair_creation_successful: Utworzono naprawę.
     message_creation_successful: Pomyślnie wysłano twoją wiadomość
     ticket_creation_successful: >-
@@ -185,7 +191,7 @@ pl:
       i tym samym uzyskać dostęp do panelu klienckiego. Sprawdź proszę skrzynkę
       pocztową.
     access_request_complete: 'Utworzyliśmy twoje konto, możesz się teraz zalogować.'
-    viewer_password_update_successful: 'Zaktuaizowano hasło. Zaloguj się za pomocą hasła, które ustawiłeś.'
+    viewer_password_update_successful: 'Zaktualizowano hasło. Zaloguj się za pomocą hasła, które ustawiłeś.'
   layout:
     viewer: Edytuj dane
     logout: Wyloguj
@@ -250,27 +256,27 @@ pl:
     TRANSIT: W drodze
     DELIVERY: Wydano do doręczenia
     DELIVERED: Doręczono
-    NOT_DELIVERED: Nie udało się doręczyć przesłyki
+    NOT_DELIVERED: Nie udało się doręczyć przesyłki
     CANCELED: Anulowana
     RETURNED: Zwrócona
   login_new:
     title: Zaloguj się do panelu klienckiego!
     login_description: Do logowania użyj adresu email, który podałeś podczas rejestracji lub na etapie zamawiania usługi.
     signup_description: >-
-      Jeśli nie masz danych do logowania możesz je utworzyć poprzez rejestrację
+      Jeśli nie masz danych do logowania, możesz je utworzyć poprzez rejestrację
       swojego konta.
     signup: Zarejestruj własne konto
     login: Login lub adres email
     login_not_found: >-
-      Nie znaleziono konta - upewnij się, że podano login lub adres email konta
+      Nie znaleziono konta - upewnij się, że podano login lub adres email konta,
       które rejestrowałeś.
     subscriber_deleted: >-
       Serwis do którego próbujesz się zalogować nie jest już dostępny na naszej
       platformie. Skontaktuj się z serwisem telefonicznie.
-    login_not_activated: 'Aktywuj twoje konto linkiem, który otrzymałeś zaraz po rejestracji. Jeśli nie masz linku aktywacyjnego sprawdź w pierwszej kolejności skrzynkę "Spam" lub "Kosz". Link aktywacyjny możesz także otrzymać pisząc na adres email serwisu.'
+    login_not_activated: 'Aktywuj twoje konto linkiem, który otrzymałeś zaraz po rejestracji. Jeśli nie masz linku aktywacyjnego, sprawdź w pierwszej kolejności skrzynkę "Spam" lub "Kosz". Link aktywacyjny możesz także otrzymać pisząc na adres email serwisu.'
     login_disabled: >-
       Twoje konto zostało usunięte lub zablokowane. Skontaktuj się z serwisem w
-      celu wyjaśnienia sytuacji
+      celu wyjaśnienia sytuacji.
     internet_access_not_enabled: >-
       Twój dostęp do panelu klienckiego musi zostać aktywowany. Skontaktuj się z
       serwisem.
@@ -299,33 +305,33 @@ pl:
       title: Informacja
       content_html: >-
         Wykryliśmy, że w bazie danych serwisu istnieje już konto klienta
-        powiązane z podanym adresem email.  Prosimy o przerwanie rejestracji i
+        powiązane z podanym adresem email. Prosimy o przerwanie rejestracji i
         przejście do strony logowania.<br><br> Proszę użyć podanego tutaj adresu
-        email do logowania.<br><br>  Jeśli  nie pamiętasz lub nie masz jeszcze
-        swojego hasła, użyj opcji 'Przypomnij hasło' aby je zresetować, lub 
-        ustawić nowe.
+        email do logowania.<br><br> Jeśli nie pamiętasz lub nie masz jeszcze
+        swojego hasła, użyj opcji 'Przypomnij moje hasło', aby je zresetować
+        lub ustawić nowe.
       close: Anuluj
       ok: 'Rozumiem, przechodzę do logowania'
   access_request_ask:
     title: Aktywacja dostępu do panelu klienta
     description: >-
       Wykryliśmy, że serwis utworzył już twoje konto. Prawdopodobnie zlecałeś
-      już w jakąś  naprawę, lub zgłoszenie stacjonarnie, telefonicznie, etc.
-      Kliknij przycisk Wyślij link aby otrzymać na twój adres email link, do
-      strony na której będzie można ustawić login i hasło do panelu.
+      już jakąś naprawę lub zgłoszenie stacjonarnie, telefonicznie, etc.
+      Kliknij przycisk Wyślij link, aby otrzymać na twój adres email link do
+      strony, na której będzie można ustawić login i hasło do panelu.
     submit: Wyślij link
     cancel: Anuluj
   access_request_new:
     title: Aktywacja dostępu do panelu klienta
     description: >-
       Dokończ aktywację dostępu do panelu klienckiego. W tym celu wybierz swój
-      login i hasło oraz zaakceptuj niezbedne zgody.
+      login i hasło oraz zaakceptuj niezbędne zgody.
     login_pass_info_html: >-
-      Loginem może być twoje imie i nazwisko. Możesz wybrać cokolwiek, pamiętaj
-      że do panelu możesz także  <strong>logować się adresem email</strong>.
-      <br> <br> Używaj różnych haseł, w różnych serwisach. Zamiast zapamiętywać
-      je, zapisz w przeglądarce. Nie martw się o utratę  dostepu. <strong>Jeśli
-      zapomnisz hasła</strong> będziesz mógł je z dowolnym momencie zresetować.
+      Loginem może być twoje imię i nazwisko. Możesz wybrać cokolwiek, pamiętaj,
+      że do panelu możesz także <strong>logować się adresem email</strong>.
+      <br> <br> Używaj różnych haseł, w różnych serwisach. Zamiast je
+      zapamiętywać, zapisz w przeglądarce. Nie martw się o utratę dostępu. <strong>Jeśli
+      zapomnisz hasła</strong> będziesz mógł je w dowolnym momencie zresetować.
     login: Login do konta
     password: Hasło
     read_agreement: Czytaj
@@ -360,7 +366,7 @@ pl:
   signup_confirmation_failure:
     title: Aktywacja konta nie powiodła się
     description: >-
-      Aktywacja wcześniej założonego konta nie powiodła się powodów wymienionych
+      Aktywacja wcześniej założonego konta nie powiodła się z powodów wymienionych
       poniżej:
     errors:
       too_short: klucz aktywacyjny jest zbyt krótki
@@ -462,10 +468,10 @@ pl:
       started_at: Data rozpoczęcia
       tbc_after_rcv_at_office: Zostanie ustalona po odebraniu w serwisie
       finish_date_estimated: Planowana data zakończenia
-      days_worked: 'Ilość dni, od daty przyjęcia'
+      days_worked: Liczba dni od daty przyjęcia
       days_worked_tooltip: >-
-        Ilość przepracowanych dni roboczych. Kolor pomarańczowy informuje o
-        zbliżaniu sie do granicznej daty ustalonego terminu wykonania usługi,
+        Liczba przepracowanych dni roboczych. Kolor pomarańczowy informuje o
+        zbliżaniu się do granicznej daty ustalonego terminu wykonania usługi,
         kolor czerwony informuje o przekroczeniu daty.
       time_status: Sytuacja czasowa
     panel_files:
@@ -481,14 +487,14 @@ pl:
       reject: Nie akceptuję kosztów
       reject_all: Odrzuć wszystkie oferty
       reject_confirm_html: >-
-        Jeśli jesteś pewny, że nie chcesz kontynuować naprawy i potwierdzasz
+        Jeśli jesteś pewien, że nie chcesz kontynuować naprawy i potwierdzasz
         chęć odbioru naprawy kliknij 'dalej'. Możesz także skontaktować się z
         nami, jeśli jesteś zainteresowany szczegółami wyceny.
       accept: Akceptuję koszty naprawy
       accept_offer: Akceptuję ofertę
       accept_confirm: >-
         Czy zgadzasz się na poniesienie kosztów naprawy w kwocie %{amount}?
-        Jeśli zaakceptujesz koszty rozpoczniemy naprawę.
+        Jeśli zaakceptujesz koszty, rozpoczniemy naprawę.
       accept_confirm_offer: >-
         Czy akceptujesz przygotowaną przez serwis ofertę numer %{offer_number} -
         całkowity koszt w przypadku wyboru tej oferty to %{amount}?
@@ -507,7 +513,7 @@ pl:
   repair_new:
     title: Dodaj nową naprawę
     description: >-
-      Aby zarejestrować nową naprawę w bazie serwisu uzupełnij poniższy
+      Aby zarejestrować nową naprawę w bazie serwisu, uzupełnij poniższy
       formularz.
     device: 'Urządzenie, którego dotyczy naprawa'
     type: Przedmiot naprawy
@@ -561,7 +567,7 @@ pl:
     proceed: Przejdź na stronę naprawy
   tickets:
     title: Zgłoszenia
-    create_ticket: Dodaj zgłoszenie awarii
+    create_ticket: Dodaj zgłoszenie
     create_ticket_in_group: 'Nowe zgłoszenie: %{name}'
     toggle_groups_menu: Pokaż grupy zgłoszeń
     no_tickets: >-
@@ -609,17 +615,19 @@ pl:
     panel_files:
       title: Załączone pliki
   ticket_new:
-    title: Dodaj zgłoszenie awarii
+    title: Dodaj zgłoszenie
     description: >-
-      Aby zgłosić nową usterkę, awarię lub inny problem wymagający ingerencji
-      serwisu u ciebie uzupełnij poniższy formularz podając wszystkie szczegóły.
+      Aby dodać nowe zgłoszenie: usterkę, awarię lub inny problem wymagający ingerencji
+      serwisu u ciebie, uzupełnij poniższy formularz podając wszystkie szczegóły.
     group: Grupa zgłoszenia
     priority: Priorytet zgłoszenia
-    startAt: Najbliższy możliwy termin przyjazdu serwisanta
-    issue: Informacje o awarii
+    startAt: Najbliższy możliwy termin realizacji zgłoszenia
+    issue: Szczegóły zgłoszenia
     address: Adres zgłoszenia
     addressOther: 'Inny, dowolny adres'
-    other_address: Podaj inny adres
+    gps_address: Wskaż adres na mapie
+    geoPoint: Lokalizacja na mapie
+    other_address: Podaj adres
     cancel: Anuluj
     submit: Dodaj zgłoszenie
     street: Ulica
@@ -637,7 +645,7 @@ pl:
     issue: Informacje o awarii
     address: Adres zgłoszenia
     addressOther: 'Inny, dowolny adres'
-    other_address: Podaj inny adres
+    other_address: Podaj adres
     cancel: Anuluj
     submit: Dodaj zgłoszenie
     street: Ulica
@@ -748,9 +756,9 @@ pl:
   viewer_password_edit:
     title: Aktualizacja hasła
     description: >-
-      Aby zaktualizować hasło musisz znać hasło aktualne. Jeśli go nie pamiętasz
+      Aby zaktualizować hasło, musisz znać hasło aktualne. Jeśli go nie pamiętasz,
       wyloguj się i skorzystaj ze ścieżki resetowania hasła podczas logowania.
-      Wybierając nowe hasło użyj małych i wielkich znaków, cyfr lub znaków 
+      Wybierając nowe hasło, użyj małych i wielkich liter, cyfr lub znaków
       specjalnych takich jak kropka lub pytajnik. Zwróć uwagę na to, że po
       zmianie hasła zostaniesz wylogowany.
     currentPassword: Aktualne hasło
@@ -761,7 +769,7 @@ pl:
   devices:
     no_devices: >-
       Brak przypisanych urządzeń. Jeśli obsługujący cię serwis doda w
-      przyszłości jakieś urządzenia pojawią się na tej liście.
+      przyszłości jakieś urządzenia, pojawią się na tej liście.
     description: Opis urządzenia
     title: Urządzenia
     number: ID
@@ -801,7 +809,7 @@ pl:
   device_new:
     title: Rejestracja urządzenia
     description: >-
-      Aby zarejestrować urządzenie wprowadź odpowiednie dane oraz załącz skan
+      Aby zarejestrować urządzenie, wprowadź odpowiednie dane oraz załącz skan
       dokumentu sprzedaży. Po weryfikacji urządzenia przez serwis otrzymasz
       wiadomość email oraz będziesz mógł dodawać naprawy lub zgłoszenia.
     type: Urządzenie
@@ -825,5 +833,5 @@ pl:
     confirm: Rozumiem
   contact:
     title: Dane kontaktowe
-    message: 'Użyj poniższych danych aby skontaktować się z serwisem:'
+    message: 'Użyj poniższych danych, aby skontaktować się z serwisem:'
     create_message: Wyślij nam wiadomość

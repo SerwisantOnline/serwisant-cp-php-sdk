@@ -24,7 +24,7 @@
         <a class="btn btn-primary btn-lg" href="{{ path('new_repair') }}">{{ t('repairs.create_repair') }}</a>
       {% endif %}
       {% if configuration.panelTickets %}
-        <a class="btn btn-primary btn-lg" href="{{ path('new_ticket') }}">{{ t('tickets.create_ticket') }}</a>
+        {% include 'tickets/create_button.html.twig' with {fullWidth: true} %}
       {% endif %}
       {% if configuration.panelCommunication %}
         <a class="btn btn-primary btn-lg" href="{{ path('new_message') }}">{{ t('messages.create_message') }}</a>

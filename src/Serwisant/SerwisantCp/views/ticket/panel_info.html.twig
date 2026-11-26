@@ -15,12 +15,12 @@
       <td class="column-definition">{{ t(_self, 'number') }}</td>
       <td>{{ ticket.number }}</td>
     </tr>
-    {% if  ticket.devices %}
+    {% if ticket.devices %}
       <tr>
         <td class="column-definition">{{ t(_self, 'devices') }}</td>
         <td>
           {% for device in ticket.devices %}
-            {% if canCreateLinks %}
+            {% if canCreateLinks and configuration.panelDevices %}
               <a href="{{ path('device', {'id': device.ID}) }}">{{ device.type.name }} {{ device.vendor }} {{ device.model }}</a>
             {% else %}
               {{ device.type.name }} {{ device.vendor }} {{ device.model }}
@@ -29,16 +29,28 @@
         </td>
       </tr>
     {% endif %}
-    <tr>
-      <td class="column-definition">{{ t(_self, 'address') }}</td>
-      <td>
-        {% if ticket.addressRemarks %}
-          {{ ticket.addressRemarks }}
-        {% elseif ticket.address %}
-          {{ ticket.address.street }} {{ ticket.address.building }},  {{ ticket.address.postalCode }} {{ ticket.address.city }}
+
+    {% if showAddress ?? true %}
+        <tr>
+          <td class="column-definition">{{ t(_self, 'address') }}</td>
+          <td>
+            {% if ticket.addressRemarks %}
+              {{ ticket.addressRemarks }}
+            {% elseif ticket.address %}
+              {{ ticket.address.street }} {{ ticket.address.building }},  {{ ticket.address.postalCode }} {{ ticket.address.city }}
+            {% endif %}
+          </td>
+        </tr>
+        {% if ticket.address and ticket.address.geoPoint and ticket.address.geoPoint.lat and ticket.address.geoPoint.lng %}
+          <tr>
+            <td colspan="2" class="p-0">
+              <div id="ticket-address-map" class="ticket-address-map"
+                   data-lat="{{ ticket.address.geoPoint.lat }}" data-lng="{{ ticket.address.geoPoint.lng }}" data-zoom="16"></div>
+            </td>
+          </tr>
         {% endif %}
-      </td>
-    </tr>
+    {% endif %}
+
     {% if ticket.employee is defined %}
       <tr>
         <td class="column-definition">{{ t(_self, 'employee') }}</td>

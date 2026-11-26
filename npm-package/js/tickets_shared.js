@@ -56,3 +56,53 @@ Application.TicketsShared.GroupFields = function () {
   customFields(ticketGroupInput.val());
   groupPriority(ticketGroupInput.val());
 }
+
+// map with pointer (#map-container) filling hidden #geoPoint_lat / #geoPoint_lng; starts from coordinates already given
+// (eg. form displayed again after validation errors) or from browser location - if it's not available (or the form has
+// no map, eg. overridden template from before 1.8.1), onUnavailable is called
+Application.TicketsShared.MapPointer = function (onUnavailable) {
+  var container = $('#map-container');
+  var latInput = $('#geoPoint_lat');
+  var lngInput = $('#geoPoint_lng');
+  var initialized = false;
+
+  var draw = function (lat, lng) {
+    latInput.val(lat);
+    lngInput.val(lng);
+    container.slideDown(400, function () {
+      Application.Maps.MapWithPointer($('#map'), lat, lng, function (lat, lng) {
+        latInput.val(lat);
+        lngInput.val(lng);
+      });
+    });
+  };
+
+  return {
+    show: function () {
+      if (container.length === 0) {
+        onUnavailable();
+        return;
+      }
+      if (initialized) {
+        container.slideDown();
+        return;
+      }
+      initialized = true;
+      if (latInput.val() && lngInput.val()) {
+        draw(latInput.val(), lngInput.val());
+      } else {
+        Application.Maps.GetLocation(function (coords) {
+          if (coords.lat === undefined || coords.lng === undefined) {
+            initialized = false;
+            onUnavailable();
+          } else {
+            draw(coords.lat, coords.lng);
+          }
+        });
+      }
+    },
+    hide: function () {
+      container.slideUp();
+    }
+  };
+}

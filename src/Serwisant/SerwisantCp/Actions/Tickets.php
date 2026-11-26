@@ -12,6 +12,12 @@ class Tickets extends Action
   use Traits\Devices;
   use Traits\TicketGroups;
 
+  /**
+   * `addressID` radio value of "Point the address" option: address given as coordinates (`geoPoint.lat/lng`) pointed on
+   * the map, geocoded by the API. Address IDs are HashIDs, so it can't collide with customer's address.
+   */
+  const ADDRESS_GPS = 'gps';
+
   public function index()
   {
     $this->checkModuleActive();
@@ -26,25 +32,11 @@ class Tickets extends Action
       ->customerQuery()
       ->tickets($limit, $page, $filter, $sort, ['list' => true]);
 
-    $groups = $this->fetchTicketGroups();
-    $menu_groups = array_values(array_filter($groups, fn($group) => $group->asMenuItem === true));
-
-    $variables = [
+    $variables = array_merge($this->ticketGroupsMenuVariables($this->fetchCustomerTicketGroups()), [
       'tickets' => $tickets,
-      'ticketGroupsMenu' => $menu_groups,
-      'ticketGroupsMenuOnly' => count($menu_groups) > 0 && count($menu_groups) === count($groups),
       'pageTitle' => $this->t('tickets.title'),
-    ];
+    ]);
     return $this->renderPage('tickets.html.twig', $variables);
-  }
-
-  /**
-   * @return SchemaCustomer\Dictionary[]
-   */
-  private function fetchTicketGroups(): array
-  {
-    $filter = new SchemaCustomer\DictionaryEntriesFilter(['type' => SchemaCustomer\DictionaryType::TICKET_CATEGORY]);
-    return $this->apiCustomer()->customerQuery()->dictionaryEntries($filter);
   }
 
   public function show($id, $rating_errors = [])
@@ -58,6 +50,7 @@ class Tickets extends Action
       'pageTitle' => $ticket->number,
       'form_params' => $this->request->request,
       'rating_errors' => $rating_errors,
+      'js_files' => ['ticket.js'],
     ];
 
     return $this->renderPage('ticket.html.twig', $variables);
@@ -87,9 +80,9 @@ class Tickets extends Action
     foreach ($result->fetch('viewer')->customer->addresses as $address) {
       $addresses_radio_options[$address->ID] = trim("{$address->postalCode} {$address->city}, {$address->street} {$address->building}");
     }
-    if (count($addresses_radio_options) > 0) {
-      $addresses_radio_options[''] = $this->t('ticket_new', 'other_address');
-    }
+    // without customer's addresses the map is preselected, as in the public form
+    $addresses_radio_options[self::ADDRESS_GPS] = $this->t('ticket_new', 'gps_address');
+    $addresses_radio_options[''] = $this->t('ticket_new', 'other_address');
     $default_address = array_key_first($addresses_radio_options);
 
     $variables = $this->ticketGroupsFormVariables($result->fetch('ticketGroups'), $this->requestParam('group'));
@@ -120,7 +113,7 @@ class Tickets extends Action
     if (array_key_exists('customFields', $ticket)) {
       $ticket['customFields'] = $helper->mapCustomFields($ticket['customFields']);
     }
-    $ticket = $this->applyTicketGroup($ticket, fn() => $this->fetchTicketGroups());
+    $ticket = $this->applyTicketGroup($this->lockTicketGroup($ticket), fn() => $this->fetchCustomerTicketGroups());
     if ($ticket === null) {
       return $this->new([new SchemaCustomer\Error(['argument' => 'ticket.group', 'code' => 'invalid', 'message' => 'Invalid ticket group'])]);
     }
@@ -133,6 +126,13 @@ class Tickets extends Action
 
     if ($device && $device->address) {
       $address_input = new SchemaCustomer\AddressInput(array_merge($device->address->toArray(['ID', 'geoPoint']), ['type' => SchemaCustomer\AddressType::OTHER])); // always use original device address
+    } elseif ($this->requestParam('addressID') === self::ADDRESS_GPS) {
+      $geo_point = $this->geoPointInput($this->requestParam('geoPoint'));
+      if ($geo_point === null) {
+        return $this->new([new SchemaCustomer\Error(['argument' => 'geoPoint', 'code' => 'invalid', 'message' => 'Invalid coordinates'])]);
+      }
+      // coordinates only - any of street, building, postalCode, city would disable geocoding on the API side
+      $address_input = new SchemaCustomer\AddressInput(['geoPoint' => $geo_point, 'type' => SchemaCustomer\AddressType::GPS]);
     } elseif ($this->requestParam('addressID')) {
       $address_input = new SchemaCustomer\AddressInput();
       foreach ($this->apiCustomer()->customerQuery()->viewer(['addresses' => true])->customer->addresses as $a) {
@@ -158,6 +158,7 @@ class Tickets extends Action
     }
 
     if (count($ticket_errors) > 0) {
+      $this->fallbackToOtherAddress($ticket_errors);
       return $this->new(array_merge($ticket_errors));
     } else {
       return $this->redirectTo('tickets', 'flashes.ticket_creation_successful');
@@ -183,6 +184,43 @@ class Tickets extends Action
     } else {
       return $this->redirectTo(['ticket', ['id' => $id]]);
     }
+  }
+
+  /**
+   * When the API could not determine the address from coordinates pointed on the map (`address` / `geocoding_failed`,
+   * or incomplete geocoding result, eg. `address.city` / `blank`), the form is displayed again with "Enter another
+   * address" selected, as the error asks the customer to enter the address manually.
+   *
+   * @param SchemaCustomer\Error[] $errors
+   */
+  private function fallbackToOtherAddress(array $errors): void
+  {
+    if ($this->requestParam('addressID') !== self::ADDRESS_GPS) {
+      return;
+    }
+    foreach ($errors as $error) {
+      $argument = (string)$error->argument;
+      if ($argument === 'address' || (str_starts_with($argument, 'address.') && !str_starts_with($argument, 'address.geoPoint'))) {
+        $this->request->request->set('addressID', '');
+        return;
+      }
+    }
+  }
+
+  /**
+   * Coordinates pointed on the map, null if missing or invalid: API accepts any numeric string (decimal point only)
+   * without range check.
+   */
+  private function geoPointInput($geo_point): ?SchemaCustomer\GeoPointInput
+  {
+    $lat = is_array($geo_point) ? ($geo_point['lat'] ?? null) : null;
+    $lng = is_array($geo_point) ? ($geo_point['lng'] ?? null) : null;
+    foreach ([[$lat, 90], [$lng, 180]] as [$value, $max]) {
+      if (!is_string($value) || !preg_match('/^-?\d{1,3}(\.\d+)?$/', $value) || abs((float)$value) > $max) {
+        return null;
+      }
+    }
+    return new SchemaCustomer\GeoPointInput(['lat' => $lat, 'lng' => $lng]);
   }
 
   private function fetchTicket($id)

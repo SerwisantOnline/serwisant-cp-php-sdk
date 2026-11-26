@@ -120,6 +120,10 @@ class TwigFormExtensions extends TwigExtensions
 
     // Priorytet ma to, co zejdzie z POST, później wartość przekazana z konfiguracji
     $value = $post_data->get($argument);
+    // every field holds a scalar - array posted in place of it (eg. `geoPoint[lat][]=`) is ignored
+    if ($value !== null && !is_scalar($value)) {
+      $value = null;
+    }
     if ($value === null) {
       $value = $options->get('value');
     }

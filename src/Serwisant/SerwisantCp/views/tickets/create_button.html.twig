@@ -1,0 +1,30 @@
+{#
+  "Open a ticket" button with ticket groups menu.
+  Variables: ticketGroupsMenu, ticketGroupsMenuOnly (Traits\TicketGroups::ticketGroupsMenuVariables()),
+  fullWidth (optional) - button takes full width of its container.
+#}
+{% if ticketGroupsMenu is empty %}
+  <a class="btn btn-primary btn-lg" href="{{ path('new_ticket') }}">{{ t('tickets.create_ticket') }}</a>
+{% else %}
+  <div class="btn-group{{ fullWidth ?? false ? ' w-100' }}">
+    {% if ticketGroupsMenuOnly %}
+      <button type="button" class="btn btn-primary btn-lg dropdown-toggle" data-bs-toggle="dropdown"
+              aria-expanded="false">{{ t('tickets.create_ticket') }}</button>
+    {% else %}
+      <a class="btn btn-primary btn-lg" href="{{ path('new_ticket') }}">{{ t('tickets.create_ticket') }}</a>
+      <button type="button" class="btn btn-primary btn-lg dropdown-toggle dropdown-toggle-split{{ fullWidth ?? false ? ' flex-grow-0' }}"
+              data-bs-toggle="dropdown" aria-expanded="false">
+        <span class="visually-hidden">{{ t('tickets.toggle_groups_menu') }}</span>
+      </button>
+    {% endif %}
+    <ul class="dropdown-menu">
+      {% for group in ticketGroupsMenu %}
+        <li>
+          <a class="dropdown-item" href="{{ path('new_ticket', {group: group.ID}) }}">
+            {{ t('tickets.create_ticket_in_group', {name: group.name}) }}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}

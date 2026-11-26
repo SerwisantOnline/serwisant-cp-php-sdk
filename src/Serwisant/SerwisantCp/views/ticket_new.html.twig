@@ -1,4 +1,4 @@
-<form method="post" action="{{ path('create_ticket') }}">
+<form method="post" action="{{ path('create_ticket', ticketGroupLocked ? {group: defaultTicketGroup} : {}) }}">
   <div class="panel-spaced bg-light rounded">
     <h2>{{ t(_self, 'title') }}</h1>
     <p class="lead">{{ t(_self, 'description') }}</p>
@@ -21,7 +21,16 @@
 
     {% if ticket_groups_select_options is not empty %}
       <div class="col-md-5 mb-3" id="ticket_group_container" data-priorities="{{ ticket_groups_priorities|json_encode }}">
-        {{ form_field({type: 'selectpicker', argument: 'ticket.group', caption: t(_self, 'group'), options: ticket_groups_select_options, include_blank: true, value: defaultTicketGroup}, form_params, errors) }}
+        {% if ticketGroupLocked %}
+          {{ form_field({type: 'hidden', argument: 'ticket.group', value: defaultTicketGroup}, form_params, errors) }}
+          <div class="form-floating">
+            <input type="text" id="ticket_group_name" class="form-control" placeholder="{{ t(_self, 'group') }}"
+                   title="{{ t(_self, 'group') }}" disabled value="{{ lockedTicketGroupName }}">
+            <label for="ticket_group_name" class="form-label">{{ t(_self, 'group') }}</label>
+          </div>
+        {% else %}
+          {{ form_field({type: 'selectpicker', argument: 'ticket.group', caption: t(_self, 'group'), options: ticket_groups_select_options, include_blank: true, value: defaultTicketGroup}, form_params, errors) }}
+        {% endif %}
       </div>
     {% endif %}
 
@@ -40,6 +49,11 @@
     {% if (not device) or (not device.address) %}
       <div class="mb-3">
         {{ form_field({type: 'radios', argument: 'addressID', caption: t(_self, 'address'), options: addresses_radio_options, value: defaultAddress}, form_params, errors) }}
+      </div>
+      <div class="mb-3 undisplayed" id="map-container">
+        <div class="map-pointer" id="map"></div>
+        {{ form_field({type: 'hidden', argument: 'geoPoint.lat'}, form_params, errors) }}
+        {{ form_field({type: 'hidden', argument: 'geoPoint.lng'}, form_params, errors) }}
       </div>
     {% endif %}
 
