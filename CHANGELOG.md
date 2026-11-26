@@ -3,6 +3,17 @@
 All notable changes to `serwisant/serwisant-cp` are documented in this file.
 Entries up to 1.6.3 were reconstructed from git history.
 
+## 1.8.2 - 2026-11-26
+
+### Fixed
+
+- Maps: OpenStreetMap tiles were replaced with "Access blocked" 403 images on sites served with a strict
+  `Referrer-Policy` (e.g. `same-origin`) - tile requests carried no `Referer`, required by the OSM tile usage
+  policy. The tile layer now sets `referrerPolicy: strict-origin-when-cross-origin` on tile images and no longer
+  requests zoom levels above 19 (tiles are upscaled up to zoom 20). Shared tile layer:
+  `Application.Maps.TileLayer()`.
+- npm package `serwisant-cp` 1.0.4 - run `npm install` to refresh assets.
+
 ## 1.8.1 - 2026-11-24
 
 ### Added

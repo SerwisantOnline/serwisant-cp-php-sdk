@@ -12,6 +12,19 @@ Application.Maps.MarkerIconTemmplate = `
 
 Application.Maps.LocationTTL = (5 * 60 * 1000)
 
+// OpenStreetMap tile usage policy (https://operations.osmfoundation.org/policies/tiles/) requires a valid
+// Referer; requests without it are answered with "Access blocked" 403 tiles. Pages served with a strict
+// Referrer-Policy (e.g. `same-origin`, `no-referrer`) send no Referer to tile.openstreetmap.org, so the tile
+// layer sets its own policy on the <img> tags. Tiles exist up to zoom 19 - deeper levels are upscaled.
+Application.Maps.TileLayer = function () {
+  return L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxNativeZoom: 19,
+    maxZoom: 20,
+    referrerPolicy: 'strict-origin-when-cross-origin',
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+  });
+};
+
 Application.Maps.GetLocation = function (onLocation, defaultLat, defaultLng) {
   var defaultCoords = {
     lat: defaultLat,
@@ -73,10 +86,7 @@ Application.Maps.MapWithPointer = function (mapDiv, lat, lng, onPoint) {
     });
     map.addLayer(marker);
 
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 24,
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(map);
+    Application.Maps.TileLayer().addTo(map);
   }
 }
 
@@ -100,10 +110,7 @@ Application.Maps.Map = function (mapDiv) {
       });
       L.marker([lat, lng], {icon: divIcon}).addTo(markers);
 
-      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 24,
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-      }).addTo(map);
+      Application.Maps.TileLayer().addTo(map);
     }
   }
 };

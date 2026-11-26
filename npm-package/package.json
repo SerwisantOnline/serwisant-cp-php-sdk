@@ -1,6 +1,6 @@
 {
   "name": "serwisant-cp",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Customer Panel SDK for https://serwisant.online service assets",
   "private": true,
   "scripts": {
